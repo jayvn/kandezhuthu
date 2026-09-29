@@ -230,4 +230,5 @@ application_default_credentials.json
 service-account*.json
 # Keep the demo GIF (README embeds it); ignore the large raw recording.
 *.webm
+artifacts/demo_video/raw/
 tests/ui/screenshots/*.pdf
