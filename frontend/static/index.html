@@ -491,12 +491,34 @@
     padding: 0.3rem 0.9rem 0.1rem 0.9rem;
   }
   .deed-dropzone-container.minimized .deed-dropzone {
-    padding: 0.3rem 0.65rem;
+    padding: 0.35rem 0.65rem;
   }
   .deed-dropzone-container.minimized .dropzone-content,
-  .deed-dropzone-container.minimized .layman-quickstart-grid,
-  .deed-dropzone-container.minimized .dropzone-footer {
+  .deed-dropzone-container.minimized .dropzone-footer,
+  .deed-dropzone-container.minimized .layman-card-desc,
+  .deed-dropzone-container.minimized .layman-card-cta {
     display: none !important;
+  }
+  .deed-dropzone-container.minimized .layman-quickstart-grid {
+    margin-top: 0.35rem;
+    gap: 0.45rem;
+  }
+  .deed-dropzone-container.minimized .layman-card {
+    padding: 0.35rem 0.55rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .deed-dropzone-container.minimized .layman-card-top {
+    margin-bottom: 0;
+  }
+  .deed-dropzone-container.minimized .layman-card-title {
+    font-size: 0.72rem;
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .dropzone-toggle-btn {
     margin-left: auto;
@@ -2044,17 +2066,17 @@
         <div class="dropzone-badge-row">
           <span class="dropzone-live-pulse"></span>
           <span class="dropzone-tag" id="dropzone-tag">⚡ Kerala Land Title Legal Audit Assistant</span>
-          <span class="dropzone-model">Instant 1-Click Verification</span>
+          <span class="dropzone-model" id="dropzone-model-tag">Instant 1-Click Verification</span>
           <button type="button" class="dropzone-toggle-btn" id="dropzone-toggle-btn" onclick="event.stopPropagation(); toggleDropzone();" title="Collapse / Expand Ingest Box">− Minimize</button>
         </div>
         <div class="dropzone-content">
           <div class="dropzone-icon">🛡️</div>
           <div class="dropzone-text">
             <div class="dropzone-title">
-              <strong id="dropzone-title">ഭൂമി വാങ്ങുന്നതിന് മുൻപ് ആധാരത്തിലെ കുരുക്കുകൾ പരിശോധിക്കാം</strong>
+              <strong id="dropzone-title">Drag & Drop Kerala Title Deed or Encumbrance Certificate (EC)</strong>
             </div>
             <div class="dropzone-desc" id="dropzone-desc">
-              Check any Kerala Title Deed (*ആധാരം*) or Encumbrance Certificate (*കുടിക്കടം*) before paying advance money. Click a sample below or drop your document!
+              Directly extracts 4 boundaries, survey numbers, prior deeds & audits 4 fatal statutory traps
             </div>
           </div>
         </div>
@@ -2066,8 +2088,8 @@
               <span class="layman-card-icon">📄</span>
               <span class="layman-card-badge" id="card-badge-deed">3 Traps Hidden</span>
             </div>
-            <div class="layman-card-title" id="card-title-deed">Test Real Sale Deed (തീറാധാരം)</div>
-            <div class="layman-card-desc" id="card-desc-deed">See how AI detects hidden pathway rights (*നടപ്പുവഴി*), Paddy Land (*നിലം*), and senior citizen maintenance conditions.</div>
+            <div class="layman-card-title" id="card-title-deed">Test Real Sale Deed</div>
+            <div class="layman-card-desc" id="card-desc-deed">See how AI detects hidden pathway easements, Paddy Land (Wetland), and senior citizen maintenance conditions.</div>
             <div class="layman-card-cta" id="card-cta-deed">▶ Test Sale Deed PDF →</div>
           </div>
 
@@ -2076,8 +2098,8 @@
               <span class="layman-card-icon">🏦</span>
               <span class="layman-card-badge" id="card-badge-ec">₹45L Bank Loan</span>
             </div>
-            <div class="layman-card-title" id="card-title-ec">Test 30-Yr Bank EC (കുടിക്കടം)</div>
-            <div class="layman-card-desc" id="card-desc-ec">See how we catch undisclosed bank mortgages and missing release deeds (*ഒഴിവുമുറി*) before your advance gets trapped.</div>
+            <div class="layman-card-title" id="card-title-ec">Test 30-Yr Bank EC</div>
+            <div class="layman-card-desc" id="card-desc-ec">See how we catch undisclosed bank mortgages and missing release deeds before your advance gets trapped.</div>
             <div class="layman-card-cta" id="card-cta-ec">▶ Test SRO EC PDF →</div>
           </div>
 
@@ -2087,7 +2109,7 @@
               <span class="layman-card-badge" id="card-badge-upload">PDF / Photo</span>
             </div>
             <div class="layman-card-title" id="card-title-upload">Check My Own Deed / Photo</div>
-            <div class="layman-card-desc" id="card-desc-upload">Upload a PDF or snap a photo of any Malayalam/English Kerala deed, partition paper, or agreement.</div>
+            <div class="layman-card-desc" id="card-desc-upload">Upload a PDF or snap a photo of any Kerala sale deed, partition paper, or agreement.</div>
             <div class="layman-card-cta" id="card-cta-upload">📂 Browse or Drop File →</div>
           </div>
         </div>
@@ -2096,7 +2118,7 @@
           <div class="dropzone-formats">
             <span class="format-pill">PDF</span>
             <span class="format-pill" id="dropzone-pill-photos">Camera Photos (JPG/PNG)</span>
-            <span class="format-pill lang" id="dropzone-pill-lang">മലയാളം & English</span>
+            <span class="format-pill lang" id="dropzone-pill-lang">English & Malayalam OCR</span>
           </div>
           <div class="dropzone-btns" onclick="event.stopPropagation()">
             <a href="/api/sample_deed?doc_type=deed" download="kerala_sale_deed_aluva_re_sy_345_1.pdf" class="dropzone-btn secondary" style="text-decoration:none;" id="btn-download-deed" title="Download real test Kerala deed PDF to your computer to test drag-and-drop">
@@ -2111,7 +2133,7 @@
       <div class="msg agent">
         <div class="msg-label">Kandezhuthu AI</div>
         <div class="bubble" id="welcome-bubble">
-          <strong id="welcome-bubble-title">നമസ്കാരം! Welcome to Kandezhuthu AI (കണ്ടെഴുത്ത് - ആധാരംനോക്കി).</strong>
+          <strong id="welcome-bubble-title">Welcome to Kandezhuthu AI - Kerala Property Legal Audit</strong>
           <p id="welcome-bubble-p1">Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong></p>
           <p id="welcome-bubble-p2" style="margin-top: 0.5rem;">Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:</p>
           <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.6rem;">
@@ -2196,7 +2218,7 @@
         <span id="guidance-text">Click anywhere on the satellite view to drop an inspection pin and view GPS coordinates.</span>
       </div>
       <div class="guidance-actions" id="guidance-pin-actions" style="display: flex;">
-        <button class="guidance-btn primary" onclick="openAutoDemarcateModal()">✨ Auto-Demarcate at Pin</button>
+        <button class="guidance-btn primary" id="btn-guidance-auto-demarcate" onclick="openAutoDemarcateModal()">✨ Auto-Demarcate at Pin</button>
       </div>
       <div class="guidance-actions" id="guidance-actions" style="display: none;">
         <button class="guidance-btn secondary" id="guidance-undo-btn" onclick="undoLastPoint()">↩️ Undo</button>
@@ -2346,8 +2368,8 @@
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-extent">
-            <span>Plot Extent</span>
-            <span style="font-size:0.65rem; color:#0f5132;" title="1 Cent = 40.47 m² = 435.6 sq.ft">ℹ️ Kerala Cents</span>
+            <span id="hud-extent-lbl-title">Plot Extent</span>
+            <span id="hud-extent-lbl-sub" style="font-size:0.65rem; color:#0f5132;" title="1 Cent = 40.47 m² = 435.6 sq.ft">ℹ️ Kerala Cents</span>
           </div>
           <div class="hud-stat-val cents" id="hud-cents">10.00 Cents</div>
         </div>
@@ -2364,8 +2386,8 @@
         </div>
         <div class="hud-stat-box full-width" id="hud-elevation-box">
           <div class="hud-stat-label" id="hud-lbl-elevation">
-            <span>Elevation & Flood Exposure</span>
-            <span style="font-size:0.65rem; color:#0f5132;" title="Above Mean Sea Level (MSL) & KSDMA flood hazard rating">⛰️ MSL</span>
+            <span id="hud-elevation-lbl-title">Elevation & Flood Exposure</span>
+            <span id="hud-elevation-lbl-sub" style="font-size:0.65rem; color:#0f5132;" title="Above Mean Sea Level (MSL) & KSDMA flood hazard rating">⛰️ MSL</span>
           </div>
           <div class="hud-stat-val" id="hud-elevation" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
             <span id="hud-elevation-text" style="font-size: 0.85rem; font-weight: 700;">6.5m MSL</span>
