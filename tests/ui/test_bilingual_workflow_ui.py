@@ -76,48 +76,71 @@ def run_bilingual_workflow_test():
             results.append("Step 2: Bilingual Switcher - SKIPPED")
 
         # -------------------------------------------------------------
-        # STEP 3: 3-Step Guided Workflow Navigation Bar
+        # STEP 3: 4-Step Guided Workflow Navigation Bar & Stepper Controls
         # -------------------------------------------------------------
-        print("\n[Step 3] Testing 3-Step Guided Workflow Steps...")
+        print("\n[Step 3] Testing 4-Step Guided Progressive Disclosure Workflow...")
         wf_step1 = page.locator("#wf-step-1")
         wf_step2 = page.locator("#wf-step-2")
         wf_step3 = page.locator("#wf-step-3")
+        wf_step4 = page.locator("#wf-step-4")
+        btn_prev = page.locator("#btn-prev-step")
+        btn_next = page.locator("#btn-next-step")
+        step_label = page.locator("#step-nav-label")
 
-        # Test Step 2 Click: Satellite & KPBR Road
-        print("  Clicking Workflow Step 2: Satellite & KPBR Road...")
-        wf_step2.click()
+        # Initial Step 1 Verification
+        expect(wf_step1).to_have_class("workflow-step active")
+        expect(btn_prev).to_be_disabled()
+        expect(step_label).to_contain_text("Step 1 of 4")
+        print("  ✓ Step 1 initially active with previous button disabled.")
+
+        # Test Stepper Bar Next Click -> Step 2: Prior Lineage
+        print("  Clicking Next Step button -> Step 2: Prior Lineage...")
+        btn_next.click()
         page.wait_for_timeout(300)
         expect(wf_step2).to_have_class("workflow-step active")
-        # Tool plot should be activated
-        expect(page.locator("#tool-plot")).to_have_class("map-tool-btn active")
-        print("  ✓ Step 2 activated plot tool.")
+        expect(btn_prev).to_be_enabled()
+        expect(step_label).to_contain_text("Step 2 of 4")
+        print("  ✓ Step 2 activated via next button.")
 
-        # Test Step 3 Click: Action & WhatsApp Draft
-        print("  Clicking Workflow Step 3: Action & Checklist...")
+        # Test Direct Step 3 Click: Satellite & KPBR
+        print("  Clicking Workflow Step 3: Satellite & KPBR...")
         wf_step3.click()
         page.wait_for_timeout(300)
         expect(wf_step3).to_have_class("workflow-step active")
+        # Tool plot should be activated
+        expect(page.locator("#tool-plot")).to_have_class("map-tool-btn active")
+        expect(step_label).to_contain_text("Step 3 of 4")
+        print("  ✓ Step 3 activated plot tool on map.")
+
+        # Test Direct Step 4 Click: Due Diligence & Action
+        print("  Clicking Workflow Step 4: Due Diligence & Action...")
+        wf_step4.click()
+        page.wait_for_timeout(300)
+        expect(wf_step4).to_have_class("workflow-step active")
         expect(page.locator("#checklist-panel")).to_have_class("checklist-panel visible")
-        print("  ✓ Step 3 opened on-site checklist panel.")
+        expect(step_label).to_contain_text("Step 4 of 4")
+        print("  ✓ Step 4 opened on-site checklist panel.")
 
         # Close checklist
         page.locator(".checklist-close-btn").click()
         page.wait_for_timeout(200)
 
         # Test Step 1 Click: Document & Title Lineage
-        print("  Clicking Workflow Step 1: Document & Title Lineage...")
+        print("  Clicking Workflow Step 1: Ingest Document...")
         wf_step1.click()
         page.wait_for_timeout(300)
         expect(wf_step1).to_have_class("workflow-step active")
-        print("  ✓ Step 1 restored lineage focus.")
+        print("  ✓ Step 1 restored document ingest focus.")
 
         page.screenshot(path=os.path.join(SCREENSHOTS_DIR, "workflow_steps_nav.png"))
-        results.append("Step 3: 3-Step Guided Workflow - PASSED")
+        results.append("Step 3: 4-Step Guided Workflow - PASSED")
 
         # -------------------------------------------------------------
         # STEP 4: Action Category Filtering Tabs
         # -------------------------------------------------------------
         print("\n[Step 4] Testing Category Tabs Filtering...")
+        wf_step2.click()
+        page.wait_for_timeout(200)
         tabs = page.locator(".category-tab")
         if tabs.count() > 0:
             for cat_name in ["lineage", "statutory", "ground", "all"]:

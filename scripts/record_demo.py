@@ -258,10 +258,20 @@ class DemoVideoRecorder:
             print("  → Toggling Language back to English...")
             self.smooth_move_and_click(page, "#lang-btn-en", pre_delay=0.3, post_delay=1.0)
 
+            # Showcase FT-styled 4-Step Progressive Disclosure Stepper Bar
+            print("  → Highlighting FT-styled 4-Step Progressive Disclosure Stepper Bar...")
+            for wf_step_selector in ["#wf-step-1", "#wf-step-2", "#wf-step-3", "#wf-step-4"]:
+                box = page.locator(wf_step_selector).bounding_box()
+                if box:
+                    page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2, steps=6)
+                    self.pause(0.25)
+            self.pause(0.4)
+
             # -------------------------------------------------------------
             # SCENE 2: Satellite GIS Discovery & Topographic Elevation HUD
             # -------------------------------------------------------------
-            print("\n[Scene 2/10] Satellite GIS Discovery & Multi-Preset Elevation Inspection...")
+            print("\n[Scene 2/10] Navigating to Workflow Step 3: Satellite GIS & KPBR Survey...")
+            self.smooth_move_and_click(page, "#wf-step-3", pre_delay=0.3, post_delay=1.0)
             self.show_chapter_banner(
                 page,
                 "Satellite GIS & Topographic Flood Risk",
@@ -363,7 +373,8 @@ class DemoVideoRecorder:
             # -------------------------------------------------------------
             # SCENE 5: Physical Field Inspection Checklist Drawer
             # -------------------------------------------------------------
-            print("\n[Scene 5/10] Opening Physical Field Inspection Checklist Drawer...")
+            print("\n[Scene 5/10] Advancing Stepper to Step 4: Due Diligence & Action...")
+            self.smooth_move_and_click(page, "#btn-next-step", pre_delay=0.3, post_delay=1.0)
             self.show_chapter_banner(
                 page,
                 "Physical Field Inspection Checklist",
@@ -371,7 +382,10 @@ class DemoVideoRecorder:
                 step=5,
             )
             self.pause(0.5)
-            self.smooth_move_and_click(page, "#btn-checklist-toggle", pre_delay=0.3, post_delay=1.0)
+            # Ensure checklist panel is open
+            chk_panel = page.locator("#checklist-panel")
+            if not chk_panel.is_visible():
+                self.smooth_move_and_click(page, "#btn-checklist-toggle", pre_delay=0.2, post_delay=0.8)
 
             # Check off vital non-paper ground reality items
             for chk_id in ["#chk-kallu", "#chk-road", "#chk-wetland", "#chk-ht", "#chk-flood"]:
@@ -389,7 +403,8 @@ class DemoVideoRecorder:
             # -------------------------------------------------------------
             # SCENE 6: 30-Year Munnadharam Prior Title Lineage Audit
             # -------------------------------------------------------------
-            print("\n[Scene 6/10] Auditing 30-Year Prior Title Lineage (*Munnadharam*)...")
+            print("\n[Scene 6/10] Navigating Stepper to Step 2: Prior Title Lineage (*Munnadharam*)...")
+            self.smooth_move_and_click(page, "#wf-step-2", pre_delay=0.4, post_delay=1.0)
             self.show_chapter_banner(
                 page,
                 "30-Year Prior Title Lineage Audit",
@@ -413,7 +428,8 @@ class DemoVideoRecorder:
             # -------------------------------------------------------------
             # SCENE 7: Multimodal Gemini 3.8 Flash Vision OCR
             # -------------------------------------------------------------
-            print("\n[Scene 7/10] Running Multimodal Gemini Vision OCR on Title Deed...")
+            print("\n[Scene 7/10] Navigating Stepper to Step 1: Document Ingest & OCR...")
+            self.smooth_move_and_click(page, "#wf-step-1", pre_delay=0.4, post_delay=1.0)
             self.show_chapter_banner(
                 page,
                 "Multimodal Gemini 3.8 Flash Vision OCR",
@@ -474,7 +490,13 @@ class DemoVideoRecorder:
             # -------------------------------------------------------------
             # SCENE 8: English WhatsApp Seller Inquiry Card
             # -------------------------------------------------------------
-            print("\n[Scene 8/10] Interacting with English WhatsApp Seller Inquiry Card...")
+            print("\n[Scene 8/10] Advancing Stepper to Step 4: Action & WhatsApp Inquiry...")
+            self.smooth_move_and_click(page, "#wf-step-4", pre_delay=0.3, post_delay=0.8)
+            # Ensure checklist panel is closed if opened so chat is clear
+            chk_panel = page.locator("#checklist-panel")
+            if chk_panel.is_visible():
+                self.smooth_move_and_click(page, "#btn-checklist-toggle", pre_delay=0.2, post_delay=0.5)
+
             self.show_chapter_banner(
                 page,
                 "English WhatsApp Seller Inquiry Card",
@@ -529,7 +551,11 @@ class DemoVideoRecorder:
                 step=9,
             )
             self.pause(0.5)
-            self.smooth_move_and_click(page, "#btn-hud-export", pre_delay=0.4, post_delay=2.0)
+            export_btn = page.locator("#btn-hud-export")
+            if export_btn.is_visible():
+                self.smooth_move_and_click(page, "#btn-hud-export", pre_delay=0.4, post_delay=2.0)
+            else:
+                self.smooth_move_and_click(page, "#btn-pdf-export", pre_delay=0.4, post_delay=2.0)
             self.pause(1.5)
             page.screenshot(path=str(self.screenshots_dir / "09_dossier_exported.png"))
 
@@ -572,6 +598,7 @@ def transcode_video(
     raw_webm_path: Path,
     output_dir: Path,
     stem_name: str = "kandezhuthu_demo",
+    formats: str = "all",
 ) -> dict[str, Path]:
     """Transcodes raw Playwright WebM recording into high-quality MP4, WebM, and GIF."""
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -583,81 +610,97 @@ def transcode_video(
     print("  🎞️ TRANSCODING DEMO VIDEO (FFmpeg Pipeline)")
     print("=" * 70)
 
+    results: dict[str, Path] = {}
+
     # Copy clean WebM
-    shutil.copy2(raw_webm_path, webm_path)
-    print(f"  ✔ Saved WebM: {webm_path} ({webm_path.stat().st_size / (1024*1024):.2f} MB)")
+    if formats in ["all", "webm"]:
+        shutil.copy2(raw_webm_path, webm_path)
+        print(f"  ✔ Saved WebM: {webm_path} ({webm_path.stat().st_size / (1024*1024):.2f} MB)")
+        results["webm"] = webm_path
 
     # Transcode to H.264 MP4 (Universally playable in all browsers and video players)
-    print("  → Transcoding to High-Definition MP4 (H.264 / yuv420p)...")
-    ffmpeg_cmd = [
-        "ffmpeg",
-        "-y",
-        "-i",
-        str(raw_webm_path),
-        "-c:v",
-        "libx264",
-        "-preset",
-        "fast",
-        "-crf",
-        "20",
-        "-pix_fmt",
-        "yuv420p",
-        "-movflags",
-        "+faststart",
-        str(mp4_path),
-    ]
-    res = subprocess.run(ffmpeg_cmd, capture_output=True, text=True)
-    if res.returncode != 0:
-        print(f"  [Warning] FFmpeg MP4 transcoding notice: {res.stderr}")
-    else:
-        print(f"  ✔ Saved MP4: {mp4_path} ({mp4_path.stat().st_size / (1024*1024):.2f} MB)")
+    if formats in ["all", "mp4", "gif"]:
+        print("  → Transcoding to High-Definition MP4 (H.264 / yuv420p)...")
+        ffmpeg_cmd = [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(raw_webm_path),
+            "-c:v",
+            "libx264",
+            "-preset",
+            "fast",
+            "-crf",
+            "20",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart",
+            str(mp4_path),
+        ]
+        res = subprocess.run(ffmpeg_cmd, capture_output=True, text=True)
+        if res.returncode != 0:
+            print(f"  [Warning] FFmpeg MP4 transcoding notice: {res.stderr}")
+        else:
+            print(f"  ✔ Saved MP4: {mp4_path} ({mp4_path.stat().st_size / (1024*1024):.2f} MB)")
+            results["mp4"] = mp4_path
 
     # Generate lightweight animated preview GIF for documentation / README
-    print("  → Generating Animated Preview GIF (Lanczos palette)...")
-    gif_cmd = [
-        "ffmpeg",
-        "-y",
-        "-ss",
-        "00:00:02",
-        "-to",
-        "00:00:22",
-        "-i",
-        str(mp4_path if mp4_path.exists() else raw_webm_path),
-        "-vf",
-        "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",
-        str(gif_path),
-    ]
-    gif_res = subprocess.run(gif_cmd, capture_output=True, text=True)
-    if gif_res.returncode == 0:
-        print(f"  ✔ Saved Preview GIF: {gif_path} ({gif_path.stat().st_size / (1024*1024):.2f} MB)")
-    else:
-        print(f"  [Warning] GIF generation notice: {gif_res.stderr}")
+    if formats in ["all", "gif"]:
+        print("  → Generating Animated Preview GIF (Lanczos palette)...")
+        gif_cmd = [
+            "ffmpeg",
+            "-y",
+            "-ss",
+            "00:00:02",
+            "-to",
+            "00:00:22",
+            "-i",
+            str(mp4_path if mp4_path.exists() else raw_webm_path),
+            "-vf",
+            "fps=10,scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",
+            str(gif_path),
+        ]
+        gif_res = subprocess.run(gif_cmd, capture_output=True, text=True)
+        if gif_res.returncode == 0:
+            print(f"  ✔ Saved Preview GIF: {gif_path} ({gif_path.stat().st_size / (1024*1024):.2f} MB)")
+            results["gif"] = gif_path
+        else:
+            print(f"  [Warning] GIF generation notice: {gif_res.stderr}")
 
-    return {
-        "mp4": mp4_path,
-        "webm": webm_path,
-        "gif": gif_path if gif_path.exists() else None,
-    }
+    return results
 
 
 def copy_to_conversation_artifacts(generated_files: dict[str, Path], screenshots_dir: Path) -> None:
-    """Copies generated demo media to Antigravity conversation artifact directory."""
-    try:
-        CONVERSATION_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
-        for key, path in generated_files.items():
-            if path and path.exists():
-                dest = CONVERSATION_ARTIFACTS_DIR / path.name
-                shutil.copy2(path, dest)
-                print(f"  ✔ Synced to conversation artifact: {dest}")
+    """Copies generated demo media to Antigravity conversation artifact directories."""
+    sync_dirs = [
+        CONVERSATION_ARTIFACTS_DIR,
+        Path("/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a"),
+        Path("/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a/demo_video"),
+        Path("/config/.gemini/antigravity/brain/6da2d69c-eedf-49e0-a6a7-b5d64040c869"),
+        Path("/config/.gemini/antigravity/brain/6da2d69c-eedf-49e0-a6a7-b5d64040c869/demo_video"),
+    ]
+    seen_dirs = set()
+    for target_dir in sync_dirs:
+        try:
+            resolved = target_dir.resolve()
+            if resolved in seen_dirs:
+                continue
+            seen_dirs.add(resolved)
+            target_dir.mkdir(parents=True, exist_ok=True)
+            for key, path in generated_files.items():
+                if path and path.exists():
+                    dest = target_dir / path.name
+                    shutil.copy2(path, dest)
 
-        # Sync screenshots
-        dest_screenshots = CONVERSATION_ARTIFACTS_DIR / "screenshots"
-        dest_screenshots.mkdir(parents=True, exist_ok=True)
-        for img in screenshots_dir.glob("*.png"):
-            shutil.copy2(img, dest_screenshots / img.name)
-        print("  ✔ Synced demo screenshots to conversation artifacts.")
-    except Exception as e:
-        print(f"  [Notice] Could not copy to conversation artifacts: {e}")
+            # Sync screenshots
+            dest_screenshots = target_dir / "screenshots"
+            dest_screenshots.mkdir(parents=True, exist_ok=True)
+            for img in screenshots_dir.glob("*.png"):
+                shutil.copy2(img, dest_screenshots / img.name)
+            print(f"  ✔ Synced demo media to: {target_dir}")
+        except Exception as e:
+            print(f"  [Notice] Could not copy to {target_dir}: {e}")
 
 
 def main():
@@ -665,6 +708,12 @@ def main():
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="Port to run/connect to (default: 8081)")
     parser.add_argument("--host", default="127.0.0.1", help="Host to run/connect to (default: 127.0.0.1)")
     parser.add_argument("--pace", choices=["cinematic", "normal", "fast"], default="cinematic", help="Pacing mode")
+    parser.add_argument(
+        "--format",
+        choices=["all", "mp4", "webm", "gif"],
+        default="all",
+        help="Target media formats: all, mp4, webm, or gif (default: all)",
+    )
     parser.add_argument("--output-dir", default=str(OUTPUT_DIR), help="Output directory for generated media")
     parser.add_argument("--keep-server", action="store_true", help="Keep the server running after video completion")
 
@@ -689,7 +738,7 @@ def main():
         raw_video_path = recorder.record_journey()
 
         # Step 3: Transcode to MP4, WebM, and GIF
-        generated = transcode_video(raw_video_path, out_dir)
+        generated = transcode_video(raw_video_path, out_dir, formats=args.format)
 
         # Step 4: Sync to Conversation Artifacts
         copy_to_conversation_artifacts(generated, recorder.screenshots_dir)
