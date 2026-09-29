@@ -1,0 +1,18 @@
+{
+  "name": "Kandezhuthu AI - Kerala Property Legal Audit",
+  "short_name": "Kandezhuthu",
+  "description": "Kerala property title diligence, deed red-flag scanner, BhuNaksha cadastral survey, and SRO Encumbrance Certificate auditor.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1b13",
+  "theme_color": "#1b4d3e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌴</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
