@@ -119,6 +119,11 @@ async def _json_errors(request: Request, exc: Exception):
     )
 
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok", "app": "kandezhuthu", "mode": "local" if LOCAL_MODE else "cloud"}
+
+
 @app.get("/api/config")
 async def get_config():
     return {
