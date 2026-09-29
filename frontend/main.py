@@ -1261,6 +1261,7 @@ async def get_dev_version():
 
 # Mount static assets
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+app.mount("/static", StaticFiles(directory=static_dir), name="static_dir")
 app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
 
