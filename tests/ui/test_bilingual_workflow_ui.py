@@ -152,13 +152,16 @@ def run_bilingual_workflow_test():
             print("  ✓ Category tabs filtered chips reactively.")
         else:
             print("  ✓ Category tabs cleanly hidden in favor of 4-step progressive disclosure workflow.")
+        # Return to step 1 for subsequent chip interaction
+        wf_step1.click()
+        page.wait_for_timeout(200)
         results.append("Step 4: Category Tabs Filtering - PASSED")
 
         # -------------------------------------------------------------
         # STEP 5: Quick Inquiry Chips Interaction
         # -------------------------------------------------------------
         print("\n[Step 5] Testing Quick Inquiry Chip Interaction...")
-        chips = page.locator(".chips-bar .chip")
+        chips = page.locator(".chips-bar .chip:visible")
         if chips.count() > 0:
             first_chip = chips.first
             chip_text = first_chip.text_content().strip()
