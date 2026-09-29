@@ -328,7 +328,7 @@
     color: #fff;
   }
   .copy-btn:hover { background: #16a34a; }
-  .copy-btn.copied { background: #0f766e; }
+  .copy-btn.copied { background: #16a34a !important; color: #ffffff !important; }
   
   .wa-direct-btn {
     background: #25d366;
@@ -3349,10 +3349,16 @@ function copyText(btn, text) {
   }
   const doFeedback = () => {
     const originalText = btn.innerHTML;
-    btn.innerHTML = "✅ Copied!";
+    const originalBg = btn.style.backgroundColor;
+    const originalColor = btn.style.color;
+    btn.innerHTML = "✓ Copied!";
+    btn.style.backgroundColor = "#16a34a";
+    btn.style.color = "#ffffff";
     btn.classList.add("copied");
     setTimeout(() => {
       btn.innerHTML = originalText;
+      btn.style.backgroundColor = originalBg;
+      btn.style.color = originalColor;
       btn.classList.remove("copied");
     }, 2000);
   };
@@ -3780,7 +3786,7 @@ function renderDeedAuditCard(container, data, fileName) {
         <div class="buyer-verdict-text">
           ${currentLanguage === 'ml'
             ? 'രേഖകളിൽ പ്രകടമായ കുരുക്കുകൾ ഇല്ല. എങ്കിലും സർവേ കല്ലുകൾ നേരിട്ട് അളന്നു ബോധ്യപ്പെടുകയും വക്കീൽ പരിശോധന പൂർത്തിയാക്കുകയും ചെയ്യുക.'
-            : 'No fatal traps detected in document recitals. Verify physical boundary stones (Survey Kallu) on site and complete advocate scrutiny.'}
+            : 'No fatal traps detected in document recitals. Verify physical boundary stones on site and complete advocate scrutiny.'}
         </div>
       </div>
     `;
@@ -3971,7 +3977,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             ${node.stamp_duty_paid ? `<span style="background:#f1f5f9; color:#475569; padding:1px 6px; border-radius:4px; font-size:0.7rem;">📜 Stamp Duty: ${node.stamp_duty_paid}</span>` : ''}
           </div>
           ${node.financial_note ? `<div style="color:#334155; margin-top:3px; font-size:0.73rem;">ℹ️ ${node.financial_note}</div>` : ''}
-          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#64748b; font-size:0.7rem; margin-top:2px;">🏛️ <strong>Kerala Govt Fair Value (ന്യായവില Sec 28A):</strong> ${node.govt_fair_value}</div>` : ''}
+          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#64748b; font-size:0.7rem; margin-top:2px;">🏛️ <strong>Kerala Govt Fair Value ${currentLanguage === 'ml' ? '(ന്യായവില Sec 28A)' : '(Sec 28A)'}:</strong> ${node.govt_fair_value}</div>` : ''}
         </div>
       `;
     }
@@ -4171,7 +4177,7 @@ function setWorkflowStep(stepNum) {
 
 async function exportDossierPDF(preset = 'aluva_broken') {
   try {
-    const res = await fetch(`/api/timeline_demo?preset=${preset}`);
+    const res = await fetch(`/api/timeline_demo?preset=${preset}&lang=${currentLanguage}`);
     if (!res.ok) throw new Error("Could not fetch audit data");
     const data = await res.json();
     const pdfRes = await fetch('/api/export_dossier', {
@@ -4373,7 +4379,7 @@ form.addEventListener("submit", async (e) => {
       </div>
     `);
 
-    fetch(`/api/timeline_demo?preset=${preset}`)
+    fetch(`/api/timeline_demo?preset=${preset}&lang=${currentLanguage}`)
       .then(res => res.json())
       .then(data => {
         renderOwnershipTimeline(timelineBubble, data, preset);
@@ -5128,7 +5134,7 @@ function executeGenerateExtentPlot() {
       </div>
       <div style="font-size:0.83rem; color:#064e3b; margin-top:4px;">
         Placed exact ${cents} Cents (${(cents * 40.4686).toFixed(1)} m²) plot footprint with aspect ratio <strong>${ratio}</strong>.<br>
-        Each corner stone (${currentLanguage === 'ml' ? '<em>സർവേ കല്ല്</em>' : 'Survey Stone'}) can now be dragged on the satellite map to align with physical fences or trees.
+        Each corner stone${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ല്</em>)' : ''} can now be dragged on the satellite map to align with physical fences or trees.
       </div>
     </div>
   `);
@@ -5494,6 +5500,7 @@ function calculateDistance(p1, p2) {
   return R * c;
 }
 
+const sendToAuditor = (...args) => sendPlotToAuditor(...args);
 function sendPlotToAuditor() {
   const coords = document.getElementById("hud-coords").textContent;
   const locality = document.getElementById("hud-locality-title").textContent.replace("📍 ", "");
@@ -5513,8 +5520,9 @@ function sendPlotToAuditor() {
     }
   }
 
+  const isMl = currentLanguage === "ml";
   let promptText = "";
-  if (currentLanguage === "ml") {
+  if (isMl) {
     promptText = `${locality} പ്രദേശത്തുള്ള വസ്തു പരിശോധിക്കുകയാണ് (ജിപിഎസ് അക്ഷാംശ രേഖാംശങ്ങൾ: ${coords}). ` +
       `ഉപഗ്രഹ മാപ്പിൽ നിന്ന് ലഭിച്ച ഏകദേശ വിസ്തീർണ്ണം: ${cents}. ` +
       `വഴിയുടെ വീതി: ${roadM} (${roadBadge}). ` +
@@ -5522,12 +5530,13 @@ function sendPlotToAuditor() {
       `ഇതിനെ കേരള പഞ്ചായത്ത് കെട്ടിട നിർമ്മാണ ചട്ടങ്ങൾ (KPBR 2019) പ്രകാരമുള്ള വഴി വീതി, സെറ്റ്ബാക്ക്, ` +
       `പ്രളയസാധ്യത (KSDMA & 2018 വെള്ളപ്പൊക്ക മേഖല) എന്നിവയുമായി ഒത്തുനോക്കി അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപായി സർവേ കല്ല്, നിലം തരംമാറ്റൽ എന്നിവയിൽ എന്തൊക്കെ ശ്രദ്ധിക്കണമെന്ന് വിശദീകരിക്കുക.`;
   } else {
-    promptText = `I am inspecting a property plot in ${locality} (Coordinates: ${coords}). ` +
-      `Estimated extent from satellite plot: ${cents}. ` +
-      `Access road width measured: ${roadM} (${roadBadge}). ` +
+    promptText = `Auditing property in ${locality} (GPS Coordinates: ${coords}). ` +
+      `Demarcated Extent from Satellite Map: ${cents}. ` +
+      `Access Road Width: ${roadM} (${roadBadge}). ` +
       elevInfo +
-      `Please audit this against Kerala Panchayat Building Rules (KPBR 2019) road width requirements, setbacks, ` +
-      `flood vulnerability (KSDMA & 2018 flood zone), and tell me what physical boundary corner stones and wetland conversion checks I must perform before paying token advance.`;
+      `Please cross-verify against Kerala Panchayat Building Rules (KPBR 2019) access road width and setback requirements, ` +
+      `flood exposure (KSDMA & 2018 flood zone), and explain what physical verifications (such as Survey Stones / FMB boundary verification and Paddy Land / Wetland status) ` +
+      `must be completed before handing over any advance money.`;
   }
 
   if (currentViewMode === "map") {
@@ -5614,7 +5623,7 @@ async function fetchCadastralOverlay() {
           <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
         </div>
         <div style="margin-top:8px; font-size:0.78rem; color:#78350f; background:#fef3c7; padding:6px 10px; border-radius:6px;">
-          ⚠️ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones (${currentLanguage === 'ml' ? '<em>സർവേ കല്ലുകൾ</em>' : 'Survey Stones'}) against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
+          ⚠️ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ലുകൾ</em>)' : ''} against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
         </div>
       </div>
     `);

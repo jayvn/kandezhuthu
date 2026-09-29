@@ -5,8 +5,10 @@ Supports both:
 2. Cloud Deployed Mode: When AGENT_ENGINE_RESOURCE_NAME is set, proxies to Agent Engine via A2A protocol.
 """
 
+import copy
 import json
 import os
+import re
 import sys
 import time
 import uuid
@@ -681,8 +683,11 @@ async def get_sample_deed(
         result = engine.process_file_bytes(target_path.read_bytes(), "application/pdf", session_id=session_id)
         out_data = result.model_dump()
         out_data["file_name"] = target_filename
-        if lang == "en" and out_data.get("whatsapp_draft_en"):
-            out_data["whatsapp_draft"] = out_data["whatsapp_draft_en"]
+        if lang == "en":
+            if out_data.get("whatsapp_draft_en"):
+                out_data["whatsapp_draft"] = out_data["whatsapp_draft_en"]
+            if out_data.get("whatsapp_inquiry_en"):
+                out_data["whatsapp_inquiry"] = out_data["whatsapp_inquiry_en"]
         return JSONResponse(out_data)
 
     return FileResponse(
@@ -1086,9 +1091,37 @@ async def get_timeline_demo(preset: str = "aluva_broken", lang: str = "en"):
         }
     }
 
-    preset_data = presets.get(preset) or presets["aluva_broken"]
+    preset_data = copy.deepcopy(presets.get(preset) or presets["aluva_broken"])
     if lang == "en":
-        preset_data["whatsapp_inquiry"] = preset_data.get("whatsapp_inquiry_en", preset_data.get("whatsapp_inquiry", ""))
+        if "whatsapp_inquiry_en" in preset_data:
+            preset_data["whatsapp_inquiry"] = preset_data["whatsapp_inquiry_en"]
+
+        deed_map = {
+            "പട്ടയം": "Land Assignment",
+            "ഭാഗപത്രം": "Partition Deed",
+            "തീറാധാരം": "Sale Deed",
+            "ബാങ്ക് ബാധ്യത (EC)": "Bank Mortgage (EC)",
+            "ഡാറ്റാ ബാങ്ക് എൻട്രി": "Agricultural Data Bank Entry",
+            "ബാധ്യതാ സർട്ടിഫിക്കറ്റ് (EC)": "Encumbrance Certificate",
+        }
+
+        for node in preset_data.get("nodes", []):
+            if "deed_malayalam" in node:
+                node["deed_malayalam"] = deed_map.get(node["deed_malayalam"], node["deed_malayalam"])
+                if re.search(r"[\u0d00-\u0d7f]", str(node["deed_malayalam"])):
+                    node["deed_malayalam"] = node.get("deed_type", "Deed")
+            for flag in node.get("flags", []):
+                if "desc" in flag and isinstance(flag["desc"], str):
+                    flag["desc"] = flag["desc"].replace("(ഒഴിവുമുറി)", "registered release deed")
+            if "consideration_display" in node and isinstance(node["consideration_display"], str):
+                node["consideration_display"] = node["consideration_display"].replace("(പ്രതിഫല തുക)", "(Consideration Amount)")
+            if "notes" in node and isinstance(node["notes"], str):
+                node["notes"] = node["notes"].replace("(നിലം / Nanja)", "(Wetland / Agricultural Paddy Land)")
+
+        for item in preset_data.get("checklist", []):
+            if "item" in item and isinstance(item["item"], str):
+                item["item"] = item["item"].replace("Survey Stones (സർവേ കല്ലുകൾ)", "Survey Stones").replace("(സർവേ കല്ലുകൾ)", "Survey Stones")
+
     return JSONResponse(preset_data)
 
 
