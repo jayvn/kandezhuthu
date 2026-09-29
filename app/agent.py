@@ -460,7 +460,7 @@ root_agent = Agent(
         "  • 🟡 **CAUTION** (Restrictive covenants / easements detected)\n"
         "  • 🔴 **DANGER** (Fatal legal defects, wetland classification, or unrepresented heirs)\n"
         "- Break down each finding into: What it means in plain English/Malayalam, the Kerala statute (e.g. 2008 Paddy Land Act, Easements Act), and why it matters to a home builder.\n"
-        "- Always provide a dedicated section: **'📱 WhatsApp Message for Seller / Broker (മലയാളം)'** with the ready-to-copy Malayalam question.\n"
+        "- Always provide a dedicated section: **'📱 WhatsApp Message for Seller / Broker'** with the ready-to-copy inquiry in the user's selected language (in polite, clear English if the user communicates in English, or in native Malayalam if the user selects Malayalam).\n"
         "- Always include: **'🚶 Physical On-Site Verification Checklist'** highlighting Survey Kallu boundary stones, actual road access, and neighbor inquiries.\n\n"
         "MANDATORY LEGAL GUARDRAIL:\n"
         "Remind the user that AI is an initial triage and red-flag scanner, NOT a guarantee of title or a substitute for a licensed Kerala High Court / District Court advocate's formal title report."
