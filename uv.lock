@@ -1711,10 +1711,13 @@ lint = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "codespell" },
     { name = "nest-asyncio" },
     { name = "playwright" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
+    { name = "ruff" },
+    { name = "ty" },
 ]
 
 [package.metadata]
@@ -1741,10 +1744,13 @@ provides-extras = ["eval", "lint"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "codespell", specifier = ">=2.2.0,<3.0.0" },
     { name = "nest-asyncio", specifier = ">=1.6.0,<2.0.0" },
     { name = "playwright", specifier = ">=1.63.0" },
     { name = "pytest", specifier = ">=9.0.2,<10.0.0" },
     { name = "pytest-asyncio", specifier = ">=1.0.0,<2.0.0" },
+    { name = "ruff", specifier = ">=0.4.6,<1.0.0" },
+    { name = "ty", specifier = ">=0.0.1a0" },
 ]
 
 [[package]]
