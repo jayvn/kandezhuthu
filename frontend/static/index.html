@@ -2460,7 +2460,7 @@ let currentLanguage = localStorage.getItem("kandezhuthu_lang") || "en";
 
 const TRANSLATIONS = {
   en: {
-    brandTitle: "Kandezhuthu AI (കണ്ടെഴുത്ത്)",
+    brandTitle: "Kandezhuthu AI",
     brandSubtitle: "Kerala Property Legal Title & Satellite Diligence",
     badgeKerala: "🌴 Kerala Real Estate Guardrail",
     viewChat: "💬 Chat",
@@ -2472,7 +2472,7 @@ const TRANSLATIONS = {
     btnTimeline: "📜 Ownership Timeline",
     btnPdf: "🖨️ Export PDF",
     dropOverlayTitle: "Drop Scanned Kerala Deed or EC Here",
-    dropOverlaySubtitle: "Directly ingests Malayalam/English deed text using Google Cloud Document AI & Gemini 3.8 Flash Multimodal Vision",
+    dropOverlaySubtitle: "Directly ingests Malayalam/English deed text using Google Cloud Document AI & Gemini Multimodal Vision",
     tabLineage: "📜 Ownership & Lineage",
     tabStatutory: "⚖️ Statutory Traps",
     tabKpbr: "📐 KPBR Building Rules",
@@ -2488,15 +2488,15 @@ const TRANSLATIONS = {
       sec45a: "⚖️ Sec 45A Undervaluation & Deficit Stamp",
       maryRoy: "👩 Mary Roy Excluded Heirs",
       ecMortgage: "🏦 Undischarged Bank Mortgage (EC)",
-      pathway: "🔍 Pathway / Vazhi Avakasham",
-      wetland: "🌾 Nilam / Wetland 2008 Risk",
+      pathway: "🔍 Pathway & Easement Encumbrances",
+      wetland: "🌾 Paddy Land & Wetland 2008 Risk",
       kpbr: "📐 Residential Road Width (3m vs 5m)",
       form6: "📑 Form 6 / 27A Fee Slabs",
-      surveyKallu: "📍 Survey Kallu (Boundary Stones)",
+      surveyKallu: "📍 Survey Boundary Stones",
       measureRoad: "📏 Measure Road Width on Map",
     },
     chipPrompts: {
-      fair_value: "Is historical purchase price a public record in Kerala? How much did the seller buy it for across prior deeds, and how does it compare to Government Notified Fair Value (ന്യായവില)?",
+      fair_value: "Is historical purchase price a public record in Kerala? How much did the seller buy it for across prior deeds, and how does it compare to Government Notified Fair Value?",
       sec45a: "Explain Kerala Stamp Act Section 45A undervaluation risk: What happens if seller requests registering at a lower consideration than market price?",
       mary_roy: "Audit this partition deed under Mary Roy precedent: Ancestral Syrian Christian land partitioned in 1994 among sons only, excluding sister without registered release deed.",
       ec_mortgage: "Check EC entry: SRO Encumbrance Certificate shows equitable mortgage registered in 2022 with Federal Bank, but seller has no Gehan release deed.",
@@ -2504,25 +2504,28 @@ const TRANSLATIONS = {
       wetland: "Check this for wetland trap: The property is 12 cents classified as Nilam in prior deed 142/1998, with unregularized dry status.",
       kpbr: "Under Kerala Panchayat Building Rules (KPBR 2019), what is the minimum road access width required to get a residential building permit?",
       form6: "How does the Kerala Conservation of Paddy Land Act Section 27A work? What is the fee slab for Form 6 and who gets the 25-cent free exemption?",
-      survey_kallu: "What physical checks must I perform on the ground regarding Survey Kallu, boundaries, and road access before paying an advance?",
+      survey_kallu: "What physical checks must I perform on the ground regarding survey boundary stones, boundaries, and road access before paying an advance?",
       advance_docs: "What documents should I ask the seller for before paying token advance for land in Kerala?",
     },
     dropzoneTag: "Cloud Document AI & Multimodal Vision",
-    dropzoneTitle: "Drag & Drop Kerala Title Deed (*ആധാരം*) or Encumbrance Certificate (*കുടിക്കടം*)",
-    dropzoneDesc: "Directly extracts 4 boundaries (ചതുരതിരുകൾ), survey numbers, prior deeds (മുന്നാധാരം) & audits 4 fatal statutory traps",
-    dropzonePillLang: "മലയാളം & English",
+    dropzoneTitle: "Drag & Drop Kerala Title Deed or Encumbrance Certificate (EC)",
+    dropzoneDesc: "Directly extracts 4 boundaries, survey numbers, prior deeds & audits 4 fatal statutory traps",
+    dropzoneModelTag: "Instant 1-Click Verification",
+    dropzonePillLang: "English & Malayalam OCR",
     dropzonePillPhotos: "Camera Photos (JPG/PNG)",
+    dropzoneMinimize: "− Minimize",
+    dropzoneExpand: "+ Ingest Document",
     cardDeedBadge: "3 Traps Hidden",
-    cardDeedTitle: "Test Real Sale Deed (തീറാധാരം)",
-    cardDeedDesc: "See how AI detects hidden pathway rights (*നടപ്പുവഴി*), Paddy Land (*നിലം*), and senior citizen maintenance conditions.",
+    cardDeedTitle: "Test Real Sale Deed",
+    cardDeedDesc: "See how AI detects hidden pathway easements, Paddy Land (Wetland), and senior citizen maintenance conditions.",
     cardDeedCta: "▶ Test Sale Deed PDF →",
     cardEcBadge: "₹45L Bank Loan",
-    cardEcTitle: "Test 30-Yr Bank EC (കുടിക്കടം)",
-    cardEcDesc: "See how we catch undisclosed bank mortgages and missing release deeds (*ഒഴിവുമുറി*) before your advance gets trapped.",
+    cardEcTitle: "Test 30-Yr Bank EC",
+    cardEcDesc: "See how we catch undisclosed bank mortgages and missing release deeds before your advance gets trapped.",
     cardEcCta: "▶ Test SRO EC PDF →",
     cardUploadBadge: "PDF / Photo",
     cardUploadTitle: "Check My Own Deed / Photo",
-    cardUploadDesc: "Upload a PDF or snap a photo of any Malayalam/English Kerala deed, partition paper, or agreement.",
+    cardUploadDesc: "Upload a PDF or snap a photo of any Kerala sale deed, partition paper, or agreement.",
     cardUploadCta: "📂 Browse or Drop File →",
     btnBrowse: "📁 Browse Files",
     btnSampleDeed: "✨ Ingest Sale Deed (PDF)",
@@ -2537,7 +2540,7 @@ const TRANSLATIONS = {
     btnAutoDemarcate: "✨ Auto-Demarcate",
     btnBhunaksha: "🏛️ BhuNaksha FMB",
     btnDatabank: "🌾 Data Bank",
-    welcomeTitle: "നമസ്കാരം! Welcome to Kandezhuthu AI (കണ്ടെഴുത്ത് - ആധാരംനോക്കി).",
+    welcomeTitle: "Welcome to Kandezhuthu AI - Kerala Property Legal Audit",
     welcomeP1: "Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong>",
     welcomeP2: "Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:",
     inputPlaceholder: "Paste deed excerpt, ask questions, or click 📎 to upload a scanned deed...",
@@ -2555,14 +2558,33 @@ const TRANSLATIONS = {
     guidancePlot: "Click on map to place plot boundary corner stones (min 3 corners). Click 'Seal Plot' or starting stone to finish.",
     guidanceRoad: "Click 2 points across the access road to measure width under Kerala Panchayat Building Rules (KPBR 2019).",
     guidanceSeal: "✅ Seal Plot",
+    btnGuidanceAutoDemarcate: "✨ Auto-Demarcate at Pin",
     hudLiveTag: "Live Plot HUD",
     hudCoords: "Coordinates",
+    hudExtentLabel: "Plot Extent",
+    hudCentsLabel: "ℹ️ Kerala Cents",
     hudArea: "Area (Revenue Ares & Sq.M)",
     hudRoad: "Road Width (KPBR 2019)",
+    hudElevationLabel: "Elevation & Flood Exposure",
+    hudMslLabel: "⛰️ MSL",
+    hudCentsUnit: "Cents",
+    hudAresUnit: "Ares",
+    hudSqMUnit: "m²",
+    hudMetersUnit: "meters",
+    hudMslUnit: "m MSL",
+    hudRoadPass: "✅ KPBR Pass (≥3m)",
+    hudRoadWarn: "⚠️ Small Plot Only",
+    hudRoadFail: "❌ Defective Access",
+    hudElevationRiskLow: "🟢 Low Flood Risk",
+    hudElevationRiskMod: "🟡 Moderate Flood Risk",
+    hudElevationRiskHigh: "🔴 High Flood Risk",
+    hudElevationRiskCrit: "🚨 Critical Sub-MSL Trap",
+    hudBasinPlinth: "Plinth:",
     btnHudSend: "📋 Send to Auditor",
     btnHudExport: "📑 Export Dossier (PDF)",
+    btnOpenGmaps: "🌍 Maps",
     chkPanelTitle: "🚩 On-Site Field Check Essentials",
-    chkKallu: "<strong>Survey Kallu:</strong> Verify all 4 corner stones physically intact on ground.",
+    chkKallu: "<strong>Survey Boundary Stones:</strong> Verify all 4 corner stones physically intact on ground.",
     chkRoad: "<strong>Road Access:</strong> Min 3.0m motorable road width for KPBR building permit.",
     chkWetland: "<strong>Wetland Proximity:</strong> Spot paddy fields/canals via satellite layer.",
     chkHt: "<strong>Overhead Lines:</strong> Verify no HT electricity lines cross over the plot.",
@@ -2570,9 +2592,29 @@ const TRANSLATIONS = {
     chkHint: "Tick items as you verify them on-site with your surveyor.",
     disclaimer: "⚠️ <strong>Statutory Disclaimer:</strong> Kandezhuthu AI is an investigatory triage tool, not a legal title insurer. Satellite measurements and deed scans are preliminary; always conduct on-ground survey with licensed surveyors and consult a Kerala High Court advocate before parting with earnest money.",
     typingAnalysis: "Analyzing property documents, prior title lineage, and Kerala statutes...",
+    presets: {
+      default: "📍 Select Kerala Region...",
+      aluva: "Aluva (Periyar River Basin - 2018 Flood Zone)",
+      kakkanad: "Kakkanad / Infopark (Elevated Midlands)",
+      kuttanad: "Kuttanad (Sub-Sea-Level Wetland Polders)",
+      chengannur: "Chengannur (Pamba River Flood Corridor)",
+      angamaly: "Angamaly (Paddy & Agricultural Zone)",
+      kaloor: "Kaloor / Kochi (High Density Coastal)",
+      thrissur: "Thrissur (Swaraj Round & Kole Wetlands)",
+      kottayam: "Kottayam (Meenachil Wetland Valley)",
+      kozhikode: "Kozhikode (Coastal City)",
+      trivandrum: "Thiruvananthapuram (Kazhakkoottam)"
+    },
+    layers: {
+      "google-hybrid": "🛰️ Google Satellite Hybrid",
+      "google-satellite": "🛰️ Google Satellite Only",
+      "google-roads": "🗺️ Google Roadmap",
+      "google-terrain": "⛰️ Google Terrain",
+      "osm": "🗺️ OpenStreetMap"
+    }
   },
   ml: {
-    brandTitle: "കണ്ടെഴുത്ത് AI (ആധാരംനോക്കി)",
+    brandTitle: "കണ്ടെഴുത്ത് AI",
     brandSubtitle: "കേരള ഭൂമി ആധാര പരിശോധനയും ഉപഗ്രഹ നിരീക്ഷണവും",
     badgeKerala: "🌴 കേരള ഭൂമി നിയമ സുരക്ഷ",
     viewChat: "💬 ചാറ്റ്",
@@ -2583,23 +2625,23 @@ const TRANSLATIONS = {
     wf3: "⚖️ നടപടിയും വാട്സാപ്പ് ചോദ്യങ്ങളും",
     btnTimeline: "📜 മുന്നാധാര ടൈംലൈൻ",
     btnPdf: "🖨️ PDF എക്സ്പോർട്ട്",
-    dropOverlayTitle: "ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ (EC) ഇവിടെ ഇടുക",
-    dropOverlaySubtitle: "ഗൂഗിൾ ക്ലൗഡ് ഡോക്യുമെന്റ് AI & ജെമിനി 3.8 ഫ്ലാഷ് വിഷൻ വഴി മലയാളം ആധാരങ്ങൾ നേരിട്ട് വായിക്കുന്നു",
+    dropOverlayTitle: "ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ ഇവിടെ നൽകുക",
+    dropOverlaySubtitle: "ക്ലൗഡ് ഡോക്യുമെന്റ് AI & മൾട്ടിമോഡൽ വിഷൻ വഴി ആധാരങ്ങൾ നേരിട്ട് വായിക്കുന്നു",
     tabLineage: "📜 ഉടമസ്ഥാവകാശവും മുന്നാധാരവും",
     tabStatutory: "⚖️ നിയമപരമായ ചതിക്കുഴികൾ",
     tabKpbr: "📐 KPBR കെട്ടിട നിർമ്മാണ ചട്ടങ്ങൾ",
     tabField: "🚶 സ്ഥല പരിശോധന (ഓൺ-സൈറ്റ്)",
     tabAll: "✨ എല്ലാം കാണിക്കുക",
     chips: {
-      timelineAluva: "📜 ടൈംലൈൻ: ആലുവ 30 വർഷം (3 കുഴപ്പങ്ങൾ)",
+      timelineAluva: "📜 ടൈംലൈൻ: ആലുവ 30 വർഷം (3 കുരുക്കുകൾ)",
       timelineKakkanad: "🌾 ടൈംലൈൻ: കാക്കനാട് നിലവും മൈനർ ഷെയറും",
       timelineClean: "🟢 ടൈംലൈൻ: കുറ്റമറ്റ ആധാരം (39 വർഷം)",
-      fairValue: "💰 പഴയ വാങ്ങൽ വിലയും ന്യായവിലയും (Fair Value)",
+      fairValue: "💰 പഴയ വാങ്ങൽ വിലയും ന്യായവിലയും",
       sampleDeed: "📄 മാതൃകാ ആധാരം സ്കാൻ ചെയ്യുക (ആലുവ 1420/2014)",
       uploadDeed: "📎 ആധാരം അപ്‌ലോഡ് ചെയ്യുക",
       sec45a: "⚖️ സെക്ഷൻ 45A അണ്ടർവാല്യുവേഷൻ & മുദ്രവില",
       maryRoy: "👩 മേരി റോയ് വിധി: പെൺമക്കളുടെ അവകാശം",
-      ecMortgage: "🏦 ബാങ്ക് ബാധ്യത (കുടിക്കടം / മോർട്ട്ഗേജ്)",
+      ecMortgage: "🏦 ബാങ്ക് ബാധ്യത (കുടിക്കടം)",
       pathway: "🔍 വഴിയവകാശം / നടപ്പുവഴി ബാധ്യതകൾ",
       wetland: "🌾 2008 നെൽവയൽ-തണ്ണീർത്തട നിയമം (നിലം/പുരയിടം)",
       kpbr: "📐 വീടുപണിക്ക് വേണ്ട വഴി വീതി (3 മീറ്റർ / 5 മീറ്റർ)",
@@ -2608,10 +2650,10 @@ const TRANSLATIONS = {
       measureRoad: "📏 വഴി വീതി മാപ്പിൽ അളക്കുക",
     },
     chipPrompts: {
-      fair_value: "കേരളത്തിൽ മുൻ ആധാരങ്ങളിലെ വില പൊതുരേഖയാണോ? വിൽപ്പനക്കാരൻ മുൻപ് എത്ര രൂപയ്ക്കാണ് ഇത് വാങ്ങിയത്, ഇപ്പോഴത്തെ സർക്കാർ ന്യായവിലയുമായി (Fair Value) ഇത് എങ്ങനെ ഒത്തുപോകുന്നു എന്ന് വിശദീകരിക്കാമോ?",
-      sec45a: "കേരള മുദ്രപ്പത്ര നിയമം സെക്ഷൻ 45A പ്രകാരമുള്ള അണ്ടർവാല്യുവേഷൻ (Undervaluation) പ്രശ്നം എന്താണ്? യഥാർത്ഥ വിലയേക്കാൾ കുറഞ്ഞ തുകയ്ക്ക് ആധാരം രജിസ്റ്റർ ചെയ്താൽ വാങ്ങുന്നയാൾക്ക് എന്ത് ബാധ്യത വരും?",
+      fair_value: "കേരളത്തിൽ മുൻ ആധാരങ്ങളിലെ വില പൊതുരേഖയാണോ? വിൽപ്പനക്കാരൻ മുൻപ് എത്ര രൂപയ്ക്കാണ് ഇത് വാങ്ങിയത്, ഇപ്പോഴത്തെ സർക്കാർ ന്യായവിലയുമായി ഇത് എങ്ങനെ ഒത്തുപോകുന്നു എന്ന് വിശദീകരിക്കാമോ?",
+      sec45a: "കേരള മുദ്രപ്പത്ര നിയമം സെക്ഷൻ 45A പ്രകാരമുള്ള കുറഞ്ഞ വില കാണിക്കൽ (അണ്ടർവാല്യുവേഷൻ) പ്രശ്നം എന്താണ്? യഥാർത്ഥ വിലയേക്കാൾ കുറഞ്ഞ തുകയ്ക്ക് ആധാരം രജിസ്റ്റർ ചെയ്താൽ വാങ്ങുന്നയാൾക്ക് എന്ത് ബാധ്യത വരും?",
       mary_roy: "മേരി റോയ് സുപ്രീം കോടതി വിധി പ്രകാരം ഈ ഭാഗപത്രം പരിശോധിക്കുക: 1994-ൽ ക്രിസ്ത്യൻ പിതൃസ്വത്ത് ആൺമക്കൾ മാത്രം വീതിച്ചെടുക്കുകയും സഹോദരിക്ക് ഒഴിമുറി നൽകാതിരിക്കുകയും ചെയ്താൽ ആധാരം സുരക്ഷിതമാണോ?",
-      ec_mortgage: "സബ് രജിസ്ട്രാർ ഓഫീസ് കുടിക്കട സർട്ടിഫിക്കറ്റിൽ (EC) 2022-ൽ ഫെഡറൽ ബാങ്കിൽ പണയപ്പെടുത്തിയതായി കാണുന്നു, എന്നാൽ ഗഹാൻ ഒഴിവ് ആധാരമില്ല. ഇതിന്റെ അപകടസാധ്യത എന്താണ്?",
+      ec_mortgage: "സബ് രജിസ്ട്രാർ ഓഫീസ് കുടിക്കട സർട്ടിഫിക്കറ്റിൽ 2022-ൽ ഫെഡറൽ ബാങ്കിൽ പണയപ്പെടുത്തിയതായി കാണുന്നു, എന്നാൽ ഗഹാൻ ഒഴിവ് ആധാരമില്ല. ഇതിന്റെ അപകടസാധ്യത എന്താണ്?",
       pathway: "ഈ ആധാര വ്യവസ്ഥ പരിശോധിക്കുക: തെക്കേ അതിർത്തിയിലൂടെ രണ്ടാം കക്ഷിക്ക് 2 മീറ്റർ വീതിയിൽ നടപ്പുവഴി അവകാശം നിലനിർത്തിയിരിക്കുന്നു. ഇത് വാങ്ങുന്നയാൾക്ക് തടസ്സമാകുമോ?",
       wetland: "ഈ വസ്തു 1998-ലെ മുന്നാധാരത്തിൽ 'നിലം' എന്നാണ് രേഖപ്പെടുത്തിയിരിക്കുന്നത്, നിലവിൽ കരഭൂമിയാക്കി മാറ്റിയിട്ടില്ല. 2008-ലെ നെൽവയൽ തണ്ണീർത്തട നിയമപ്രകാരം ഇതിന്റെ നിയമസാധുത എന്താണ്?",
       kpbr: "കേരള പഞ്ചായത്ത് കെട്ടിട നിർമ്മാണ ചട്ടങ്ങൾ (KPBR 2019) പ്രകാരം ഒരു വീട് വെയ്ക്കാൻ പെർമിറ്റ് ലഭിക്കുന്നതിന് മിനിമം എത്ര വീതിയുള്ള വഴി വേണം?",
@@ -2620,25 +2662,28 @@ const TRANSLATIONS = {
       advance_docs: "കേരളത്തിൽ സ്ഥലം വാങ്ങുമ്പോൾ ടോക്കൺ അഡ്വാൻസ് നൽകുന്നതിന് മുൻപ് വിൽപ്പനക്കാരനിൽ നിന്ന് എന്തൊക്കെ രേഖകളാണ് (ആധാരം, മുന്നാധാരം, കുടിക്കടം, ലൊക്കേഷൻ സ്കെച്ച്, നികുതി രസീത്) നിർബന്ധമായും വാങ്ങി പരിശോധിക്കേണ്ടത്?",
     },
     dropzoneTag: "ക്ലൗഡ് ഡോക്യുമെന്റ് AI & മൾട്ടിമോഡൽ വിഷൻ",
-    dropzoneTitle: "കേരള ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ (EC) ഇവിടെ വലിച്ചിടുക",
+    dropzoneTitle: "കേരള ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ ഇവിടെ നൽകുക",
     dropzoneDesc: "നാലതിരുകൾ, സർവേ നമ്പറുകൾ, മുന്നാധാര വിവരങ്ങൾ എന്നിവ നേരിട്ട് വേർതിരിച്ചെടുത്ത് 4 പ്രധാന നിയമപ്രശ്നങ്ങൾ കണ്ടെത്തുന്നു",
+    dropzoneModelTag: "തൽക്ഷണ പരിശോധന",
     dropzonePillLang: "മലയാളം & ഇംഗ്ലീഷ്",
-    dropzonePillPhotos: "ക്യാമറ ഫോട്ടോകൾ (JPG/PNG)",
+    dropzonePillPhotos: "ക്യാമറ ഫോട്ടോകൾ",
+    dropzoneMinimize: "− ചുരുക്കുക",
+    dropzoneExpand: "+ രേഖ നൽകുക",
     cardDeedBadge: "3 കുരുക്കുകൾ അടങ്ങിയത്",
     cardDeedTitle: "മാതൃകാ തീറാധാരം പരിശോധിക്കുക",
     cardDeedDesc: "നടപ്പുവഴി അവകാശം, നിലം/തണ്ണീർത്തട പ്രശ്നങ്ങൾ, മുതിർന്ന പൗര സംരക്ഷണ നിബന്ധനകൾ എന്നിവ കണ്ടെത്തുന്നത് കാണുക.",
-    cardDeedCta: "▶ തീറാധാരം PDF പരിശോധിക്കുക →",
+    cardDeedCta: "▶ മാതൃകാ ആധാരം പരിശോധിക്കുക →",
     cardEcBadge: "₹45 ലക്ഷം ബാങ്ക് വായ്പ",
-    cardEcTitle: "30 വർഷത്തെ ബാങ്ക് കുടിക്കടം (EC)",
-    cardEcDesc: "രഹസ്യമായി പണയം വെച്ച ബാങ്ക് ബാധ്യതകളും റിലീസ് ആധാരങ്ങളുടെ (ഒഴിവുമുറി) കുറവും കണ്ടെത്തുന്നത് കാണുക.",
-    cardCtaEc: "▶ SRO കുടിക്കടം PDF കാണുക →",
-    cardUploadBadge: "PDF / ഫോട്ടോ",
+    cardEcTitle: "30 വർഷത്തെ ബാങ്ക് കുടിക്കടം",
+    cardEcDesc: "രഹസ്യമായി പണയം വെച്ച ബാങ്ക് ബാധ്യതകളും റിലീസ് ആധാരങ്ങളുടെ കുറവും കണ്ടെത്തുന്നത് കാണുക.",
+    cardCtaEc: "▶ കുടിക്കട സർട്ടിഫിക്കറ്റ് കാണുക →",
+    cardUploadBadge: "ഫയൽ / ഫോട്ടോ",
     cardUploadTitle: "സ്വന്തം ആധാരം / ഫോട്ടോ പരിശോധിക്കുക",
-    cardDescUpload: "മലയാളത്തിലോ ഇംഗ്ലീഷിലോ ഉള്ള തീറാധാരം, ഭാഗപത്രം, കുടിക്കടം എന്നിവയുടെ ഫോട്ടോയോ PDF-ഓ അപ്‌ലോഡ് ചെയ്യുക.",
+    cardUploadDesc: "മലയാളത്തിലോ ഇംഗ്ലീഷിലോ ഉള്ള തീറാധാരം, ഭാഗപത്രം, കുടിക്കടം എന്നിവയുടെ ഫോട്ടോയോ രേഖയോ അപ്‌ലോഡ് ചെയ്യുക.",
     cardCtaUpload: "📂 ഫയൽ തിരഞ്ഞെടുക്കുക / ഡ്രോപ്പ് ചെയ്യുക →",
     btnBrowse: "📁 ഫയലുകൾ തിരഞ്ഞെടുക്കുക",
-    btnSampleDeed: "✨ മാതൃകാ തീറാധാരം (PDF)",
-    btnSampleEc: "📜 മാതൃകാ കുടിക്കടം (PDF)",
+    btnSampleDeed: "✨ മാതൃകാ തീറാധാരം",
+    btnSampleEc: "📜 മാതൃകാ കുടിക്കടം",
     btnDownloadDeed: "⬇️ ടെസ്റ്റ് ആധാരം ഡൗൺലോഡ് ചെയ്യുക",
     btnDownloadDeedText: "⬇️ ടെസ്റ്റ് ആധാരം ഡൗൺലോഡ് ചെയ്യുക",
     pwaOnline: "ഓൺലൈൻ മോഡ്",
@@ -2647,9 +2692,9 @@ const TRANSLATIONS = {
     quickPrompt2: "വീടുപണിക്ക് അനുമതി ലഭിക്കാൻ വഴിക്ക് എത്ര വീതി വേണം (KPBR ചട്ടങ്ങൾ)?",
     quickPrompt3: "2008-ലെ നെൽവയൽ ഡാറ്റാ ബാങ്കിൽ ഭൂമി 'നിലം' ആണോ എന്ന് എങ്ങനെ പരിശോധിക്കാം?",
     btnAutoDemarcate: "✨ അതിരുകൾ കണ്ടെത്തുക",
-    btnBhunaksha: "🏛️ ഭൂരേഖ FMB",
+    btnBhunaksha: "🏛️ ഭൂരേഖ മാപ്പ്",
     btnDatabank: "🌾 ഡാറ്റാ ബാങ്ക്",
-    welcomeTitle: "നമസ്കാരം! കണ്ടെഴുത്ത് AI (ആധാരംനോക്കി) ലേക്ക് സ്വാഗതം.",
+    welcomeTitle: "നമസ്കാരം! കണ്ടെഴുത്ത് AI ലേക്ക് സ്വാഗതം.",
     welcomeP1: "കേരളത്തിൽ ഭൂമിയോ വീടോ വാങ്ങുകയാണോ? <strong>രേഖകൾ കൃത്യമായി പരിശോധിച്ച് ബോധ്യപ്പെടാതെ വിൽപ്പനക്കാരനോ ബ്രോക്കർക്കോ ടോക്കൺ അഡ്വാൻസ് നൽകരുത്.</strong>",
     welcomeP2: "മുകളിൽ കാണുന്ന <strong>3 മാതൃകാ കാർഡുകളിൽ ഒന്നിൽ ക്ലിക്ക് ചെയ്ത്</strong> നിമിഷങ്ങൾക്കകം പരിശോധന നടത്താം, അല്ലെങ്കിൽ സംശയങ്ങൾ താഴെ ചോദിക്കാം:",
     inputPlaceholder: "ആധാരത്തിലെ വിവരങ്ങൾ നൽകുക, സംശയങ്ങൾ ചോദിക്കുക, അല്ലെങ്കിൽ 📎 ക്ലിക്ക് ചെയ്ത് ആധാരം അപ്‌ലോഡ് ചെയ്യുക...",
@@ -2664,24 +2709,63 @@ const TRANSLATIONS = {
     btnClear: "🗑️ മായ്ക്കുക",
     btnChecklist: "📋 ചെക്ക്‌ലിസ്റ്റ്",
     guidanceDefault: "സാറ്റലൈറ്റ് മാപ്പിൽ എവിടെയെങ്കിലും ക്ലിക്ക് ചെയ്ത് പരിശോധനാ പിൻ സ്ഥാപിച്ച് ജിപിഎസ് ലൊക്കേഷൻ കാണുക.",
-    guidancePlot: "സാറ്റലൈറ്റിൽ അതിർത്തിക്കല്ലുകൾ (സർവേ കല്ല്) അടയാളപ്പെടുത്തുക. കുറഞ്ഞത് 3 പോയിന്റുകൾ ആവശ്യമാണ്. 'പ്ലോട്ട് പൂർത്തിയാക്കുക' ക്ലിക്ക് ചെയ്യുക.",
+    guidancePlot: "സാറ്റലൈറ്റിൽ അതിർത്തിക്കല്ലുകൾ അടയാളപ്പെടുത്തുക. കുറഞ്ഞത് 3 പോയിന്റുകൾ ആവശ്യമാണ്. 'പ്ലോട്ട് പൂർത്തിയാക്കുക' ക്ലിക്ക് ചെയ്യുക.",
     guidanceRoad: "KPBR ചട്ടപ്രകാരം വഴി വീതി അറിയാൻ വഴിയുടെ ഇരുവശങ്ങളിലുമായി 2 പോയിന്റുകളിൽ ക്ലിക്ക് ചെയ്യുക.",
     guidanceSeal: "✅ പ്ലോട്ട് പൂർത്തിയാക്കുക",
-    hudLiveTag: "ലൈവ് പ്ലോട്ട് HUD",
+    btnGuidanceAutoDemarcate: "✨ അതിരുകൾ അടയാളപ്പെടുത്തുക",
+    hudLiveTag: "തത്സമയ പ്ലോട്ട് വിവരങ്ങൾ",
     hudCoords: "അക്ഷാംശ രേഖാംശങ്ങൾ",
+    hudExtentLabel: "പ്ലോട്ട് വിസ്തീർണ്ണം",
+    hudCentsLabel: "ℹ️ കേരള സെന്റ്",
     hudArea: "വിസ്തീർണ്ണം (ആറുകളും ച.മീറ്ററും)",
-    hudRoad: "വഴി വീതി (KPBR 2019)",
+    hudRoad: "വഴി വീതി (KPBR ചട്ടങ്ങൾ)",
+    hudElevationLabel: "ഉയരവും വെള്ളപ്പൊക്ക സാധ്യതയും",
+    hudMslLabel: "⛰️ സമുദ്രനിരപ്പ്",
+    hudCentsUnit: "സെന്റ്",
+    hudAresUnit: "ആർ",
+    hudSqMUnit: "ച.മീ.",
+    hudMetersUnit: "മീറ്റർ",
+    hudMslUnit: "മീറ്റർ സമുദ്രനിരപ്പ്",
+    hudRoadPass: "✅ KPBR അനുമതി ലഭ്യം (≥3m)",
+    hudRoadWarn: "⚠️ ചെറിയ പ്ലോട്ട് മാത്രം",
+    hudRoadFail: "❌ വഴി സൗകര്യമില്ല",
+    hudElevationRiskLow: "🟢 കുറഞ്ഞ വെള്ളപ്പൊക്ക സാധ്യത",
+    hudElevationRiskMod: "🟡 മിതമായ വെള്ളപ്പൊക്ക സാധ്യത",
+    hudElevationRiskHigh: "🔴 കൂടിയ വെള്ളപ്പൊക്ക സാധ്യത",
+    hudElevationRiskCrit: "🚨 അതീവ അപകടസാധ്യത",
+    hudBasinPlinth: "തറ ഉയരം:",
     btnHudSend: "📋 ഓഡിറ്ററിലേക്ക് അയക്കുക",
-    btnHudExport: "📑 ഡോസിയർ എക്സ്പോർട്ട് (PDF)",
+    btnHudExport: "📑 സമഗ്ര റിപ്പോർട്ട് (PDF)",
+    btnOpenGmaps: "🌍 ഗൂഗിൾ മാപ്പ്",
     chkPanelTitle: "🚩 സ്ഥല പരിശോധനാ മാനദണ്ഡങ്ങൾ",
-    chkKallu: "<strong>സർവേ കല്ല്:</strong> 4 മൂലകളിലും സർവേ കല്ലുകൾ ഉണ്ടെന്ന് നേരിട്ട് കണ്ട് ഉറപ്പാക്കുക.",
+    chkKallu: "<strong>സർവേ കല്ലുകൾ:</strong> 4 മൂലകളിലും സർവേ കല്ലുകൾ ഉണ്ടെന്ന് നേരിട്ട് കണ്ട് ഉറപ്പാക്കുക.",
     chkRoad: "<strong>വഴിയുടെ വീതി:</strong> KPBR പെർമിറ്റിനായി കുറഞ്ഞത് 3.0 മീറ്റർ സഞ്ചാരയോഗ്യമായ വഴി.",
     chkWetland: "<strong>തണ്ണീർത്തട സാമീപ്യം:</strong> പരിസരത്ത് തോടുകളോ നീർത്തടങ്ങളോ ഉണ്ടോയെന്ന് സാറ്റലൈറ്റിൽ കാണുക.",
-    chkHt: "<strong>വൈദ്യുതി ലൈൻ:</strong> പ്ലോട്ടിന് മുകളിലൂടെ ഹൈ-ടെൻഷൻ (HT) ലൈൻ പോകുന്നില്ലെന്ന് ഉറപ്പാക്കുക.",
+    chkHt: "<strong>വൈദ്യുതി ലൈൻ:</strong> പ്ലോട്ടിന് മുകളിലൂടെ ഹൈ-ടെൻഷൻ ലൈൻ പോകുന്നില്ലെന്ന് ഉറപ്പാക്കുക.",
     chkFlood: "<strong>വെള്ളപ്പൊക്ക പാടുകൾ:</strong> മതിലുകളിലും തൂണുകളിലും 2018-ലെ വെള്ളപ്പൊക്ക ജലനിരപ്പ് പാടുകൾ പരിശോധിക്കുക.",
     chkHint: "സർവേയറുമൊത്ത് നേരിട്ട് പരിശോധിക്കുമ്പോൾ ഓരോന്നായി ടിക്ക് ചെയ്യുക.",
     disclaimer: "⚠️ <strong>നിയമപരമായ മുന്നറിയിപ്പ്:</strong> കണ്ടെഴുത്ത് AI ഒരു പ്രാഥമിക പരിശോധനാ സഹായി മാത്രമാണ്, ടൈറ്റിൽ ഇൻഷുററോ അന്തിമ കോടതി വിധിയോ അല്ല. സാറ്റലൈറ്റ് അളവുകളും ഡോക്യുമെന്റ് പരിശോധനയും പ്രാഥമികമാണ്; പണം അഡ്വാൻസ് നൽകുന്നതിന് മുൻപ് ലൈസൻസുള്ള സർവേയറെ വെച്ച് അതിരുകൾ അളക്കുകയും കേരള ഹൈക്കോടതി അഭിഭാഷകന്റെ നിയമോപദേശം തേടുകയും ചെയ്യുക.",
     typingAnalysis: "ആധാര രേഖകൾ, മുന്നാധാര ചരിത്രം, കേരള ചട്ടങ്ങൾ എന്നിവ പരിശോധിക്കുന്നു...",
+    presets: {
+      default: "📍 കേരളത്തിലെ പ്രദേശം തിരഞ്ഞെടുക്കുക...",
+      aluva: "ആലുവ (പെരിയാർ തീരം - 2018 വെള്ളപ്പൊക്ക മേഖല)",
+      kakkanad: "കാക്കനാട് / ഇൻഫോപാർക്ക് (ഉയർന്ന പ്രദേശം)",
+      kuttanad: "കുട്ടനാട് (സമുദ്രനിരപ്പിന് താഴെയുള്ള തണ്ണീർത്തടം)",
+      chengannur: "ചെങ്ങന്നൂർ (പമ്പാനദി വെള്ളപ്പൊക്ക മേഖല)",
+      angamaly: "അങ്കമാലി (നെൽവയൽ & കാർഷിക മേഖല)",
+      kaloor: "കലൂർ / കൊച്ചി (തീരദേശ നഗരം)",
+      thrissur: "തൃശ്ശൂർ (സ്വരാജ് റൗണ്ട് & കോൾ നിലങ്ങൾ)",
+      kottayam: "കോട്ടയം (മീനച്ചിലാർ തണ്ണീർത്തടം)",
+      kozhikode: "കോഴിക്കോട് (തീരദേശ നഗരം)",
+      trivandrum: "തിരുവനന്തപുരം (കഴക്കൂട്ടം)"
+    },
+    layers: {
+      "google-hybrid": "🛰️ ഗൂഗിൾ സാറ്റലൈറ്റ് ഹൈബ്രിഡ്",
+      "google-satellite": "🛰️ ഗൂഗിൾ സാറ്റലൈറ്റ് മാത്രം",
+      "google-roads": "🗺️ ഗൂഗിൾ റോഡ് മാപ്പ്",
+      "google-terrain": "⛰️ ഗൂഗിൾ ഭൂപ്രകൃതി മാപ്പ്",
+      "osm": "🗺️ ഓപ്പൺ സ്ട്രീറ്റ് മാപ്പ്"
+    }
   }
 };
 
@@ -2771,6 +2855,13 @@ function setLanguage(lang) {
 
   const elDzTag = document.getElementById("dropzone-tag");
   if (elDzTag) elDzTag.textContent = t.dropzoneTag;
+  const elDzModelTag = document.getElementById("dropzone-model-tag");
+  if (elDzModelTag) elDzModelTag.textContent = t.dropzoneModelTag;
+  const elDzToggleBtn = document.getElementById("dropzone-toggle-btn");
+  if (elDzToggleBtn) {
+    const isMin = document.getElementById("deed-dropzone-container")?.classList.contains("minimized");
+    elDzToggleBtn.textContent = isMin ? t.dropzoneExpand : t.dropzoneMinimize;
+  }
   const elDzTitle = document.getElementById("dropzone-title");
   if (elDzTitle) elDzTitle.textContent = t.dropzoneTitle;
   const elDzDesc = document.getElementById("dropzone-desc");
@@ -2854,6 +2945,23 @@ function setLanguage(lang) {
   const elMapSearch = document.getElementById("map-search");
   if (elMapSearch) elMapSearch.placeholder = t.mapSearchPlaceholder;
 
+  // Preset dropdown options
+  const presetSel = document.getElementById("preset-select");
+  if (presetSel && t.presets) {
+    for (const opt of presetSel.options) {
+      if (opt.value === "" && t.presets.default) opt.textContent = t.presets.default;
+      else if (t.presets[opt.value]) opt.textContent = t.presets[opt.value];
+    }
+  }
+
+  // Layer dropdown options
+  const layerSel = document.getElementById("layer-select");
+  if (layerSel && t.layers) {
+    for (const opt of layerSel.options) {
+      if (t.layers[opt.value]) opt.textContent = t.layers[opt.value];
+    }
+  }
+
   const elToolPin = document.getElementById("tool-pin");
   if (elToolPin) elToolPin.textContent = t.toolPin;
   const elToolPlot = document.getElementById("tool-plot");
@@ -2867,20 +2975,38 @@ function setLanguage(lang) {
   const elBtnChk = document.getElementById("btn-chk-text");
   if (elBtnChk) elBtnChk.textContent = t.btnChecklist;
 
+  const elBtnGuidanceAuto = document.getElementById("btn-guidance-auto-demarcate");
+  if (elBtnGuidanceAuto) elBtnGuidanceAuto.textContent = t.btnGuidanceAutoDemarcate;
+
   updateGuidanceBarText();
 
+  // Floating HUD text & labels
   const elHudLiveTag = document.getElementById("hud-live-tag");
   if (elHudLiveTag) elHudLiveTag.textContent = t.hudLiveTag;
   const elHudCoords = document.getElementById("hud-lbl-coords");
   if (elHudCoords) elHudCoords.textContent = t.hudCoords;
+  const elHudExtentTitle = document.getElementById("hud-extent-lbl-title");
+  if (elHudExtentTitle) elHudExtentTitle.textContent = t.hudExtentLabel;
+  const elHudExtentSub = document.getElementById("hud-extent-lbl-sub");
+  if (elHudExtentSub) elHudExtentSub.textContent = t.hudCentsLabel;
   const elHudArea = document.getElementById("hud-lbl-area");
   if (elHudArea) elHudArea.textContent = t.hudArea;
   const elHudRoad = document.getElementById("hud-lbl-road");
   if (elHudRoad) elHudRoad.textContent = t.hudRoad;
+  const elHudElevTitle = document.getElementById("hud-elevation-lbl-title");
+  if (elHudElevTitle) elHudElevTitle.textContent = t.hudElevationLabel;
+  const elHudElevSub = document.getElementById("hud-elevation-lbl-sub");
+  if (elHudElevSub) elHudElevSub.textContent = t.hudMslLabel;
+
   const elBtnHudSend = document.getElementById("btn-hud-send");
   if (elBtnHudSend) elBtnHudSend.textContent = t.btnHudSend;
   const elBtnHudExport = document.getElementById("btn-hud-export");
   if (elBtnHudExport) elBtnHudExport.textContent = t.btnHudExport;
+  const elBtnGmaps = document.getElementById("btn-open-gmaps");
+  if (elBtnGmaps) elBtnGmaps.textContent = t.btnOpenGmaps;
+
+  // Refresh active HUD numbers & units
+  refreshHUDLanguage();
 
   const elChkTitle = document.getElementById("chk-panel-title");
   if (elChkTitle) elChkTitle.textContent = t.chkPanelTitle;
@@ -2899,6 +3025,85 @@ function setLanguage(lang) {
 
   const elDisclaimer = document.getElementById("legal-disclaimer");
   if (elDisclaimer) elDisclaimer.innerHTML = t.disclaimer;
+}
+
+function refreshHUDLanguage() {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+  const isMl = currentLanguage === "ml";
+
+  // Locality title
+  const locTitle = document.getElementById("hud-locality-title");
+  if (locTitle && (locTitle.textContent.includes("Aluva") || locTitle.textContent.includes("ആലുവ"))) {
+    locTitle.textContent = isMl ? "📍 ആലുവ, എറണാകുളം ജില്ല" : "📍 Aluva, Ernakulam District";
+  }
+
+  // Refresh cents display
+  const centsEl = document.getElementById("hud-cents");
+  if (centsEl && centsEl.textContent) {
+    const numMatch = centsEl.textContent.match(/[\d.]+/);
+    if (numMatch) {
+      centsEl.textContent = `${numMatch[0]} ${t.hudCentsUnit}`;
+    }
+  }
+
+  // Refresh sqm / ares display
+  const sqmEl = document.getElementById("hud-sqm");
+  if (sqmEl && sqmEl.textContent) {
+    const aresMatch = sqmEl.textContent.match(/([\d.]+)\s*(?:Ares|ആർ)/i) || sqmEl.textContent.match(/([\d.]+)/);
+    const sqmMatch = sqmEl.textContent.match(/([\d.]+)\s*(?:m²|ച\.മീ\.)/i);
+    if (aresMatch && sqmMatch) {
+      sqmEl.textContent = `${aresMatch[1]} ${t.hudAresUnit} (${sqmMatch[1]} ${t.hudSqMUnit})`;
+    } else if (aresMatch) {
+      const aVal = parseFloat(aresMatch[1]);
+      const sVal = (aVal * 100).toFixed(1);
+      sqmEl.textContent = `${aVal.toFixed(2)} ${t.hudAresUnit} (${sVal} ${t.hudSqMUnit})`;
+    }
+  }
+
+  // Refresh road text & badge
+  const roadTextEl = document.getElementById("hud-road-text");
+  if (roadTextEl && roadTextEl.textContent) {
+    const rMatch = roadTextEl.textContent.match(/[\d.]+/);
+    if (rMatch) {
+      roadTextEl.textContent = `${rMatch[0]} ${t.hudMetersUnit}`;
+    }
+  }
+  const roadBadgeEl = document.getElementById("hud-road-badge");
+  if (roadBadgeEl) {
+    if (roadBadgeEl.classList.contains("pass")) roadBadgeEl.textContent = t.hudRoadPass;
+    else if (roadBadgeEl.classList.contains("warn")) roadBadgeEl.textContent = t.hudRoadWarn;
+    else if (roadBadgeEl.classList.contains("fail")) roadBadgeEl.textContent = t.hudRoadFail;
+  }
+
+  // Refresh elevation text & flood badge
+  const elevTextEl = document.getElementById("hud-elevation-text");
+  if (elevTextEl && elevTextEl.textContent) {
+    const eMatch = elevTextEl.textContent.match(/[\d.]+/);
+    if (eMatch) {
+      elevTextEl.textContent = `${eMatch[0]} ${t.hudMslUnit}`;
+    }
+  }
+  const floodBadgeEl = document.getElementById("hud-flood-badge");
+  if (floodBadgeEl) {
+    if (floodBadgeEl.classList.contains("pass")) floodBadgeEl.textContent = t.hudElevationRiskLow;
+    else if (floodBadgeEl.classList.contains("warn")) floodBadgeEl.textContent = t.hudElevationRiskMod;
+    else if (floodBadgeEl.classList.contains("fail")) floodBadgeEl.textContent = t.hudElevationRiskHigh;
+  }
+
+  // Refresh basin text
+  const basinEl = document.getElementById("hud-basin-text");
+  if (basinEl && window.currentElevationData) {
+    const data = window.currentElevationData;
+    const basinName = isMl
+      ? (data.river_basin ? `${data.river_basin} നദീതടം` : 'പ്രാദേശിക നീർത്തടം')
+      : (data.river_basin || 'Local Watershed');
+    basinEl.textContent = `${basinName} • ${t.hudBasinPlinth} ≥${data.recommended_plinth_height_m}m`;
+  } else if (basinEl) {
+    basinEl.textContent = isMl
+      ? 'പെരിയാർ നദീതടം • തറ ഉയരം: ≥0.75 മീറ്റർ'
+      : 'Periyar River Basin • Plinth: ≥0.75m';
+  }
+}
 }
 
 function onChipClick(key) {
