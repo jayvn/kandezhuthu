@@ -122,6 +122,7 @@ class MunnadharamAuditor:
         return chain_intact, flags
 
     def _verify_extent_continuity(self, deeds: List[DeedNode]) -> List[RiskFlag]:
+        from app.domain.extent_converter import verify_extent_inflation, cents_to_ares, cents_to_sqm
         flags: List[RiskFlag] = []
 
         for i in range(len(deeds) - 1):
@@ -129,8 +130,10 @@ class MunnadharamAuditor:
             next_deed = deeds[i + 1]
 
             # If the next deed conveys more land than the parent deed had
-            if next_deed.extent_cents > curr_deed.extent_cents + 0.05:  # small margin
-                excess = next_deed.extent_cents - curr_deed.extent_cents
+            is_inflated, excess = verify_extent_inflation(curr_deed.extent_cents, next_deed.extent_cents, tolerance=0.05)
+            if is_inflated:
+                excess_ares = cents_to_ares(excess)
+                excess_sqm = cents_to_sqm(excess)
                 flags.append(
                     RiskFlag(
                         category="EXTENT_INFLATION",
@@ -139,7 +142,7 @@ class MunnadharamAuditor:
                         description=(
                             f"Prior deed {curr_deed.doc_number} ({curr_deed.year}) conveyed {curr_deed.extent_cents:.2f} Cents, "
                             f"but subsequent deed {next_deed.doc_number} ({next_deed.year}) purports to convey "
-                            f"{next_deed.extent_cents:.2f} Cents (+{excess:.2f} Cents unbacked by title)."
+                            f"{next_deed.extent_cents:.2f} Cents (+{excess:.2f} Cents / {excess_ares:.2f} Ares / {excess_sqm:.1f} Sq.M unbacked by title)."
                         ),
                         legal_citation="Nemo dat quod non habet (No one can transfer a better title than he has)",
                         remedial_action=(
