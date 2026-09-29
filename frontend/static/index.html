@@ -3786,12 +3786,17 @@ function renderDeedAuditCard(container, data, fileName) {
     priorHtml = `
       <div class="prior-deeds-box">
         <div class="prior-title">${currentLanguage === 'ml' ? '🔗 മുന്നാധാര വിവരങ്ങൾ (Prior Title Lineage):' : '🔗 Prior Title Lineage:'}</div>
-        ${meta.prior_deeds.map(p => `
+        ${meta.prior_deeds.map(p => {
+          let dt = p.deed_type || "Prior Deed";
+          if (currentLanguage === 'en') {
+            dt = dt.replace(/[\u0D00-\u0D7F]+\s*\/?\s*/g, '').trim() || "Prior Deed";
+          }
+          return `
           <div class="prior-item">
-            <strong>${p.doc_number || "Doc"}</strong> ${p.year ? `(${p.year})` : ""} - ${p.deed_type || "Prior Deed"}
+            <strong>${p.doc_number || "Doc"}</strong> ${p.year ? `(${p.year})` : ""} - ${dt}
             ${p.sro_name ? `· SRO ${p.sro_name}` : ""}
-          </div>
-        `).join("")}
+          </div>`;
+        }).join("")}
       </div>
     `;
   }
