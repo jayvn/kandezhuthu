@@ -26,6 +26,8 @@ class TrapCategory(str, Enum):
     MINOR_RIGHTS_DEFECT = "MINOR_RIGHTS_DEFECT"
     MAINTENANCE_CONDITIONAL_CLAUSE = "MAINTENANCE_CONDITIONAL_CLAUSE"
     EXTENT_INFLATION_DISCREPANCY = "EXTENT_INFLATION_DISCREPANCY"
+    CRZ_COASTAL_REGULATION_RISK = "CRZ_COASTAL_REGULATION_RISK"
+    TRUST_DEVASWOM_WAQF_ALIENATION = "TRUST_DEVASWOM_WAQF_ALIENATION"
 
 
 class Verdict(str, Enum):
@@ -75,11 +77,28 @@ class SingleDeedScanner:
         (r"(നടപ്പുവഴി|നടപുവഴി|വഴിയവകാശം|വഴി\s*അവകാശം|വണ്ടിവഴി|വണ്ടിപ്പാത|വണ്ടിയോടാനുള്ള\s*വഴി|സഞ്ചാര\s*സ്വാതന്ത്ര്യം|സഞ്ചാര\s*മാർഗ്ഗം|വഴിയായി\s*മാറ്റി|വഴിയായി\s*ഒഴിഞ്ഞു)", "Malayalam right of way / pathway", "വഴി അവകാശം / നടപ്പുവഴി"),
         (r"(കിണർ\s*അവകാശം|കിണറ്റിൽ\s*നിന്നു[ംള]|വെള്ളമെടുക്കാനുള്ള\s*അവകാശം)", "Malayalam well / water servitude", "കിണർ അവകാശം"),
         (r"(\d+(?:\.\d+)?)\s*(മീറ്റർ|മീ|അടി)\s*(വീതിയിലുള്ള\s*)?(നടപ്പുവഴി|വഴി|പാത)", "Malayalam pathway dimension covenant", "പ്രത്യേക വീതിയുള്ള വഴി"),
+        # KSEB electric line / transmission corridor servitude
+        (r"(വൈദ്യുതി\s*ലൈൻ\s*(?:പോകുന്നതിനുള്ള\s*)?അവകാശം|വൈദ്യുതി\s*ലൈൻ|കെ\.?എസ്\.?ഇ\.?ബി|ഇലക്ട്രിക്\s*ലൈൻ\s*അവകാശം)", "Malayalam KSEB electric transmission corridor easement", "വൈദ്യുതി ലൈൻ അവകാശം / KSEB കോറിഡോർ"),
         # Transliterated / English patterns
         (r"(?i)\b(vazhi\s*avakasham|nadappu\s*vazhi|nadapu\s*vazhi|nadappuvazh[yi]|vandi\s*povanulla|vazhikkayi\s*maatti)\b", "Malayalam transliterated right of way", "വഴി അവകാശം / നടപ്പുവഴി"),
         (r"(?i)\b(kinaril\s*ninnum\s*vellam|kinar\s*avakasham)\b", "Well / water access servitude", "കിണർ അവകാശം"),
         (r"(?i)\b(right\s*of\s*way|pathway\s*reserved|easement\s*of\s*necessity|common\s*passage|cart\s*track|foot\s*path)\b", "English easement clause", "വഴി അവകാശം (ഇംഗ്ലീഷ് ക്ലോസ്)"),
         (r"(?i)(\d+(?:\.\d+)?)\s*(meter|metre|adi|feet|ft)\s*(vazhi|pathway|passage|road)", "Specific pathway dimension reservation", "പ്രത്യേക വീതിയുള്ള വഴി"),
+        (r"(?i)\b(kseb|k\.s\.e\.b|electric\s*(?:transmission\s*)?line(?:\s*easement)?|transmission\s*corridor|high\s*tension\s*line|power\s*line\s*corridor)\b", "KSEB transmission line corridor easement", "വൈദ്യുതി ലൈൻ അവകാശം / KSEB കോറിഡോർ"),
+    ]
+
+    CRZ_PATTERNS = [
+        # Malayalam script patterns
+        (r"(തീരദേശ\s*പരിപാലന\s*നിയമം|തീരദേശ\s*നിയന്ത്രണ\s*മേഖല|തീരദേശ\s*പരിപാലനം|സി\.?ആർ\.?ഇസെഡ്|CRZ|തീരദേശ\s*ബഫർ|കായൽത്തീര\s*ബഫർ|തീരദേശ\s*പരിധി)", "Malayalam CRZ coastal regulation zone", "തീരദേശ പരിപാലന നിയമം (CRZ) നിയന്ത്രണം"),
+        # Transliterated / English patterns
+        (r"(?i)\b(coastal\s*regulation\s*zone|crz(?:\s*setback|\s*buffer|\s*clearance|\s*regulations?)?|no\s*development\s*zone|ndz\s*buffer|coastal\s*buffer\s*zone|tidal\s*watercourse\s*buffer)\b", "CRZ coastal regulation zone restriction", "തീരദേശ പരിപാലന നിയമം (CRZ) നിയന്ത്രണം"),
+    ]
+
+    TRUST_ALIENATION_PATTERNS = [
+        # Malayalam script patterns
+        (r"(വഖഫ്\s*(?:സ്വത്ത്|ബോർഡ്|ഭൂമി|വക)|ദേവസ്വം\s*(?:സ്വത്ത്|ബോർഡ്|ഭൂമി|വക|ട്രസ്റ്റ്)|ക്ഷേത്ര\s*സ്വത്ത്|ക്ഷേത്ര\s*ട്രസ്റ്റ്|പള്ളി\s*വക\s*സ്വത്ത്|ട്രസ്റ്റ്\s*വക\s*സ്വത്ത്|അന്യാധീനപ്പെടുത്താൻ\s*പാടില്ലാത്ത|കൈമാറ്റ\s*വിലക്ക്)", "Malayalam Waqf / Devaswom trust property alienation restriction", "വഖഫ് / ദേവസ്വം ട്രസ്റ്റ് സ്വത്ത് കൈമാറ്റ നിരോധനം"),
+        # Transliterated / English patterns
+        (r"(?i)\b(waqf(?:\s*property|\s*board|\s*land)?|wakf|devaswom(?:\s*property|\s*board|\s*trust|\s*land)?|temple\s*trust\s*property|mosque\s*property|religious\s*trust\s*property|inalienable\s*trust|bar\s*on\s*alienation|trust\s*property\s*alienation)\b", "Waqf / Devaswom trust property alienation restriction", "വഖഫ് / ദേവസ്വം ട്രസ്റ്റ് സ്വത്ത് കൈമാറ്റ നിരോധനം"),
     ]
 
     WETLAND_PATTERNS = [
@@ -279,7 +298,94 @@ class SingleDeedScanner:
                 )
             )
 
-        # 5. Scan for Extent Inflation / Internal Discrepancy in Single Deed
+        # 5. Scan for Coastal Regulation Zone (CRZ) / Backwater Buffer Risk
+        crz_match = self._find_first_pattern(deed_text, self.CRZ_PATTERNS)
+        if crz_match:
+            snippet, desc, mal_title = crz_match
+            clearance_negated = re.search(
+                r"(?i)\b(without|no|not|lacking|nil|awaiting)\s+(?:any\s+)?(?:kczma\s+)?(?:crz\s+)?(?:clearance|permission|approval|sanction)\b|"
+                r"(അനുമതിയില്ലാതെ|അനുമതി\s*കൂടാതെ|ക്ലിയറൻസ്\s*ഇല്ലാതെ)",
+                deed_text,
+            )
+            has_crz_clearance = False
+            if not clearance_negated:
+                has_crz_clearance = bool(re.search(
+                    r"(?i)(kczma\s*(?:clearance|approved|sanction|permission)|crz\s*clearance\s*obtained|"
+                    r"തീരദേശ\s*പരിപാലന\s*അനുമതി\s*ലഭിച്ചിട്ടുള്ള)",
+                    deed_text,
+                ))
+            if not has_crz_clearance:
+                score -= 40
+                has_critical = True
+                findings.append(
+                    TrapFinding(
+                        trap_type=TrapCategory.CRZ_COASTAL_REGULATION_RISK,
+                        severity="CRITICAL",
+                        title="Coastal Regulation Zone (CRZ) / Backwater Buffer Restriction",
+                        title_malayalam=mal_title,
+                        explanation=(
+                            f"The property is subject to Coastal Regulation Zone (CRZ) restrictions ('{snippet}'). "
+                            "Under the CRZ Notification and KCZMA regulations, construction within No Development Zones (NDZ) "
+                            "or backwater buffer corridors is strictly prohibited or severely restricted."
+                        ),
+                        matched_snippet=snippet,
+                        kerala_statute="CRZ Notification 2011/2019 & Environment (Protection) Act, 1986",
+                        whatsapp_question_for_seller=(
+                            "ഈ സ്ഥലം തീരദേശ പരിപാലന നിയമത്തിന്റെ (CRZ) ബഫർ സോണിലോ നോ-ഡെവലപ്‌മെന്റ് സോണിലോ (NDZ) ഉൾപ്പെട്ടിട്ടുണ്ടോ? "
+                            "കേരള കോസ്റ്റൽ സോൺ മാനേജ്മെന്റ് അതോറിറ്റിയുടെ (KCZMA) മുൻകൂർ നിർമ്മാണാനുമതി ഉണ്ടോ?"
+                        ),
+                        whatsapp_question_for_seller_en=(
+                            f"Is this property located within the Coastal Regulation Zone (CRZ) buffer or No Development Zone ('{snippet}')? "
+                            "Has mandatory clearance from the Kerala Coastal Zone Management Authority (KCZMA) been obtained?"
+                        ),
+                    )
+                )
+
+        # 6. Scan for Waqf / Devaswom / Religious Trust Inalienability
+        trust_match = self._find_first_pattern(deed_text, self.TRUST_ALIENATION_PATTERNS)
+        if trust_match:
+            snippet, desc, mal_title = trust_match
+            sanction_negated = re.search(
+                r"(?i)\b(without|no|not|lacking|nil)\s+(?:any\s+)?(?:prior\s+)?(?:board\s+)?(?:court\s+)?(?:order|sanction|permission|approval)\b|"
+                r"(അനുമതിയില്ലാതെ|ഉത്തരവില്ലാതെ|അനുമതി\s*കൂടാതെ)",
+                deed_text,
+            )
+            has_board_sanction = False
+            if not sanction_negated:
+                has_board_sanction = bool(re.search(
+                    r"(?i)(waqf\s*board\s*(?:sanction|permission|order)|devaswom\s*board\s*(?:sanction|order|approval)|"
+                    r"court\s*sanction\s*under\s*section\s*92|വഖഫ്\s*ബോർഡ്\s*(?:അനുമതി|ഉത്തരവ്)|"
+                    r"ദേവസ്വം\s*ബോർഡ്\s*(?:അനുമതി|ഉത്തരവ്))",
+                    deed_text,
+                ))
+            if not has_board_sanction:
+                score -= 45
+                has_critical = True
+                findings.append(
+                    TrapFinding(
+                        trap_type=TrapCategory.TRUST_DEVASWOM_WAQF_ALIENATION,
+                        severity="CRITICAL",
+                        title="Waqf / Devaswom Trust Property Alienation Bar",
+                        title_malayalam=mal_title,
+                        explanation=(
+                            f"The property is recited as temple/mosque/trust property ('{snippet}'). Under Section 51 of the "
+                            "Waqf Act 1995 and Section 27 of the Travancore-Cochin Hindu Religious Institutions Act 1950, "
+                            "alienation of trust/Devaswom/Waqf land without prior statutory board or court sanction is void ab initio."
+                        ),
+                        matched_snippet=snippet,
+                        kerala_statute="Waqf Act, 1995 (Section 51) / Travancore-Cochin Hindu Religious Institutions Act, 1950 (Section 27 - Devaswom Board)",
+                        whatsapp_question_for_seller=(
+                            "ആധാരത്തിൽ ദേവസ്വം/വഖഫ്/ട്രസ്റ്റ് സ്വത്ത് എന്ന് പറഞ്ഞിട്ടുണ്ടല്ലോ ('" + snippet + "'). "
+                            "ഈ കൈമാറ്റത്തിന് ദേവസ്വം ബോർഡിന്റെയോ വഖഫ് ബോർഡിന്റെയോ മുൻകൂർ അനുമതി ഉത്തരവ് വാങ്ങിയിട്ടുണ്ടോ?"
+                        ),
+                        whatsapp_question_for_seller_en=(
+                            f"The deed recites religious trust endowment property ('{snippet}'). "
+                            "Was prior statutory sanction obtained from the Devaswom Board or Waqf Board under relevant statutes before execution?"
+                        ),
+                    )
+                )
+
+        # 7. Scan for Extent Inflation / Internal Discrepancy in Single Deed
         parsed_extent = parse_extents_from_text(deed_text)
         if parsed_extent.cents and (parsed_extent.ares or parsed_extent.hectares or parsed_extent.sq_meters):
             inconsistent, diff, explanation = verify_internal_extent_consistency(
