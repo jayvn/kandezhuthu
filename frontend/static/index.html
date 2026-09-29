@@ -1929,7 +1929,7 @@
   <div class="brand">
     <div class="brand-icon">ക</div>
     <div class="brand-text">
-      <div class="brand-title" id="brand-title">Kandezhuthu AI (കണ്ടെഴുത്ത്)</div>
+      <div class="brand-title" id="brand-title">Kandezhuthu AI</div>
       <div class="brand-subtitle" id="brand-subtitle">Kerala Property Legal Title & Satellite Diligence</div>
     </div>
   </div>
@@ -1983,13 +1983,13 @@
       <div class="drop-card">
         <div class="drop-icon-animated">📄</div>
         <div class="drop-title" id="drop-overlay-title">Drop Scanned Kerala Deed or EC Here</div>
-        <div class="drop-subtitle" id="drop-overlay-subtitle">Directly ingests Malayalam/English deed text using Google Cloud Document AI & Gemini 3.8 Flash Multimodal Vision</div>
+        <div class="drop-subtitle" id="drop-overlay-subtitle">Directly ingests Malayalam/English deed text using Google Cloud Document AI & Gemini Multimodal Vision</div>
         <div class="drop-badges">
           <span>PDF Documents</span>
           <span>PNG Scans</span>
           <span>JPG/JPEG</span>
           <span>WEBP</span>
-          <span>കുടിക്കടം (EC)</span>
+          <span id="drop-badge-ec">Encumbrance Certificate (EC)</span>
         </div>
       </div>
     </div>
@@ -2810,6 +2810,8 @@ function setLanguage(lang) {
   if (elDropOverlayTitle) elDropOverlayTitle.textContent = t.dropOverlayTitle;
   const elDropOverlaySub = document.getElementById("drop-overlay-subtitle");
   if (elDropOverlaySub) elDropOverlaySub.textContent = t.dropOverlaySubtitle;
+  const elDropBadgeEc = document.getElementById("drop-badge-ec");
+  if (elDropBadgeEc) elDropBadgeEc.textContent = lang === "ml" ? "കുടിക്കട സർട്ടിഫിക്കറ്റ്" : "Encumbrance Certificate (EC)";
 
   const tabLineage = document.getElementById("cat-tab-lineage");
   if (tabLineage) tabLineage.textContent = t.tabLineage;
@@ -4578,24 +4580,31 @@ function updatePlotDisplay() {
       const areaSqM = calculatePolygonArea(polygonPoints);
       const cents = (areaSqM / 40.4686).toFixed(2);
       const ares = (areaSqM / 100).toFixed(2);
-      const sqFt = (areaSqM * 10.7639).toFixed(0);
+      const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+      const isMl = currentLanguage === "ml";
 
-      document.getElementById("hud-cents").textContent = `${cents} Cents`;
-      document.getElementById("hud-sqm").textContent = `${ares} Ares (${areaSqM.toFixed(1)} m²)`;
-      document.getElementById("guidance-text").textContent = `Plot in progress: ${polygonPoints.length} corner stones marked (${cents} Cents). Click 'Seal Plot' to finish.`;
+      document.getElementById("hud-cents").textContent = `${cents} ${t.hudCentsUnit}`;
+      document.getElementById("hud-sqm").textContent = `${ares} ${t.hudAresUnit} (${areaSqM.toFixed(1)} ${t.hudSqMUnit})`;
+      document.getElementById("guidance-text").textContent = isMl
+        ? `പ്ലോട്ട് വരയ്ക്കുന്നു: ${polygonPoints.length} അതിർത്തിക്കല്ലുകൾ അടയാളപ്പെടുത്തി (${cents} സെന്റ്). 'പ്ലോട്ട് പൂർത്തിയാക്കുക' ക്ലിക്ക് ചെയ്യുക.`
+        : `Plot in progress: ${polygonPoints.length} corner stones marked (${cents} Cents). Click 'Seal Plot' to finish.`;
     }
   }
 }
 
 function finishPlot() {
   if (polygonPoints.length < 3) {
-    alert("Please place at least 3 corner points to seal a plot boundary.");
+    const isMl = currentLanguage === "ml";
+    alert(isMl ? "പ്ലോട്ട് പൂർത്തിയാക്കാൻ കുറഞ്ഞത് 3 അതിർത്തിക്കല്ലുകൾ അടയാളപ്പെടുത്തുക." : "Please place at least 3 corner points to seal a plot boundary.");
     return;
   }
   updatePlotDisplay();
   const areaSqM = calculatePolygonArea(polygonPoints);
   const cents = (areaSqM / 40.4686).toFixed(2);
-  document.getElementById("guidance-text").textContent = `✅ Plot sealed! Extent: ${cents} Cents. Review stats in HUD below or click 'Send Plot to Auditor AI'.`;
+  const isMl = currentLanguage === "ml";
+  document.getElementById("guidance-text").textContent = isMl
+    ? `✅ പ്ലോട്ട് പൂർത്തിയായി! വിസ്തീർണ്ണം: ${cents} സെന്റ്. വിവരങ്ങൾ താഴെ കാണുക അല്ലെങ്കിൽ 'ഓഡിറ്ററിലേക്ക് അയക്കുക' ക്ലിക്ക് ചെയ്യുക.`
+    : `✅ Plot sealed! Extent: ${cents} Cents. Review stats in HUD below or click 'Send Plot to Auditor AI'.`;
   
   let sumLat = 0, sumLng = 0;
   for (const pt of polygonPoints) { sumLat += pt.lat; sumLng += pt.lng; }
@@ -4617,8 +4626,13 @@ function addRoadPoint(lat, lng) {
   }).addTo(map);
   vertexMarkers.push(roadMarker);
 
+  const isMl = currentLanguage === "ml";
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+
   if (roadPoints.length === 1) {
-    document.getElementById("guidance-text").textContent = "First road edge marked! Now click directly opposite across the road.";
+    document.getElementById("guidance-text").textContent = isMl
+      ? "വഴിയുടെ ഒരതിർത്തി അടയാളപ്പെടുത്തി! ഇനി എതിർവശത്തെ അതിർത്തിയിൽ ക്ലിക്ക് ചെയ്യുക."
+      : "First road edge marked! Now click directly opposite across the road.";
   }
 
   if (roadPoints.length === 2) {
@@ -4632,31 +4646,35 @@ function addRoadPoint(lat, lng) {
 
     const distM = calculateDistance(roadPoints[0], roadPoints[1]);
     let statusBadgeClass = "pass";
-    let statusBadgeText = "✅ KPBR Pass (≥3m)";
+    let statusBadgeText = t.hudRoadPass;
     let desc = "";
 
     if (distM >= 3.0) {
       statusBadgeClass = "pass";
-      statusBadgeText = "✅ KPBR Pass (≥3m)";
-      desc = "Permit Eligible for Residential Construction";
+      statusBadgeText = t.hudRoadPass;
+      desc = isMl ? "വീടുപണിക്ക് അനുമതി ലഭ്യമാണ് (KPBR ചട്ടം)" : "Permit Eligible for Residential Construction";
     } else if (distM >= 1.2) {
       statusBadgeClass = "warn";
-      statusBadgeText = "⚠️ Small Plot Only";
-      desc = "Restricted built-up area under KPBR Rule 59";
+      statusBadgeText = t.hudRoadWarn;
+      desc = isMl ? "ചെറിയ പ്ലോട്ടുകൾക്ക് മാത്രം (KPBR ചട്ടം 59)" : "Restricted built-up area under KPBR Rule 59";
     } else {
       statusBadgeClass = "fail";
-      statusBadgeText = "❌ Defective Access";
-      desc = "Cannot get residential permit under Kerala Building Rules (<1.2m)";
+      statusBadgeText = t.hudRoadFail;
+      desc = isMl ? "വീടുപണിക്ക് അനുമതി ലഭിക്കില്ല (<1.2m)" : "Cannot get residential permit under Kerala Building Rules (<1.2m)";
     }
 
-    document.getElementById("hud-road-text").textContent = `${distM.toFixed(1)} meters`;
+    document.getElementById("hud-road-text").textContent = `${distM.toFixed(1)} ${t.hudMetersUnit}`;
     const badgeEl = document.getElementById("hud-road-badge");
     badgeEl.className = `badge-road ${statusBadgeClass}`;
     badgeEl.textContent = statusBadgeText;
 
-    currentRoadLine.bindPopup(`<b>Access Road Width:</b> ${distM.toFixed(1)} meters<br><b>KPBR Status:</b> ${statusBadgeText}<br>${desc}`).openPopup();
+    const popupRoadLbl = isMl ? "വഴി വീതി:" : "Access Road Width:";
+    const popupKpbrLbl = isMl ? "KPBR പദവി:" : "KPBR Status:";
+    currentRoadLine.bindPopup(`<b>${popupRoadLbl}</b> ${distM.toFixed(1)} ${t.hudMetersUnit}<br><b>${popupKpbrLbl}</b> ${statusBadgeText}<br>${desc}`).openPopup();
     
-    document.getElementById("guidance-text").textContent = `Road measured: ${distM.toFixed(1)}m. ${statusBadgeText}`;
+    document.getElementById("guidance-text").textContent = isMl
+      ? `വഴി അളന്നു: ${distM.toFixed(1)} ${t.hudMetersUnit}. ${statusBadgeText}`
+      : `Road measured: ${distM.toFixed(1)}m. ${statusBadgeText}`;
     roadPoints = [];
   }
 
@@ -4664,6 +4682,7 @@ function addRoadPoint(lat, lng) {
 }
 
 function undoLastPoint() {
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
   if (activeTool === "plot" && polygonPoints.length > 0) {
     polygonPoints.pop();
     if (vertexMarkers.length > 0) {
@@ -4674,8 +4693,8 @@ function undoLastPoint() {
     } else {
       clearDimensionLabels();
       if (currentPolygon) { map.removeLayer(currentPolygon); currentPolygon = null; }
-      document.getElementById("hud-cents").textContent = "0.00 Cents";
-      document.getElementById("hud-sqm").textContent = "0.0 Ares (0.0 m²)";
+      document.getElementById("hud-cents").textContent = `0.00 ${t.hudCentsUnit}`;
+      document.getElementById("hud-sqm").textContent = `0.0 ${t.hudAresUnit} (0.0 ${t.hudSqMUnit})`;
     }
   } else if (activeTool === "road" && roadPoints.length > 0) {
     roadPoints.pop();
@@ -5214,10 +5233,13 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
   const badgeEl = document.getElementById("hud-flood-badge");
   const basinEl = document.getElementById("hud-basin-text");
 
-  if (elevValEl) elevValEl.textContent = "Calculating...";
+  const isMl = currentLanguage === "ml";
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+
+  if (elevValEl) elevValEl.textContent = isMl ? "കണക്കാക്കുന്നു..." : "Calculating...";
   if (badgeEl) {
     badgeEl.className = "badge-road warn";
-    badgeEl.textContent = "⏳ Assessing Flood...";
+    badgeEl.textContent = isMl ? "⏳ പരിശോധിക്കുന്നു..." : "⏳ Assessing Flood...";
   }
 
   try {
@@ -5237,33 +5259,36 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
     window.currentElevationData = data;
 
     if (elevValEl) {
-      elevValEl.textContent = `${data.elevation_meters}m MSL`;
+      elevValEl.textContent = `${data.elevation_meters} ${t.hudMslUnit}`;
     }
     if (basinEl) {
-      basinEl.textContent = `${data.river_basin || 'Local Watershed'} • Plinth: ≥${data.recommended_plinth_height_m}m`;
+      const basinName = isMl
+        ? (data.river_basin ? `${data.river_basin} നദീതടം` : 'പ്രാദേശിക നീർത്തടം')
+        : (data.river_basin || 'Local Watershed');
+      basinEl.textContent = `${basinName} • ${t.hudBasinPlinth} ≥${data.recommended_plinth_height_m}m`;
     }
     if (badgeEl) {
       if (data.flood_risk_level === "LOW") {
         badgeEl.className = "badge-road pass";
-        badgeEl.textContent = "🟢 Low Flood Risk";
+        badgeEl.textContent = t.hudElevationRiskLow;
       } else if (data.flood_risk_level === "MODERATE") {
         badgeEl.className = "badge-road warn";
-        badgeEl.textContent = "🟡 Moderate Flood Risk";
+        badgeEl.textContent = t.hudElevationRiskMod;
       } else if (data.flood_risk_level === "HIGH") {
         badgeEl.className = "badge-road fail";
-        badgeEl.textContent = "🔴 High Flood Risk";
+        badgeEl.textContent = t.hudElevationRiskHigh;
       } else {
         badgeEl.className = "badge-road fail";
-        badgeEl.textContent = "🚨 Critical Sub-MSL Trap";
+        badgeEl.textContent = t.hudElevationRiskCrit;
       }
       badgeEl.title = data.ksdma_hazard_advisory;
     }
   } catch (err) {
     console.warn("Failed to fetch plot elevation:", err);
-    if (elevValEl) elevValEl.textContent = "Elevation N/A";
+    if (elevValEl) elevValEl.textContent = isMl ? "ലഭ്യമല്ല" : "Elevation N/A";
     if (badgeEl) {
       badgeEl.className = "badge-road warn";
-      badgeEl.textContent = "⚠️ Check On Ground";
+      badgeEl.textContent = isMl ? "⚠️ നേരിട്ട് പരിശോധിക്കുക" : "⚠️ Check On Ground";
     }
   }
 }
@@ -5271,31 +5296,36 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
 function updateHUDLocation(lat, lng, localityName, centsVal, roadVal) {
   document.getElementById("hud-coords").textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   
+  const isMl = currentLanguage === "ml";
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+
   if (localityName) {
     document.getElementById("hud-locality-title").textContent = `📍 ${localityName}`;
   } else {
-    document.getElementById("hud-locality-title").textContent = `📍 Lat ${lat.toFixed(4)}, Lng ${lng.toFixed(4)}`;
+    document.getElementById("hud-locality-title").textContent = isMl
+      ? `📍 അക്ഷാംശം ${lat.toFixed(4)}, രേഖാംശം ${lng.toFixed(4)}`
+      : `📍 Lat ${lat.toFixed(4)}, Lng ${lng.toFixed(4)}`;
   }
 
   if (centsVal) {
-    document.getElementById("hud-cents").textContent = `${centsVal.toFixed(2)} Cents`;
+    document.getElementById("hud-cents").textContent = `${centsVal.toFixed(2)} ${t.hudCentsUnit}`;
     const sqm = centsVal * 40.4686;
     const ares = sqm / 100;
-    document.getElementById("hud-sqm").textContent = `${ares.toFixed(2)} Ares (${sqm.toFixed(1)} m²)`;
+    document.getElementById("hud-sqm").textContent = `${ares.toFixed(2)} ${t.hudAresUnit} (${sqm.toFixed(1)} ${t.hudSqMUnit})`;
   }
 
   if (roadVal) {
-    document.getElementById("hud-road-text").textContent = `${roadVal.toFixed(1)} meters`;
+    document.getElementById("hud-road-text").textContent = `${roadVal.toFixed(1)} ${t.hudMetersUnit}`;
     const badgeEl = document.getElementById("hud-road-badge");
     if (roadVal >= 3.0) {
       badgeEl.className = "badge-road pass";
-      badgeEl.textContent = "✅ KPBR Pass (≥3m)";
+      badgeEl.textContent = t.hudRoadPass;
     } else if (roadVal >= 1.2) {
       badgeEl.className = "badge-road warn";
-      badgeEl.textContent = "⚠️ Small Plot Only";
+      badgeEl.textContent = t.hudRoadWarn;
     } else {
       badgeEl.className = "badge-road fail";
-      badgeEl.textContent = "❌ Defective Access";
+      badgeEl.textContent = t.hudRoadFail;
     }
   }
 

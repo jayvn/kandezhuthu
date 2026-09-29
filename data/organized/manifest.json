@@ -1,0 +1,123 @@
+{
+  "manifest_version": "1.0.0",
+  "project_name": "kandezhuthu",
+  "title": "Kandezhuthu AI Legal Title Data Catalog",
+  "generated_at": "2026-09-29T12:18:10.866106+00:00",
+  "local_directory": "/config/Desktop/BuildWithGemini/kandezhuthu/data/organized",
+  "total_collections": 12,
+  "total_records": 94,
+  "collections": {
+    "building_rules": {
+      "category": "knowledge",
+      "file": "knowledge/building_rules.json",
+      "records_count": 5,
+      "size_bytes": 2912,
+      "sha256": "498a2a2bd47aec325aab43458f6428ea4525759aa14f2767b7cdb5f5aa8c982c"
+    },
+    "paddy_land_fee_slabs": {
+      "category": "knowledge",
+      "file": "knowledge/paddy_land_fee_slabs.json",
+      "records_count": 4,
+      "size_bytes": 1362,
+      "sha256": "d76f1eae66bcf88404e2cce19e25007b8912ccd7effe14173d8fcd08a88c9c39"
+    },
+    "legal_precedents": {
+      "category": "knowledge",
+      "file": "knowledge/legal_precedents.json",
+      "records_count": 11,
+      "size_bytes": 9284,
+      "sha256": "d389287420ccdbd68f33f67bacb6d9de7fe171de94d99c75a8ed4560bf1b2f88"
+    },
+    "knowledge_corpus": {
+      "category": "knowledge",
+      "file": "knowledge/knowledge_corpus.json",
+      "records_count": 3,
+      "size_bytes": 44421,
+      "sha256": "5b6f9b8361549237b6203dd9251b9421a3315f758001cd2a76b301499c25d64c"
+    },
+    "administrative_divisions": {
+      "category": "administrative",
+      "file": "administrative/administrative_divisions.json",
+      "records_count": 19,
+      "size_bytes": 3132,
+      "sha256": "b978b8e29d0136623e12786f8661d7f73ca1620c259a681de23ddc905f50e348"
+    },
+    "properties": {
+      "category": "audits",
+      "file": "audits/properties.json",
+      "records_count": 2,
+      "size_bytes": 617,
+      "sha256": "96348148b03877b18f16fc5e5db82ac385a7601a210baf5113830d277b6b5897"
+    },
+    "deed_records": {
+      "category": "audits",
+      "file": "audits/deed_records.json",
+      "records_count": 5,
+      "size_bytes": 3349,
+      "sha256": "01551c7ab910462080a4ef2e01bd8c4543ba8322a859db50613b20726d183ca0"
+    },
+    "encumbrance_records": {
+      "category": "audits",
+      "file": "audits/encumbrance_records.json",
+      "records_count": 5,
+      "size_bytes": 1271,
+      "sha256": "bfde986526d71d666cd0c068f5dfdcc0c30ec4752486266fc282714db569a5a9"
+    },
+    "audit_reports": {
+      "category": "audits",
+      "file": "audits/audit_reports.json",
+      "records_count": 2,
+      "size_bytes": 2399,
+      "sha256": "283536476c18bb7ca7ff9c1cb44d9e7a8bf9bc29559d4933878298c3ec96dec6"
+    },
+    "risk_flags": {
+      "category": "audits",
+      "file": "audits/risk_flags.json",
+      "records_count": 6,
+      "size_bytes": 3264,
+      "sha256": "3e82d6d007779542f9dbbfef23c1eb7938682f27f9830618ea05f5afc45e10d5"
+    },
+    "single_deed_scans": {
+      "category": "audits",
+      "file": "audits/single_deed_scans.json",
+      "records_count": 29,
+      "size_bytes": 82941,
+      "sha256": "49c86a7e548b70d5d5a38580f8300e4b65da1b00876a4d4003070da016e47c26"
+    },
+    "sample_documents": {
+      "category": "documents",
+      "file": "documents/documents_index.json",
+      "records_count": 3,
+      "size_bytes": 775,
+      "sha256": "07a6266e1f940de140005a6c272f750d27002964792d3abaa108864707a39266"
+    }
+  },
+  "cloud_sync": {
+    "gcs": {
+      "synced": true,
+      "bucket": "bwg3-qwiklabs-gcp-03-690fd21cfd7e",
+      "gcs_uri_prefix": "gs://bwg3-qwiklabs-gcp-03-690fd21cfd7e/kandezhuthu-data/",
+      "uploaded_files_count": 19,
+      "last_synced_at": "2026-09-29T12:18:28.092890+00:00"
+    },
+    "firestore": {
+      "synced": true,
+      "database": "(default)",
+      "project": "qwiklabs-gcp-03-690fd21cfd7e",
+      "total_documents": 88,
+      "collections": {
+        "kandezhuthu_building_rules": 5,
+        "kandezhuthu_paddy_fee_slabs": 4,
+        "kandezhuthu_legal_precedents": 11,
+        "kandezhuthu_administrative_divisions": 19,
+        "kandezhuthu_properties": 2,
+        "kandezhuthu_deed_records": 5,
+        "kandezhuthu_encumbrance_records": 5,
+        "kandezhuthu_audit_reports": 2,
+        "kandezhuthu_risk_flags": 6,
+        "kandezhuthu_single_deed_scans": 29
+      },
+      "last_synced_at": "2026-09-29T12:18:29.303798+00:00"
+    }
+  }
+}

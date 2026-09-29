@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "property_identifier": "Re-Sy 345/1, Aluva West Village, Ernakulam",
+    "survey_no": "345/1",
+    "resurvey_no": "345/1",
+    "village": "Aluva West",
+    "taluk": "Aluva",
+    "district": "Ernakulam",
+    "sro_name": "Aluva",
+    "extent_cents": 10.0,
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 2,
+    "property_identifier": "Re-Sy 345/1, Aluva West Village, 10 Cents",
+    "survey_no": "345/1",
+    "resurvey_no": null,
+    "village": null,
+    "taluk": null,
+    "district": null,
+    "sro_name": null,
+    "extent_cents": 10.0,
+    "created_at": "2026-09-29 11:29:54"
+  }
+]

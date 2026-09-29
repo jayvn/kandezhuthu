@@ -1,0 +1,63 @@
+[
+  {
+    "id": 1,
+    "property_id": 1,
+    "doc_number": "214/1982",
+    "year": 1982,
+    "sro_name": "Aluva",
+    "nature": "Pattayam",
+    "parties_json": [
+      "Chacko Varghese"
+    ],
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 2,
+    "property_id": 1,
+    "doc_number": "890/1996",
+    "year": 1996,
+    "sro_name": "Aluva",
+    "nature": "Partition",
+    "parties_json": [
+      "George Chacko",
+      "Thomas Chacko"
+    ],
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 3,
+    "property_id": 1,
+    "doc_number": "1420/2014",
+    "year": 2014,
+    "sro_name": "Aluva",
+    "nature": "Sale",
+    "parties_json": [
+      "George Chacko",
+      "Suresh Nair"
+    ],
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 4,
+    "property_id": 1,
+    "doc_number": "3012/2022",
+    "year": 2022,
+    "sro_name": "Aluva",
+    "nature": "Equitable Mortgage - Federal Bank",
+    "parties_json": [
+      "Suresh Nair",
+      "Federal Bank"
+    ],
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 5,
+    "property_id": 2,
+    "doc_number": "G-142/2018",
+    "year": 2018,
+    "sro_name": "Aluva",
+    "nature": "Mortgage by Deposit of Title Deeds / Gehan",
+    "parties_json": [],
+    "created_at": "2026-09-29 11:29:54"
+  }
+]

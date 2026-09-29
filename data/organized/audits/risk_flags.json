@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "audit_report_id": 1,
+    "category": "SUCCESSION",
+    "severity": "CRITICAL",
+    "title": "Mary Roy Precedent: Christian Daughter Omitted",
+    "description": "Daughter Mary Chacko excluded from 1996 partition deed",
+    "legal_citation": "Mary Roy v. State of Kerala (1986 AIR 1011)",
+    "remedial_action": "Obtain registered release deed from Mary Chacko"
+  },
+  {
+    "id": 2,
+    "audit_report_id": 1,
+    "category": "ENCUMBRANCE",
+    "severity": "CRITICAL",
+    "title": "Ghost Mortgage Detected in EC",
+    "description": "Doc 3012/2022 shows active mortgage with Federal Bank",
+    "legal_citation": "Transfer of Property Act Sec 58 / Sec 17 Registration Act",
+    "remedial_action": "Demand Bank Loan Clearance & Original Title Deeds"
+  },
+  {
+    "id": 3,
+    "audit_report_id": 1,
+    "category": "EXTENT",
+    "severity": "HIGH",
+    "title": "Extent Inflation: Nemo Dat Quod Non Habet",
+    "description": "Seller conveyed 11.0 cents but parent deed 890/1996 only granted 10.0 cents",
+    "legal_citation": "Transfer of Property Act Sec 7 & 8",
+    "remedial_action": "Verify actual surveyed boundary extent"
+  },
+  {
+    "id": 4,
+    "audit_report_id": 2,
+    "category": "CHAIN_OF_TITLE_GAP",
+    "severity": "CRITICAL",
+    "title": "Gap in Chain of Title between 450/1988 and 1120/2012",
+    "description": "Grantees of deed 450/1988 (Family Head) do not match grantors in subsequent deed 1120/2012 (Family Co-sharers). Missing link in ownership chain (possible unrecorded inheritance, death, or third-party conveyance).",
+    "legal_citation": "Transfer of Property Act, 1882 (Section 7 - Persons competent to transfer)",
+    "remedial_action": "Obtain missing link document (Legal Heirship Certificate, Partition Deed, or prior Sale Deed) establishing how Family Co-sharers acquired title from Family Head."
+  },
+  {
+    "id": 5,
+    "audit_report_id": 2,
+    "category": "EXTENT_INFLATION",
+    "severity": "HIGH",
+    "title": "Extent Deficit: 1120/2012 conveys more land than prior deed",
+    "description": "Prior deed 450/1988 (1988) conveyed 8.50 Cents, but subsequent deed 1120/2012 (2012) purports to convey 10.00 Cents (+1.50 Cents unbacked by title).",
+    "legal_citation": "Nemo dat quod non habet (No one can transfer a better title than he has)",
+    "remedial_action": "Demand seller provide a certified surveyor sketch or rectification deed explaining the 1.50 Cent difference. Do not purchase unbacked extent without Village Officer Field Measurement Book (FMB) verification."
+  },
+  {
+    "id": 6,
+    "audit_report_id": 2,
+    "category": "GHOST_ENCUMBRANCE_IN_EC",
+    "severity": "CRITICAL",
+    "title": "Undisclosed Transaction Found in EC: Doc #G-142/2018",
+    "description": "The SRO Encumbrance Certificate logs a registered entry (Doc #G-142/2018, Nature: Mortgage by Deposit of Title Deeds / Gehan) that was NOT provided in the seller's prior deeds dossier. Possible mortgage, attachment, or partial sale.",
+    "legal_citation": "Indian Registration Act, 1908 (Section 17 & Section 51)",
+    "remedial_action": "Apply for a certified copy of Doc #G-142/2018 from the Sub-Registrar Office immediately. Do not pay any advance until this registered document is inspected and cleared."
+  }
+]

@@ -1,0 +1,132 @@
+[
+  {
+    "id": 1,
+    "property_id": 1,
+    "doc_number": "214/1982",
+    "year": 1982,
+    "sro_name": "Aluva",
+    "deed_type": "Pattayam (Govt Land Assignment)",
+    "grantors_json": [
+      "Special Tahsildar (Land Assignment)"
+    ],
+    "grantees_json": [
+      "Chacko Varghese"
+    ],
+    "extent_cents": 10.0,
+    "survey_no": "345/1",
+    "resurvey_no": "345/1",
+    "consideration_inr": 0.0,
+    "prior_doc_referenced": null,
+    "is_minor_involved": 0,
+    "minor_court_sanction_present": 0,
+    "unrepresented_heirs_json": [],
+    "easements_reserved_json": [],
+    "family_religion": "christian",
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 2,
+    "property_id": 1,
+    "doc_number": "890/1996",
+    "year": 1996,
+    "sro_name": "Aluva",
+    "deed_type": "Bhagapathram (Partition Deed)",
+    "grantors_json": [
+      "Chacko Varghese (Deceased Estate)"
+    ],
+    "grantees_json": [
+      "George Chacko",
+      "Thomas Chacko"
+    ],
+    "extent_cents": 10.0,
+    "survey_no": "345/1",
+    "resurvey_no": "345/1",
+    "consideration_inr": 0.0,
+    "prior_doc_referenced": "214/1982",
+    "is_minor_involved": 0,
+    "minor_court_sanction_present": 0,
+    "unrepresented_heirs_json": [
+      "Mary Chacko (Sister / Daughter)"
+    ],
+    "easements_reserved_json": [],
+    "family_religion": "christian",
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 3,
+    "property_id": 1,
+    "doc_number": "1420/2014",
+    "year": 2014,
+    "sro_name": "Aluva",
+    "deed_type": "Theeradharam (Sale Deed)",
+    "grantors_json": [
+      "George Chacko"
+    ],
+    "grantees_json": [
+      "Current Seller: Suresh Nair"
+    ],
+    "extent_cents": 11.0,
+    "survey_no": "345/1",
+    "resurvey_no": "345/1",
+    "consideration_inr": 4500000.0,
+    "prior_doc_referenced": "890/1996",
+    "is_minor_involved": 0,
+    "minor_court_sanction_present": 0,
+    "unrepresented_heirs_json": [],
+    "easements_reserved_json": [
+      "3-meter motorable pathway along southern boundary reserved for Thomas Chacko"
+    ],
+    "family_religion": "hindu",
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 4,
+    "property_id": 2,
+    "doc_number": "450/1988",
+    "year": 1988,
+    "sro_name": "Aluva",
+    "deed_type": "DeedType.THEERADHARAM",
+    "grantors_json": [
+      "Previous Owner"
+    ],
+    "grantees_json": [
+      "Family Head"
+    ],
+    "extent_cents": 8.5,
+    "survey_no": "345/1",
+    "resurvey_no": null,
+    "consideration_inr": 0.0,
+    "prior_doc_referenced": null,
+    "is_minor_involved": 0,
+    "minor_court_sanction_present": 0,
+    "unrepresented_heirs_json": [],
+    "easements_reserved_json": [],
+    "family_religion": "hindu",
+    "created_at": "2026-09-29 11:29:54"
+  },
+  {
+    "id": 5,
+    "property_id": 2,
+    "doc_number": "1120/2012",
+    "year": 2012,
+    "sro_name": "Aluva",
+    "deed_type": "DeedType.BHAGAPATHRAM",
+    "grantors_json": [
+      "Family Co-sharers"
+    ],
+    "grantees_json": [
+      "Present Vendor"
+    ],
+    "extent_cents": 10.0,
+    "survey_no": "345/1",
+    "resurvey_no": null,
+    "consideration_inr": 0.0,
+    "prior_doc_referenced": null,
+    "is_minor_involved": 0,
+    "minor_court_sanction_present": 0,
+    "unrepresented_heirs_json": [],
+    "easements_reserved_json": [],
+    "family_religion": "hindu",
+    "created_at": "2026-09-29 11:29:54"
+  }
+]

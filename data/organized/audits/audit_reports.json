@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "property_id": 1,
+    "session_id": "demo_session",
+    "overall_score": 30,
+    "risk_level": "DANGER",
+    "chain_of_custody_intact": 1,
+    "lineage_path_json": [
+      "214/1982",
+      "890/1996",
+      "1420/2014"
+    ],
+    "advocate_recommendations_json": [
+      "Obtain registered Ozhivumuri from Mary Chacko or legal heirs under Mary Roy precedent.",
+      "Demand original Title Deeds & Form 16 / MODT cancellation deed from Federal Bank before advancing funds.",
+      "Verify Taluk survey demarcations regarding 1.0 cent extent inflation (11 cents sold vs 10 cents held)."
+    ],
+    "whatsapp_malayalam_draft": "നമസ്കാരം, ആലുവ സബ് രജിസ്ട്രാർ ഓഫീസിലെ 1420/2014 ആധാരപ്രകാരമുള്ള വസ്തുവിൻ്റെ ബാങ്ക് ബാധ്യത (ഫെഡറൽ ബാങ്ക്) ഒഴിവാക്കിയ സർട്ടിഫിക്കറ്റും മുൻ ഉടമസ്ഥരുടെ അവകാശരേഖകളും പരിശോധിക്കാൻ ലഭ്യമാക്കുമോ?",
+    "created_at": "2026-09-29 10:18:13"
+  },
+  {
+    "id": 2,
+    "property_id": 2,
+    "session_id": null,
+    "overall_score": 10,
+    "risk_level": "CRITICAL RISK - DO NOT PROCEED",
+    "chain_of_custody_intact": 0,
+    "lineage_path_json": [
+      "1988: Theeradharam (Sale Deed) (Doc #450/1988, SRO Aluva) | Previous Owner -> Family Head [8.50 Cents]",
+      "2012: Bhagapathram (Partition Deed) (Doc #1120/2012, SRO Aluva) | Family Co-sharers -> Present Vendor [10.00 Cents]"
+    ],
+    "advocate_recommendations_json": [
+      "[CHAIN_OF_TITLE_GAP] Obtain missing link document (Legal Heirship Certificate, Partition Deed, or prior Sale Deed) establishing how Family Co-sharers acquired title from Family Head.",
+      "[EXTENT_INFLATION] Demand seller provide a certified surveyor sketch or rectification deed explaining the 1.50 Cent difference. Do not purchase unbacked extent without Village Officer Field Measurement Book (FMB) verification.",
+      "[GHOST_ENCUMBRANCE_IN_EC] Apply for a certified copy of Doc #G-142/2018 from the Sub-Registrar Office immediately. Do not pay any advance until this registered document is inspected and cleared."
+    ],
+    "whatsapp_malayalam_draft": "",
+    "created_at": "2026-09-29 11:29:54"
+  }
+]
