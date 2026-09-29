@@ -3027,6 +3027,38 @@ function setLanguage(lang) {
 
   const elDisclaimer = document.getElementById("legal-disclaimer");
   if (elDisclaimer) elDisclaimer.innerHTML = t.disclaimer;
+
+  // Refresh any currently rendered cards in DOM
+  document.querySelectorAll(".whatsapp-card").forEach(card => {
+    const titleEl = card.querySelector(".whatsapp-title");
+    if (titleEl) {
+      if (lang === "en") {
+        if (titleEl.textContent.includes("വാട്സാപ്പ്") || titleEl.textContent.includes("ചോദ്യം") || titleEl.textContent.includes("Malayalam")) {
+          titleEl.textContent = (titleEl.textContent.includes("ബാങ്ക്") || titleEl.textContent.includes("NOC"))
+            ? "📱 WhatsApp Inquiry for Bank NOC / Release Deed"
+            : ((titleEl.textContent.includes("ബ്രോക്കർ") || titleEl.textContent.includes("Broker"))
+              ? "📱 WhatsApp Inquiry for Broker / Seller:"
+              : "📱 WhatsApp Inquiry for Seller / Broker:");
+        }
+      } else {
+        if (titleEl.textContent.includes("Inquiry") || titleEl.textContent.includes("Seller")) {
+          titleEl.textContent = (titleEl.textContent.includes("NOC") || titleEl.textContent.includes("Bank"))
+            ? "📱 ബാങ്ക് NOC / ഒഴിവുമുറിക്കായുള്ള വാട്സാപ്പ് സന്ദേശം"
+            : (titleEl.textContent.includes("Broker")
+              ? "📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യങ്ങൾ (WhatsApp):"
+              : "📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യം (WhatsApp):");
+        }
+      }
+    }
+  });
+
+  document.querySelectorAll(".boundary-title").forEach(el => {
+    el.textContent = lang === "ml" ? "🧭 നാലതിരുകൾ (ചതുരതിരുകൾ):" : "🧭 Four Boundaries Schedule:";
+  });
+
+  document.querySelectorAll(".prior-title").forEach(el => {
+    el.textContent = lang === "ml" ? "🔗 മുന്നാധാര വിവരങ്ങൾ (Prior Title Lineage):" : "🔗 Prior Title Lineage:";
+  });
 }
 
 function getLocalizedBasinName(basinStr, isMl) {
@@ -3275,7 +3307,7 @@ function formatMarkdown(text) {
       const waCard = `
         <div class="whatsapp-card">
           <div class="whatsapp-header">
-            <span class="whatsapp-title">📱 Malayalam WhatsApp Inquiry for Seller / Broker</span>
+            <span class="whatsapp-title">${currentLanguage === 'ml' ? '📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം (WhatsApp)' : '📱 WhatsApp Inquiry for Seller / Broker'}</span>
             <div class="whatsapp-actions">
               <button class="copy-btn" onclick="copyText(this)">
                 📋 Copy Draft
@@ -3449,7 +3481,7 @@ async function handleDeedUpload(file) {
     formData.append("user_id", "web-user");
 
     const isEc = file.name.toLowerCase().includes("ec") || file.name.toLowerCase().includes("encumbrance") || file.name.toLowerCase().includes("kudikkadam");
-    const endpoint = isEc ? "/api/upload_ec" : "/api/upload_deed";
+    const endpoint = (isEc ? "/api/upload_ec" : "/api/upload_deed") + `?lang=${currentLanguage}`;
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -3512,7 +3544,7 @@ async function runSampleDeedOCR(docType = "deed") {
   `);
 
   try {
-    const res = await fetch(`/api/sample_deed?doc_type=${docType}&process=true&user_id=web-user`);
+    const res = await fetch(`/api/sample_deed?doc_type=${docType}&process=true&user_id=web-user&lang=${currentLanguage}`);
     if (!res.ok) throw new Error("Could not process sample document");
     const result = await res.json();
     setTimeout(() => {
@@ -3588,12 +3620,12 @@ function renderDeedAuditCard(container, data, fileName) {
         ${entriesHtml}
         <div class="whatsapp-card" style="margin-top:12px;">
           <div class="whatsapp-header">
-            <span class="whatsapp-title">📱 Malayalam WhatsApp Inquiry for Bank NOC / Release Deed</span>
+            <span class="whatsapp-title">${currentLanguage === 'ml' ? '📱 ബാങ്ക് NOC / ഒഴിവുമുറിക്കായുള്ള വാട്സാപ്പ് സന്ദേശം' : '📱 WhatsApp Inquiry for Bank NOC / Release Deed'}</span>
             <div class="whatsapp-actions">
               <button class="copy-btn" onclick="copyText(this)">📋 Copy Draft</button>
             </div>
           </div>
-          <div class="whatsapp-text">${data.whatsapp_inquiry}</div>
+          <div class="whatsapp-text">${(currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry}</div>
         </div>
       </div>
     `;
@@ -3619,7 +3651,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (meta.boundaries && meta.boundaries.length) {
     boundariesHtml = `
       <div class="boundary-box">
-        <div class="boundary-title">🧭 Four Boundaries (ചതുരതിരുകൾ):</div>
+        <div class="boundary-title">${currentLanguage === 'ml' ? '🧭 നാലതിരുകൾ (ചതുരതിരുകൾ):' : '🧭 Four Boundaries Schedule:'}</div>
         ${meta.boundaries.map(b => `
           <div class="boundary-row">
             <span class="boundary-dir">${b.direction}:</span>
@@ -3635,7 +3667,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (meta.prior_deeds && meta.prior_deeds.length) {
     priorHtml = `
       <div class="prior-deeds-box">
-        <div class="prior-title">🔗 Prior Title Lineage (മുന്നാധാരം):</div>
+        <div class="prior-title">${currentLanguage === 'ml' ? '🔗 മുന്നാധാര വിവരങ്ങൾ (Prior Title Lineage):' : '🔗 Prior Title Lineage:'}</div>
         ${meta.prior_deeds.map(p => `
           <div class="prior-item">
             <strong>${p.doc_number || "Doc"}</strong> ${p.year ? `(${p.year})` : ""} - ${p.deed_type || "Prior Deed"}
@@ -3651,11 +3683,11 @@ function renderDeedAuditCard(container, data, fileName) {
   if (sanity.findings && sanity.findings.length) {
     findingsHtml = `
       <div class="findings-box">
-        <div style="font-weight:700; color:#b91c1c; font-size:0.82rem; margin-bottom:0.35rem;">⚠️ Statutory Red Flags Detected:</div>
+        <div style="font-weight:700; color:#b91c1c; font-size:0.82rem; margin-bottom:0.35rem;">⚠️ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
         ${sanity.findings.map(f => `
           <div class="finding-alert ${f.severity === 'CRITICAL' ? 'critical' : ''}">
             <div class="finding-alert-header">
-              <span>${f.title} (${f.title_malayalam || ''})</span>
+              <span>${f.title} ${currentLanguage === 'ml' && f.title_malayalam ? `(${f.title_malayalam})` : ''}</span>
               <span style="font-size:0.7rem; text-transform:uppercase;">${f.severity}</span>
             </div>
             <div>${f.explanation}</div>
@@ -3694,19 +3726,20 @@ function renderDeedAuditCard(container, data, fileName) {
 
   // WhatsApp draft card
   let waHtml = "";
-  if (data.whatsapp_draft) {
-    const safeWa = data.whatsapp_draft.replace(/"/g, '&quot;');
-    const waEncoded = encodeURIComponent(data.whatsapp_draft);
+  const waDraft = (currentLanguage === 'en' && data.whatsapp_draft_en) ? data.whatsapp_draft_en : data.whatsapp_draft;
+  if (waDraft) {
+    const safeWa = waDraft.replace(/"/g, '&quot;');
+    const waEncoded = encodeURIComponent(waDraft);
     waHtml = `
       <div class="whatsapp-card">
         <div class="whatsapp-header">
-          <div class="whatsapp-title">📱 Malayalam WhatsApp Question for Seller:</div>
+          <div class="whatsapp-title">${currentLanguage === 'ml' ? '📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യം (WhatsApp):' : '📱 WhatsApp Inquiry for Seller / Broker:'}</div>
           <div class="whatsapp-actions">
             <button class="copy-btn" onclick="copyWhatsApp(this)">📋 Copy</button>
             <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
           </div>
         </div>
-        <div class="whatsapp-text">${data.whatsapp_draft}</div>
+        <div class="whatsapp-text">${waDraft}</div>
       </div>
     `;
   }
@@ -3716,10 +3749,12 @@ function renderDeedAuditCard(container, data, fileName) {
     buyerVerdictHtml = `
       <div class="buyer-verdict-box danger">
         <div class="buyer-verdict-title">
-          <span>🛑 ടോക്കൺ അഡ്വാൻസ് നൽകരുത് (DO NOT PAY ADVANCE MONEY YET!)</span>
+          <span>🛑 ${currentLanguage === 'ml' ? 'ടോക്കൺ അഡ്വാൻസ് നൽകരുത് (DO NOT PAY ADVANCE MONEY YET!)' : 'DO NOT PAY ADVANCE MONEY YET!'}</span>
         </div>
         <div class="buyer-verdict-text">
-          <strong>നിർണായക മുന്നറിയിപ്പ്:</strong> ഈ രേഖയിൽ ഗുരുതരമായ <strong>നിയമക്കുരുക്കുകൾ</strong> കണ്ടെത്തിയിട്ടുണ്ട്. സെല്ലർ താഴെ കാണുന്ന വാട്സാപ്പ് ചോദ്യങ്ങൾക്ക് ഒറിജിനൽ രേഖകൾ സഹിതം വ്യക്തത നൽകുന്നത് വരെ ടോക്കൺ അഡ്വാൻസോ എഗ്രിമെന്റ് തുകയോ കൈമാറരുത്.
+          ${currentLanguage === 'ml'
+            ? '<strong>നിർണായക മുന്നറിയിപ്പ്:</strong> ഈ രേഖയിൽ ഗുരുതരമായ <strong>നിയമക്കുരുക്കുകൾ</strong> കണ്ടെത്തിയിട്ടുണ്ട്. സെല്ലർ താഴെ കാണുന്ന വാട്സാപ്പ് ചോദ്യങ്ങൾക്ക് ഒറിജിനൽ രേഖകൾ സഹിതം വ്യക്തത നൽകുന്നത് വരെ ടോക്കൺ അഡ്വാൻസോ എഗ്രിമെന്റ് തുകയോ കൈമാറരുത്.'
+            : '<strong>Critical Warning:</strong> Severe <strong>statutory title traps</strong> detected. Do not pay token advance or earnest money until the seller provides original documents clarifying the WhatsApp inquiry below.'}
         </div>
       </div>
     `;
@@ -3727,10 +3762,12 @@ function renderDeedAuditCard(container, data, fileName) {
     buyerVerdictHtml = `
       <div class="buyer-verdict-box caution">
         <div class="buyer-verdict-title">
-          <span>⚠️ സംശയങ്ങൾ ചോദിച്ചു ഉറപ്പാക്കുക (CAUTION: VERIFY BEFORE ADVANCE)</span>
+          <span>⚠️ ${currentLanguage === 'ml' ? 'സംശയങ്ങൾ ചോദിച്ചു ഉറപ്പാക്കുക (CAUTION: VERIFY BEFORE ADVANCE)' : 'CAUTION: VERIFY BEFORE PAYING ADVANCE'}</span>
         </div>
         <div class="buyer-verdict-text">
-          രേഖകളിൽ ചില പൊരുത്തക്കേടുകൾ ഉള്ളതിനാൽ ബാധ്യതാ സർട്ടിഫിക്കറ്റും (EC) മുന്നാധാരങ്ങളും പരിശോധിച്ച ശേഷം മാത്രം അഡ്വാൻസ് നൽകുക.
+          ${currentLanguage === 'ml'
+            ? 'രേഖകളിൽ ചില പൊരുത്തക്കേടുകൾ ഉള്ളതിനാൽ ബാധ്യതാ സർട്ടിഫിക്കറ്റും (EC) മുന്നാധാരങ്ങളും പരിശോധിച്ച ശേഷം മാത്രം അഡ്വാൻസ് നൽകുക.'
+            : 'Discrepancies found in deed recitals or extent. Verify 30-year Encumbrance Certificate (EC) and prior title deeds before parting with funds.'}
         </div>
       </div>
     `;
@@ -3738,10 +3775,12 @@ function renderDeedAuditCard(container, data, fileName) {
     buyerVerdictHtml = `
       <div class="buyer-verdict-box clear">
         <div class="buyer-verdict-title">
-          <span>🟢 പ്രാഥമിക പരിശോധനയിൽ രേഖകൾ സുരക്ഷിതം (DOCUMENTS APPEAR CLEAR)</span>
+          <span>🟢 ${currentLanguage === 'ml' ? 'പ്രാഥമിക പരിശോധനയിൽ രേഖകൾ സുരക്ഷിതം (DOCUMENTS APPEAR CLEAR)' : 'PRELIMINARY TITLE APPEARS CLEAR'}</span>
         </div>
         <div class="buyer-verdict-text">
-          രേഖകളിൽ പ്രകടമായ കുരുക്കുകൾ ഇല്ല. എങ്കിലും സർവേ കല്ലുകൾ നേരിട്ട് അളന്നു ബോധ്യപ്പെടുകയും വക്കീൽ പരിശോധന പൂർത്തിയാക്കുകയും ചെയ്യുക.
+          ${currentLanguage === 'ml'
+            ? 'രേഖകളിൽ പ്രകടമായ കുരുക്കുകൾ ഇല്ല. എങ്കിലും സർവേ കല്ലുകൾ നേരിട്ട് അളന്നു ബോധ്യപ്പെടുകയും വക്കീൽ പരിശോധന പൂർത്തിയാക്കുകയും ചെയ്യുക.'
+            : 'No fatal traps detected in document recitals. Verify physical boundary stones (Survey Kallu) on site and complete advocate scrutiny.'}
         </div>
       </div>
     `;
@@ -3868,13 +3907,13 @@ async function openOwnershipTimeline(preset = 'aluva_broken') {
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <span style="font-size:0.85rem; color:#0f5132; margin-left:6px; font-weight:600;">
-        Reconstructing 30-year chronological title chain (മുന്നാധാരം) across decades...
+        ${currentLanguage === 'ml' ? '30 വർഷത്തെ മുന്നാധാര ശൃംഖല പരിശോധിക്കുന്നു...' : 'Reconstructing 30-year chronological title chain across decades...'}
       </span>
     </div>
   `);
 
   try {
-    const res = await fetch(`/api/timeline_demo?preset=${preset}`);
+    const res = await fetch(`/api/timeline_demo?preset=${preset}&lang=${currentLanguage}`);
     if (!res.ok) throw new Error("Could not load ownership timeline");
     const data = await res.json();
     renderOwnershipTimeline(loadingBubble, data, preset);
@@ -3945,7 +3984,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             <div class="timeline-doc-title">
               <span class="timeline-year-tag">${node.year}</span>
               <span>${node.deed_type}</span>
-              <span style="font-weight:400; color:#475569; font-size:0.78rem;">(${node.deed_malayalam || ''})</span>
+              <span style="font-weight:400; color:#475569; font-size:0.78rem;">${currentLanguage === 'ml' && node.deed_malayalam ? `(${node.deed_malayalam})` : ''}</span>
             </div>
             <div style="display:flex; align-items:center; gap:0.35rem;">
               <span class="timeline-extent-tag">📐 ${node.extent_cents} Cents</span>
@@ -3969,19 +4008,20 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
   }).join("");
 
   let waHtml = "";
-  if (data.whatsapp_inquiry) {
-    const safeWa = data.whatsapp_inquiry.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-    const waEncoded = encodeURIComponent(data.whatsapp_inquiry);
+  const waInquiry = (currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry;
+  if (waInquiry) {
+    const safeWa = waInquiry.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const waEncoded = encodeURIComponent(waInquiry);
     waHtml = `
       <div class="whatsapp-card" style="margin-top:1rem;">
         <div class="whatsapp-header">
-          <div class="whatsapp-title">📱 Malayalam WhatsApp Questions for Broker / Seller:</div>
+          <div class="whatsapp-title">${currentLanguage === 'ml' ? '📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യങ്ങൾ (WhatsApp):' : '📱 WhatsApp Inquiry for Broker / Seller:'}</div>
           <div class="whatsapp-actions">
             <button class="copy-btn" onclick="copyWhatsApp(this)">📋 Copy Draft</button>
             <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">💬 Send WhatsApp</a>
           </div>
         </div>
-        <div class="whatsapp-text">${data.whatsapp_inquiry}</div>
+        <div class="whatsapp-text">${waInquiry}</div>
       </div>
     `;
   }
@@ -4216,7 +4256,11 @@ async function exportPlotDossier() {
       side_setback_1_m: 1.0,
       side_setback_2_m: 1.2
     },
-    whatsapp_inquiry: `നമസ്കാരം, ${locality}-ൽ ഞാൻ കണ്ട വസ്തുവിന്റെ സാറ്റലൈറ്റ് പരിശോധനയിൽ ഏകദേശം ${centsVal} സെന്റ് സ്ഥലവും ${roadMVal} മീറ്റർ വഴി വീതിയും കാണുന്നുണ്ട്. ഈ വസ്തുവിലേക്കുള്ള വഴി പഞ്ചായത്ത് വഴിയാണോ അതോ സ്വകാര്യ വഴിയവകാശമാണോ എന്ന് വ്യക്തമാക്കാമോ?`
+    whatsapp_inquiry: currentLanguage === 'ml'
+      ? `നമസ്കാരം, ${locality}-ൽ ഞാൻ കണ്ട വസ്തുവിന്റെ സാറ്റലൈറ്റ് പരിശോധനയിൽ ഏകദേശം ${centsVal} സെന്റ് സ്ഥലവും ${roadMVal} മീറ്റർ വഴി വീതിയും കാണുന്നുണ്ട്. ഈ വസ്തുവിലേക്കുള്ള വഴി പഞ്ചായത്ത് വഴിയാണോ അതോ സ്വകാര്യ വഴിയവകാശമാണോ എന്ന് വ്യക്തമാക്കാമോ?`
+      : `Hello, based on satellite analysis of the plot in ${locality} (~${centsVal} Cents, ~${roadMVal}m road width), could you please clarify whether the access road is a dedicated public Panchayat/Municipal road or a private easement pathway?`,
+    whatsapp_inquiry_en: `Hello, based on satellite analysis of the plot in ${locality} (~${centsVal} Cents, ~${roadMVal}m road width), could you please clarify whether the access road is a dedicated public Panchayat/Municipal road or a private easement pathway?`,
+    lang: currentLanguage
   };
 
   if (window.currentElevationData) {
@@ -5600,7 +5644,7 @@ async function checkDataBankStatus() {
   const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
 
   try {
-    const res = await fetch(`/api/databank_check?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&fair_value=240000`);
+    const res = await fetch(`/api/databank_check?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&fair_value=240000&lang=${currentLanguage}`);
     if (!res.ok) throw new Error("Could not verify Data Bank status");
     const data = await res.json();
 
@@ -5619,6 +5663,7 @@ async function checkDataBankStatus() {
       `;
     }
 
+    const waText = (currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry;
     appendMsg("agent", `
       <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin:6px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -5635,8 +5680,8 @@ async function checkDataBankStatus() {
           ℹ️ <strong>Building Permit Status:</strong> ${data.building_permit_eligibility}
         </div>
         <div style="margin-top:8px; font-size:0.8rem; background:#f0fdf4; border:1px solid #bbf7d0; padding:8px; border-radius:6px;">
-          <div style="font-weight:700; color:#166534; margin-bottom:3px;">📱 WhatsApp Draft for Seller:</div>
-          <div style="color:#14532d; font-family:'Noto Sans Malayalam', sans-serif;">"${data.whatsapp_inquiry}"</div>
+          <div style="font-weight:700; color:#166534; margin-bottom:3px;">${currentLanguage === 'ml' ? '📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം:' : '📱 WhatsApp Inquiry for Seller:'}</div>
+          <div style="color:#14532d;">"${waText}"</div>
         </div>
       </div>
     `);
