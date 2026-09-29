@@ -27,6 +27,7 @@ from app.domain.deed_ocr import DeedOCREngine  # noqa: E402
 from app.domain.elevation_flood import ElevationFloodCalculator  # noqa: E402
 from app.domain.ec_parser import EncumbranceCertificateAuditor  # noqa: E402
 from app.domain.cadastral_databank import BhuNakshaCadastralService, KeralaDataBankService  # noqa: E402
+from app.domain.data_api import DataAPI  # noqa: E402
 
 seed_all()
 
@@ -496,6 +497,62 @@ async def pwa_manifest():
     if m_path.exists():
         return Response(content=m_path.read_text(encoding="utf-8"), media_type="application/manifest+json")
     return Response(status_code=404)
+
+
+@app.get("/api/data/status")
+async def get_data_status():
+    """Returns status of local organized data copy and Google Cloud Storage / Firestore sync."""
+    data_api = DataAPI()
+    return JSONResponse(data_api.get_status())
+
+
+@app.post("/api/data/organize")
+async def organize_data_local():
+    """Extracts and organizes all SQLite, knowledge, and sample deed assets into local structured copies."""
+    data_api = DataAPI()
+    result = data_api.organize_local()
+    return JSONResponse(result)
+
+
+@app.post("/api/data/sync")
+async def sync_data_cloud(target: str = "all"):
+    """Synchronizes organized data to Google Cloud tools ('gcs', 'firestore', or 'all')."""
+    data_api = DataAPI()
+    if target == "gcs":
+        result = data_api.sync_to_gcs()
+    elif target == "firestore":
+        result = data_api.sync_to_firestore()
+    else:
+        result = data_api.organize_and_sync_all()
+    return JSONResponse(result)
+
+
+@app.get("/api/data/collections")
+async def list_data_collections():
+    """Lists all organized collections with metadata and record counts."""
+    data_api = DataAPI()
+    status = data_api.get_status()
+    if not status.get("organized"):
+        data_api.organize_local()
+        status = data_api.get_status()
+    return JSONResponse(
+        {
+            "total_collections": status.get("total_collections", 0),
+            "total_records": status.get("total_records", 0),
+            "collections": status.get("collections", {}),
+        }
+    )
+
+
+@app.get("/api/data/collection/{name}")
+async def get_collection_data(name: str, limit: int = 50):
+    """Retrieves items from an organized collection."""
+    data_api = DataAPI()
+    try:
+        items = data_api.query_collection(name, limit=limit)
+        return JSONResponse({"collection": name, "count": len(items), "items": items})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=404)
 
 
 @app.get("/api/sample_deed")
