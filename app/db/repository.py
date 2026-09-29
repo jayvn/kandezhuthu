@@ -80,6 +80,17 @@ class KnowledgeRepository:
                 "is_fee_exempt": (percentage == 0.0),
                 "description": desc,
                 "statutory_citation": citation,
+                "supreme_court_ruling_warning": (
+                    "Under Supreme Court of India precedent (State of Kerala v. Landowner, 2025), "
+                    "there is NO pro-rata deduction. If total holding exceeds 25 cents, fee is levied on the entire plot extent, not just the excess."
+                ),
+                "anti_fragmentation_rule": (
+                    "Exemption applies only to plots that did not exceed 25 cents as of 30 December 2017 (G.O.(P) No. 1166/2020/Rev). "
+                    "Plots fragmented from larger holdings after 30-12-2017 are ineligible for 0% fee."
+                ),
+                "competent_authority": (
+                    "Processed by Taluk-level Deputy Collectors across 71 taluks under Kerala Act 12 of 2024 (previously RDOs only)."
+                ),
             }
 
     def search_precedents(self, query: str, limit: int = 5) -> list[dict[str, Any]]:

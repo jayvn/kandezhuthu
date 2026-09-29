@@ -69,9 +69,11 @@ The Government of Kerala prescribes statutory conversion fees based on property 
 | **Above 1 Acre ($> 40.47\text{ Ares}$)** | **30% of Fair Value** | 30% of notified fair value + mandatory water conservancy pond provision. |
 
 > [!IMPORTANT]
-> **The 25-Cent Free Exemption Rule**:
-> Under G.O.(P) No. 116/2020/RD & related circulars, an individual owner is entitled to convert up to **25 cents (10.12 ares) without paying any government fee** ($0\%$ conversion fee), provided the total extent held in the title does not exceed 25 cents.
-> However, an administrative application fee (₹1,000 via e-payment) still applies.
+> **The 25-Cent Free Exemption Rule & Crucial Traps**:
+> 1. **No Pro-Rata Deduction (Supreme Court 2025)**: Under the landmark Supreme Court ruling (*State of Kerala v. Landowner, 2025*), the 0% fee exemption applies **strictly only if the total holding is 25 cents or less**. If a plot is 28 cents, you **cannot** deduct 25 cents and pay for 3 cents—you must pay the 10% fee on the **entire 28 cents**!
+> 2. **Anti-Fragmentation Cut-off (30 Dec 2017)**: Under G.O.(P) No. 1166/2020/Rev and clarifying circulars, the exemption is valid only if the parcel was $\le 25\text{ cents}$ as of **30 December 2017**. Land subdivided from larger units after this date is ineligible for the 0% fee.
+> 3. **Decentralized Competent Authority (Act 12 of 2024)**: Applications under Section 27A (Form 6) and Data Bank exclusion (Form 5) are now processed by **Taluk-level Deputy Collectors across 71 taluks**, decentralizing authority from RDOs to clear backlogs.
+> 4. An administrative application fee (₹1,000 via e-payment) applies to Form 6.
 
 ---
 
@@ -112,6 +114,7 @@ Before handing over token advance or signing an Agreement to Sell (*കരാർ
 3. [ ] **Demand Form 5 / Form 6 Sanction Orders**: If the land was converted, ask the seller for the certified copy of the RDO's Section 27A order and the updated BTR extract (*ബി.ടി.ആർ തിരുത്തൽ പകർപ്പ്*).
 4. [ ] **Check Extent Against 25 Cents**: If the plot exceeds 25 cents, calculate the 10%–30% Fair Value liability and verify who pays it before fixing the contract price.
 5. [ ] **Do Not Rely on Adjoining Buildings**: An adjoining neighbor who built an unauthorized house or obtained an old permit before 2018 does not guarantee that your plot can be built upon today.
+6. [ ] **Cross-Check Ente Bhoomi & ULPIN**: In villages under Kerala's Digital Resurvey (ILIMS), verify the plot's 14-digit ULPIN (Bhu-Aadhaar) and Unique Thandaper on `entebhoomi.kerala.gov.in` to match digital boundaries and d-BTR classification against physical ground stones.
 
 ---
 

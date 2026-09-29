@@ -35,6 +35,7 @@ class TrapFinding(BaseModel):
     matched_snippet: str
     kerala_statute: str
     whatsapp_question_for_seller: str
+    whatsapp_question_for_seller_en: str = ""
 
 
 class DeedSanityResult(BaseModel):
@@ -49,6 +50,7 @@ class DeedSanityResult(BaseModel):
             "Actual ground topography: Waterlogging, flooding history, or overhead high-tension electric cables.",
             "Unregistered claims: Oral family agreements (Vaymozi udanpadi) or pending civil court caveats.",
             "Physical access reality: Whether the road mentioned on paper is physically motorable on the ground.",
+            "Digital resurvey discrepancy: Cross-check ULPIN (Bhu-Aadhaar) and Unique Thandaper on entebhoomi.kerala.gov.in.",
         ]
     )
     mandatory_next_step: str = (
@@ -118,6 +120,11 @@ class SingleDeedScanner:
                         "ആധാരത്തിൽ വഴി അവകാശം പറഞ്ഞിട്ടുണ്ടല്ലോ ('" + snippet + "'). ഈ വഴി ഇപ്പോൾ സ്ഥലത്ത് എവിടെയാണ്? "
                         "അയൽവാസികൾക്ക് ഇതിലൂടെ വാഹന സഞ്ചാര അവകാശം ഉണ്ടോ?"
                     ),
+                    whatsapp_question_for_seller_en=(
+                        f"The deed specifically reserves an easement pathway right ('{snippet}'). "
+                        "Could you please clarify where this pathway is physically located on the ground, "
+                        "and whether neighboring owners hold vehicular access rights through it?"
+                    ),
                 )
             )
 
@@ -141,10 +148,14 @@ class SingleDeedScanner:
                             "CANNOT grant a residential building permit unless regularized under the 2008 Paddy Land Act."
                         ),
                         matched_snippet=snippet,
-                        kerala_statute="Kerala Conservation of Paddy Land and Wetland Act, 2008 (Section 27A & Form 5/6)",
+                        kerala_statute="Kerala Conservation of Paddy Land and Wetland Act, 2008 (Section 27A, Form 5/6 & Act 12 of 2024)",
                         whatsapp_question_for_seller=(
                             "വില്ലേജ് റിക്കാർഡിലും ഡാറ്റാ ബാങ്കിലും ഈ സ്ഥലം 'നിലം' ആണോ അതോ 'പുരയിടം' ആയി മാറിയിട്ടുണ്ടോ? "
                             "2008-ലെ നെൽവയൽ തണ്ണീർത്തട നിയമപ്രകാരം ഫോറം 5/6 അനുമതി ആവശ്യമുണ്ടോ?"
+                        ),
+                        whatsapp_question_for_seller_en=(
+                            f"In the Village Revenue Records and the 2008 Agricultural Data Bank, is this land categorized as 'Nilam' ('{snippet}') or converted to 'Purayidam'? "
+                            "Have Form 5 (Data Bank exclusion) and Section 27A (Form 6 conversion) orders been obtained?"
                         ),
                     )
                 )
@@ -174,6 +185,11 @@ class SingleDeedScanner:
                             "ആധാരത്തിൽ പ്രായപൂർത്തിയാകാത്ത ആളുടെ അവകാശം ഉൾപ്പെട്ടിട്ടുണ്ടല്ലോ ('" + snippet + "'). "
                             "ഇതിന് ജില്ലാ കോടതിയുടെ മുൻകൂർ അനുമതി (Sanction) വാങ്ങിയിട്ടുണ്ടോ? അതോ മൈനർക്ക് ഇപ്പോൾ പ്രായപൂർത്തിയായ ശേഷമുള്ള റിലീസ് ഡീഡ് ഉണ്ടോ?"
                         ),
+                        whatsapp_question_for_seller_en=(
+                            f"The deed indicates transfer of a minor's property interest ('{snippet}'). "
+                            "Was prior sanction obtained from the District Court under Section 8(2) of the HMGA, "
+                            "or is there a registered ratification / release deed executed by the minor upon attaining majority?"
+                        ),
                     )
                 )
 
@@ -189,14 +205,19 @@ class SingleDeedScanner:
                     title="Senior Citizen Maintenance / Conditional Life Covenant",
                     title_malayalam=mal_title,
                     explanation=(
-                        f"The deed contains a maintenance covenant ('{snippet}'). Under the Maintenance and Welfare of Parents "
-                        "and Senior Citizens Act, if the transferee failed to care for the parent, the transfer can be canceled by the RDO Tribunal."
+                        f"The deed contains an explicit maintenance covenant ('{snippet}'). Under Section 23 of the Senior Citizens Act "
+                        "and Supreme Court precedent (Sudesh Chhikara v. Ramti Devi, 2022), explicit conditions to provide basic amenities "
+                        "empower the Maintenance Tribunal (RDO) to declare the deed void if neglected."
                     ),
                     matched_snippet=snippet,
-                    kerala_statute="Section 23, Maintenance and Welfare of Parents and Senior Citizens Act, 2007",
+                    kerala_statute="Section 23, Maintenance and Welfare of Parents and Senior Citizens Act, 2007 (Sudesh Chhikara SC 2022)",
                     whatsapp_question_for_seller=(
                         "ആധാരത്തിൽ മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥയുണ്ടല്ലോ ('" + snippet + "'). "
                         "മാതാപിതാക്കൾ ഇപ്പോഴും ജീവിച്ചിരിപ്പുണ്ടോ? പുതിയ ആധാരത്തിൽ അവർ സമ്മതക്കാരായി ഒപ്പിടുമോ?"
+                    ),
+                    whatsapp_question_for_seller_en=(
+                        f"The deed contains a parental maintenance covenant ('{snippet}'). "
+                        "Are the parents currently alive, and will they be joining as consenting executants to sign the proposed conveyance deed?"
                     ),
                 )
             )
