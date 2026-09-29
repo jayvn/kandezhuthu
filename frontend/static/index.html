@@ -3029,6 +3029,23 @@ function setLanguage(lang) {
   if (elDisclaimer) elDisclaimer.innerHTML = t.disclaimer;
 }
 
+function getLocalizedBasinName(basinStr, isMl) {
+  if (!basinStr) return isMl ? "പ്രാദേശിക നീർത്തടം" : "Local Watershed";
+  if (!isMl) return basinStr;
+  const mlMap = {
+    "Periyar River Basin": "പെരിയാർ നദീതടം",
+    "Chitrapuzha / Kadambrayar Basin (Elevated Midlands)": "ചിത്രപ്പുഴ / കടമ്പ്രയാർ തടം (ഉയർന്ന പ്രദേശം)",
+    "Vembanad Wetland / Pamba-Meenachil Estuary": "വേമ്പനാട് കായൽ / പമ്പ-മീനച്ചിൽ തടം",
+    "Kallada River Plain": "കല്ലട നദീതടം",
+    "Bharathapuzha River Basin": "ഭാരതപ്പുഴ നദീതടം",
+    "Karamana / Killi River Basin": "കരമന / കിള്ളിയാർ നദീതടം",
+    "Chaliyar River Basin": "ചാലിയാർ നദീതടം",
+    "Kadalundi River Basin": "കടലുണ്ടിപ്പുഴ തടം",
+    "Valapattanam River Basin": "വളപട്ടണം പുഴത്തടം"
+  };
+  return mlMap[basinStr] || (basinStr.replace(/River Basin|Basin/gi, "").trim() + " നദീതടം");
+}
+
 function refreshHUDLanguage() {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
   const isMl = currentLanguage === "ml";
@@ -3096,9 +3113,7 @@ function refreshHUDLanguage() {
   const basinEl = document.getElementById("hud-basin-text");
   if (basinEl && window.currentElevationData) {
     const data = window.currentElevationData;
-    const basinName = isMl
-      ? (data.river_basin ? `${data.river_basin} നദീതടം` : 'പ്രാദേശിക നീർത്തടം')
-      : (data.river_basin || 'Local Watershed');
+    const basinName = getLocalizedBasinName(data.river_basin, isMl);
     basinEl.textContent = `${basinName} • ${t.hudBasinPlinth} ≥${data.recommended_plinth_height_m}m`;
   } else if (basinEl) {
     basinEl.textContent = isMl
@@ -5262,9 +5277,7 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
       elevValEl.textContent = `${data.elevation_meters} ${t.hudMslUnit}`;
     }
     if (basinEl) {
-      const basinName = isMl
-        ? (data.river_basin ? `${data.river_basin} നദീതടം` : 'പ്രാദേശിക നീർത്തടം')
-        : (data.river_basin || 'Local Watershed');
+      const basinName = getLocalizedBasinName(data.river_basin, isMl);
       basinEl.textContent = `${basinName} • ${t.hudBasinPlinth} ≥${data.recommended_plinth_height_m}m`;
     }
     if (badgeEl) {
