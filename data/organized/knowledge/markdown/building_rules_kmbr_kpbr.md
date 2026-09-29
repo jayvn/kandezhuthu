@@ -58,6 +58,11 @@ To prevent unbuildable landlock situations in Kerala's densely populated areas, 
      - The wall has **zero openings, doors, or windows** (dead wall).
      - The neighbor gives written consent / NOC, or statutory clearance is sanctioned under Rule 62.
 
+4. **Recent KPBR/KMBR Amendments (2023–2025 Relaxations)**:
+   - **Ultra-Small Plots ($\le 81\text{ m}^2$ / $\approx 2\text{ cents}$)**: For residential buildings up to $100\text{ m}^2$ built-up area on plots not exceeding $81\text{ m}^2$ abutting an un-notified road $\le 3.0\text{ meters}$, the minimum front setback is relaxed down to **$1.0\text{ meter}$** (provided the applicant owns no other contiguous land).
+   - **Short Streets / Cul-de-sacs (< 75 meters)**: Dead-end streets under $75\text{m}$ serving $\le 5$ plots can have front setbacks reduced to **$1.5\text{ meters}$** (and down to **$1.0\text{ meter}$** with adjoining owners' consent).
+   - **Road Widening Surrender**: Where land is surrendered free of cost for road widening, setback from the new road line can be reduced down to $2.0\text{m}$ while preserving the original FSI/FAR on the pre-surrender area.
+
 ---
 
 ## 4. Sanitation Clearances & Well Distance (കിണർ - സെപ്റ്റിക് ടാങ്ക് അകലം - Rule 91/92)

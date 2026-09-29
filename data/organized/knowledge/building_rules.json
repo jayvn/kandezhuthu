@@ -35,6 +35,23 @@
   },
   {
     "id": 3,
+    "occupancy_group": "Group A1: Ultra-Small Plot Concession",
+    "plot_category": "ultra_small_plot",
+    "min_plot_cents": 0.0,
+    "max_plot_cents": 2.0,
+    "max_builtup_sqm": 100.0,
+    "min_road_width_m": 1.2,
+    "front_setback_m": 1.0,
+    "rear_setback_m": 1.0,
+    "side_setback_1_m": 0.9,
+    "side_setback_2_m": 0.6,
+    "well_septic_clearance_m": 7.5,
+    "dead_wall_permitted": 1,
+    "rule_citation": "KPBR/KMBR Amendments (2023-2025)",
+    "notes": "Plots <= 81 sq m (approx 2 cents) with built-up area <= 100 sq m abutting road <= 3m: front setback relaxed down to 1.0m."
+  },
+  {
+    "id": 4,
     "occupancy_group": "Group A1: Multiple Family / Apartments",
     "plot_category": "commercial_residential",
     "min_plot_cents": 10.0,
@@ -51,7 +68,7 @@
     "notes": "Multi-family / apartment complexes (300-1000 sqm). Min 5.0m clear motorable access road."
   },
   {
-    "id": 4,
+    "id": 5,
     "occupancy_group": "Group A1: High-rise Residential",
     "plot_category": "high_rise",
     "min_plot_cents": 20.0,
@@ -68,7 +85,7 @@
     "notes": "Building height exceeding 16 meters. Mandatory 7.0m motorable road for fire tender access."
   },
   {
-    "id": 5,
+    "id": 6,
     "occupancy_group": "Group F: Mercantile (Commercial Shops)",
     "plot_category": "commercial",
     "min_plot_cents": 2.0,

@@ -175,3 +175,34 @@ CREATE TABLE IF NOT EXISTS single_deed_scans (
     unverified_physical_aspects_json TEXT,  -- JSON array
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 6. Benchmark Land Fair Values (Notified under Section 28A of Kerala Stamp Act)
+CREATE TABLE IF NOT EXISTS fair_value_benchmarks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    district TEXT NOT NULL,
+    taluk TEXT NOT NULL,
+    village TEXT NOT NULL,
+    local_body_type TEXT NOT NULL,          -- Corporation, Municipality, Grama Panchayat
+    land_type TEXT NOT NULL,                -- Residential with road, Residential interior, Commercial, etc.
+    fair_value_per_are_inr REAL NOT NULL,
+    effective_year INTEGER DEFAULT 2023,
+    gazette_notification TEXT NOT NULL      -- S.R.O. No. 420/2023 (20% revised)
+);
+
+CREATE INDEX IF NOT EXISTS idx_fair_value_village ON fair_value_benchmarks(village);
+CREATE INDEX IF NOT EXISTS idx_fair_value_district ON fair_value_benchmarks(district);
+
+-- 7. Digital Resurvey ("Ente Bhoomi") Status by Village
+CREATE TABLE IF NOT EXISTS digital_resurvey_villages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    district TEXT NOT NULL,
+    taluk TEXT NOT NULL,
+    village TEXT NOT NULL,
+    phase TEXT NOT NULL,                   -- Phase 1 (Completed/Draft d-BTR), Phase 2 (Active Drone/CORS)
+    status TEXT NOT NULL,                  -- "d-BTR Published", "Draft FMB Published", "Drone Survey Ongoing"
+    portal_url TEXT DEFAULT 'https://entebhoomi.kerala.gov.in',
+    advisory TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_digital_survey_village ON digital_resurvey_villages(village);
+

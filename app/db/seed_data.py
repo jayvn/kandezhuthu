@@ -520,6 +520,72 @@ def seed_demo_audit(conn):
     )
 
 
+def seed_fair_value_benchmarks(conn):
+    """Seeds Kerala notified benchmark Fair Values per Are under Section 28A."""
+    from scrapers.scrape_fair_value import KeralaFairValueScraper
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM fair_value_benchmarks")
+    if cursor.fetchone()[0] > 0:
+        return
+
+    benchmarks = KeralaFairValueScraper.get_benchmarks()
+    rows = [
+        (
+            b["district"],
+            b["taluk"],
+            b["village"],
+            b["local_body_type"],
+            b["land_type"],
+            b["fair_value_per_are_inr"],
+            b["effective_year"],
+            b["gazette_notification"],
+        )
+        for b in benchmarks
+    ]
+    cursor.executemany(
+        """
+        INSERT INTO fair_value_benchmarks (
+            district, taluk, village, local_body_type, land_type,
+            fair_value_per_are_inr, effective_year, gazette_notification
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        rows,
+    )
+
+
+def seed_digital_resurvey_villages(conn):
+    """Seeds Kerala Digital Resurvey (Ente Bhoomi) village rollout statuses."""
+    from scrapers.scrape_digital_resurvey import DigitalResurveyTracker
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM digital_resurvey_villages")
+    if cursor.fetchone()[0] > 0:
+        return
+
+    records = DigitalResurveyTracker.get_resurvey_data()
+    rows = [
+        (
+            r["district"],
+            r["taluk"],
+            r["village"],
+            r["phase"],
+            r["status"],
+            r["portal_url"],
+            r["advisory"],
+        )
+        for r in records
+    ]
+    cursor.executemany(
+        """
+        INSERT INTO digital_resurvey_villages (
+            district, taluk, village, phase, status, portal_url, advisory
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+        """,
+        rows,
+    )
+
+
 def seed_all():
     """Initializes schema and seeds all master and knowledge data."""
     init_db()
@@ -529,9 +595,12 @@ def seed_all():
         seed_legal_precedents(conn)
         seed_knowledge_corpus_fts(conn)
         seed_administrative_divisions(conn)
+        seed_fair_value_benchmarks(conn)
+        seed_digital_resurvey_villages(conn)
         seed_demo_audit(conn)
     print("✅ Successfully seeded all Kandezhuthu database tables!")
 
 
 if __name__ == "__main__":
     seed_all()
+

@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-29T12:23:34.941288+00:00",
+  "generated_at": "2026-09-29T12:32:52.571044+00:00",
   "summary": {
     "total_collections_benchmarked": 10,
-    "total_json_bytes": 110531,
-    "total_jsonl_bytes": 103535,
-    "total_parquet_bytes": 68218,
-    "overall_parquet_compression_savings_percent": 38.28
+    "total_json_bytes": 200766,
+    "total_jsonl_bytes": 173964,
+    "total_parquet_bytes": 84889,
+    "overall_parquet_compression_savings_percent": 57.72
   },
   "format_suitability_matrix": {
     "Apache Parquet (.parquet)": {
@@ -42,11 +42,11 @@
   "collections_breakdown": [
     {
       "collection": "building_rules",
-      "record_count": 5,
-      "json_size_bytes": 2912,
-      "jsonl_size_bytes": 2575,
-      "parquet_size_bytes": 6219,
-      "parquet_savings_percent": -113.56
+      "record_count": 6,
+      "json_size_bytes": 3525,
+      "jsonl_size_bytes": 3121,
+      "parquet_size_bytes": 6401,
+      "parquet_savings_percent": -81.59
     },
     {
       "collection": "paddy_land_fee_slabs",
@@ -58,11 +58,11 @@
     },
     {
       "collection": "legal_precedents",
-      "record_count": 11,
-      "json_size_bytes": 9284,
-      "jsonl_size_bytes": 8765,
-      "parquet_size_bytes": 11208,
-      "parquet_savings_percent": -20.72
+      "record_count": 17,
+      "json_size_bytes": 14763,
+      "jsonl_size_bytes": 13962,
+      "parquet_size_bytes": 13442,
+      "parquet_savings_percent": 8.95
     },
     {
       "collection": "administrative_divisions",
@@ -74,51 +74,51 @@
     },
     {
       "collection": "properties",
-      "record_count": 2,
-      "json_size_bytes": 617,
-      "jsonl_size_bytes": 521,
-      "parquet_size_bytes": 3129,
-      "parquet_savings_percent": -407.13
+      "record_count": 37,
+      "json_size_bytes": 11787,
+      "jsonl_size_bytes": 10046,
+      "parquet_size_bytes": 6040,
+      "parquet_savings_percent": 48.76
     },
     {
       "collection": "deed_records",
-      "record_count": 5,
-      "json_size_bytes": 3349,
-      "jsonl_size_bytes": 2782,
-      "parquet_size_bytes": 6823,
-      "parquet_savings_percent": -103.73
+      "record_count": 111,
+      "json_size_bytes": 72653,
+      "jsonl_size_bytes": 60624,
+      "parquet_size_bytes": 12703,
+      "parquet_savings_percent": 82.52
     },
     {
       "collection": "encumbrance_records",
-      "record_count": 5,
-      "json_size_bytes": 1271,
-      "jsonl_size_bytes": 1008,
-      "parquet_size_bytes": 2817,
-      "parquet_savings_percent": -121.64
+      "record_count": 117,
+      "json_size_bytes": 35823,
+      "jsonl_size_bytes": 29158,
+      "parquet_size_bytes": 6836,
+      "parquet_savings_percent": 80.92
     },
     {
       "collection": "audit_reports",
-      "record_count": 2,
-      "json_size_bytes": 2399,
-      "jsonl_size_bytes": 2213,
-      "parquet_size_bytes": 8050,
-      "parquet_savings_percent": -235.56
+      "record_count": 37,
+      "json_size_bytes": 32882,
+      "jsonl_size_bytes": 29797,
+      "parquet_size_bytes": 11742,
+      "parquet_savings_percent": 64.29
     },
     {
       "collection": "risk_flags",
-      "record_count": 6,
-      "json_size_bytes": 3264,
-      "jsonl_size_bytes": 3028,
-      "parquet_size_bytes": 5737,
-      "parquet_savings_percent": -75.77
+      "record_count": 23,
+      "json_size_bytes": 15945,
+      "jsonl_size_bytes": 15046,
+      "parquet_size_bytes": 7613,
+      "parquet_savings_percent": 52.25
     },
     {
       "collection": "single_deed_scans",
-      "record_count": 29,
-      "json_size_bytes": 82941,
-      "jsonl_size_bytes": 78866,
-      "parquet_size_bytes": 18175,
-      "parquet_savings_percent": 78.09
+      "record_count": 3,
+      "json_size_bytes": 8894,
+      "jsonl_size_bytes": 8433,
+      "parquet_size_bytes": 14052,
+      "parquet_savings_percent": -57.99
     }
   ]
 }

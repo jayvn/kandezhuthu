@@ -16,8 +16,9 @@
 - **Title Trap for Property Buyers**:
   - In multi-decade title audits (*Munnadharam*), partition deeds (*ഭാഗപത്രം*) or release deeds (*ഒഴിവുമുറി*) executed among Syrian Christian families prior to 1986 frequently excluded sisters/daughters, paying them a nominal Streedhanam (₹5,000 or 1/3 of son's share).
   - Because *Mary Roy* operated retrospectively from 1951, daughters or their legal descendants can challenge these partition deeds if they never formally executed registered release deeds (*ഒഴിവുമുറി പ്രമാണം*).
-- **Mandatory Diligence Rule**:
+- **Mandatory Diligence Rule & Limitation Defense**:
   - Always verify whether all female siblings signed the registered partition or release deed whenever title traces back to a Christian intestate ancestor who passed away after 1951.
+  - **The 12-Year Limitation Defense (Article 65)**: The Kerala High Court has repeatedly held that while *Mary Roy* created substantive equality, partition suits remain strictly governed by Article 65 of the Limitation Act, 1963. Where co-owners (brothers) have enjoyed open, continuous, and hostile possession with clear *ouster* known to the excluded sister for more than 12 years, stale inheritance claims are barred by limitation.
 
 ---
 
@@ -25,6 +26,7 @@
 
 ### Governing Statute: Maintenance and Welfare of Parents and Senior Citizens Act, 2007 (Section 23)
 ### Key Rulings:
+- ***Sudesh Chhikara v. Ramti Devi* (2022 SCC OnLine SC 1684 - Supreme Court)**
 - *Subhashini v. District Collector, Kozhikode* (2020 (5) KLT 493 - Full Bench, Kerala HC)
 - *Radhamani v. State of Kerala* (2016 (1) KLT 185 - Kerala HC)
 - *S. Vanitha v. Deputy Commissioner, Bengaluru Urban* (2021 15 SCC 730 - Supreme Court)
@@ -32,14 +34,14 @@
 - **Statutory Provision (Section 23(1))**:
   - Where any senior citizen (aged 60+) transfers property by gift or settlement, subject to the condition that the transferee shall provide basic amenities and physical needs, and the transferee fails to do so:
   - The transfer of property **shall be deemed to have been made by fraud or coercion or under undue influence** and can be declared **VOID** by the Maintenance Tribunal (presided over by the RDO / Sub-Collector).
-- **Conditional vs Absolute Gift Controversy**:
-  - Under the Kerala High Court Full Bench ruling in *Subhashini (2020)*, for Section 23 to apply, there must be an express or clearly ascertainable condition in the document that the transferee must maintain the senior citizen.
-  - However, even without an express clause, disputes frequently result in Maintenance Tribunal stop-memos issued to Sub-Registrar Offices (SROs) and Village Offices, halting all registrations and tax remittances (*പോക്കുവരവ് തടയൽ*).
-- **Title Trap for Property Buyers**:
-  - If buying land from a person who acquired it within the last 15 years via a **Gift Deed (ദാന പ്രമാണം)** or **Settlement Deed (ധനനിശ്ചയ ആധാരം)** from an elderly parent:
-  - If the parent is still alive and moves the Maintenance Tribunal alleging abandonment, the buyer's sale deed can be entangled in protracted litigation, and mutation of revenue records will be frozen.
-- **Mandatory Diligence Rule**:
-  - The elderly parent must either be an executing confirming party in the sale deed or execute an unencumbered NOC/discharge confirming satisfaction of all maintenance rights.
+- **The Landmark Precedent: *Sudesh Chhikara v. Ramti Devi* (SC 2022)**:
+  - The Supreme Court authoritatively settled that Section 23(1) **requires an EXPLICIT condition written into the transfer deed itself** mandating the provision of basic physical amenities and needs.
+  - A recital stating that the transfer is made out of *"love and affection"* is merely a motive, **NOT a statutory condition**.
+  - In the absence of an express condition of maintenance in the deed text, the Maintenance Tribunal has **NO jurisdiction to declare the gift or settlement void**.
+- **Title Diligence Rule for Property Buyers**:
+  - If buying land derived from an elderly parent's gift or settlement deed:
+    1. Inspect the deed text: If it contains **no explicit maintenance stipulation**, subsequent purchasers are protected under *Sudesh Chhikara*.
+    2. If the deed contains an **explicit maintenance clause**, the senior citizen parent must either join as a confirming party in the sale deed or execute an unencumbered NOC/satisfaction deed before token advance.
 
 ---
 
