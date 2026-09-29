@@ -4329,22 +4329,47 @@ function clearDimensionLabels() {
   dimensionLabels = [];
 }
 
-function createSamplePlot(lat, lng) {
+/* Calibrated Plot Extent Footprint Generator */
+function generateCalibratedFootprint(lat, lng, cents = 10.0, aspectRatio = "1:1") {
+  const areaSqM = cents * 40.4686;
+  let ratio = 1.0;
+  if (aspectRatio === "1:1.5") ratio = 1.5;
+  else if (aspectRatio === "1.5:1") ratio = 0.667;
+  else if (aspectRatio === "1:2") ratio = 2.0;
+
+  const hMeters = Math.sqrt(areaSqM / ratio);
+  const wMeters = hMeters * ratio;
+
+  const latDegPerMeter = 1.0 / 111320;
+  const lngDegPerMeter = 1.0 / (111320 * Math.cos(lat * Math.PI / 180));
+
+  const dLat = (hMeters * latDegPerMeter);
+  const dLng = (wMeters * lngDegPerMeter);
+
+  return [
+    [lat - dLat/2, lng - dLng/2],
+    [lat + dLat/2, lng - dLng/2],
+    [lat + dLat/2, lng + dLng/2],
+    [lat - dLat/2, lng + dLng/2]
+  ];
+}
+
+/* Universal Boundary Application Engine */
+function applyPlotPolygon(coords, meta = {}) {
   clearMapDrawings();
 
-  const dLat = 0.00018;
-  const dLng = 0.00020;
-  polygonPoints = [
-    L.latLng(lat - dLat/2, lng - dLng/2),
-    L.latLng(lat + dLat/2, lng - dLng/2),
-    L.latLng(lat + dLat/2, lng + dLng/2),
-    L.latLng(lat - dLat/2, lng + dLng/2)
-  ];
+  if (!coords || coords.length < 3) {
+    console.error("Invalid polygon coords", coords);
+    return;
+  }
 
+  polygonPoints = coords.map(c => L.latLng(c[0], c[1]));
+
+  // Draggable Kallu markers
   polygonPoints.forEach((pt, idx) => {
     const kalluIcon = L.divIcon({
       className: 'custom-kallu-marker',
-      html: `<div style="width:14px; height:14px; background:#22c55e; border:2.5px solid #0f5132; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${idx + 1} - Drag to adjust"></div>`,
+      html: `<div style="width:14px; height:14px; background:#22c55e; border:2.5px solid #0f5132; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${idx + 1} (Survey Kallu) - Drag to adjust"></div>`,
       iconSize: [14, 14],
       iconAnchor: [7, 7]
     });
@@ -4368,28 +4393,389 @@ function createSamplePlot(lat, lng) {
 
   updatePlotDisplay();
 
-  currentMarker = L.marker([lat, lng]).addTo(map);
-  currentMarker.bindPopup("<b>Re-Sy 345/1 Sample Plot</b><br>Extent: ~10 Cents<br>Aluva West Village").openPopup();
+  // Compute centroid
+  let sumLat = 0, sumLng = 0;
+  polygonPoints.forEach(p => { sumLat += p.lat; sumLng += p.lng; });
+  const centerLat = sumLat / polygonPoints.length;
+  const centerLng = sumLng / polygonPoints.length;
 
-  const roadStart = L.latLng(lat - dLat/2, lng - dLng/2 - 0.00003);
-  const roadEnd = L.latLng(lat - dLat/2, lng - dLng/2);
-  currentRoadLine = L.polyline([roadStart, roadEnd], {
-    color: "#dc2626",
-    weight: 3.5,
-    dashArray: "4, 4"
-  }).addTo(map);
+  const actualAreaSqM = calculatePolygonArea(polygonPoints);
+  const actualCents = meta.extentCents || parseFloat((actualAreaSqM / 40.4686).toFixed(2));
+  const title = meta.title || "Demarcated Plot";
+  const sy = meta.surveyNo || "Re-Sy Plot";
+  const village = meta.village || "Kerala Village";
 
-  updateHUDLocation(lat, lng, "Aluva (Demo Property - Re-Sy 345/1)", 10.0, 3.2);
-  document.getElementById("guidance-icon").textContent = "📍";
-  document.getElementById("guidance-text").textContent = "Demo plot loaded (~10 Cents). Click 'Draw Plot' to trace custom boundary, 'Measure Road' for KPBR check, or click on map to move inspection pin.";
+  currentMarker = L.marker([centerLat, centerLng], { riseOnHover: true }).addTo(map);
+  currentMarker.bindPopup(`
+    <b>${title}</b><br>
+    Survey: <strong>${sy}</strong> (${village})<br>
+    Extent: <strong>${actualCents} Cents</strong> (${(actualCents * 40.4686).toFixed(1)} m²)<br>
+    <small style="color:#0f5132; font-weight:600;">${meta.source ? '✓ ' + meta.source : '✓ Demarcated Boundary'}</small>
+  `).openPopup();
+
+  // Road indicator if roadWidth is known
+  if (meta.roadWidth) {
+    const p1 = polygonPoints[0];
+    const roadStart = L.latLng(p1.lat, p1.lng - 0.00003);
+    const roadEnd = L.latLng(p1.lat, p1.lng);
+    currentRoadLine = L.polyline([roadStart, roadEnd], {
+      color: "#dc2626",
+      weight: 3.5,
+      dashArray: "4, 4"
+    }).addTo(map);
+  }
+
+  updateHUDLocation(centerLat, centerLng, `${village} (${title})`, actualCents, meta.roadWidth || 3.0);
+
+  if (currentPolygon) {
+    map.fitBounds(currentPolygon.getBounds().pad(0.3));
+  }
+
+  document.getElementById("guidance-icon").textContent = "✨";
+  document.getElementById("guidance-text").textContent = `Demarcated ${actualCents} Cents (${title}). Drag green corner stones to adjust boundary.`;
+}
+
+function createSamplePlot(lat, lng) {
+  const coords = generateCalibratedFootprint(lat, lng, 10.0, "1:1");
+  applyPlotPolygon(coords, {
+    title: "Re-Sy 345/1 Sample Plot",
+    extentCents: 10.0,
+    surveyNo: "345/1",
+    village: "Aluva West",
+    roadWidth: 3.2,
+    source: "Calibrated 10-Cent Footprint"
+  });
 }
 
 function applyLocationPreset(presetKey) {
   if (!presetKey || !KERALA_PRESETS[presetKey]) return;
   const p = KERALA_PRESETS[presetKey];
   map.setView([p.lat, p.lng], p.zoom);
-  createSamplePlot(p.lat, p.lng);
-  updateHUDLocation(p.lat, p.lng, p.name, p.cents, p.roadWidth);
+  const coords = generateCalibratedFootprint(p.lat, p.lng, p.cents, "1:1");
+  applyPlotPolygon(coords, {
+    title: p.name,
+    extentCents: p.cents,
+    surveyNo: p.surveyNo,
+    village: p.village,
+    roadWidth: p.roadWidth,
+    source: `Regional Cadastre (${p.village})`
+  });
+}
+
+/* Auto-Demarcate Modal Controls */
+function openAutoDemarcateModal() {
+  const modal = document.getElementById("auto-demarcate-modal");
+  if (!modal) return;
+  
+  let targetLat = 10.1076, targetLng = 76.3516;
+  if (currentMarker) {
+    const pos = currentMarker.getLatLng();
+    targetLat = pos.lat;
+    targetLng = pos.lng;
+  } else if (map) {
+    const center = map.getCenter();
+    targetLat = center.lat;
+    targetLng = center.lng;
+  }
+  const coordsEl = document.getElementById("detect-modal-coords");
+  if (coordsEl) coordsEl.textContent = `${targetLat.toFixed(5)}, ${targetLng.toFixed(5)}`;
+
+  modal.style.display = "flex";
+}
+
+function closeAutoDemarcateModal() {
+  const modal = document.getElementById("auto-demarcate-modal");
+  if (modal) modal.style.display = "none";
+}
+
+function switchDemarcateTab(tabName) {
+  const tabs = ['detect', 'extent', 'cadastral', 'import'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab-btn-${t}`);
+    const pane = document.getElementById(`pane-${t}`);
+    if (btn) btn.classList.toggle('active', t === tabName);
+    if (pane) pane.style.display = (t === tabName) ? 'block' : 'none';
+  });
+}
+
+function setExtentInput(cents) {
+  const inp = document.getElementById("custom-extent-input");
+  if (inp) inp.value = cents;
+  updateExtentSqmDisplay(cents);
+  document.querySelectorAll(".chip-sm").forEach(c => {
+    c.classList.toggle("active", c.textContent.includes(`${cents} Cents`));
+  });
+}
+
+function updateExtentSqmDisplay(cents) {
+  const sqmEl = document.getElementById("extent-sqm-calc");
+  const cVal = parseFloat(cents) || 0;
+  if (sqmEl) sqmEl.textContent = (cVal * 40.4686).toFixed(1);
+}
+
+/* Tab 1 Action: Execute Auto-Detect from OSM / Walls */
+async function executeAutoDetectBoundaries() {
+  const btn = document.getElementById("btn-run-detect");
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳ Detecting compound walls & boundaries...</span>`;
+  }
+
+  let lat = 10.1076, lng = 76.3516;
+  if (currentMarker) {
+    const pos = currentMarker.getLatLng();
+    lat = pos.lat;
+    lng = pos.lng;
+  } else if (map) {
+    const c = map.getCenter();
+    lat = c.lat;
+    lng = c.lng;
+  }
+
+  const radius = parseInt(document.getElementById("detect-radius-select")?.value || "80");
+  const targetCents = parseFloat(document.getElementById("detect-target-cents")?.value || "0") || null;
+
+  try {
+    let url = `/api/detect_boundaries?lat=${lat}&lng=${lng}&radius_m=${radius}`;
+    if (targetCents) url += `&cents=${targetCents}`;
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Boundary detection request failed");
+    const data = await res.json();
+
+    if (data.polygon_coordinates && data.polygon_coordinates.length >= 3) {
+      applyPlotPolygon(data.polygon_coordinates, {
+        title: data.source_title,
+        extentCents: data.extent_cents,
+        surveyNo: data.survey_no,
+        village: data.village,
+        source: data.source === 'osm_boundary' ? 'Physical Wall / Fence Boundary' : 'BhuNaksha Cadastral Parcel'
+      });
+      closeAutoDemarcateModal();
+
+      let fmbInfo = "";
+      if (data.fmb_dimensions_m && data.fmb_dimensions_m.length) {
+        fmbInfo = `<br><strong>FMB Boundary Dimensions:</strong><ul style="margin:4px 0 0 16px;">` +
+          data.fmb_dimensions_m.map(f => `<li>${f.edge}: ${f.length_m}m (${f.type})</li>`).join("") +
+          `</ul>`;
+      }
+
+      appendMsg("agent", `
+        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px; margin:6px 0;">
+          <div style="font-weight:700; color:#166534; font-size:0.92rem; display:flex; align-items:center; gap:6px;">
+            <span>✨</span> <span>${data.source_title} Demarcated</span>
+          </div>
+          <div style="font-size:0.83rem; color:#14532d; margin-top:6px;">
+            Extent: <strong>${data.extent_cents} Cents</strong> (${(data.extent_cents * 40.4686).toFixed(1)} m²) | Perimeter: <strong>${data.perimeter_m}m</strong><br>
+            Source: <em>${data.source}</em>
+            ${fmbInfo}
+          </div>
+          <div style="margin-top:8px; font-size:0.78rem; color:#166534; background:#dcfce7; padding:6px 10px; border-radius:6px;">
+            ${data.message}
+          </div>
+        </div>
+      `);
+    } else {
+      alert("No closed boundary detected within search radius. Try increasing search radius or use Deed Extent Generator.");
+    }
+  } catch (err) {
+    alert("Boundary detection error: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `<span>🔍 Detect Surrounding Boundaries</span>`;
+    }
+  }
+}
+
+/* Tab 2 Action: Generate from Deed Extent (Cents) */
+function executeGenerateExtentPlot() {
+  const cents = parseFloat(document.getElementById("custom-extent-input")?.value || "10.0");
+  const ratio = document.getElementById("extent-aspect-ratio")?.value || "1:1";
+
+  let lat = 10.1076, lng = 76.3516;
+  if (currentMarker) {
+    const pos = currentMarker.getLatLng();
+    lat = pos.lat;
+    lng = pos.lng;
+  } else if (map) {
+    const c = map.getCenter();
+    lat = c.lat;
+    lng = c.lng;
+  }
+
+  const coords = generateCalibratedFootprint(lat, lng, cents, ratio);
+  applyPlotPolygon(coords, {
+    title: `${cents} Cents Calibrated Footprint`,
+    extentCents: cents,
+    surveyNo: "Custom Deed Extent",
+    village: "Inspected Plot",
+    roadWidth: 3.2,
+    source: `Calibrated Extent Footprint (${ratio})`
+  });
+  closeAutoDemarcateModal();
+
+  appendMsg("agent", `
+    <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:12px; margin:6px 0;">
+      <div style="font-weight:700; color:#065f46; font-size:0.92rem;">
+        📐 Calibrated Extent Demarcated: ${cents} Cents
+      </div>
+      <div style="font-size:0.83rem; color:#064e3b; margin-top:4px;">
+        Placed exact ${cents} Cents (${(cents * 40.4686).toFixed(1)} m²) plot footprint with aspect ratio <strong>${ratio}</strong>.<br>
+        Each corner stone (<em>സർവേ കല്ല്</em>) can now be dragged on the satellite map to align with physical fences or trees.
+      </div>
+    </div>
+  `);
+}
+
+/* Tab 3 Action: BhuNaksha FMB Lookup */
+async function executeFetchCadastralParcel() {
+  const surveyNo = document.getElementById("cadastral-survey-input")?.value.trim() || "345/1";
+  const village = document.getElementById("cadastral-village-input")?.value.trim() || "Aluva West";
+  const cents = parseFloat(document.getElementById("cadastral-cents-input")?.value || "10.0");
+
+  let lat = 10.1076, lng = 76.3516;
+  if (currentMarker) {
+    const pos = currentMarker.getLatLng();
+    lat = pos.lat;
+    lng = pos.lng;
+  } else if (map) {
+    const c = map.getCenter();
+    lat = c.lat;
+    lng = c.lng;
+  }
+
+  try {
+    const res = await fetch(`/api/cadastral_sketch?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&lat=${lat}&lng=${lng}`);
+    if (!res.ok) throw new Error("Failed to fetch cadastral parcel");
+    const data = await res.json();
+
+    if (data.polygon_coordinates) {
+      applyPlotPolygon(data.polygon_coordinates, {
+        title: `Re-Sy ${data.survey_no} Cadastral Parcel`,
+        extentCents: data.extent_cents,
+        surveyNo: data.survey_no,
+        village: data.village,
+        source: "BhuNaksha Cadastral Parcel"
+      });
+      closeAutoDemarcateModal();
+
+      let fmbListHtml = "";
+      if (data.fmb_dimensions_m) {
+        fmbListHtml = data.fmb_dimensions_m.map(f => `<li><strong>${f.edge}:</strong> ${f.length_m}m <em>(${f.type})</em></li>`).join("");
+      }
+
+      appendMsg("agent", `
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:12px; margin:6px 0;">
+          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#92400e; font-size:0.95rem;">
+            <span>🏛️</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
+          </div>
+          <div style="font-size:0.84rem; color:#451a03; margin-top:6px;">
+            Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
+          </div>
+          <div style="font-size:0.82rem; margin-top:8px;">
+            <strong>Field Measurement Book (FMB) Side Measurements:</strong>
+            <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
+          </div>
+        </div>
+      `);
+    }
+  } catch (err) {
+    alert("Error fetching cadastral sketch: " + err.message);
+  }
+}
+
+/* Tab 4 Action: Import Coordinates / Survey Files */
+function executeImportCoordinates() {
+  const text = document.getElementById("import-coords-text")?.value.trim();
+  if (!text) {
+    alert("Please paste survey coordinates (one lat,lng per line)");
+    return;
+  }
+
+  const lines = text.split("\n");
+  const coords = [];
+  for (let line of lines) {
+    line = line.trim();
+    if (!line) continue;
+    const parts = line.split(/[,\s\t]+/);
+    if (parts.length >= 2) {
+      const lat = parseFloat(parts[0]);
+      const lng = parseFloat(parts[1]);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        coords.push([lat, lng]);
+      }
+    }
+  }
+
+  if (coords.length < 3) {
+    alert("Please provide at least 3 valid coordinate points to form a polygon.");
+    return;
+  }
+
+  applyPlotPolygon(coords, {
+    title: "Imported Survey Boundary",
+    surveyNo: "Survey Import",
+    village: "Field Measurement",
+    source: "Imported Total Station / GPS Waypoints"
+  });
+  closeAutoDemarcateModal();
+}
+
+function handleSurveyFileUpload(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result;
+    const coords = [];
+
+    try {
+      const geo = JSON.parse(content);
+      if (geo.type === "FeatureCollection" && geo.features && geo.features[0]) {
+        const geom = geo.features[0].geometry;
+        if (geom.type === "Polygon" && geom.coordinates && geom.coordinates[0]) {
+          geom.coordinates[0].forEach(pt => coords.push([pt[1], pt[0]]));
+        }
+      }
+    } catch (_) {
+      const regex = /<coordinates>([\s\S]*?)<\/coordinates>/i;
+      const match = content.match(regex);
+      if (match) {
+        const rawCoords = match[1].trim().split(/\s+/);
+        rawCoords.forEach(c => {
+          const p = c.split(',');
+          if (p.length >= 2) {
+            const lng = parseFloat(p[0]);
+            const lat = parseFloat(p[1]);
+            if (!isNaN(lat) && !isNaN(lng)) coords.push([lat, lng]);
+          }
+        });
+      } else {
+        const lines = content.split("\n");
+        lines.forEach(l => {
+          const p = l.trim().split(/[,\s\t]+/);
+          if (p.length >= 2) {
+            const lat = parseFloat(p[0]);
+            const lng = parseFloat(p[1]);
+            if (!isNaN(lat) && !isNaN(lng)) coords.push([lat, lng]);
+          }
+        });
+      }
+    }
+
+    if (coords.length >= 3) {
+      applyPlotPolygon(coords, {
+        title: file.name,
+        surveyNo: "Survey File",
+        village: "Imported",
+        source: `Imported from ${file.name}`
+      });
+      closeAutoDemarcateModal();
+    } else {
+      alert("Could not extract at least 3 polygon boundary coordinates from this file.");
+    }
+  };
+  reader.readAsText(file);
 }
 
 function searchLocation() {
@@ -4631,10 +5017,22 @@ function sendPlotToAuditor() {
 let _cadastralLayer = null;
 
 async function fetchCadastralOverlay() {
-  const center = map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 };
-  const surveyNo = "345/1";
-  const village = "Aluva West";
-  const cents = 10.0;
+  const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
+  
+  let closestPreset = KERALA_PRESETS.aluva;
+  let minDist = 99999999;
+  for (let key in KERALA_PRESETS) {
+    const p = KERALA_PRESETS[key];
+    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
+    if (dist < minDist) {
+      minDist = dist;
+      closestPreset = p;
+    }
+  }
+
+  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
+  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
+  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
 
   try {
     const res = await fetch(`/api/cadastral_sketch?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&lat=${center.lat}&lng=${center.lng}`);
@@ -4663,6 +5061,15 @@ async function fetchCadastralOverlay() {
       }
       _cadastralLayer.bindPopup(tooltipContent).openPopup();
       map.fitBounds(_cadastralLayer.getBounds(), { padding: [40, 40] });
+
+      // Demarcate as active plot polygon with corner stones
+      applyPlotPolygon(data.polygon_coordinates, {
+        title: `Re-Sy ${data.survey_no} Cadastral Parcel`,
+        extentCents: data.extent_cents,
+        surveyNo: data.survey_no,
+        village: data.village,
+        source: "BhuNaksha Cadastral Parcel"
+      });
     }
 
     let fmbListHtml = "";
@@ -4695,9 +5102,22 @@ async function fetchCadastralOverlay() {
 
 /* Agricultural Data Bank Status Verification */
 async function checkDataBankStatus() {
-  const surveyNo = "345/1";
-  const village = "Aluva West";
-  const cents = 10.0;
+  const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
+  
+  let closestPreset = KERALA_PRESETS.aluva;
+  let minDist = 99999999;
+  for (let key in KERALA_PRESETS) {
+    const p = KERALA_PRESETS[key];
+    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
+    if (dist < minDist) {
+      minDist = dist;
+      closestPreset = p;
+    }
+  }
+
+  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
+  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
+  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
 
   try {
     const res = await fetch(`/api/databank_check?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&fair_value=240000`);
