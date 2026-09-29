@@ -219,19 +219,95 @@ def lookup_building_road_and_setbacks(plot_cents: float, building_type: str = "r
     return json.dumps(rule, indent=2)
 
 
-def calculate_paddy_conversion_cost(plot_cents: float, fair_value_per_are: float) -> str:
+def calculate_paddy_conversion_cost(
+    plot_cents: float,
+    fair_value_per_are: Optional[float] = None,
+    village: Optional[str] = None,
+    district: Optional[str] = None,
+) -> str:
     """Calculates the exact government fee under Section 27A of the 2008 Paddy Land Act to convert Nilam to Purayidam.
 
     Args:
         plot_cents: Extent in cents to be converted (e.g. 15.0, 32.0, 60.0). Note: <= 25 cents is statutory FREE / 0% fee!
-        fair_value_per_are: Government notified Fair Value in INR per are (1 are = 2.471 cents).
+        fair_value_per_are: Optional government notified Fair Value in INR per are (1 are = 2.471 cents). If omitted, auto-looks up benchmark for village.
+        village: Optional village name (e.g. 'Kakkanad', 'Aluva West') to automatically fetch Fair Value if fair_value_per_are is not provided.
+        district: Optional district name (e.g. 'Ernakulam', 'Thiruvananthapuram').
 
     Returns:
         JSON string with exact statutory conversion fee, exemption status, fee percentage, and legal citations.
     """
     repo = KnowledgeRepository()
+    if not fair_value_per_are or fair_value_per_are <= 0:
+        if village:
+            benchmarks = repo.get_fair_value_benchmark(village=village, district=district)
+            if benchmarks:
+                fair_value_per_are = benchmarks[0]["fair_value_per_are_inr"]
+            else:
+                fair_value_per_are = 350000.0  # Kerala standard municipal average
+        else:
+            fair_value_per_are = 350000.0  # Default standard benchmark
+
     calc = repo.calculate_paddy_conversion_fee(plot_cents=plot_cents, fair_value_per_are=fair_value_per_are)
+    if village:
+        calc["benchmarked_village"] = village
     return json.dumps(calc, indent=2)
+
+
+def lookup_fair_value_of_land(village: str, district: Optional[str] = None) -> str:
+    """Queries official notified Fair Value of land per Are under Section 28A of Kerala Stamp Act (SRO No. 420/2023).
+
+    Args:
+        village: Revenue village name in Kerala (e.g. 'Kakkanad', 'Aluva West', 'Pattom', 'Edappally South', 'Thrissur').
+        district: Optional district name (e.g. 'Ernakulam', 'Thiruvananthapuram', 'Thrissur').
+
+    Returns:
+        JSON string containing the notified Fair Value benchmarks per Are by land type (commercial, residential road, interior), effective year, and gazette notification.
+    """
+    repo = KnowledgeRepository()
+    results = repo.get_fair_value_benchmark(village=village, district=district)
+    if not results:
+        return json.dumps({
+            "message": f"No specific benchmark found for village '{village}'. Using Kerala municipal average (₹3,50,000/Are).",
+            "village": village,
+            "district": district,
+            "average_fair_value_per_are_inr": 350000.0,
+            "sro_hike": "Rates revised by 20% under S.R.O. No. 420/2023 effective April 2023."
+        }, indent=2)
+    return json.dumps({
+        "village": village,
+        "district": district or results[0]["district"],
+        "taluk": results[0]["taluk"],
+        "benchmarks_count": len(results),
+        "rates": results,
+        "gazette_revision": "All rates reflect the 20% statutory hike notified via S.R.O. No. 420/2023."
+    }, indent=2)
+
+
+def check_digital_survey_status(village: str, district: Optional[str] = None) -> str:
+    """Checks whether a village is under Kerala's Digital Resurvey ('Ente Bhoomi') project.
+
+    Verifies whether paper FMBs and manual BTR are being replaced by 14-digit ULPIN (Bhu-Aadhaar) and d-BTR.
+
+    Args:
+        village: Revenue village name in Kerala (e.g. 'Kudappanakunnu', 'Pattom', 'Kakkanad', 'Aluva West', 'Ollur').
+        district: Optional district name (e.g. 'Thiruvananthapuram', 'Ernakulam', 'Thrissur').
+
+    Returns:
+        JSON string containing the survey rollout phase, status (d-BTR published, drone survey ongoing), portal link, and buyer due-diligence advisory.
+    """
+    repo = KnowledgeRepository()
+    record = repo.check_digital_resurvey_status(village=village, district=district)
+    if not record:
+        return json.dumps({
+            "village": village,
+            "digital_resurvey_status": "Standard Pre-Digital Survey (Manual FMB & Village BTR)",
+            "advisory": (
+                "This village is currently under traditional revenue records. "
+                "Verify manual Field Measurement Book (FMB) sketch and Village Office Basic Tax Register (BTR) extract."
+            ),
+            "portal": "https://entebhoomi.kerala.gov.in"
+        }, indent=2)
+    return json.dumps(record, indent=2)
 
 
 def get_historical_audits_for_property(survey_no: str, village: Optional[str] = None) -> str:
@@ -452,7 +528,9 @@ root_agent = Agent(
         "8. Plot Elevation & Flood Exposure Calculator: Use `calculate_plot_elevation_and_flood_exposure` when users ask about flood risk, plot elevation, Mean Sea Level (MSL), monsoonal inundation, 2018 flood zones, or mark/specify plot coordinates.\n"
         "9. SRO Encumbrance Certificate (EC) Audit: Use `audit_encumbrance_certificate` when users provide EC records, Nil-EC text, bank loan entries, or court attachment records to cross-reference with title deeds.\n"
         "10. BhuNaksha & Data Bank Verification: Use `check_kerala_databank_and_cadastral` when users provide a survey number and village to check Agricultural Data Bank status (Form 5/6) and retrieve FMB cadastral parcel geometry.\n"
-        "11. Data Organization & Cloud Sync: Use `organize_and_sync_property_data` when users inquire about data status, local catalog copies, or syncing title datasets to Google Cloud Storage & Firestore.\n\n"
+        "11. Fair Value of Land (Section 28A): Use `lookup_fair_value_of_land` to find official notified Fair Value rates per Are for any Kerala village, municipal, or corporation area (including the 20% revision under SRO 420/2023).\n"
+        "12. Digital Resurvey ('Ente Bhoomi') Verification: Use `check_digital_survey_status` to verify whether a village is actively under drone survey, has published d-BTR records, or assigns 14-digit ULPINs (Bhu-Aadhaar).\n"
+        "13. Data Organization & Cloud Sync: Use `organize_and_sync_property_data` when users inquire about data status, local catalog copies, or syncing title datasets to Google Cloud Storage & Firestore.\n\n"
         "PRESENTATION GUIDELINES FOR NON-TECHNICAL USERS:\n"
         "- Never dump raw JSON to the user. Always interpret tool outputs into clean, elegant Markdown.\n"
         "- Prominently feature the Title Sanity Score (e.g., '🛡️ Title Sanity Score: 85/100') and the verdict badge:\n"
@@ -472,6 +550,8 @@ root_agent = Agent(
         get_demo_kerala_title_audit,
         lookup_building_road_and_setbacks,
         calculate_paddy_conversion_cost,
+        lookup_fair_value_of_land,
+        check_digital_survey_status,
         get_historical_audits_for_property,
         query_kerala_land_rules,
         calculate_plot_elevation_and_flood_exposure,

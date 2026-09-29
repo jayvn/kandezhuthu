@@ -17,6 +17,7 @@ class KnowledgeRepository:
     def get_building_rule(self, plot_cents: float, occupancy_type: str = "residential") -> dict[str, Any] | None:
         """Finds matching Kerala Building Rule (KPBR/KMBR 2019) dimensional standards for a plot extent."""
         with get_db_connection() as conn:
+            cursor = conn.cursor()
             # Check for ultra-small plot concession first if <= 2.0 cents (<= 81 sqm)
             if plot_cents <= 2.0:
                 cursor.execute(
