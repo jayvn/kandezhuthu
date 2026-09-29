@@ -53,6 +53,11 @@ KNOWN_DATABANK_REGISTRY = {
             "ഉൾപ്പെട്ടിട്ടുള്ളതായി കാണുന്നു. ഇത് ഡാറ്റാ ബാങ്കിൽ നിന്ന് ഒഴിവാക്കിയുള്ള ഫോം 5 ഉത്തരവും, റവന്യൂ രേഖകളിൽ "
             "പുരയിടമാക്കിയുള്ള ഫോം 6 (സെക്ഷൻ 27A) ഉത്തരവും ലഭ്യമാണോ എന്ന് ദയവായി വ്യക്തമാക്കാമോ?"
         ),
+        "whatsapp_en": (
+            "Hello, the property in Kakkanad Village, Survey 182/4, appears to be listed in the Krishi Bhavan Paddy Land & Wetland Data Bank. "
+            "Could you kindly clarify whether a Form 5 order excluding it from the Data Bank and a Section 27A (Form 6) revenue conversion order "
+            "converting it to Purayidam are available?"
+        ),
     },
     "345/1": {
         "village": "Aluva West",
@@ -70,6 +75,10 @@ KNOWN_DATABANK_REGISTRY = {
             "നമസ്കാരം, ആലുവ വെസ്റ്റ് റീ-സർവേ 345/1 വസ്തു ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടില്ലെങ്കിലും ബി.ടി.ആർ (BTR) രേഖകളിൽ "
             "പുരയിടമാണോ എന്ന് വ്യക്തമാക്കാമോ? സെക്ഷൻ 27A പ്രകാരമുള്ള ഫോം 6 ഉത്തരവ് ലഭ്യമാണോ?"
         ),
+        "whatsapp_en": (
+            "Hello, regarding Aluva West Re-Survey 345/1, although it is not in the Data Bank, could you clarify whether it is recorded "
+            "as Purayidam in the Village Basic Tax Register (BTR)? Is a Section 27A (Form 6) conversion order available?"
+        ),
     },
     "412/3": {
         "village": "Aluva West",
@@ -86,6 +95,10 @@ KNOWN_DATABANK_REGISTRY = {
         "whatsapp": (
             "നമസ്കാരം, ആലുവ വെസ്റ്റ് റീ-സർവേ 412/3 വസ്തു റവന്യൂ രേഖകളിലും കൃഷിഭവനിലും പൂർണ്ണമായും പുരയിടമായി "
             "രേഖപ്പെടുത്തിയിട്ടുള്ളതാണ്. പഞ്ചായത്ത് ബിൽഡിംഗ് പെർമിറ്റിനായി കരമടച്ച രസീത് ലഭ്യമാക്കുമല്ലോ."
+        ),
+        "whatsapp_en": (
+            "Hello, Aluva West Re-Survey 412/3 is documented as residential Purayidam in revenue and Krishi Bhavan records. "
+            "Kindly provide the latest Land Tax Receipt and Village Thandaper extract for building permit verification. Thank you."
         ),
     },
 }
@@ -193,6 +206,7 @@ class KeralaDataBankService:
                 building_permit_eligibility=reg_entry["permit"],
                 risk_advisory=reg_entry["advisory"],
                 whatsapp_inquiry=reg_entry["whatsapp"],
+                whatsapp_inquiry_en=reg_entry.get("whatsapp_en", ""),
             )
 
         # Fallback heuristic for arbitrary survey numbers
@@ -204,6 +218,7 @@ class KeralaDataBankService:
             permit = "RESTRICTED: High likelihood of Agricultural Data Bank listing in this wetland village."
             advisory = "Caution: This survey falls in an intensive wetland agrarian zone. Verify Krishi Bhavan Data Bank register physically."
             wa = f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു കൃഷിഭവൻ ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ എന്ന് വ്യക്തമാക്കാമോ?"
+            wa_en = f"Hello, could you please clarify whether the property in {village} Village, Survey {clean_sy}, is listed in the Krishi Bhavan Agricultural Data Bank?"
         else:
             status = "Purayidam / Dry Land (റവന്യൂ പുരയിടം)"
             is_listed = False
@@ -211,6 +226,7 @@ class KeralaDataBankService:
             permit = "PERMITTED subject to standard KPBR setback and road width rules."
             advisory = "Normal midland/highland classification. Confirm with Village Office BTR extract."
             wa = f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു റവന്യൂ രേഖകളിൽ പുരയിടമാണെന്ന് ഉറപ്പുനൽകുന്ന കരം രസീത് ലഭ്യമാക്കാമോ?"
+            wa_en = f"Hello, regarding the plot in {village} Village, Survey {clean_sy}, could you kindly share the latest Village Land Tax receipt confirming its classification as Purayidam?"
 
         return DataBankCheckResult(
             survey_no=clean_sy,
@@ -223,4 +239,5 @@ class KeralaDataBankService:
             building_permit_eligibility=permit,
             risk_advisory=advisory,
             whatsapp_inquiry=wa,
+            whatsapp_inquiry_en=wa_en,
         )

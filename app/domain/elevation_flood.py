@@ -174,6 +174,7 @@ class ElevationFloodCalculator:
         plinth_m = self._calculate_recommended_plinth(elevation_m, risk_level)
         checklist = self._build_physical_checklist(elevation_m, risk_level, matched_zone)
         whatsapp_msg = self._draft_malayalam_inquiry(locality_name, elevation_m, risk_level, river_basin)
+        whatsapp_msg_en = self._draft_english_inquiry(locality_name, elevation_m, risk_level, river_basin)
 
         return ElevationFloodResult(
             latitude=round(latitude, 5),
@@ -192,6 +193,7 @@ class ElevationFloodCalculator:
             recommended_plinth_height_m=plinth_m,
             physical_inspection_checklist=checklist,
             whatsapp_inquiry_for_seller=whatsapp_msg,
+            whatsapp_inquiry_for_seller_en=whatsapp_msg_en,
         )
 
     def _fetch_elevation(self, lat: float, lng: float) -> tuple[float, float | None]:
@@ -381,6 +383,18 @@ class ElevationFloodCalculator:
             "2. കനത്ത മഴയുള്ള സമയത്ത് പ്ലോട്ടിലോ ചുറ്റുവട്ടത്തോ വെള്ളക്കെട്ട് (water stagnation) ഉണ്ടാകാറുണ്ടോ? വെള്ളം ഒഴുകിപ്പോകാൻ പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി കാന സൗകര്യമുണ്ടോ?\n"
             "3. വീട് നിർമ്മിക്കുമ്പോൾ റോഡ് നിരപ്പിൽ നിന്നും പ്ലിന്ത് ലെവൽ (Plinth Level) എത്ര ഉയരത്തിൽ പണിയേണ്ടി വരും? സമീപത്തെ വീടുകൾ ഉയർന്ന തറയിലാണോ നിർമ്മിച്ചിട്ടുള്ളത്?\n"
             "ഈ വിവരങ്ങൾ ലഭ്യമാക്കിയാൽ വലിയ ഉപകാരമായിരിക്കും. നന്ദി."
+        )
+
+    def _draft_english_inquiry(
+        self, locality: str, elevation_m: float, risk: FloodRiskLevel, basin: str
+    ) -> str:
+        return (
+            f"Hello, upon checking the location and elevation of the property in {locality} ({elevation_m}m MSL - {basin}), "
+            "we would appreciate clarification on the monsoon flood history and drainage conditions:\n"
+            "1. Did flood waters enter this plot or the access road during the 2018 or 2019 Kerala floods? If so, what was the approximate water level?\n"
+            "2. Does the plot or surrounding area experience waterlogging or stagnation during heavy monsoon rains? Are municipal/panchayat stormwater drains functional?\n"
+            "3. What is the required plinth level height relative to the road for residential construction in this area?\n"
+            "Thank you for your assistance."
         )
 
     @staticmethod

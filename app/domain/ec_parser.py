@@ -253,20 +253,33 @@ class EncumbranceCertificateAuditor:
         else:
             summary = f"ALERT: Detected {len(risk_flags)} high-risk statutory liabilities in official SRO records ({len(undisclosed_mortgages)} active mortgages, {len(court_attachments)} court attachments)."
 
-        # WhatsApp inquiry
+        # WhatsApp inquiry (Malayalam & English)
         wa_questions: list[str] = []
+        wa_questions_en: list[str] = []
         if undisclosed_mortgages:
             wa_questions.append(
                 f"സബ് രജിസ്ട്രാർ ഓഫീസിലെ ബാധ്യതാ സർട്ടിഫിക്കറ്റിൽ (EC) കാണുന്ന ബാങ്ക് ബാധ്യതകൾ ({', '.join(undisclosed_mortgages)}) "
                 f"പൂർണ്ണമായും തീർത്തതാണോ? ബാങ്കിൽ നിന്നുള്ള ഔദ്യോഗിക ക്ലോഷർ കത്തും (NOC) രജിസ്റ്റർ ചെയ്ത ബാധ്യത ഒഴിവുമുറിയും (Release Deed) ലഭ്യമാണോ?"
             )
+            wa_questions_en.append(
+                f"The SRO Encumbrance Certificate (EC) reflects undischarged bank liabilities ({', '.join(undisclosed_mortgages)}). "
+                f"Have these loan accounts been completely closed? Is an official Bank Loan Closure Certificate & NOC and a registered Gehan Release Deed available?"
+            )
         if court_attachments:
             wa_questions.append(
                 f"പ്രമാണത്തിൽ കോടതി ജപ്തി ഉത്തരവുകൾ ({', '.join(court_attachments)}) കാണുന്നുണ്ട്. ഈ കേസ് ഒത്തുതീർപ്പാക്കി കോടതിയിൽ നിന്ന് ജപ്തി പിൻവലിച്ച രേഖകൾ ലഭ്യമാണോ?"
             )
+            wa_questions_en.append(
+                f"The Encumbrance Certificate indicates active civil court attachments ({', '.join(court_attachments)}). "
+                f"Have these proceedings been disposed of and official court orders obtained lifting the attachment?"
+            )
         if conflicting_alienations:
             wa_questions.append(
                 f"കുടിക്കടത്തിൽ (EC) രേഖപ്പെടുത്തിയിട്ടുള്ള തീറാധാരം ({', '.join(conflicting_alienations)}) കൈമാറ്റം ചെയ്തത് ഈ വസ്തുവിൽ ഉൾപ്പെടുന്നതാണോ എന്ന് വ്യക്തമാക്കാമോ?"
+            )
+            wa_questions_en.append(
+                f"The Encumbrance Certificate reflects sale deeds ({', '.join(conflicting_alienations)}). "
+                f"Could you please clarify whether these transfers pertain to portions of the subject property?"
             )
 
         if not wa_questions:
@@ -275,11 +288,22 @@ class EncumbranceCertificateAuditor:
                 f"യാതൊരു ബാങ്ക് ബാധ്യതകളോ കോടതി ജപ്തികളോ ഇല്ലാത്തത് വളരെ സംതൃപ്തികരമാണ്. "
                 f"രജിസ്ട്രേഷന് മുൻപായി ഏറ്റവും പുതിയ ഒറിജിനൽ EC ലഭ്യമാക്കുമല്ലോ."
             )
+            whatsapp_inquiry_en = (
+                f"Hello, we have verified the {period_label} Encumbrance Certificate (EC) for {self.property_identifier}. "
+                f"It is reassuring to see zero registered bank mortgages or court attachments. "
+                f"Prior to registration, kindly provide the latest original barcoded EC for direct advocate inspection. Thank you."
+            )
         else:
             joined_q = "\n".join(f"{i+1}. {q}" for i, q in enumerate(wa_questions))
             whatsapp_inquiry = (
                 f"നമസ്കാരം, {self.property_identifier}-ന്റെ കുടിക്കടം (EC) പരിശോധിച്ചപ്പോൾ താഴെ പറയുന്ന പ്രധാന കാര്യങ്ങളിൽ വ്യക്തത ആവശ്യമുണ്ട്:\n"
                 f"{joined_q}"
+            )
+            joined_q_en = "\n".join(f"{i+1}. {q}" for i, q in enumerate(wa_questions_en))
+            whatsapp_inquiry_en = (
+                f"Hello, upon reviewing the SRO Encumbrance Certificate (EC) for {self.property_identifier}, "
+                f"we require clarification on the following key legal points before proceeding with any advance:\n"
+                f"{joined_q_en}"
             )
 
         checklist = [
@@ -302,5 +326,6 @@ class EncumbranceCertificateAuditor:
             safety_score=score,
             summary=summary,
             whatsapp_inquiry=whatsapp_inquiry,
+            whatsapp_inquiry_en=whatsapp_inquiry_en,
             checklist=checklist,
         )

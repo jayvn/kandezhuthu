@@ -82,6 +82,7 @@ class DeedOCRResult(BaseModel):
     building_rules: dict[str, Any] | None = None
     paddy_conversion: dict[str, Any] | None = None
     whatsapp_draft: str = ""
+    whatsapp_draft_en: str = ""
     field_verification_checklist: list[str] = Field(default_factory=list)
     ocr_engine_used: str = "Gemini 3.8 Flash Multimodal Vision"
     document_type_detected: str = "Title Deed (ആധാരം)"
@@ -371,18 +372,26 @@ Extract all details faithfully without fabrication. If a field is not mentioned 
                 fair_value_per_are=200000.0,  # Benchmark default fair value
             )
 
-        # Generate culturally polite WhatsApp draft for seller
+        # Generate culturally polite WhatsApp draft for seller (Malayalam & English)
         whatsapp_draft = ""
+        whatsapp_draft_en = ""
         for finding in sanity_result.findings:
-            if finding.whatsapp_question_for_seller:
+            if finding.whatsapp_question_for_seller and not whatsapp_draft:
                 whatsapp_draft = finding.whatsapp_question_for_seller
-                break
+            if getattr(finding, "whatsapp_question_for_seller_en", None) and not whatsapp_draft_en:
+                whatsapp_draft_en = finding.whatsapp_question_for_seller_en
 
         if not whatsapp_draft:
             whatsapp_draft = (
                 f"നമസ്കാരം, സർവേ നമ്പർ {extracted_metadata.survey_no}-ൽപ്പെട്ട {extracted_metadata.extent_cents} സെന്റ് "
                 f"വസ്തുവിന്റെ മുൻ ആധാരങ്ങളുടെ പകർപ്പും (മുന്നാധാരം), പുതിയ കുടിക്കട സർട്ടിഫിക്കറ്റും (EC - കഴിഞ്ഞ 30 വർഷത്തെ) "
                 f"അഡ്വാൻസ് നൽകുന്നതിന് മുൻപായി ഒന്ന് അയച്ചുതരുമോ? നന്ദി."
+            )
+        if not whatsapp_draft_en:
+            whatsapp_draft_en = (
+                f"Hello, regarding the {extracted_metadata.extent_cents} Cents plot in Survey No {extracted_metadata.survey_no}, "
+                f"could you please share copies of the prior title deeds (Munnadharam) and the latest 30-year Encumbrance Certificate (EC) "
+                f"before we proceed with token advance? Thank you."
             )
 
         # Persist scan into database
@@ -391,9 +400,17 @@ Extract all details faithfully without fabrication. If a field is not mentioned 
                 snippet=scan_payload,
                 result_dict=sanity_result.model_dump(),
                 session_id=session_id,
+                language="en",
             )
-        except Exception as e:
-            logger.warning(f"Could not persist deed scan to database: {e}")
+        except Exception:
+            try:
+                self.audit_repo.save_single_deed_scan(
+                    snippet=scan_payload,
+                    result_dict=sanity_result.model_dump(),
+                    session_id=session_id,
+                )
+            except Exception as e:
+                logger.warning(f"Could not persist deed scan to database: {e}")
 
         return DeedOCRResult(
             metadata=extracted_metadata,
@@ -401,6 +418,7 @@ Extract all details faithfully without fabrication. If a field is not mentioned 
             building_rules=building_rule,
             paddy_conversion=paddy_calc,
             whatsapp_draft=whatsapp_draft,
+            whatsapp_draft_en=whatsapp_draft_en,
             field_verification_checklist=sanity_result.what_ai_cannot_verify,
             ocr_engine_used=extracted_metadata.ocr_engine_used,
             document_type_detected=extracted_metadata.deed_type or "Title Deed (ആധാരം)",

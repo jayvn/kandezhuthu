@@ -123,6 +123,7 @@ class ElevationFloodResult(BaseModel):
     recommended_plinth_height_m: float
     physical_inspection_checklist: list[str]
     whatsapp_inquiry_for_seller: str
+    whatsapp_inquiry_for_seller_en: str = ""
 
 
 class ECEntry(BaseModel):
@@ -156,6 +157,7 @@ class ECAuditResult(BaseModel):
     safety_score: int = Field(description="EC Safety Score 0-100 (100 = 100% clean nil EC, 0 = severe undischarged charges)")
     summary: str
     whatsapp_inquiry: str
+    whatsapp_inquiry_en: str = ""
     checklist: list[str] = Field(default_factory=list)
 
 
@@ -187,4 +189,5 @@ class DataBankCheckResult(BaseModel):
     building_permit_eligibility: str
     risk_advisory: str
     whatsapp_inquiry: str
+    whatsapp_inquiry_en: str = ""
 

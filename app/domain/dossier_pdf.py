@@ -329,9 +329,24 @@ class AdvocateDossierGenerator:
         story.append(Spacer(1, 10))
 
         # WhatsApp draft if available
-        wa_text = audit_data.get("whatsapp_draft") or audit_data.get("whatsapp_inquiry")
+        lang = audit_data.get("lang") or audit_data.get("language") or "en"
+        wa_text = None
+        if lang == "en":
+            wa_text = (
+                audit_data.get("whatsapp_draft_en")
+                or audit_data.get("whatsapp_inquiry_en")
+                or audit_data.get("whatsapp_inquiry_for_seller_en")
+            )
+        if not wa_text:
+            wa_text = (
+                audit_data.get("whatsapp_draft")
+                or audit_data.get("whatsapp_inquiry")
+                or audit_data.get("whatsapp_inquiry_for_seller")
+            )
+
         if wa_text:
-            story.append(Paragraph("5. BILINGUAL SELLER / BROKER INQUIRY DRAFT (MALAYALAM)", h2_style))
+            sec_title = "5. SELLER / BROKER INQUIRY DRAFT (ENGLISH)" if lang == "en" else "5. BILINGUAL SELLER / BROKER INQUIRY DRAFT (MALAYALAM)"
+            story.append(Paragraph(sec_title, h2_style))
             wa_table = Table([[Paragraph(f"<i>{wa_text}</i>", body_style)]], colWidths=[522])
             wa_table.setStyle(
                 TableStyle([
