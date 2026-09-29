@@ -527,6 +527,34 @@ async def pwa_manifest():
     return Response(status_code=404)
 
 
+@app.get("/api/fair-value")
+async def get_fair_value_rates(village: str, district: str = None):
+    """Returns notified Fair Value benchmarks per Are under Section 28A of Kerala Stamp Act."""
+    from app.db.repository import KnowledgeRepository
+    repo = KnowledgeRepository()
+    rates = repo.get_fair_value_benchmark(village=village, district=district)
+    return JSONResponse({
+        "village": village,
+        "district": district,
+        "results": rates,
+        "revision": "S.R.O. No. 420/2023 (20% revised)"
+    })
+
+
+@app.get("/api/digital-survey")
+async def get_digital_survey_status(village: str, district: str = None):
+    """Returns Digital Resurvey (Ente Bhoomi) status, d-BTR rollout, and advisory for a village."""
+    from app.db.repository import KnowledgeRepository
+    repo = KnowledgeRepository()
+    status = repo.check_digital_resurvey_status(village=village, district=district)
+    return JSONResponse(status or {
+        "village": village,
+        "status": "Pre-Digital Survey (Standard FMB/BTR)",
+        "advisory": "Standard manual records active. Verify FMB and Village BTR.",
+        "portal_url": "https://entebhoomi.kerala.gov.in"
+    })
+
+
 @app.get("/api/data/status")
 async def get_data_status():
     """Returns status of local organized data copy and Google Cloud Storage / Firestore sync."""
