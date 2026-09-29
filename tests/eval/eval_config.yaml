@@ -1,11 +1,19 @@
 metrics_to_run:
   - custom_response_quality
+  - legal_guardrails_score
+  - malayalam_terminology_score
 
 custom_metrics:
-  # Default: local LLM-as-judge (see response_quality.py). Runs in-process via
-  # google-genai on Agent Platform (ADC) or Google AI Studio (GEMINI_API_KEY).
+  # Comprehensive local LLM-as-judge (see response_quality.py).
+  # Evaluates legal accuracy, statutory disclaimers, Malayalam terms, and clean title guardrails.
   - name: custom_response_quality
     custom_function_file: response_quality.py
+  # Dedicated metric for statutory advocate disclaimers and 100% clean title guardrails
+  - name: legal_guardrails_score
+    custom_function_file: guardrails_metric.py
+  # Dedicated metric for authentic Malayalam property and revenue terminology
+  - name: malayalam_terminology_score
+    custom_function_file: terminology_metric.py
   - name: agent_turn_count
     custom_function: |
       def evaluate(instance):
