@@ -32,7 +32,7 @@ DEFAULT_PORT = int(os.environ.get("PORT", "8081"))
 OUTPUT_DIR = REPO_ROOT / "artifacts" / "demo_video"
 RAW_RECORDINGS_DIR = OUTPUT_DIR / "raw"
 CONVERSATION_ARTIFACTS_DIR = Path(
-    os.environ.get("CONVERSATION_ARTIFACT_DIR", "/config/.gemini/antigravity/brain/5e6081de-dbb3-44e3-a218-0bca8e7ec1b0")
+    os.environ.get("CONVERSATION_ARTIFACT_DIR", "/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a")
 ) / "demo_video"
 
 CHROMIUM_PATH = (
@@ -421,22 +421,34 @@ class DemoVideoRecorder:
                 step=7,
             )
             self.pause(0.5)
-            self.smooth_move_and_click(page, "#chip-sample-deed", pre_delay=0.4, post_delay=0.8)
+            # Click the sample deed card in the quickstart grid
+            deed_card = page.locator(".layman-card.card-deed").first
+            if deed_card.count() > 0 and deed_card.is_visible():
+                self.smooth_move_and_click(page, ".layman-card.card-deed", pre_delay=0.4, post_delay=0.8)
+            else:
+                self.smooth_move_and_click(page, "#chip-sample-deed", pre_delay=0.4, post_delay=0.8)
 
             try:
-                page.wait_for_selector(".deed-audit-card", timeout=20000)
+                page.wait_for_selector(".deed-audit-card", timeout=30000)
             except Exception as e:
                 print(f"  [Notice] Waiting for deed card: {e}")
             self.pause(2.0)
 
+            audit_card = page.locator(".deed-audit-card").last
+            if audit_card.count() > 0:
+                try:
+                    audit_card.scroll_into_view_if_needed(timeout=2000)
+                except Exception:
+                    pass
+
             try:
-                page.wait_for_selector(".whatsapp-card", timeout=10000)
+                page.wait_for_selector(".whatsapp-card", timeout=15000)
             except Exception as e:
                 print(f"  [Notice] Waiting for whatsapp card: {e}")
 
             # Smoothly scroll through the card so viewers can read:
             # 1) Extracted Survey & Boundaries Schedule
-            boundary_el = page.locator(".boundary-box").first
+            boundary_el = page.locator(".boundary-box").last
             if boundary_el.count() > 0:
                 try:
                     boundary_el.scroll_into_view_if_needed(timeout=2000)
@@ -447,7 +459,7 @@ class DemoVideoRecorder:
             self.pause(2.0)
 
             # 2) Statutory Red Flags Detected
-            findings_el = page.locator(".findings-box").first
+            findings_el = page.locator(".findings-box").last
             if findings_el.count() > 0:
                 try:
                     findings_el.scroll_into_view_if_needed(timeout=2000)

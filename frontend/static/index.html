@@ -6,9 +6,10 @@
 <title>Kandezhuthu AI (കണ്ടെഴുത്ത്) · Kerala Property Legal Diligence & Satellite Inspector</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Cinzel:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
 <!-- Leaflet CSS for Google Maps / Satellite tile layers -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="/static/ft_theme.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#1b4d3e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1498,6 +1499,81 @@
     transform: translateY(-1px);
   }
 
+  /* Step Navigation Bar & Progressive Disclosure Controls */
+  .step-nav-bar {
+    background: #fdfbf7;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.45rem 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.02);
+  }
+  .step-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .step-nav-label {
+    font-family: Georgia, 'Newsreader', serif;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .step-nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .step-nav-btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #334155;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .step-nav-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #94a3b8;
+  }
+  .step-nav-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+  }
+  .step-nav-btn.next {
+    background: #0f5132;
+    color: #ffffff;
+    border-color: #0b3d26;
+    font-weight: 700;
+  }
+  .step-nav-btn.next:hover:not(:disabled) {
+    background: #146c43;
+    color: #ffffff;
+  }
+  .step-nav-btn.next.restart {
+    background: #1e293b;
+    border-color: #0f172a;
+  }
+  .step-nav-btn.next.restart:hover:not(:disabled) {
+    background: #334155;
+  }
+
   /* Categorized Action Tabs */
   .category-tabs {
     display: flex;
@@ -1952,19 +2028,24 @@
 
 <div class="workflow-bar">
   <div class="workflow-steps">
-    <div class="workflow-step active" id="wf-step-1" onclick="setWorkflowStep(1)" title="Document OCR, Deed Recitals & 30-Year Prior Title Lineage">
+    <div class="workflow-step active" id="wf-step-1" onclick="setWorkflowStep(1)" title="Step 1: Ingest Kerala Sale Deed or Encumbrance Certificate (EC)">
       <span class="workflow-step-num">1</span>
-      <span id="wf-text-1">📜 Document & Title Lineage</span>
+      <span id="wf-text-1">📄 Ingest Document</span>
     </div>
     <span class="workflow-arrow">➔</span>
-    <div class="workflow-step" id="wf-step-2" onclick="setWorkflowStep(2)" title="Satellite boundary measurement in Cents & KPBR Road Access Width">
+    <div class="workflow-step" id="wf-step-2" onclick="setWorkflowStep(2)" title="Step 2: 30-Year Prior Title Lineage & Encumbrance cross-validation">
       <span class="workflow-step-num">2</span>
-      <span id="wf-text-2">🛰️ Satellite & KPBR Road</span>
+      <span id="wf-text-2">📜 Prior Lineage</span>
     </div>
     <span class="workflow-arrow">➔</span>
-    <div class="workflow-step" id="wf-step-3" onclick="setWorkflowStep(3)" title="Bilingual WhatsApp seller inquiry & Physical on-ground checklist">
+    <div class="workflow-step" id="wf-step-3" onclick="setWorkflowStep(3)" title="Step 3: Satellite GIS, KPBR Road Access Width, Cadastral Plot Boundary, Flood Risk">
       <span class="workflow-step-num">3</span>
-      <span id="wf-text-3">⚖️ Action & WhatsApp Draft</span>
+      <span id="wf-text-3">🛰️ Satellite & KPBR</span>
+    </div>
+    <span class="workflow-arrow">➔</span>
+    <div class="workflow-step" id="wf-step-4" onclick="setWorkflowStep(4)" title="Step 4: Field Checklist, WhatsApp Seller Inquiry, Advocate PDF Dossier">
+      <span class="workflow-step-num">4</span>
+      <span id="wf-text-4">⚖️ Due Diligence & Action</span>
     </div>
   </div>
   <div style="display:flex; align-items:center; gap:0.45rem;">
@@ -1973,6 +2054,20 @@
     </button>
     <button class="export-report-btn" id="btn-pdf-export" style="background:#1e293b;" onclick="window.print()" title="Print or Save PDF of Audit Report">
       <span id="btn-pdf-text">🖨️ Export PDF</span>
+    </button>
+  </div>
+</div>
+
+<div class="step-nav-bar" id="step-nav-bar">
+  <div class="step-nav-left">
+    <span class="step-nav-label" id="step-nav-label">Step 1 of 4: Ingest Document</span>
+  </div>
+  <div class="step-nav-controls">
+    <button type="button" class="step-nav-btn prev" id="btn-prev-step" onclick="prevWorkflowStep()" disabled>
+      ← Previous Step
+    </button>
+    <button type="button" class="step-nav-btn next" id="btn-next-step" onclick="nextWorkflowStep()">
+      Next: Lineage Audit →
     </button>
   </div>
 </div>
@@ -2466,9 +2561,10 @@ const TRANSLATIONS = {
     viewChat: "💬 Chat",
     viewSplit: "📑 Split View",
     viewMap: "🗺️ Map & Satellite",
-    wf1: "📜 Document & Title Lineage",
-    wf2: "🛰️ Satellite & KPBR Road",
-    wf3: "⚖️ Action & WhatsApp Draft",
+    wf1: "📄 Ingest Document",
+    wf2: "📜 Prior Lineage",
+    wf3: "🛰️ Satellite & KPBR",
+    wf4: "⚖️ Due Diligence & Action",
     btnTimeline: "📜 Ownership Timeline",
     btnPdf: "🖨️ Export PDF",
     dropOverlayTitle: "Drop Scanned Kerala Deed or EC Here",
@@ -2620,9 +2716,10 @@ const TRANSLATIONS = {
     viewChat: "💬 ചാറ്റ്",
     viewSplit: "📑 സ്പ്ലിറ്റ് വ്യൂ",
     viewMap: "🗺️ മാപ്പ് & സാറ്റലൈറ്റ്",
-    wf1: "📜 ആധാരവും മുന്നാധാരവും",
-    wf2: "🛰️ ഉപഗ്രഹവും KPBR വഴിയും",
-    wf3: "⚖️ നടപടിയും വാട്സാപ്പ് ചോദ്യങ്ങളും",
+    wf1: "📄 രേഖ സമർപ്പിക്കുക (Ingest Document)",
+    wf2: "📜 മുന്നാധാരം (Prior Lineage)",
+    wf3: "🛰️ ഉപഗ്രഹ സർവേ (Satellite & KPBR)",
+    wf4: "⚖️ നടപടി ക്രമങ്ങൾ (Due Diligence & Action)",
     btnTimeline: "📜 മുന്നാധാര ടൈംലൈൻ",
     btnPdf: "🖨️ PDF എക്സ്പോർട്ട്",
     dropOverlayTitle: "ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ ഇവിടെ നൽകുക",
@@ -2800,6 +2897,9 @@ function setLanguage(lang) {
   if (wf2) wf2.textContent = t.wf2;
   const wf3 = document.getElementById("wf-text-3");
   if (wf3) wf3.textContent = t.wf3;
+  const wf4 = document.getElementById("wf-text-4");
+  if (wf4) wf4.textContent = t.wf4;
+  if (typeof updateStepNavBar === "function") updateStepNavBar();
 
   const btnTimeline = document.getElementById("btn-timeline-text");
   if (btnTimeline) btnTimeline.textContent = t.btnTimeline;
@@ -3635,6 +3735,11 @@ function renderDeedAuditCard(container, data, fileName) {
         </div>
       </div>
     `;
+    setTimeout(() => {
+      if (typeof currentWorkflowStep !== 'undefined' && currentWorkflowStep === 1) {
+        setWorkflowStep(2);
+      }
+    }, 600);
     return;
   }
 
@@ -3872,6 +3977,12 @@ function renderDeedAuditCard(container, data, fileName) {
   container.innerHTML = cardHtml;
   container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   log.scrollTop = log.scrollHeight;
+
+  setTimeout(() => {
+    if (typeof currentWorkflowStep !== 'undefined' && currentWorkflowStep === 1) {
+      setWorkflowStep(2);
+    }
+  }, 600);
 }
 
 function locatePlotOnSatellite(village, survey) {
@@ -4159,19 +4270,231 @@ function switchActionCategory(cat) {
   });
 }
 
+let currentWorkflowStep = 1;
+
+function updateStepNavBar() {
+  const stepNum = currentWorkflowStep;
+  const prevBtn = document.getElementById("btn-prev-step");
+  const nextBtn = document.getElementById("btn-next-step");
+  const stepLabel = document.getElementById("step-nav-label");
+
+  const stepTitles = {
+    en: [
+      "Ingest Document",
+      "Prior Title & Encumbrance",
+      "Ground & Satellite Verification",
+      "Due Diligence & Action"
+    ],
+    ml: [
+      "രേഖ സമർപ്പിക്കുക (Ingest Document)",
+      "മുന്നാധാര പരിശോധന (Prior Lineage)",
+      "ഉപഗ്രഹ സർവേ (Satellite Verification)",
+      "നടപടി ക്രമങ്ങൾ (Due Diligence & Action)"
+    ]
+  };
+
+  const navText = {
+    en: {
+      prev: [
+        "← Previous Step",
+        "← Previous: Document",
+        "← Previous: Lineage",
+        "← Previous: Satellite"
+      ],
+      next: [
+        "Next: Lineage Audit →",
+        "Next: Satellite Verification →",
+        "Next: Take Action & Dossier →",
+        "Restart Audit ↺"
+      ]
+    },
+    ml: {
+      prev: [
+        "← മുൻപത്തെ പടി",
+        "← മുൻപത്തെ: രേഖ",
+        "← മുൻപത്തെ: മുന്നാധാരം",
+        "← മുൻപത്തെ: ഉപഗ്രഹം"
+      ],
+      next: [
+        "അടുത്തത്: മുന്നാധാര പരിശോധന →",
+        "അടുത്തത്: ഉപഗ്രഹ സർവേ →",
+        "അടുത്തത്: നടപടി ക്രമങ്ങൾ →",
+        "വീണ്ടും പരിശോധിക്കുക ↺"
+      ]
+    }
+  };
+
+  const lang = currentLanguage || "en";
+  const title = (stepTitles[lang] || stepTitles.en)[stepNum - 1] || stepTitles.en[0];
+
+  if (stepLabel) {
+    stepLabel.textContent = `Step ${stepNum} of 4: ${title}`;
+  }
+
+  if (prevBtn) {
+    prevBtn.disabled = (stepNum === 1);
+    prevBtn.textContent = (navText[lang] || navText.en).prev[stepNum - 1];
+  }
+
+  if (nextBtn) {
+    nextBtn.textContent = (navText[lang] || navText.en).next[stepNum - 1];
+    nextBtn.classList.toggle("restart", stepNum === 4);
+  }
+}
+
+function ensureStep4ActionCard() {
+  const existingCard = document.querySelector(".whatsapp-card");
+  if (!existingCard) {
+    const locality = document.getElementById("hud-locality-title")?.textContent.replace("📍 ", "") || "Aluva, Kerala";
+    const roadMText = document.getElementById("hud-road-text")?.textContent || "3.2 meters";
+    const centsText = document.getElementById("hud-cents")?.textContent || "10.00 Cents";
+
+    const waText = currentLanguage === 'ml'
+      ? `നമസ്കാരം, ഞാൻ ${locality} ഉള്ള ഈ വസ്തുവിനെക്കുറിച്ച് (~${centsText}, വഴി വീതി: ${roadMText}) അന്വേഷിക്കുകയാണ്. വഴി പഞ്ചായത്ത് രേഖകളിലുള്ള പൊതുവഴിയാണോ? മുന്നാധാരവും ബാങ്ക് ബാധ്യതയില്ല എന്ന രേഖയും (NOC) ലഭ്യമാണോ?`
+      : `Hello, based on satellite analysis of the plot in ${locality} (~${centsText}, ~${roadMText} road width), could you please clarify whether the access road is a dedicated public Panchayat/Municipal road or a private easement pathway? Also please share 30-year prior title deed copies and Bank Nil-EC.`;
+
+    const waEncoded = encodeURIComponent(waText);
+
+    appendMsg("agent", `
+      <div class="step4-action-banner" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px; margin-bottom:12px;">
+        <div style="font-weight:700; color:#166534; font-size:0.92rem; margin-bottom:4px;">
+          ⚖️ Step 4 Due Diligence: Seller Inquiry & Advocate Legal Dossier
+        </div>
+        <p style="font-size:0.8rem; color:#14532d; margin-bottom:10px;">
+          Complete on-site verification using the checklist drawer, share this formal inquiry with the seller, and export the comprehensive title audit dossier for your High Court advocate.
+        </p>
+        <div class="whatsapp-card" style="margin-top:8px;">
+          <div class="whatsapp-header">
+            <span class="whatsapp-title">${currentLanguage === 'ml' ? '📱 വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യം (WhatsApp):' : '📱 WhatsApp Inquiry for Seller / Broker:'}</span>
+            <div class="whatsapp-actions">
+              <button class="copy-btn" onclick="copyWhatsApp(this)">📋 Copy Draft</button>
+              <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
+            </div>
+          </div>
+          <div class="whatsapp-text">${waText}</div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+          <button class="export-report-btn" onclick="toggleChecklist(true)" style="background:#0f5132;">📋 Open Field Checklist</button>
+          <button class="export-report-btn" onclick="exportDossierPDF('aluva_broken')" style="background:#1e293b;">📑 Export Legal Dossier (PDF)</button>
+        </div>
+      </div>
+    `);
+  }
+}
+
 function setWorkflowStep(stepNum) {
+  if (stepNum < 1 || stepNum > 4) return;
+  currentWorkflowStep = stepNum;
+
+  // 1. Toggle .active class on workflow step indicators
   document.querySelectorAll(".workflow-step").forEach((el, idx) => {
     el.classList.toggle("active", idx + 1 === stepNum);
   });
+
+  // 2. Update step navigation bar controls
+  updateStepNavBar();
+
+  // 3. Progressive Disclosure
+  const dropzoneContainer = document.getElementById("deed-dropzone-container");
+  const categoryTabs = document.querySelector(".category-tabs");
+  const dropzone = document.getElementById("deed-dropzone");
+  const toggleBtn = document.getElementById("dropzone-toggle-btn");
+
+  const lineageChipIds = [
+    "chip-sample-deed",
+    "chip-timeline-aluva",
+    "chip-timeline-kakkanad",
+    "chip-timeline-clean",
+    "chip-fair-value"
+  ];
+
   if (stepNum === 1) {
+    // Step 1: Document Check (രേഖ സമർപ്പിക്കുക)
+    if (dropzoneContainer) {
+      dropzoneContainer.style.display = "block";
+      if (dropzone) dropzone.classList.remove("collapsed");
+      if (toggleBtn) toggleBtn.textContent = "− Minimize";
+    }
+    // Clean, focused: hide advanced category tabs
+    if (categoryTabs) categoryTabs.style.display = "none";
+    // Hide advanced statutory/kpbr/ground chips during Step 1
+    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
+      const cat = chip.dataset.cat;
+      if (cat && cat !== "lineage") {
+        chip.style.display = "none";
+      } else {
+        chip.style.display = "inline-flex";
+      }
+    });
     if (currentViewMode === "map") setViewMode("split");
-    switchActionCategory("lineage");
+
   } else if (stepNum === 2) {
-    if (currentViewMode === "chat") setViewMode("split");
-    setMapTool("plot");
+    // Step 2: Prior Title & Encumbrance (മുന്നാധാര പരിശോധന)
+    if (categoryTabs) {
+      categoryTabs.style.display = "flex";
+      switchActionCategory("lineage");
+    }
+    // Collapse dropzone so timeline/chat is prominent
+    if (dropzoneContainer && dropzone && !dropzone.classList.contains("collapsed")) {
+      dropzone.classList.add("collapsed");
+      if (toggleBtn) toggleBtn.textContent = "+ Expand";
+    }
+    // Show Timeline chips, Fair value chip, and OCR Sample chip
+    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
+      if (lineageChipIds.includes(chip.id)) {
+        chip.style.display = "inline-flex";
+      } else {
+        chip.style.display = "none";
+      }
+    });
+    if (currentViewMode === "map") setViewMode("split");
+
   } else if (stepNum === 3) {
+    // Step 3: Ground & Satellite Verification (ഉപഗ്രഹ സർവേ)
+    if (currentViewMode === "chat") {
+      setViewMode("split");
+    }
+    if (categoryTabs) {
+      categoryTabs.style.display = "flex";
+      switchActionCategory("kpbr");
+    }
+    if (dropzoneContainer && dropzone && !dropzone.classList.contains("collapsed")) {
+      dropzone.classList.add("collapsed");
+      if (toggleBtn) toggleBtn.textContent = "+ Expand";
+    }
+    // Activate plot tool for cadastral survey
+    setMapTool("plot");
+    // Ensure HUD is open/visible
+    const hud = document.getElementById("map-hud");
+    if (hud && hud.classList.contains("collapsed")) {
+      toggleHUD();
+    }
+
+  } else if (stepNum === 4) {
+    // Step 4: Due Diligence & Action (നടപടി ക്രമങ്ങൾ)
+    if (categoryTabs) {
+      categoryTabs.style.display = "flex";
+      switchActionCategory("field");
+    }
+    // Open checklist panel
     toggleChecklist(true);
-    switchActionCategory("statutory");
+    // Ensure WhatsApp inquiry card is available in log
+    ensureStep4ActionCard();
+  }
+}
+
+function nextWorkflowStep() {
+  if (currentWorkflowStep < 4) {
+    setWorkflowStep(currentWorkflowStep + 1);
+  } else {
+    // Restart Audit ↺
+    setWorkflowStep(1);
+  }
+}
+
+function prevWorkflowStep() {
+  if (currentWorkflowStep > 1) {
+    setWorkflowStep(currentWorkflowStep - 1);
   }
 }
 
@@ -5735,6 +6058,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initMap();
   initPWA();
   setLanguage(currentLanguage);
+  setWorkflowStep(1);
 
   // Auto-refresh dev watcher: detects code edits, static changes & server restarts
   (function initDevAutoRefresh() {
