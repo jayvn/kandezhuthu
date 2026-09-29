@@ -5253,6 +5253,15 @@ function searchLocation() {
     return;
   }
 
+  const qLower = query.toLowerCase();
+  for (const [key, p] of Object.entries(KERALA_PRESETS)) {
+    if (key.toLowerCase().includes(qLower) || p.name.toLowerCase().includes(qLower) || (p.village && p.village.toLowerCase().includes(qLower))) {
+      applyLocationPreset(key);
+      updateHUDLocation(p.lat, p.lng, p.name);
+      return;
+    }
+  }
+
   const keralaQuery = query.toLowerCase().includes("kerala") ? query : `${query}, Kerala, India`;
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(keralaQuery)}`)
     .then(res => res.json())

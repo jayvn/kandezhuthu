@@ -89,7 +89,7 @@ def run_pdf_dossier_export_test():
             timeline_btn = page.locator("button:has-text('Ownership Timeline')").first
 
         timeline_btn.click()
-        page.wait_for_timeout(800)
+        page.wait_for_selector(".timeline-card", timeout=15000)
         expect(page.locator(".timeline-card")).to_be_visible()
 
         timeline_dossier_btn = page.locator(".timeline-card").last.locator("button:has-text('Download Advocate PDF')")

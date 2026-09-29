@@ -58,7 +58,7 @@ def run_munnadharam_lineage_test():
 
         expect(timeline_btn).to_be_visible()
         timeline_btn.click()
-        page.wait_for_timeout(800)
+        page.wait_for_selector(".timeline-card", timeout=15000)
 
         # Verify Timeline Card rendered
         expect(page.locator(".timeline-card")).to_be_visible()
