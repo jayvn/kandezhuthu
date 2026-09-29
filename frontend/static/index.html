@@ -1528,6 +1528,32 @@
     body.view-split #map-pane { display: none; }
     .view-btn[data-mode="split"] { display: none; }
     .map-hud { bottom: 8px; left: 8px; right: 8px; }
+    .workflow-bar {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      touch-action: pan-x;
+    }
+    .workflow-steps {
+      flex-shrink: 0;
+    }
+    .step-nav-bar {
+      padding: 0.4rem 0.75rem;
+      gap: 0.5rem;
+      white-space: nowrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      touch-action: pan-x;
+    }
+    .step-nav-left {
+      flex-shrink: 0;
+      min-width: 0;
+    }
+    .step-nav-controls {
+      flex-shrink: 0;
+    }
   }
 
   @media (max-width: 640px) {
@@ -1537,6 +1563,17 @@
     .map-preset-select { max-width: 100%; flex: 1 1 100%; }
     .map-search-group { width: 100%; flex: 1 1 100%; }
     .map-hud { bottom: 6px; left: 6px; right: 6px; padding: 0.65rem 0.75rem; }
+    .step-nav-bar {
+      padding: 0.35rem 0.5rem;
+      gap: 0.4rem;
+    }
+    .step-nav-label {
+      font-size: 0.78rem;
+    }
+    .step-nav-btn {
+      padding: 0.28rem 0.55rem;
+      font-size: 0.72rem;
+    }
   }
 
   /* Guided 3-Step Workflow Bar */
@@ -1551,6 +1588,9 @@
     overflow-x: auto;
     font-size: 0.78rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
   }
   .workflow-steps {
     display: flex;
@@ -1583,6 +1623,16 @@
     color: #990f3d;
     box-shadow: 0 1px 3px rgba(153, 15, 61, 0.15);
   }
+  .workflow-step.completed {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+  }
+  .workflow-step.completed:hover {
+    background: #dcfce7;
+    border-color: #4ade80;
+    color: #14532d;
+  }
   .workflow-step-num {
     width: 18px;
     height: 18px;
@@ -1594,10 +1644,33 @@
     justify-content: center;
     font-size: 0.68rem;
     font-weight: 700;
+    transition: all 0.15s ease;
   }
   .workflow-step.active .workflow-step-num {
     background: #990f3d;
     color: #fff;
+  }
+  .workflow-step.completed .workflow-step-num {
+    display: none;
+  }
+  .workflow-step-badge {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #16a34a;
+    color: #ffffff;
+    border: 1.5px solid #990f3d;
+    font-size: 0.72rem;
+    font-weight: 800;
+    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.25);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .workflow-step.completed .workflow-step-badge {
+    display: inline-flex;
   }
   .workflow-arrow {
     color: #94a3b8;
@@ -1634,6 +1707,25 @@
     gap: 0.75rem;
     font-size: 0.8rem;
     box-shadow: inset 0 -1px 2px rgba(0,0,0,0.02);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+  .step-nav-bar::-webkit-scrollbar {
+    height: 3px;
+  }
+  .step-nav-bar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+  .step-nav-bar.touch-dragging {
+    cursor: grabbing;
+    user-select: none;
+    scroll-behavior: auto;
   }
   .step-nav-left {
     display: flex;
@@ -1649,6 +1741,29 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .step-nav-badges {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .step-check-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0fdf4;
+    border: 1px solid #16a34a;
+    color: #166534;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.15);
+  }
+  .step-check-badge .check-icon {
+    font-weight: 800;
+    color: #16a34a;
   }
   .step-nav-controls {
     display: flex;
@@ -2151,25 +2266,29 @@
   </div>
 </header>
 
-<div class="workflow-bar">
-  <div class="workflow-steps">
+<div class="workflow-bar" id="workflow-bar">
+  <div class="workflow-steps" id="workflow-steps">
     <div class="workflow-step active" id="wf-step-1" onclick="setWorkflowStep(1)" title="Step 1: Ingest Kerala Sale Deed or Encumbrance Certificate (EC)">
-      <span class="workflow-step-num">1</span>
+      <span class="workflow-step-num" id="wf-num-1">1</span>
+      <span class="workflow-step-badge" id="wf-badge-1" style="display:none;" title="Step 1 Completed">✓</span>
       <span id="wf-text-1">📄 Ingest Document</span>
     </div>
     <span class="workflow-arrow">➔</span>
     <div class="workflow-step" id="wf-step-2" onclick="setWorkflowStep(2)" title="Step 2: 30-Year Prior Title Lineage & Encumbrance cross-validation">
-      <span class="workflow-step-num">2</span>
+      <span class="workflow-step-num" id="wf-num-2">2</span>
+      <span class="workflow-step-badge" id="wf-badge-2" style="display:none;" title="Step 2 Completed">✓</span>
       <span id="wf-text-2">📜 Prior Lineage</span>
     </div>
     <span class="workflow-arrow">➔</span>
     <div class="workflow-step" id="wf-step-3" onclick="setWorkflowStep(3)" title="Step 3: Satellite GIS, KPBR Road Access Width, Cadastral Plot Boundary, Flood Risk">
-      <span class="workflow-step-num">3</span>
+      <span class="workflow-step-num" id="wf-num-3">3</span>
+      <span class="workflow-step-badge" id="wf-badge-3" style="display:none;" title="Step 3 Completed">✓</span>
       <span id="wf-text-3">🛰️ Satellite & KPBR</span>
     </div>
     <span class="workflow-arrow">➔</span>
     <div class="workflow-step" id="wf-step-4" onclick="setWorkflowStep(4)" title="Step 4: Field Checklist, WhatsApp Seller Inquiry, Advocate PDF Dossier">
-      <span class="workflow-step-num">4</span>
+      <span class="workflow-step-num" id="wf-num-4">4</span>
+      <span class="workflow-step-badge" id="wf-badge-4" style="display:none;" title="Step 4 Completed">✓</span>
       <span id="wf-text-4">⚖️ Due Diligence & Action</span>
     </div>
   </div>
@@ -2186,13 +2305,14 @@
 <div class="step-nav-bar" id="step-nav-bar">
   <div class="step-nav-left">
     <span class="step-nav-label" id="step-nav-label">Step 1 of 4: Ingest Document</span>
+    <span class="step-nav-badges" id="step-nav-badges"></span>
   </div>
   <div class="step-nav-controls">
     <button type="button" class="step-nav-btn prev" id="btn-prev-step" onclick="prevWorkflowStep()" disabled>
       ← Previous Step
     </button>
     <button type="button" class="step-nav-btn next" id="btn-next-step" onclick="nextWorkflowStep()">
-      Next: Lineage Audit →
+      Next: Prior Lineage →
     </button>
   </div>
 </div>
@@ -4479,28 +4599,28 @@ function updateStepNavBar() {
     en: {
       prev: [
         "← Previous Step",
-        "← Previous: Document",
-        "← Previous: Lineage",
-        "← Previous: Satellite"
+        "← Previous: Ingest Document",
+        "← Previous: Prior Lineage",
+        "← Previous: Satellite & KPBR"
       ],
       next: [
-        "Next: Lineage Audit →",
-        "Next: Satellite Verification →",
-        "Next: Take Action & Dossier →",
+        "Next: Prior Lineage →",
+        "Next: Satellite & KPBR →",
+        "Next: Due Diligence →",
         "Restart Audit ↺"
       ]
     },
     ml: {
       prev: [
         "← മുൻപത്തെ പടി",
-        "← മുൻപത്തെ: രേഖ",
+        "← മുൻപത്തെ: രേഖ സമർപ്പിക്കൽ",
         "← മുൻപത്തെ: മുന്നാധാരം",
-        "← മുൻപത്തെ: ഉപഗ്രഹം"
+        "← മുൻപത്തെ: ഉപഗ്രഹം & KPBR"
       ],
       next: [
         "അടുത്തത്: മുന്നാധാര പരിശോധന →",
-        "അടുത്തത്: ഉപഗ്രഹ സർവേ →",
-        "അടുത്തത്: നടപടി ക്രമങ്ങൾ →",
+        "അടുത്തത്: ഉപഗ്രഹ സർവേ & KPBR →",
+        "അടുത്തത്: നേരിട്ടുള്ള പരിശോധന →",
         "വീണ്ടും പരിശോധിക്കുക ↺"
       ]
     }
@@ -4522,6 +4642,73 @@ function updateStepNavBar() {
     nextBtn.textContent = (navText[lang] || navText.en).next[stepNum - 1];
     nextBtn.classList.toggle("restart", stepNum === 4);
   }
+
+  // Dynamic visual checkmark badges in step-nav-bar
+  const badgesContainer = document.getElementById("step-nav-badges");
+  if (badgesContainer) {
+    const stepShortNames = {
+      en: ["Document Ingest", "Prior Lineage", "Satellite & KPBR", "Due Diligence"],
+      ml: ["രേഖ", "മുന്നാധാരം", "ഉപഗ്രഹം", "നടപടി"]
+    };
+    const names = stepShortNames[lang] || stepShortNames.en;
+    let badgeHtml = "";
+    for (let i = 1; i < stepNum; i++) {
+      badgeHtml += `<span class="step-check-badge" id="step-nav-badge-${i}" title="Step ${i}: ${names[i-1]} completed"><span class="check-icon">✓</span> ${names[i-1]}</span>`;
+    }
+    badgesContainer.innerHTML = badgeHtml;
+  }
+}
+
+function initTouchDragScroll(containerId) {
+  const container = document.getElementById(containerId) || (typeof containerId === 'string' && containerId.startsWith('.') ? document.querySelector(containerId) : null);
+  if (!container) return;
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  // Touch drag support for mobile/tablet touchscreens
+  let touchStartX = 0;
+  let touchStartScroll = 0;
+
+  container.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].pageX;
+      touchStartScroll = container.scrollLeft;
+    }
+  }, { passive: true });
+
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1) {
+      const touchX = e.touches[0].pageX;
+      const walk = (touchX - touchStartX) * 1.2;
+      container.scrollLeft = touchStartScroll - walk;
+    }
+  }, { passive: true });
+
+  // Mouse / pointer drag support for desktop/tablet emulation
+  container.addEventListener('mousedown', (e) => {
+    if (e.target.closest('button, a, input, select, textarea')) return;
+    isDown = true;
+    container.classList.add('touch-dragging');
+    startX = e.pageX - container.offsetLeft;
+    scrollLeft = container.scrollLeft;
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDown) {
+      isDown = false;
+      container.classList.remove('touch-dragging');
+    }
+  });
+
+  container.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    container.scrollLeft = scrollLeft - walk;
+  });
 }
 
 function ensureStep4ActionCard() {
@@ -4607,9 +4794,33 @@ function setWorkflowStep(stepNum) {
   if (stepNum < 1 || stepNum > 4) return;
   currentWorkflowStep = stepNum;
 
-  // 1. Toggle .active class on workflow step indicators
+  // 1. Toggle .active and .completed classes on workflow step indicators with checkmark badges
   document.querySelectorAll(".workflow-step").forEach((el, idx) => {
-    el.classList.toggle("active", idx + 1 === stepNum);
+    const num = idx + 1;
+    const isActive = (num === stepNum);
+    const isCompleted = (num < stepNum);
+
+    el.classList.toggle("active", isActive);
+    el.classList.toggle("completed", isCompleted);
+
+    const numEl = el.querySelector(".workflow-step-num");
+    const badgeEl = el.querySelector(".workflow-step-badge");
+
+    if (numEl) {
+      if (isCompleted) {
+        numEl.textContent = "✓";
+        numEl.setAttribute("aria-label", `Step ${num} completed`);
+      } else {
+        numEl.textContent = String(num);
+        numEl.removeAttribute("aria-label");
+      }
+    }
+
+    if (badgeEl) {
+      badgeEl.style.display = isCompleted ? "inline-flex" : "none";
+      badgeEl.textContent = "✓";
+      badgeEl.setAttribute("title", `Step ${num} Completed`);
+    }
   });
 
   // 2. Update step navigation bar controls
@@ -6334,6 +6545,8 @@ window.addEventListener("DOMContentLoaded", () => {
   initPWA();
   setLanguage(currentLanguage);
   setWorkflowStep(1);
+  initTouchDragScroll("step-nav-bar");
+  initTouchDragScroll("workflow-bar");
 
   // Auto-refresh dev watcher: detects code edits, static changes & server restarts
   (function initDevAutoRefresh() {
