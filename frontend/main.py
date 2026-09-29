@@ -1207,6 +1207,25 @@ async def chat(req: Request):
     return JSONResponse({"parts": parts})
 
 
+SERVER_START_TIME = time.time()
+
+
+@app.get("/api/dev/version")
+async def get_dev_version():
+    """Live reload version tracker for localhost dev."""
+    static_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "index.html")
+    static_mtime = 0
+    try:
+        static_mtime = os.path.getmtime(static_file)
+    except Exception:
+        pass
+    return JSONResponse({
+        "server_start": SERVER_START_TIME,
+        "static_mtime": static_mtime,
+        "status": "ok",
+    })
+
+
 # Mount static assets
 static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
@@ -1215,5 +1234,5 @@ app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8080))
-    print(f"Server starting on http://localhost:{port}")
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    print(f"Server starting on http://localhost:{port} with auto-reload")
+    uvicorn.run("frontend.main:app", host="0.0.0.0", port=port, reload=True)

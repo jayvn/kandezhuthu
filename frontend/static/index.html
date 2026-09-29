@@ -5726,6 +5726,40 @@ window.addEventListener("DOMContentLoaded", () => {
   initMap();
   initPWA();
   setLanguage(currentLanguage);
+
+  // Auto-refresh dev watcher: detects code edits, static changes & server restarts
+  (function initDevAutoRefresh() {
+    let lastState = null;
+    let serverWasDown = false;
+
+    async function checkVersion() {
+      try {
+        const res = await fetch('/api/dev/version?t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const currentState = `${data.server_start}_${data.static_mtime}`;
+          if (serverWasDown) {
+            console.log("[Auto-Refresh] Server is back online. Refreshing page...");
+            window.location.reload();
+            return;
+          }
+          if (lastState !== null && lastState !== currentState) {
+            console.log("[Auto-Refresh] Change detected on server. Refreshing page...");
+            window.location.reload();
+            return;
+          }
+          lastState = currentState;
+          serverWasDown = false;
+        } else {
+          serverWasDown = true;
+        }
+      } catch (e) {
+        serverWasDown = true;
+      }
+    }
+
+    setInterval(checkVersion, 1000);
+  })();
 });
 </script>
 
