@@ -4,29 +4,121 @@
       "eval_case_id": "kerala_title_audit_scope",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "Namaskaram! I am planning to buy 8 cents of residential land in Aluva. What legal checks should I perform on the title deed before paying advance money?"}]
-      }
+        "parts": [
+          {
+            "text": "Namaskaram! I am planning to buy 8 cents of residential land in Aluva. What legal checks should I perform on the title deed before paying advance money?"
+          }
+        ]
+      },
+      "reference": "A comprehensive pre-purchase title audit in Kerala requires: 1) Minimum 30-year prior title deed lineage (മുന്നാധാരം / Munnadharam) tracing uninterrupted chain of title, checking for unrepresented legal heirs, minor shares, and encumbrances. 2) Nil-Encumbrance Certificate (EC / കുടിക്കടം സർട്ടിഫിക്കറ്റ്) for 30 years from SRO to detect mortgages (Gehan) or court attachments. 3) Revenue verification: Village Office Basic Tax Register (BTR), Thandaper account, latest land tax receipt (പോക്കുവരവ് / ഭൂനികുതി), and Krishi Bhavan Agricultural Data Bank to confirm dry garden land (പുരയിടം / Purayidam) vs paddy/wetland (നിലം / Nilam) under the 2008 Act. 4) Cadastral verification: Field Measurement Book (FMB) sketch, digital resurvey (Ente Bhoomi / Bhu-Aadhaar ULPIN), and physical inspection of boundary stones (സർവേ കല്ല് / Survey Kallu). 5) Access road width compliance under Kerala Panchayat / Municipality Building Rules (KPBR/KMBR 2019). Mandatory disclaimer: AI is an initial red-flag triage tool, not a guarantee of title or substitute for a licensed Kerala High Court / District Court advocate formal title search report. Never claim 100% clean title."
     },
     {
       "eval_case_id": "paddy_land_form5_form6",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "The broker told me the plot looks like dry land with coconut trees, but the tax receipt says 'Nilam' (നിലം). Can I construct a house right away, and what are Form 5 and Form 6?"}]
-      }
+        "parts": [
+          {
+            "text": "The broker told me the plot looks like dry land with coconut trees, but the tax receipt says \"Nilam\" (നിലം). Can I construct a house right away, and what are Form 5 and Form 6?"
+          }
+        ]
+      },
+      "reference": "Under the Kerala Conservation of Paddy Land and Wetland Act, 2008, physical appearance of dry land with trees does not confer legal right to build if revenue records show Nilam (നിലം). Construction cannot commence until legal classification is converted: 1) If the plot is included in the Agricultural Data Bank (ഡാറ്റാ ബാങ്ക്), owner must first file Form 5 before the RDO/Sub-Collector to remove it from the Data Bank, submitting KSREC satellite imagery showing conversion prior to 2008. 2) Once removed from the Data Bank (or if unnotified), owner must file Form 6 under Section 27A to convert land use in the Basic Tax Register (BTR) to Purayidam (പുരയിടം). Conversion fee under Sec 27A is 0% (free) for plots up to 25 cents. Local bodies (Panchayat/Municipality) cannot issue building permits under KPBR/KMBR while classification is Nilam. Mandatory disclaimer: Physical site verification for survey stones (സർവേ കല്ല്) and waterlogging is essential. AI triage does not guarantee 100% clean title; consult a licensed advocate."
     },
     {
       "eval_case_id": "kpbr_road_width_inquiry",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "The seller is selling 5 cents of land in a Grama Panchayat with a 2-meter concrete pathway. Will I get a building permit under Kerala Panchayat Building Rules (KPBR 2019)?"}]
-      }
+        "parts": [
+          {
+            "text": "The seller is selling 5 cents of land in a Grama Panchayat with a 2-meter concrete pathway. Will I get a building permit under Kerala Panchayat Building Rules (KPBR 2019)?"
+          }
+        ]
+      },
+      "reference": "Under Kerala Panchayat Building Rules (KPBR 2019), standard residential buildings (Group A1) require a minimum access road width of 3.0 meters. While Chapter VIII provides concessions for small plots, those concessions strictly apply only to plots not exceeding 1.25 Ares (approx 3.09 cents) with existing registered title prior to the rules, which may permit 1.2 to 1.5 meter access. For a 5-cent plot (approx 2.02 Ares), the small plot exemption does NOT apply, so a 2.0-meter pathway is insufficient for a standard building permit without obtaining formal relaxation, surrendering frontage land to widen the road to 3.0 meters, or verifying special local panchayat provisions. Physical inspection of access road motorability, pathway easement rights (നടപ്പുവഴി), and boundary stones (സർവേ കല്ല്) is necessary. AI triage is not a guarantee of title or building permit approval; consult an architect/licensed engineer and advocate."
     },
     {
       "eval_case_id": "mary_roy_christian_succession",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "The seller inherited the property through a 1980 partition deed where only the sons signed and the daughters were excluded. Is this title safe under Kerala law?"}]
-      }
+        "parts": [
+          {
+            "text": "The seller inherited the property through a 1980 partition deed where only the sons signed and the daughters were excluded. Is this title safe under Kerala law?"
+          }
+        ]
+      },
+      "reference": "Under the landmark Supreme Court ruling in Mary Roy v. State of Kerala (1986 AIR 1011), the Travancore Christian Succession Act 1092 ME was declared repealed retrospectively from 1 April 1951. Consequently, intestate Christian succession in Kerala is governed by the Indian Succession Act, 1925, under which daughters have equal rights to intestate parental property alongside sons. A 1980 partition deed (ഭാഗപത്രം) executed solely among sons while excluding daughters (or claiming customary stridhanom exclusion) is legally defective. The excluded daughters or their legal heirs retain valid undivided ownership shares and can file a partition suit in civil court. Title is NOT safe. The buyer must demand registered release/relinquishment deeds (ഒഴിവുമുറി) from all excluded daughters or their heirs. Prior deeds (മുന്നാധാരം) must be verified. Mandatory disclaimer: AI cannot verify family pedigree or guarantee 100% clean title; consult a licensed Kerala advocate."
+    },
+    {
+      "eval_case_id": "senior_citizen_tribunal_revocation_sec23",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "My uncle is planning to buy 8 cents in Thrissur from a person who got the land via a registered Gift Deed (ദാനനിശ്ചയം) in 2021 from his 76-year-old father. The deed schedule and recitals clearly include a clause that the son must provide food, medical care, and maintenance to his parents during their lifetime (ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ). Now the elderly father has approached the RDO Maintenance Tribunal under Section 23 of the Maintenance and Welfare of Parents and Senior Citizens Act 2007 because the son abandoned him, but the son claims the property is his absolute property and is offering a 20% discount if we pay an immediate advance of ₹10 Lakhs. Is this title safe, what can the Tribunal do to the deed, and should we proceed?"
+          }
+        ]
+      },
+      "reference": "Under Section 23(1) of the Maintenance and Welfare of Parents and Senior Citizens Act, 2007, where any senior citizen has transferred property by gift or settlement deed subject to the condition of providing basic amenities and physical needs, and the transferee fails to do so, the transfer is statutorily deemed to have been made by fraud, coercion, or undue influence. The Maintenance Tribunal (presided by the Sub-Divisional Magistrate / RDO) has summary jurisdiction to declare the gift deed (ദാനനിശ്ചയം / ധനനിശ്ചയാധാരം) void. If voided, title instantly reverts to the father, rendering any subsequent sale by the son null and void. The 20% discount and rush for a ₹10 Lakh advance are classic warning signs of distressed, clouded title. The buyer should NOT pay advance money. Advise reviewing prior deeds (ആധാരം, മുന്നാധാരം), verifying pending proceedings before the RDO Tribunal, and inspecting physical survey stones (സർവേ കല്ല്). Mandatory legal disclaimer: AI is an initial triage and red-flag scanner, never guarantees 100% clean title, and is not a substitute for a licensed Kerala High Court / District Court advocate formal title search report."
+    },
+    {
+      "eval_case_id": "nemo_dat_quod_non_habet_extent_inflation",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "We are examining a property in Ernakulam where the seller is offering 12.5 cents of residential garden land (പുരയിടം) under a 2017 Sale Deed (തീറാധാരം). But when we traced the prior deed lineage (മുന്നാധാരം) back to the 1991 partition deed, the vendor only acquired 10.0 cents in Re-survey 142/3. The seller and broker argue that during recent resurvey, the physical measurement within the boundary survey stones (സർവേ കല്ല്) was found to be 12.5 cents, so the seller has full legal right to convey all 12.5 cents. Can a seller transfer 12.5 cents when the parent title only grants 10 cents?"
+          }
+        ]
+      },
+      "reference": "Under the established legal doctrine of \"Nemo dat quod non habet\" (no one can convey what they do not hold) and Sections 7 and 8 of the Transfer of Property Act, 1882, a seller cannot convey a larger extent of land than what was legally acquired in their registered title deed (ആധാരം) and parent prior deeds (മുന്നാധാരം). The 1991 parent deed conveying only 10.0 cents limits the vendor lawful title. An arbitrary inflation of 2.5 cents in the 2017 sale deed without a registered supplemental title, purchase deed, or formal government revenue resurvey rectification order creates a fatal legal defect in title. The excess 2.5 cents is susceptible to title recovery by adjacent owners or the Revenue Department (if puramboke / excess government land). The buyer must verify the Field Measurement Book (FMB), Basic Tax Register (BTR), survey stones (സർവേ കല്ല്), and require a formal boundary survey. Mandatory disclaimer: AI provides pre-purchase diligence and cannot verify ground encroachments or guarantee 100% clean title; formal legal scrutiny by a Kerala property advocate is required."
+    },
+    {
+      "eval_case_id": "well_water_access_pathway_easement_sec13_15",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "We are negotiating to purchase 6.5 cents of land in Palakkad. In the schedule of the seller title deed (ആധാരം), there is a clause granting the eastern neighbor a walking easement (നടപ്പുവഴി അവകാശം) along the 1.5-meter southern boundary, and an explicit right to draw drinking water from the open well (കിണറ്റിൽ നിന്ന് വെള്ളമെടുക്കാനുള്ള അവകാശം) located inside this plot. The seller promises he will verbally ask the neighbor to stop using the well once we build our compound wall and offers a written private agreement (ഉടമ്പടി). Can the seller extinguish these easement rights under Sections 13 and 15 of the Indian Easements Act 1882, and how does this affect our building permit and well setbacks under KPBR?"
+          }
+        ]
+      },
+      "reference": "Under Sections 13 (easements of necessity / quasi-easements) and 15 (easement by prescription through 20 years continuous peaceful enjoyment) of the Indian Easements Act, 1882, registered easements and long-established customary access rights run with the land and bind all future purchasers. A seller cannot unilaterally extinguish or compromise an easement of pathway (നടപ്പുവഴി) or well-water drawing rights (കിണറ്റിൽ നിന്ന് വെള്ളമെടുക്കാനുള്ള അവകാശം) through oral assurances (വായ്മൊഴി) or private agreements (ഉടമ്പടി). Only a registered release deed (ഒഴിവുമുറി) executed by the dominant tenement owner (neighbor) can extinguish the easement. Furthermore, under Kerala Panchayat Building Rules (KPBR 2019), any proposed residential building must maintain statutory sanitation setbacks (minimum 7.5 meters between septic tank / leach pit and open drinking water well). Constructing a wall or blocking access invites civil injunctions and police intervention. Verify survey stones (സർവേ കല്ല്), registered deeds (ആധാരം, മുന്നാധാരം), and neighbor usage. Mandatory disclaimer: AI triage does not verify physical ground realities or guarantee 100% clean title; consult a licensed advocate before paying advance money."
+    },
+    {
+      "eval_case_id": "minor_share_sold_without_court_sanction_hmga_sec8",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "I am reviewing a 2018 registered sale deed (തീറാധാരം) for a 9-cent plot in Kottayam. The property was ancestral Hindu property owned equally by a widow and her 13-year-old minor son. In 2018, the mother executed the sale deed conveying the entire 9 cents as \"mother and natural guardian\" citing family livelihood expenses, but there was NO prior sanction obtained from the District Court. The minor son turned 18 last year (now 19). The current seller bought from that 2018 purchaser and says the sale is completely safe because the mother signed. What is the legal risk under Section 8(2) of the Hindu Minority and Guardianship Act 1956?"
+          }
+        ]
+      },
+      "reference": "Under Section 8(2) of the Hindu Minority and Guardianship Act, 1956, a natural guardian cannot sell, mortgage, gift, or exchange any immovable property of a minor without prior sanction of the District Court. Under Section 8(3), any transfer executed in contravention of Section 8(2) is voidable at the instance of the minor. Under Article 60 of the Limitation Act, 1963, the minor has 3 years after attaining majority (up to age 21) to institute a suit in civil court to set aside the sale deed (തീറാധാരം) and recover their undivided share. Since the son is 19 years old, his right to challenge the 2018 sale deed remains fully alive. The mother recital of family maintenance is insufficient without court sanction (Saroj v. Sunder Singh). The title is severely encumbered. To remedy the title, the son must execute a registered ratification or release deed (ഒഴിവുമുറി). Inspect prior deeds (മുന്നാധാരം) and physical survey stones (സർവേ കല്ല്). Mandatory disclaimer: AI does not guarantee 100% clean title or verify court records; consult a licensed civil advocate."
+    },
+    {
+      "eval_case_id": "paddy_wetland_form5_vs_form6_conversion",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "A seller in Aluva is offering 14 cents of residential land filled and planted with rubber and coconut trees since 1995. However, the Village Office BTR lists the land classification as \"Nilam\" (നിലം), and the Krishi Bhavan confirmed the survey number is included in the statutory 2008 Agricultural Data Bank. The seller claims we can directly submit Form 6 and start building the foundation immediately because the plot is under 25 cents and conversion fee is zero under Section 27A. Is the seller advice legally correct under the Kerala Conservation of Paddy Land and Wetland Act 2008?"
+          }
+        ]
+      },
+      "reference": "The seller advice is legally incorrect and unlawful. Under the Kerala Conservation of Paddy Land and Wetland Act, 2008: 1) Form 5 is mandatory whenever a survey number is included in the Agricultural Data Bank (ഡാറ്റാ ബാങ്ക്) prepared by Krishi Bhavan / LLMC. Form 6 cannot be considered while the land remains in the Data Bank. The owner must first submit Form 5 to the RDO/Sub-Collector for removal from the Data Bank, supported by KSREC satellite imaging proving conversion prior to 2008. 2) Only AFTER an official Form 5 exclusion order is issued can the owner apply under Form 6 (Section 27A) to alter the revenue classification in the Basic Tax Register (BTR) from Nilam (നിലം) to Purayidam (പുരയിടം). 3) While the statutory conversion fee under Section 27A is 0% (free) for extents up to 25 cents (10.11 Ares), statutory application fees still apply and the formal order from the RDO and village re-classification are prerequisite. 4) Local self-governments (Grama Panchayat / Municipality) are legally prohibited from granting building permits under KPBR/KMBR for plots classified as Nilam in the BTR. Unauthorized construction invites stop-memos and penal action under Section 12/23. Inspect boundary stones (സർവേ കല്ല്) and waterlogging risk. Mandatory disclaimer: AI triage does not guarantee 100% clean title; formal advocate verification is mandatory."
+    },
+    {
+      "eval_case_id": "christian_succession_mary_roy_coparcenary",
+      "prompt": {
+        "role": "user",
+        "parts": [
+          {
+            "text": "We are examining the prior deeds (മുന്നാധാരം) for a 16-cent property in Kottayam. The property originally belonged to a Syrian Christian father who passed away intestate in 1988 leaving behind a widow, two sons, and two married daughters. In 1994, a Partition Deed (ഭാഗപത്രം) was registered dividing the entire 16 cents equally between the two sons only. The deed stated that the daughters were given \"Stridhanom\" (സ്ത്രീധനം) during marriage and had surrendered their rights as per Travancore Christian custom. One of the sons is now selling his 8 cents to us. Is this title clear and does Mary Roy v. State of Kerala apply here?"
+          }
+        ]
+      },
+      "reference": "In the landmark judgment Mary Roy v. State of Kerala (1986 AIR 1011), the Supreme Court ruled that the Travancore Christian Succession Act 1092 ME and Cochin Christian Succession Act were repealed effective 1 April 1951, and Christian intestate succession is governed by the Indian Succession Act, 1925. Under the 1925 Act, daughters have equal inheritance rights with sons in their father intestate estate. Recitals in the 1994 Partition Deed (ഭാഗപത്രം) alleging customary exclusion or Stridhanom (സ്ത്രീധനം) surrender without registered release/relinquishment deeds (ഒഴിവുമുറി) from the daughters are legally invalid. The omitted daughters retain lawful undivided ownership shares and can file a partition suit in civil court at any time. The seller does NOT hold clean marketable title. To cure the defect, registered release deeds (ഒഴിവുമുറി) must be obtained from both sisters or their legal heirs. Prior deeds (മുന്നാധാരം, ആധാരം) must be scrutinized and physical survey stones (സർവേ കല്ല്) verified. Mandatory legal disclaimer: AI triage cannot verify family trees or guarantee 100% clean title; consultation with a licensed Kerala property advocate is indispensable."
     }
   ]
 }
