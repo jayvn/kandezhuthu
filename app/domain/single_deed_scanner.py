@@ -7,10 +7,17 @@ Built with a Neuro-Symbolic boundary:
 - Explicitly flags physical ground-inspection items that no AI can verify.
 """
 
+from __future__ import annotations
+
 import re
 from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, Field
+
+from app.domain.extent_converter import (
+    parse_extents_from_text,
+    verify_internal_extent_consistency,
+)
 
 
 class TrapCategory(str, Enum):
@@ -18,6 +25,7 @@ class TrapCategory(str, Enum):
     WETLAND_NILAM_RISK = "WETLAND_NILAM_RISK"
     MINOR_RIGHTS_DEFECT = "MINOR_RIGHTS_DEFECT"
     MAINTENANCE_CONDITIONAL_CLAUSE = "MAINTENANCE_CONDITIONAL_CLAUSE"
+    EXTENT_INFLATION_DISCREPANCY = "EXTENT_INFLATION_DISCREPANCY"
 
 
 class Verdict(str, Enum):
@@ -60,30 +68,53 @@ class DeedSanityResult(BaseModel):
 
 
 class SingleDeedScanner:
-    """Scans deed text in English or Malayalam for the 4 fatal Kerala real-estate traps."""
+    """Scans deed text in English or Malayalam for fatal Kerala real-estate traps."""
 
     EASEMENT_PATTERNS = [
-        (r"(?i)\b(vazhi\s*avakasham|nadappu\s*vazhi|vandi\s*povanulla|vazhikkayi\s*maatti)\b", "Malayalam right of way / pathway", "വഴി അവകാശം / നടപ്പുവഴി"),
+        # Malayalam script patterns
+        (r"(നടപ്പുവഴി|നടപുവഴി|വഴിയവകാശം|വഴി\s*അവകാശം|വണ്ടിവഴി|വണ്ടിപ്പാത|വണ്ടിയോടാനുള്ള\s*വഴി|സഞ്ചാര\s*സ്വാതന്ത്ര്യം|സഞ്ചാര\s*മാർഗ്ഗം|വഴിയായി\s*മാറ്റി|വഴിയായി\s*ഒഴിഞ്ഞു)", "Malayalam right of way / pathway", "വഴി അവകാശം / നടപ്പുവഴി"),
+        (r"(കിണർ\s*അവകാശം|കിണറ്റിൽ\s*നിന്നു[ംള]|വെള്ളമെടുക്കാനുള്ള\s*അവകാശം)", "Malayalam well / water servitude", "കിണർ അവകാശം"),
+        (r"(\d+(?:\.\d+)?)\s*(മീറ്റർ|മീ|അടി)\s*(വീതിയിലുള്ള\s*)?(നടപ്പുവഴി|വഴി|പാത)", "Malayalam pathway dimension covenant", "പ്രത്യേക വീതിയുള്ള വഴി"),
+        # Transliterated / English patterns
+        (r"(?i)\b(vazhi\s*avakasham|nadappu\s*vazhi|nadapu\s*vazhi|nadappuvazh[yi]|vandi\s*povanulla|vazhikkayi\s*maatti)\b", "Malayalam transliterated right of way", "വഴി അവകാശം / നടപ്പുവഴി"),
         (r"(?i)\b(kinaril\s*ninnum\s*vellam|kinar\s*avakasham)\b", "Well / water access servitude", "കിണർ അവകാശം"),
-        (r"(?i)\b(right\s*of\s*way|pathway\s*reserved|easement\s*of\s*necessity|common\s*passage|cart\s*track)\b", "English easement clause", "വഴി അവകാശം (ഇംഗ്ലീഷ് ക്ലോസ്)"),
-        (r"(?i)\b(\d+)\s*(meter|metre|adi|feet|ft)\s*(vazhi|pathway|passage)\b", "Specific pathway dimension reservation", "പ്രത്യേക വീതിയുള്ള വഴി"),
+        (r"(?i)\b(right\s*of\s*way|pathway\s*reserved|easement\s*of\s*necessity|common\s*passage|cart\s*track|foot\s*path)\b", "English easement clause", "വഴി അവകാശം (ഇംഗ്ലീഷ് ക്ലോസ്)"),
+        (r"(?i)(\d+(?:\.\d+)?)\s*(meter|metre|adi|feet|ft)\s*(vazhi|pathway|passage|road)", "Specific pathway dimension reservation", "പ്രത്യേക വീതിയുള്ള വഴി"),
     ]
 
     WETLAND_PATTERNS = [
-        (r"(?i)\b(nilam|nanja|punja|kandom|palliyal|thanneerthadam)\b", "Paddy land / Wetland category", "നിലം / തണ്ണീർത്തട വർഗ്ഗീകരണം"),
-        (r"(?i)\b(paddy\s*field|paddy\s*land|wetland|marshy\s*land)\b", "English wetland category", "നെൽവയൽ / തണ്ണീർത്തടം"),
+        # Malayalam script patterns
+        (r"(നിലം|നഞ്ചനിലം|നഞ്ച\s*നിലം|നഞ്ച|പുഞ്ചനിലം|പുഞ്ച\s*നിലം|പുഞ്ച|കണ്ടം|നെൽവയൽ|നെല്വയല്|തണ്ണീർത്തടം|പള്ളിയാൽ)", "Malayalam Paddy land / Wetland category", "നിലം / തണ്ണീർത്തട വർഗ്ഗീകരണം"),
+        # Malayalam OCR noise / typos (e.g. നില without anusvara ം in context of land classification)
+        (r"(നഞ്ച\s*നില|പുഞ്ച\s*നില|തരം\s*[:\s]*നില|വർഗ്ഗീകരണം\s*[:\s]*നില|ഭൂമി\s*[:\s]*നില)", "Noisy OCR Nilam classification", "നിലം (OCR പിശക്)"),
+        # Transliterated / English patterns
+        (r"(?i)\b(nilam|nanja|punja|kandom|palliyal|thanneerthadam|neelam|nilan|kandam)\b", "Paddy land / Wetland category", "നിലം / തണ്ണീർത്തട വർഗ്ഗീകരണം"),
+        (r"(?i)\b(paddy\s*field|paddy\s*land|wetland|marshy\s*land|waterlogged\s*land)\b", "English wetland category", "നെൽവയൽ / തണ്ണീർത്തടം"),
     ]
 
     MINOR_PATTERNS = [
-        (r"(?i)\b(minor-kku\s*vendi|minor\s*inu\s*vendi|rakshakarthavaya|rakshakartha)\b", "Malayalam minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
-        (r"(?i)\b(guardian\s*on\s*behalf\s*of\s*minor|represented\s*by\s*(father|mother|guardian)\s*as\s*minor)\b", "English minor guardian representation", "മൈനറുടെ രക്ഷിതാവ്"),
-        (r"(?i)\b(apraptavayasskan|balan|minor\s*child)\b", "Minor child mentioned as owner", "പ്രായപൂർത്തിയാകാത്ത ഉടമ"),
+        # Malayalam script patterns
+        (r"(മൈനർക്ക്\s*വേണ്ടി|മൈനറുടെ\s*കാര്യത്തിന്|മൈനർ\s*മകൾ|മൈനർ\s*മകൻ|മൈനർ\s*അവകാശം|മൈനർ\s*സ്വത്ത്|അപ്രാപ്ത\s*വയസ്ക|പ്രായപൂർത്തിയാകാത്ത|മൈനർ)", "Malayalam minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
+        (r"(മാതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|പിതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|രക്ഷാകർത്താവായ|രക്ഷാകർത്താവ്)", "Malayalam guardian clause", "രക്ഷാകർത്താവ് മുഖേന"),
+        # Transliterated / English patterns
+        (r"(?i)\b(minor-kku\s*vendi|minor\s*inu\s*vendi|rakshakarthavaya|rakshakartha|apraptavayasskan|balan)\b", "Malayalam transliterated minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
+        (r"(?i)\b(guardian\s*on\s*behalf\s*of\s*minor|represented\s*by\s*(?:father|mother|guardian)\s*as\s*minor)\b", "English minor guardian representation", "മൈനറുടെ രക്ഷിതാവ്"),
+        (r"(?i)\b(minor\s*(?:child|daughter|son|children|interest|share|property|owner)|on\s*behalf\s*of\s*(?:her|his)?\s*minor)\b", "Minor child mentioned as owner", "പ്രായപൂർത്തിയാകാത്ത ഉടമ"),
+        (r"(?i)\b(?:mother|father|guardian)\s*selling\s*minor(?:'s|\s+daughter|\s+son)?\b", "Parent selling minor property", "മൈനറുടെ സ്വത്ത് വിൽക്കൽ"),
+        (r"(?i)\b(natural\s*guardian\s*on\s*behalf\s*of|acting\s*as\s*(?:mother|father|natural)\s*guardian)\b", "Natural guardian representation", "സ്വാഭാവിക രക്ഷാകർത്താവ്"),
     ]
 
     MAINTENANCE_PATTERNS = [
-        (r"(?i)\b(jeevithakalam\s*muzhuvan|jeevanamsam|samrakshikkuka|shushrooshikkuka)\b", "Malayalam senior citizen maintenance condition", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
-        (r"(?i)\b(condition\s*to\s*maintain|life\s*interest|subject\s*to\s*maintenance|during\s*lifetime)\b", "English maintenance condition", "മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥ"),
-        (r"(?i)\b(thirichuvangal|reconveyance|conditional\s*sale)\b", "Conditional sale / Right of re-purchase", "തിരിച്ചുവാങ്ങൽ വ്യവസ്ഥ"),
+        # Malayalam script patterns
+        (r"(ജീവിതകാലം\s*മുഴുവൻ|ജീവിതകാലത്ത്|ജീവനാംശം|സംരക്ഷിക്കേണ്ടതാണ്|ശുശ്രൂഷിക്കേണ്ടതാണ്|സംരക്ഷിക്കണമെന്ന\s*വ്യവസ്ഥ|നോക്കിക്കൊള്ളണം)", "Malayalam senior citizen maintenance condition", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(മാതാപിതാക്കളെ\s*(?:സംരക്ഷിക്ക|നോക്ക|ശുശ്രൂഷിക്ക)|മാതാപിതാക്കളുടെ\s*സംരക്ഷണം|വൃദ്ധരായ\s*മാതാപിതാക്കൾ)", "Malayalam parental maintenance condition", "മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(ആധാരം\s*റദ്ദാക്ക|റദ്ദാക്കാൻ\s*അധികാരം|റദ്ദ്\s*ചെയ്യ|തിരിച്ചുവാങ്ങൽ|വ്യവസ്ഥ\s*ലംഘിച്ചാൽ\s*റദ്ദ്|ദാനാധാരം\s*റദ്ദ്)", "Malayalam deed revocation / cancellation clause", "ആധാരം റദ്ദാക്കൽ വ്യവസ്ഥ"),
+        # Transliterated / English patterns
+        (r"(?i)\b(jeevithakalam\s*muzhuvan|jeevanamsam|samrakshikkuka|samrakshikuka|shushrooshikkuka)\b", "Malayalam transliterated maintenance condition", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(?i)\b(condition\s*to\s*maintain|condition\s*of\s*looking\s*after|look\s*after\s*(?:elderly\s*)?parents|maintain\s*(?:elderly\s*)?parents|elderly\s*parents)\b", "English maintenance condition", "മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(?i)\b(life\s*interest|subject\s*to\s*maintenance|during\s*(?:their\s*)?lifetime|lifelong\s*maintenance|care\s*and\s*maintenance)\b", "English lifetime maintenance clause", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(?i)\b(deed\s*cancellation|cancel\s*(?:the\s*)?deed|clause\s*allowing\s*(?:deed\s*)?cancellation|cancellation\s*clause|power\s*to\s*revoke|revocation\s*clause|revoking\s*the\s*gift)\b", "Deed cancellation / Revocation clause", "ആധാരം റദ്ദാക്കൽ വ്യവസ്ഥ"),
+        (r"(?i)\b(thirichuvangal|reconveyance|conditional\s*sale|conditional\s*gift)\b", "Conditional sale / Right of re-purchase", "തിരിച്ചുവാങ്ങൽ വ്യവസ്ഥ"),
     ]
 
     def scan(self, deed_text: str) -> DeedSanityResult:
@@ -132,7 +163,20 @@ class SingleDeedScanner:
         wetland_match = self._find_first_pattern(deed_text, self.WETLAND_PATTERNS)
         if wetland_match:
             snippet, desc, mal_title = wetland_match
-            is_converted = re.search(r"(?i)(converted|purayidam\s*aayi|form\s*6\s*approved)", deed_text)
+            # Check if conversion is negated (e.g. "without Form 6 approval", "not converted")
+            conversion_negated = re.search(
+                r"(?i)\b(without|no|not|pending|awaiting|lacking)\s+(?:any\s+)?(?:form\s*6|sec(?:tion)?\s*27a|conversion|regulariz)\b|"
+                r"(ഫോറം\s*6\s*അനുമതിയില്ലാതെ|മാറ്റാത്ത|പരിവർത്തനം\s*ചെയ്യാത്ത)",
+                deed_text,
+            )
+            is_converted = False
+            if not conversion_negated:
+                is_converted = bool(re.search(
+                    r"(?i)(form\s*6\s*(?:approved|order|sanction)|sec(?:tion)?\s*27a\s*(?:order|sanction|approval)|"
+                    r"27a\s*regulariz|order\s*under\s*sec(?:tion)?\s*27a|ഫോറം\s*6\s*(?:ഉത്തരവ്|അംഗീകാരം|അനുമതി)|"
+                    r"27\s*എ\s*ഉത്തരവ്|purayidam\s*aayi\s*maattiya|converted\s*under\s*form\s*6)",
+                    deed_text,
+                ))
             if not is_converted:
                 score -= 45
                 has_critical = True
@@ -164,7 +208,20 @@ class SingleDeedScanner:
         minor_match = self._find_first_pattern(deed_text, self.MINOR_PATTERNS)
         if minor_match:
             snippet, desc, mal_title = minor_match
-            has_court_order = re.search(r"(?i)(district\s*court|court\s*order|sanction|o\.p\.\s*no)", deed_text)
+            # Check if court sanction is negated (e.g. "without court sanction", "court order not obtained")
+            sanction_negated = re.search(
+                r"(?i)\b(without|no|not|lacking|nil)\s+(?:any\s+)?(?:prior\s+)?(?:district\s+)?(?:court\s+)?(?:order|sanction|permission)\b|"
+                r"(കോടതി\s*അനുമതിയില്ലാതെ|കോടതി\s*ഉത്തരവില്ലാതെ|അനുമതി\s*കൂടാതെ)",
+                deed_text,
+            )
+            has_court_order = False
+            if not sanction_negated:
+                has_court_order = bool(re.search(
+                    r"(?i)(district\s*court\s*(?:order|sanction)|court\s*order|court\s*sanction|sanction\s*order\s*in|"
+                    r"o\.p\.\s*no|op\s*no\b|section\s*8\(2\)\s*permission|vide\s*order\s*no|"
+                    r"ജില്ലാ\s*കോടതി\s*(?:ഉത്തരവ്|അനുമതി)|കോടതി\s*ഉത്തരവ്|ഒ\.പി\.\s*നമ്പർ)",
+                    deed_text,
+                ))
             if not has_court_order:
                 score -= 40
                 has_critical = True
@@ -221,6 +278,41 @@ class SingleDeedScanner:
                     ),
                 )
             )
+
+        # 5. Scan for Extent Inflation / Internal Discrepancy in Single Deed
+        parsed_extent = parse_extents_from_text(deed_text)
+        if parsed_extent.cents and (parsed_extent.ares or parsed_extent.hectares or parsed_extent.sq_meters):
+            inconsistent, diff, explanation = verify_internal_extent_consistency(
+                cents=parsed_extent.cents,
+                ares=parsed_extent.ares,
+                hectares=parsed_extent.hectares,
+                sq_meters=parsed_extent.sq_meters,
+                tolerance_pct=5.0,
+            )
+            if inconsistent:
+                score -= 25
+                findings.append(
+                    TrapFinding(
+                        trap_type=TrapCategory.EXTENT_INFLATION_DISCREPANCY,
+                        severity="HIGH",
+                        title="Extent Inflation / Unit Discrepancy Found in Schedule",
+                        title_malayalam="വിസ്തീർണ്ണത്തിൽ പൊരുത്തക്കേട് / അളവ് പെരുപ്പിച്ചു കാണിക്കൽ",
+                        explanation=(
+                            f"The deed contains contradictory land measurements: {explanation}. "
+                            "This indicates potential extent inflation where more cents are claimed than the underlying revenue survey record supports."
+                        ),
+                        matched_snippet=explanation,
+                        kerala_statute="Nemo dat quod non habet & Kerala Land Tax Act / Survey and Boundaries Act, 1961",
+                        whatsapp_question_for_seller=(
+                            f"ആധാരത്തിലെ വിസ്തീർണ്ണത്തിൽ പൊരുത്തക്കേട് കാണുന്നുണ്ടല്ലോ ({explanation}). "
+                            "വില്ലേജ് ഓഫീസറുടെ FMB സ്കെച്ചും തണ്ടപ്പേർ റിക്കാർഡും പ്രകാരമുള്ള ശരിയായ വിസ്തീർണ്ണം എത്രയാണ്?"
+                        ),
+                        whatsapp_question_for_seller_en=(
+                            f"There is a discrepancy in the stated land measurements ({explanation}). "
+                            "Could you provide the certified Village Officer FMB sketch and Thandaper extract confirming the exact ground extent?"
+                        ),
+                    )
+                )
 
         score = max(0, min(100, score))
 
