@@ -125,6 +125,11 @@ async def get_config():
     }
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=204)
+
+
 @app.get("/api/plot_elevation")
 @app.post("/api/plot_elevation")
 async def get_plot_elevation(req: Request):

@@ -2045,6 +2045,7 @@
           <span class="dropzone-live-pulse"></span>
           <span class="dropzone-tag" id="dropzone-tag">⚡ Kerala Land Title Legal Audit Assistant</span>
           <span class="dropzone-model">Instant 1-Click Verification</span>
+          <button type="button" class="dropzone-toggle-btn" id="dropzone-toggle-btn" onclick="event.stopPropagation(); toggleDropzone();" title="Collapse / Expand Ingest Box">− Minimize</button>
         </div>
         <div class="dropzone-content">
           <div class="dropzone-icon">🛡️</div>
@@ -2928,6 +2929,20 @@ function setViewMode(mode) {
   }
 }
 
+function toggleDropzone(force) {
+  const container = document.getElementById("deed-dropzone-container");
+  const btn = document.getElementById("dropzone-toggle-btn");
+  if (!container) return;
+  const shouldMinimize = typeof force === "boolean" ? force : !container.classList.contains("minimized");
+  if (shouldMinimize) {
+    container.classList.add("minimized");
+    if (btn) btn.textContent = "+ Ingest Document";
+  } else {
+    container.classList.remove("minimized");
+    if (btn) btn.textContent = "− Minimize";
+  }
+}
+
 input.addEventListener("input", function() {
   this.style.height = "48px";
   this.style.height = Math.min(this.scrollHeight, 140) + "px";
@@ -3121,6 +3136,7 @@ async function handleMultipleDeedUploads(files) {
 /* Multimodal Deed OCR Upload Handler with Progressive Steps */
 async function handleDeedUpload(file) {
   if (!file) return;
+  toggleDropzone(true);
   const fileName = file.name;
   const fileSizeKb = (file.size / 1024).toFixed(1);
 
@@ -3199,6 +3215,7 @@ async function handleDeedUpload(file) {
 
 /* Sample Deed OCR Runner */
 async function runSampleDeedOCR(docType = "deed") {
+  toggleDropzone(true);
   const isEc = docType === "ec";
   const docTitle = isEc ? "Official Kerala SRO Encumbrance Certificate (EC Form 15, 30-Year Search)" : "Sample Kerala Title Deed (Aluva SRO Doc 1420/2014, Re-Sy 345/1)";
   const fileName = isEc ? "kerala_sro_ec_aluva_30_year_search.pdf" : "kerala_sale_deed_aluva_re_sy_345_1.pdf";
@@ -3569,6 +3586,7 @@ function askAboutDeed(docNo, surveyNo) {
 
 /* Open Interactive 30-Year Ownership Timeline */
 async function openOwnershipTimeline(preset = 'aluva_broken') {
+  toggleDropzone(true);
   const presetLabels = {
     aluva_broken: "Aluva Broken Chain (Doc 1420/2014 · Mary Roy Defect & Federal Bank Mortgage)",
     kakkanad_wetland: "Kakkanad Wetland & Minor Share (Doc 1204/2015 · Sec 8 HMGA & Data Bank)",

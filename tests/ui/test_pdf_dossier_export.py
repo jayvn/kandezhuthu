@@ -45,8 +45,8 @@ def run_pdf_dossier_export_test():
         # STEP 1: Page Load & Initial State
         # -------------------------------------------------------------
         print("[Step 1] Loading Page & Preparing PDF Interception...")
-        page.goto(BASE_URL, wait_until="networkidle")
-        page.wait_for_timeout(1000)
+        page.goto(BASE_URL, wait_until="domcontentloaded")
+        page.wait_for_timeout(1200)
 
         expect(page.locator(".brand-title")).to_contain_text("Kandezhuthu AI")
         results.append("Step 1: Page Load & Setup - PASSED")
@@ -55,7 +55,7 @@ def run_pdf_dossier_export_test():
         # STEP 2: Surface 1 - HUD Plot Dossier Download
         # -------------------------------------------------------------
         print("\n[Step 2] Testing HUD Plot Dossier PDF Export...")
-        plot_export_btn = page.locator("button:has-text('Legal Dossier')").first
+        plot_export_btn = page.locator("button:has-text('Export Dossier'), #btn-export-dossier, button:has-text('Dossier')").first
         expect(plot_export_btn).to_be_visible()
 
         with page.expect_download(timeout=15000) as download_info:
@@ -121,7 +121,7 @@ def run_pdf_dossier_export_test():
         # -------------------------------------------------------------
         print("\n[Step 4] Testing Extracted Deed Scorecard Dossier PDF Export...")
         # Trigger Sample Deed OCR
-        deed_sample_btn = page.locator("button:has-text('Kerala Sale Deed')").first
+        deed_sample_btn = page.locator(".layman-card.card-deed, button:has-text('Sale Deed')").first
         deed_sample_btn.click()
 
         # Wait for deed card

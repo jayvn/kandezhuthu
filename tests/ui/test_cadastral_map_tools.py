@@ -45,8 +45,8 @@ def run_cadastral_map_tools_test():
         # STEP 1: Page Load & Map Canvas Verification
         # -------------------------------------------------------------
         print("[Step 1] Loading Page & Satellite Map Canvas...")
-        page.goto(BASE_URL, wait_until="networkidle")
-        page.wait_for_timeout(1000)
+        page.goto(BASE_URL, wait_until="domcontentloaded")
+        page.wait_for_timeout(1200)
 
         expect(page.locator(".brand-title")).to_contain_text("Kandezhuthu AI")
         expect(page.locator("#map-view")).to_be_visible()
@@ -56,7 +56,7 @@ def run_cadastral_map_tools_test():
         # STEP 2: Map Search & Locality Geocoding
         # -------------------------------------------------------------
         print("\n[Step 2] Testing Map Search for 'Kakkanad'...")
-        search_input = page.locator("#map-search-input")
+        search_input = page.locator("#map-search")
         expect(search_input).to_be_visible()
         search_input.fill("Kakkanad")
 
@@ -111,11 +111,12 @@ def run_cadastral_map_tools_test():
         expect(plot_btn).to_have_class("map-tool-btn active")
 
         # Click 4 points to form a quadrilateral plot
+        ox, oy = cx - 120, cy - 120
         points = [
-            (cx - 50, cy - 50),
-            (cx + 50, cy - 50),
-            (cx + 50, cy + 50),
-            (cx - 50, cy + 50),
+            (ox, oy),
+            (ox + 80, oy),
+            (ox + 80, oy + 80),
+            (ox, oy + 80),
         ]
         for px, py in points:
             page.mouse.click(px, py)
@@ -129,7 +130,7 @@ def run_cadastral_map_tools_test():
         print("  ✓ Undo point successfully removed last corner stone.")
 
         # Re-add fourth corner point
-        page.mouse.click(cx - 50, cy + 50)
+        page.mouse.click(ox, oy + 80)
         page.wait_for_timeout(300)
 
         # Guidance Bar should show "Seal Plot" button
@@ -144,9 +145,9 @@ def run_cadastral_map_tools_test():
         assert "Cents" in cents_text and "0.00" not in cents_text, f"Expected non-zero Cents, got: {cents_text}"
 
         # Verify centroid elevation was computed
+        expect(page.locator("#hud-elevation-text")).to_contain_text("MSL", timeout=5000)
         elev_text = page.locator("#hud-elevation-text").text_content()
         print(f"  → Centroid Elevation: {elev_text.strip()}")
-        assert "MSL" in elev_text or "m" in elev_text
 
         page.screenshot(path=os.path.join(SCREENSHOTS_DIR, "map_02_sealed_plot.png"))
         results.append("Step 4: Draw & Seal Plot Polygon - PASSED")
@@ -159,10 +160,10 @@ def run_cadastral_map_tools_test():
         road_btn.click()
         expect(road_btn).to_have_class("map-tool-btn active")
 
-        # Measure 2 points along lane
-        page.mouse.click(cx - 80, cy + 80)
+        # Measure 2 points along lane (in upper half of map away from bottom HUD)
+        page.mouse.click(cx - 50, cy - 50)
         page.wait_for_timeout(200)
-        page.mouse.click(cx - 50, cy + 80)
+        page.mouse.click(cx - 30, cy - 50)
         page.wait_for_timeout(500)
 
         road_status = page.locator("#hud-road").text_content()
@@ -181,7 +182,7 @@ def run_cadastral_map_tools_test():
         page.wait_for_timeout(300)
 
         expect(page.locator("#hud-cents")).to_have_text("0.00 Cents")
-        expect(page.locator("#hud-road-badge")).not_to_be_visible()
+        expect(page.locator("#hud-road-badge")).to_have_text("No Road Measured")
         print("  ✓ Map drawings cleared and HUD acreage reset to 0.00 Cents.")
         results.append("Step 6: Clear Map Drawings - PASSED")
 

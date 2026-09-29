@@ -27,8 +27,8 @@ def run_ui_tests():
 
         # Test 1: Page Load & Initial State
         print("\n--- Test 1: Page Load & Initial State ---")
-        page.goto(BASE_URL, wait_until="networkidle")
-        page.wait_for_timeout(1000)
+        page.goto(BASE_URL, wait_until="domcontentloaded")
+        page.wait_for_timeout(1200)
 
         title = page.title()
         print(f"Page title: {title}")
@@ -105,13 +105,14 @@ def run_ui_tests():
         box = map_view.bounding_box()
         assert box is not None
         cx, cy = box["x"] + box["width"] / 2, box["y"] + box["height"] / 2
+        ox, oy = cx - 120, cy - 120
 
         # Click 3 points
-        page.mouse.click(cx, cy)
+        page.mouse.click(ox, oy)
         page.wait_for_timeout(200)
-        page.mouse.click(cx + 80, cy)
+        page.mouse.click(ox + 80, oy)
         page.wait_for_timeout(200)
-        page.mouse.click(cx + 40, cy + 80)
+        page.mouse.click(ox + 40, oy + 80)
         page.wait_for_timeout(500)
 
         drawn_cents = page.locator("#hud-cents").text_content()
@@ -126,7 +127,7 @@ def run_ui_tests():
         print("Undo button successfully removed last point.")
 
         # Re-add third point
-        page.mouse.click(cx + 40, cy + 80)
+        page.mouse.click(ox + 40, oy + 80)
         page.wait_for_timeout(400)
 
         page.screenshot(path=os.path.join(SCREENSHOTS_DIR, "05_drawn_plot.png"), full_page=True)
@@ -162,8 +163,8 @@ def run_ui_tests():
         page.check("#chk-kallu")
         page.check("#chk-road")
         page.wait_for_timeout(200)
-        expect(page.locator("#chk-badge")).to_have_text("2/4")
-        print("Checklist progress updated to 2/4.")
+        expect(page.locator("#chk-badge")).to_have_text("2/5")
+        print("Checklist progress updated to 2/5.")
 
         # Toggle HUD minimize
         page.click("#hud-toggle-btn")
@@ -176,7 +177,7 @@ def run_ui_tests():
 
         # Test 7: Send Plot to Auditor AI
         print("\n--- Test 7: Send Plot to Auditor AI ---")
-        page.click("button:has-text('Send Plot to Auditor AI')")
+        page.click("#btn-send-auditor, button:has-text('Send to Auditor')")
         # Should populate input and submit chat message
         page.wait_for_timeout(1000)
         # Verify a user message appeared in log
@@ -204,8 +205,8 @@ def run_ui_tests():
         print("\n--- Test 8: Mobile Viewport Responsiveness ---")
         mobile_page = context.new_page()
         mobile_page.set_viewport_size({"width": 375, "height": 812}) # iPhone X/12
-        mobile_page.goto(BASE_URL, wait_until="networkidle")
-        mobile_page.wait_for_timeout(800)
+        mobile_page.goto(BASE_URL, wait_until="domcontentloaded")
+        mobile_page.wait_for_timeout(1000)
         mobile_page.screenshot(path=os.path.join(SCREENSHOTS_DIR, "09_mobile_initial.png"), full_page=True)
 
         # Test switching to Map on mobile
