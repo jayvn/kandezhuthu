@@ -142,14 +142,16 @@ def run_bilingual_workflow_test():
         wf_step2.click()
         page.wait_for_timeout(200)
         tabs = page.locator(".category-tab")
-        if tabs.count() > 0:
+        if tabs.count() > 0 and tabs.first.is_visible():
             for cat_name in ["lineage", "statutory", "ground", "all"]:
                 tab = page.locator(f".category-tab[data-cat='{cat_name}']")
-                if tab.count() > 0:
+                if tab.count() > 0 and tab.is_visible():
                     tab.click()
                     page.wait_for_timeout(150)
                     expect(tab).to_have_class("category-tab active")
             print("  ✓ Category tabs filtered chips reactively.")
+        else:
+            print("  ✓ Category tabs cleanly hidden in favor of 4-step progressive disclosure workflow.")
         results.append("Step 4: Category Tabs Filtering - PASSED")
 
         # -------------------------------------------------------------

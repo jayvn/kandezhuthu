@@ -146,6 +146,9 @@ def run_ocr_document_pipeline_test():
         # STEP 6: Kerala SRO Encumbrance Certificate (EC Form 15) OCR
         # -------------------------------------------------------------
         print("\n[Step 6] Testing Kerala SRO Encumbrance Certificate OCR...")
+        if page.locator("#wf-step-1").is_visible():
+            page.locator("#wf-step-1").click()
+            page.wait_for_timeout(400)
         ec_sample_btn.click()
 
         # Wait for EC progress and rendered card

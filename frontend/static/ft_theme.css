@@ -1,0 +1,492 @@
+/* ==========================================================================
+   Financial Times (FT) Authoritative Editorial Design System
+   Kandezhuthu AI (കണ്ടെഴുത്ത്) · Kerala Property Legal Diligence Platform
+   Aesthetic:
+   - Iconic FT salmon/wheat paper background: #fff1e5
+   - Secondary panels & bars: #f6ede2 / #f8f0e5
+   - Cards & surfaces: #fffdf9
+   - Primary: FT Claret / Deep Burgundy #990f3d (Hover: #7c0c32, Light: #fbebee)
+   - Secondary / Accents: Oxford Navy #0f5499 & Slate #0d7680
+   - Text: Dark Slate #262a33 & Muted #66605c
+   - Hairline borders: #e9decf / #dcdcdc
+   - Typography: Editorial Serif ('Financier Display', Georgia, 'Times New Roman', serif)
+   ========================================================================== */
+
+:root {
+  /* Financial Times Color Palette */
+  --primary: #990f3d !important;
+  --primary-hover: #7c0c32 !important;
+  --primary-light: #fbebee !important;
+  --bg: #fff1e5 !important;
+  --surface: #fffdf9 !important;
+  --border: #e9decf !important;
+  --text: #262a33 !important;
+  --text-muted: #66605c !important;
+
+  --ft-paper: #fff1e5 !important;
+  --ft-paper-secondary: #f6ede2 !important;
+  --ft-card-bg: #fffdf9 !important;
+  --ft-border: #e9decf !important;
+  --ft-border-strong: #d4c5b9 !important;
+  --ft-claret: #990f3d !important;
+  --ft-claret-hover: #7c0c32 !important;
+  --ft-claret-light: #fbebee !important;
+  --ft-navy: #0f5499 !important;
+  --ft-slate: #0d7680 !important;
+  --ft-dark-text: #262a33 !important;
+  --ft-muted-text: #66605c !important;
+
+  /* Typography */
+  --ft-font-serif: 'Financier Display', Georgia, 'Times New Roman', Cambria, serif !important;
+  --ft-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  --ft-font-ml: 'Noto Sans Malayalam', system-ui, sans-serif !important;
+}
+
+/* ==========================================================================
+   Page Canvas & Layout
+   ========================================================================== */
+html, body {
+  background-color: #fff1e5 !important;
+  color: #262a33 !important;
+  font-family: var(--ft-font-sans);
+}
+
+#main-container {
+  background-color: #fff1e5 !important;
+}
+
+#chat-pane {
+  background-color: #fff1e5 !important;
+  border-right: 1px solid #e9decf !important;
+}
+
+#log {
+  background-color: #fff1e5 !important;
+}
+
+/* ==========================================================================
+   Masthead / Header
+   ========================================================================== */
+header {
+  background-color: #fff1e5 !important;
+  border-bottom: 2px solid #e9decf !important;
+  border-top: 4px solid #990f3d !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.brand-icon {
+  background: linear-gradient(135deg, #990f3d, #7c0c32) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(153, 15, 61, 0.25) !important;
+}
+
+.brand-title {
+  color: #990f3d !important;
+  font-family: var(--ft-font-serif) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.brand-subtitle {
+  color: #66605c !important;
+}
+
+.badge-kerala {
+  background: #fbebee !important;
+  color: #990f3d !important;
+  border: 1px solid #f5c2cb !important;
+}
+
+/* Language and View Toggles */
+.lang-switch {
+  background: #f6ede2 !important;
+  border: 1px solid #e9decf !important;
+}
+
+.lang-btn {
+  color: #66605c !important;
+}
+
+.lang-btn:hover:not(.active) {
+  color: #262a33 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.lang-btn.active {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  box-shadow: 0 1.5px 4px rgba(153, 15, 61, 0.28) !important;
+  font-weight: 700 !important;
+}
+
+.view-switch {
+  background: #f6ede2 !important;
+  border: 1px solid #e9decf !important;
+}
+
+.view-btn {
+  color: #66605c !important;
+}
+
+.view-btn.active {
+  background: #ffffff !important;
+  color: #990f3d !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ==========================================================================
+   Editorial Typography Overrides
+   ========================================================================== */
+h1, h2, h3, h4,
+.brand-title,
+.dropzone-title strong,
+.step-nav-title,
+.step-nav-label,
+.workflow-step,
+.legal-note,
+.layman-card-title,
+.hud-stat-label,
+#hud-locality-title,
+.timeline-title,
+.deed-card-header,
+.checklist-header,
+.modal-header h3,
+.map-title-tag {
+  font-family: var(--ft-font-serif) !important;
+}
+
+/* ==========================================================================
+   Guided 3-Step Workflow Bar
+   ========================================================================== */
+.workflow-bar {
+  background: #fff1e5 !important;
+  border-bottom: 1px solid #e9decf !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}
+
+.workflow-step {
+  background: #f6ede2 !important;
+  border: 1px solid #e9decf !important;
+  color: #66605c !important;
+}
+
+.workflow-step:hover {
+  background: #fbebee !important;
+  color: #990f3d !important;
+  border-color: #f5c2cb !important;
+}
+
+.workflow-step.active {
+  background: #990f3d !important;
+  border-color: #7c0c32 !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(153, 15, 61, 0.25) !important;
+}
+
+.workflow-step-num {
+  background: #e9decf !important;
+  color: #262a33 !important;
+}
+
+.workflow-step.active .workflow-step-num {
+  background: #ffffff !important;
+  color: #990f3d !important;
+}
+
+/* Step Navigation Bar */
+.step-nav-bar {
+  background: #f6ede2 !important;
+  border-bottom: 1px solid #e9decf !important;
+}
+
+.step-nav-label {
+  color: #262a33 !important;
+}
+
+.step-nav-btn {
+  border: 1px solid #e9decf !important;
+  background: #fffdf9 !important;
+  color: #262a33 !important;
+}
+
+.step-nav-btn:hover:not(:disabled) {
+  background: #fff1e5 !important;
+  border-color: #d4c5b9 !important;
+  color: #262a33 !important;
+}
+
+.step-nav-btn.next,
+#btn-next-step,
+.btn-primary {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  border-color: #7c0c32 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 2px rgba(153, 15, 61, 0.25) !important;
+}
+
+.step-nav-btn.next:hover:not(:disabled),
+#btn-next-step:hover:not(:disabled),
+.btn-primary:hover:not(:disabled) {
+  background: #7c0c32 !important;
+  color: #ffffff !important;
+}
+
+.step-nav-btn.next.restart {
+  background: #0f5499 !important;
+  border-color: #0c437a !important;
+  color: #ffffff !important;
+}
+
+.step-nav-btn.next.restart:hover:not(:disabled) {
+  background: #0c437a !important;
+}
+
+/* ==========================================================================
+   Quick Chips & Presets
+   ========================================================================== */
+.chips-container {
+  background: #f6ede2 !important;
+  border-bottom: 1px solid #e9decf !important;
+}
+
+.chip {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  color: #262a33 !important;
+}
+
+.chip:hover {
+  background: #fff1e5 !important;
+  border-color: #990f3d !important;
+  color: #990f3d !important;
+}
+
+.chip.featured {
+  background: #fbebee !important;
+  border-color: #f5c2cb !important;
+  color: #990f3d !important;
+}
+
+/* ==========================================================================
+   Chat Log, Bubbles & Typography
+   ========================================================================== */
+.bubble {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  color: #262a33 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.msg.user .bubble {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.msg.user .bubble strong {
+  color: #ffffff !important;
+}
+
+.bubble h1, .bubble h2, .bubble h3, .bubble h4, .bubble h5, .bubble h6 {
+  color: #990f3d !important;
+  font-family: var(--ft-font-serif) !important;
+}
+
+.bubble blockquote {
+  background: #f6ede2 !important;
+  border-left: 4px solid #990f3d !important;
+  color: #262a33 !important;
+}
+
+.typing-dot {
+  background: #990f3d !important;
+}
+
+/* ==========================================================================
+   Chat Input Form
+   ========================================================================== */
+form#form {
+  background: #f6ede2 !important;
+  border-top: 1px solid #e9decf !important;
+}
+
+textarea#input {
+  background: #fffdf9 !important;
+  border: 1.5px solid #e9decf !important;
+  color: #262a33 !important;
+}
+
+textarea#input:focus {
+  border-color: #990f3d !important;
+  box-shadow: 0 0 0 2px rgba(153, 15, 61, 0.15) !important;
+}
+
+button#send-btn {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(153, 15, 61, 0.25) !important;
+}
+
+button#send-btn:hover:not(:disabled) {
+  background: #7c0c32 !important;
+}
+
+.upload-trigger-btn {
+  background: #fffdf9 !important;
+  border: 1.5px solid #e9decf !important;
+  color: #990f3d !important;
+}
+
+.upload-trigger-btn:hover {
+  background: #fbebee !important;
+  border-color: #990f3d !important;
+}
+
+/* Buttons */
+.copy-btn {
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+.copy-btn:hover {
+  background: #7c0c32 !important;
+}
+
+.copy-btn.copied {
+  background: #0d7680 !important;
+  color: #ffffff !important;
+}
+
+.export-report-btn {
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+.export-report-btn:hover {
+  background: #7c0c32 !important;
+}
+
+.primary-action-btn,
+.hud-btn-primary,
+.dropzone-btn.primary,
+.timeline-btn.primary {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  border-color: #7c0c32 !important;
+}
+
+.primary-action-btn:hover,
+.hud-btn-primary:hover,
+.dropzone-btn.primary:hover,
+.timeline-btn.primary:hover {
+  background: #7c0c32 !important;
+}
+
+/* ==========================================================================
+   Editorial Cards: Deeds, Timelines, Checklists & Tabs
+   ========================================================================== */
+.deed-audit-card,
+.timeline-card,
+.checklist-panel,
+.drop-card {
+  background: #fffdf9 !important;
+  border: 1.5px solid #e9decf !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+
+.category-tab.active {
+  color: #990f3d !important;
+  border-bottom-color: #990f3d !important;
+  background: #fbebee !important;
+  font-weight: 700 !important;
+}
+
+.timeline-preset-btn.active {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  border-color: #990f3d !important;
+}
+
+.timeline-year-tag {
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+.checklist-header {
+  color: #990f3d !important;
+  border-bottom: 1px solid #e9decf !important;
+}
+
+.checklist-row input {
+  accent-color: #990f3d !important;
+}
+
+#chk-badge {
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Map Pane, Toolbar & HUD
+   ========================================================================== */
+.map-header-bar,
+.map-toolbar {
+  background: #f6ede2 !important;
+  border-bottom: 1px solid #e9decf !important;
+}
+
+.map-title-tag {
+  color: #990f3d !important;
+}
+
+.map-search-btn {
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+.map-search-btn:hover {
+  background: #7c0c32 !important;
+}
+
+.map-search-input:focus {
+  border-color: #990f3d !important;
+}
+
+.map-tool-btn {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  color: #262a33 !important;
+}
+
+.map-tool-btn:hover {
+  background: #fff1e5 !important;
+  border-color: #d4c5b9 !important;
+}
+
+.map-tool-btn.active {
+  background: #990f3d !important;
+  color: #ffffff !important;
+  border-color: #990f3d !important;
+}
+
+.map-hud {
+  background: rgba(255, 241, 229, 0.96) !important;
+  border: 1px solid #e9decf !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+.map-hud-header {
+  color: #990f3d !important;
+  border-bottom: 1px solid #e9decf !important;
+}
+
+.hud-stat-val.cents {
+  color: #990f3d !important;
+}
+
+/* Modal Tabs */
+.modal-tab-btn.active {
+  background: #fffdf9 !important;
+  color: #990f3d !important;
+}
