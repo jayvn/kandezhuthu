@@ -4345,13 +4345,13 @@ form.addEventListener("submit", async (e) => {
           <span>Yes, Historical Purchase Price is a Statutory Public Record in Kerala!</span>
         </h4>
         <p style="margin-bottom:0.5rem;">
-          Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds / <em>തീറാധാരം</em>) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
+          Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds${currentLanguage === 'ml' ? ' / <em>തീറാധാരം</em>' : ''}) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
         </p>
         <div style="background:#f8fafc; border-left:3px solid #0f5132; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size:0.83rem;">
           <strong>Three Key Statutory Price & Valuation Realities in Kerala:</strong>
           <ol style="margin:4px 0 0 18px; padding:0;">
-            <li style="margin-bottom:3px;"><strong>Registered Consideration (പ്രതിഫല തുക):</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy (<em>പകർപ്പ്</em>) from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
-            <li style="margin-bottom:3px;"><strong>Kerala Govt Notified Fair Value (ഭൂമിയുടെ ന്യായവില - Section 28A Kerala Stamp Act):</strong> The statutory minimum floor valuation per Are fixed by the Revenue Department for every Re-Survey number. 8% Stamp Duty + 2% Reg fee must be paid on whichever is higher (registered consideration vs fair value).</li>
+            <li style="margin-bottom:3px;"><strong>Registered Consideration${currentLanguage === 'ml' ? ' (പ്രതിഫല തുക)' : ''}:</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy${currentLanguage === 'ml' ? ' (<em>പകർപ്പ്</em>)' : ''} from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
+            <li style="margin-bottom:3px;"><strong>Kerala Govt Notified Fair Value${currentLanguage === 'ml' ? ' (ഭൂമിയുടെ ന്യായവില - Section 28A)' : ' (Fair Value - Section 28A Kerala Stamp Act)'}:</strong> The statutory minimum floor valuation per Are fixed by the Revenue Department for every Re-Survey number. 8% Stamp Duty + 2% Reg fee must be paid on whichever is higher (registered consideration vs fair value).</li>
             <li style="margin-bottom:2px;"><strong>Undervaluation Penalties (Section 45A Kerala Stamp Act):</strong> If a deed is registered below market value to evade 8% stamp duty or capital gains tax, District Registrar audits assess deficit duty with 12% penal interest, which becomes a <strong>first statutory charge / revenue recovery lien directly on the land</strong>.</li>
           </ol>
         </div>
@@ -5128,7 +5128,7 @@ function executeGenerateExtentPlot() {
       </div>
       <div style="font-size:0.83rem; color:#064e3b; margin-top:4px;">
         Placed exact ${cents} Cents (${(cents * 40.4686).toFixed(1)} m²) plot footprint with aspect ratio <strong>${ratio}</strong>.<br>
-        Each corner stone (<em>സർവേ കല്ല്</em>) can now be dragged on the satellite map to align with physical fences or trees.
+        Each corner stone (${currentLanguage === 'ml' ? '<em>സർവേ കല്ല്</em>' : 'Survey Stone'}) can now be dragged on the satellite map to align with physical fences or trees.
       </div>
     </div>
   `);
@@ -5527,7 +5527,7 @@ function sendPlotToAuditor() {
       `Access road width measured: ${roadM} (${roadBadge}). ` +
       elevInfo +
       `Please audit this against Kerala Panchayat Building Rules (KPBR 2019) road width requirements, setbacks, ` +
-      `flood vulnerability (KSDMA & 2018 flood zone), and tell me what physical Survey Kallu and wetland (Nilam) checks I must perform before paying token advance.`;
+      `flood vulnerability (KSDMA & 2018 flood zone), and tell me what physical boundary corner stones and wetland conversion checks I must perform before paying token advance.`;
   }
 
   if (currentViewMode === "map") {
@@ -5614,7 +5614,7 @@ async function fetchCadastralOverlay() {
           <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
         </div>
         <div style="margin-top:8px; font-size:0.78rem; color:#78350f; background:#fef3c7; padding:6px 10px; border-radius:6px;">
-          ⚠️ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones (<em>സർവേ കല്ലുകൾ</em>) against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
+          ⚠️ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones (${currentLanguage === 'ml' ? '<em>സർവേ കല്ലുകൾ</em>' : 'Survey Stones'}) against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
         </div>
       </div>
     `);
