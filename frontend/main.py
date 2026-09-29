@@ -686,8 +686,21 @@ async def get_sample_deed(
         if lang == "en":
             if out_data.get("whatsapp_draft_en"):
                 out_data["whatsapp_draft"] = out_data["whatsapp_draft_en"]
+            elif out_data.get("whatsapp_inquiry_en"):
+                out_data["whatsapp_draft"] = out_data["whatsapp_inquiry_en"]
             if out_data.get("whatsapp_inquiry_en"):
                 out_data["whatsapp_inquiry"] = out_data["whatsapp_inquiry_en"]
+
+            def _clean_en_ml(val):
+                if isinstance(val, str):
+                    return re.sub(r"\s*\([^)]*[\u0D00-\u0D7F][^)]*\)", "", val)
+                elif isinstance(val, list):
+                    return [_clean_en_ml(x) for x in val]
+                elif isinstance(val, dict):
+                    return {k: _clean_en_ml(v) for k, v in val.items()}
+                return val
+
+            out_data = _clean_en_ml(out_data)
         return JSONResponse(out_data)
 
     return FileResponse(

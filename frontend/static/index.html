@@ -3763,12 +3763,19 @@ function renderDeedAuditCard(container, data, fileName) {
     boundariesHtml = `
       <div class="boundary-box">
         <div class="boundary-title">${currentLanguage === 'ml' ? '🧭 നാലതിരുകൾ (ചതുരതിരുകൾ):' : '🧭 Four Boundaries Schedule:'}</div>
-        ${meta.boundaries.map(b => `
+        ${meta.boundaries.map(b => {
+          let dir = b.direction || '';
+          let desc = b.boundary_description || '';
+          if (currentLanguage === 'en') {
+            dir = dir.replace(/\s*\([^)]*[\u0D00-\u0D7F][^)]*\)/g, '');
+            desc = desc.replace(/\s*\([^)]*[\u0D00-\u0D7F][^)]*\)/g, '');
+          }
+          return `
           <div class="boundary-row">
-            <span class="boundary-dir">${b.direction}:</span>
-            <span>${b.boundary_description}</span>
-          </div>
-        `).join("")}
+            <span class="boundary-dir">${dir}:</span>
+            <span>${desc}</span>
+          </div>`;
+        }).join("")}
       </div>
     `;
   }
@@ -3795,16 +3802,21 @@ function renderDeedAuditCard(container, data, fileName) {
     findingsHtml = `
       <div class="findings-box">
         <div style="font-weight:700; color:#b91c1c; font-size:0.82rem; margin-bottom:0.35rem;">⚠️ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
-        ${sanity.findings.map(f => `
+        ${sanity.findings.map(f => {
+          let exp = f.explanation || '';
+          if (currentLanguage === 'en') {
+            exp = exp.replace(/\s*\([^)]*[\u0D00-\u0D7F][^)]*\)/g, '');
+          }
+          return `
           <div class="finding-alert ${f.severity === 'CRITICAL' ? 'critical' : ''}">
             <div class="finding-alert-header">
               <span>${f.title} ${currentLanguage === 'ml' && f.title_malayalam ? `(${f.title_malayalam})` : ''}</span>
               <span style="font-size:0.7rem; text-transform:uppercase;">${f.severity}</span>
             </div>
-            <div>${f.explanation}</div>
+            <div>${exp}</div>
             <div style="font-size:0.72rem; color:#6b7280; margin-top:3px;"><strong>Statute:</strong> ${f.kerala_statute}</div>
-          </div>
-        `).join("")}
+          </div>`;
+        }).join("")}
       </div>
     `;
   }
