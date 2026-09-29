@@ -61,63 +61,94 @@
   
   .header-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
 
-  /* Language switch buttons */
+  /* Clean, modern segmented language split toggle */
   .lang-switch {
     display: inline-flex;
+    align-items: center;
     background: #f1f5f9;
     padding: 3px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    border-radius: 9999px;
+    border: 1px solid #cbd5e1;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+    gap: 2px;
+    position: relative;
+    user-select: none;
+  }
+  .lang-icon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 6px;
+    padding-right: 2px;
+    font-size: 0.82rem;
+    line-height: 1;
+    color: #475569;
   }
   .lang-btn {
     border: none;
     background: transparent;
-    padding: 0.35rem 0.65rem;
-    font-size: 0.78rem;
+    padding: 4px 11px;
+    font-size: 0.77rem;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 9999px;
     cursor: pointer;
-    color: var(--text-muted);
-    transition: all 0.15s ease;
-    display: flex;
+    color: #475569;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    justify-content: center;
+    line-height: 1.35;
+    font-family: 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    white-space: nowrap;
+    text-shadow: none;
   }
-  .lang-btn:hover {
-    color: var(--text);
+  .lang-btn:hover:not(.active) {
+    color: #0f172a;
+    background: rgba(0, 0, 0, 0.05);
   }
   .lang-btn.active {
     background: #0f5132;
     color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    box-shadow: 0 1.5px 4px rgba(15, 81, 50, 0.28);
+    font-weight: 700;
   }
 
   /* View switch buttons */
   .view-switch {
     display: inline-flex;
+    align-items: center;
     background: #f1f5f9;
     padding: 3px;
     border-radius: 8px;
     border: 1px solid var(--border);
+    gap: 2px;
   }
   .view-btn {
     border: none;
     background: transparent;
-    padding: 0.35rem 0.65rem;
-    font-size: 0.78rem;
+    padding: 4px 9px;
+    font-size: 0.77rem;
     font-weight: 600;
     border-radius: 6px;
     cursor: pointer;
     color: var(--text-muted);
     transition: all 0.15s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.3rem;
+    line-height: 1.35;
+    font-family: 'Noto Sans Malayalam', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 28px;
+    white-space: nowrap;
+  }
+  .view-btn:hover {
+    color: var(--text);
   }
   .view-btn.active {
     background: #ffffff;
     color: #0f5132;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   .badge-kerala {
     background: #ecfdf5; color: #047857; font-size: 0.74rem; font-weight: 600;
@@ -134,6 +165,8 @@
     display: flex;
     overflow: hidden;
     position: relative;
+    min-height: 0;
+    height: 100%;
   }
 
   /* Chat Pane */
@@ -142,11 +175,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 320px;
+    min-width: 340px;
     background: var(--bg);
     border-right: 1px solid var(--border);
     transition: flex 0.2s ease;
     height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   /* Quick action chips container */
@@ -440,16 +475,43 @@
 
   /* Dedicated Deed Dropzone Card in Chat Pane */
   .deed-dropzone-container {
-    padding: 0.75rem 1rem 0.25rem 1rem;
+    padding: 0.6rem 0.9rem 0.2rem 0.9rem;
+    transition: all 0.2s ease;
   }
   .deed-dropzone {
     background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-    border: 2px dashed #34d399;
-    border-radius: 12px;
-    padding: 0.85rem 1.1rem;
+    border: 1.5px dashed #34d399;
+    border-radius: 10px;
+    padding: 0.65rem 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.08);
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.08);
+  }
+  .deed-dropzone-container.minimized {
+    padding: 0.3rem 0.9rem 0.1rem 0.9rem;
+  }
+  .deed-dropzone-container.minimized .deed-dropzone {
+    padding: 0.3rem 0.65rem;
+  }
+  .deed-dropzone-container.minimized .dropzone-content,
+  .deed-dropzone-container.minimized .layman-quickstart-grid,
+  .deed-dropzone-container.minimized .dropzone-footer {
+    display: none !important;
+  }
+  .dropzone-toggle-btn {
+    margin-left: auto;
+    background: #ffffff;
+    border: 1px solid #a7f3d0;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #047857;
+    padding: 1px 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .dropzone-toggle-btn:hover {
+    background: #d1fae5;
   }
   .deed-dropzone:hover, .deed-dropzone.drag-hover {
     background: #e6fcf0;
@@ -907,13 +969,15 @@
 
   /* Map Pane */
   #map-pane {
-    flex: 1;
+    flex: 1.15;
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 0;
     background: #ffffff;
     position: relative;
     transition: flex 0.2s ease;
+    overflow: hidden;
   }
 
   /* Map Controls Bar */
@@ -1849,7 +1913,8 @@
   </div>
 
   <div class="header-actions">
-    <div class="lang-switch" id="lang-switch" title="Change Language / ഭാഷ മാറ്റുക">
+    <div class="lang-switch" id="lang-switch" title="Language / ഭാഷ തിരഞ്ഞെടുക്കുക">
+      <span class="lang-icon-badge" aria-hidden="true">🌐</span>
       <button type="button" class="lang-btn active" id="lang-btn-en" onclick="setLanguage('en')">English</button>
       <button type="button" class="lang-btn" id="lang-btn-ml" onclick="setLanguage('ml')">മലയാളം</button>
     </div>
@@ -1998,43 +2063,43 @@
           <div class="layman-card card-deed" onclick="runSampleDeedOCR('deed')" title="Click to test with real Kerala Sale Deed PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">📄</span>
-              <span class="layman-card-badge">3 Traps Hidden</span>
+              <span class="layman-card-badge" id="card-badge-deed">3 Traps Hidden</span>
             </div>
-            <div class="layman-card-title">Test Real Sale Deed (തീറാധാരം)</div>
-            <div class="layman-card-desc">See how AI detects hidden pathway rights (*നടപ്പുവഴി*), Paddy Land (*നിലം*), and senior citizen maintenance conditions.</div>
-            <div class="layman-card-cta">▶ Test Sale Deed PDF →</div>
+            <div class="layman-card-title" id="card-title-deed">Test Real Sale Deed (തീറാധാരം)</div>
+            <div class="layman-card-desc" id="card-desc-deed">See how AI detects hidden pathway rights (*നടപ്പുവഴി*), Paddy Land (*നിലം*), and senior citizen maintenance conditions.</div>
+            <div class="layman-card-cta" id="card-cta-deed">▶ Test Sale Deed PDF →</div>
           </div>
 
           <div class="layman-card card-ec" onclick="runSampleDeedOCR('ec')" title="Click to test with official Kerala SRO Encumbrance Certificate PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">🏦</span>
-              <span class="layman-card-badge">₹45L Bank Loan</span>
+              <span class="layman-card-badge" id="card-badge-ec">₹45L Bank Loan</span>
             </div>
-            <div class="layman-card-title">Test 30-Yr Bank EC (കുടിക്കടം)</div>
-            <div class="layman-card-desc">See how we catch undisclosed bank mortgages and missing release deeds (*ഒഴിവുമുറി*) before your advance gets trapped.</div>
-            <div class="layman-card-cta">▶ Test SRO EC PDF →</div>
+            <div class="layman-card-title" id="card-title-ec">Test 30-Yr Bank EC (കുടിക്കടം)</div>
+            <div class="layman-card-desc" id="card-desc-ec">See how we catch undisclosed bank mortgages and missing release deeds (*ഒഴിവുമുറി*) before your advance gets trapped.</div>
+            <div class="layman-card-cta" id="card-cta-ec">▶ Test SRO EC PDF →</div>
           </div>
 
           <div class="layman-card card-upload" onclick="document.getElementById('deed-file-input').click()" title="Click to upload your own Kerala deed PDF or image">
             <div class="layman-card-top">
               <span class="layman-card-icon">📁</span>
-              <span class="layman-card-badge">PDF / Photo</span>
+              <span class="layman-card-badge" id="card-badge-upload">PDF / Photo</span>
             </div>
-            <div class="layman-card-title">Check My Own Deed / Photo</div>
-            <div class="layman-card-desc">Upload a PDF or snap a photo of any Malayalam/English Kerala deed, partition paper, or agreement.</div>
-            <div class="layman-card-cta">📂 Browse or Drop File →</div>
+            <div class="layman-card-title" id="card-title-upload">Check My Own Deed / Photo</div>
+            <div class="layman-card-desc" id="card-desc-upload">Upload a PDF or snap a photo of any Malayalam/English Kerala deed, partition paper, or agreement.</div>
+            <div class="layman-card-cta" id="card-cta-upload">📂 Browse or Drop File →</div>
           </div>
         </div>
 
         <div class="dropzone-footer" style="margin-top:0.65rem;">
           <div class="dropzone-formats">
             <span class="format-pill">PDF</span>
-            <span class="format-pill">Camera Photos (JPG/PNG)</span>
+            <span class="format-pill" id="dropzone-pill-photos">Camera Photos (JPG/PNG)</span>
             <span class="format-pill lang" id="dropzone-pill-lang">മലയാളം & English</span>
           </div>
           <div class="dropzone-btns" onclick="event.stopPropagation()">
-            <a href="/api/sample_deed?doc_type=deed" download="kerala_sale_deed_aluva_re_sy_345_1.pdf" class="dropzone-btn secondary" style="text-decoration:none;" title="Download real test Kerala deed PDF to your computer to test drag-and-drop">
-              <span>⬇️ Download Test Deed PDF</span>
+            <a href="/api/sample_deed?doc_type=deed" download="kerala_sale_deed_aluva_re_sy_345_1.pdf" class="dropzone-btn secondary" style="text-decoration:none;" id="btn-download-deed" title="Download real test Kerala deed PDF to your computer to test drag-and-drop">
+              <span id="btn-download-deed-text">⬇️ Download Test Deed PDF</span>
             </a>
           </div>
         </div>
@@ -2045,17 +2110,17 @@
       <div class="msg agent">
         <div class="msg-label">Kandezhuthu AI</div>
         <div class="bubble" id="welcome-bubble">
-          <strong>നമസ്കാരം! Welcome to Kandezhuthu AI (കണ്ടെഴുത്ത് - ആധാരംനോക്കി).</strong>
-          <p>Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong></p>
-          <p style="margin-top: 0.5rem;">Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:</p>
+          <strong id="welcome-bubble-title">നമസ്കാരം! Welcome to Kandezhuthu AI (കണ്ടെഴുത്ത് - ആധാരംനോക്കി).</strong>
+          <p id="welcome-bubble-p1">Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong></p>
+          <p id="welcome-bubble-p2" style="margin-top: 0.5rem;">Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:</p>
           <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.6rem;">
-            <button type="button" class="dropzone-btn secondary" style="justify-content:flex-start; text-align:left;" onclick="sendQuickPrompt('What documents should I ask the seller for before paying token advance?')">
+            <button type="button" class="dropzone-btn secondary" id="quick-prompt-1" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('advance_docs')">
               💡 What documents should I ask the seller for before paying token advance?
             </button>
-            <button type="button" class="dropzone-btn secondary" style="justify-content:flex-start; text-align:left;" onclick="sendQuickPrompt('How do I know if the access road is legally wide enough under Kerala building rules (KPBR 2019)?')">
+            <button type="button" class="dropzone-btn secondary" id="quick-prompt-2" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('kpbr')">
               📐 How do I know if the road is wide enough to get a building permit (KPBR)?
             </button>
-            <button type="button" class="dropzone-btn secondary" style="justify-content:flex-start; text-align:left;" onclick="sendQuickPrompt('How to check if my land is listed as Nilam / Paddy Land in the 2008 Agricultural Data Bank?')">
+            <button type="button" class="dropzone-btn secondary" id="quick-prompt-3" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('wetland')">
               🌾 How to check if land is listed as Nilam in the 2008 Paddy Land Data Bank?
             </button>
           </div>
@@ -2068,7 +2133,7 @@
       <button type="button" class="upload-trigger-btn" onclick="document.getElementById('deed-file-input').click()" title="Upload Scanned Deed or EC (PDF/Image)">
         <span>📎</span>
       </button>
-      <textarea id="input" placeholder="Paste deed excerpt, ask questions, or click 📎 to upload a scanned deed..." rows="1" autofocus></textarea>
+      <textarea id="input" placeholder="Paste deed excerpt, ask questions, or click 📎 to upload a scanned deed..." rows="1"></textarea>
       <button type="submit" id="send-btn">
         <span id="send-btn-text">Send</span>
         <span>➤</span>
@@ -2417,20 +2482,41 @@ const TRANSLATIONS = {
       kpbr: "Under Kerala Panchayat Building Rules (KPBR 2019), what is the minimum road access width required to get a residential building permit?",
       form6: "How does the Kerala Conservation of Paddy Land Act Section 27A work? What is the fee slab for Form 6 and who gets the 25-cent free exemption?",
       survey_kallu: "What physical checks must I perform on the ground regarding Survey Kallu, boundaries, and road access before paying an advance?",
+      advance_docs: "What documents should I ask the seller for before paying token advance for land in Kerala?",
     },
     dropzoneTag: "Cloud Document AI & Multimodal Vision",
     dropzoneTitle: "Drag & Drop Kerala Title Deed (*ആധാരം*) or Encumbrance Certificate (*കുടിക്കടം*)",
     dropzoneDesc: "Directly extracts 4 boundaries (ചതുരതിരുകൾ), survey numbers, prior deeds (മുന്നാധാരം) & audits 4 fatal statutory traps",
     dropzonePillLang: "മലയാളം & English",
+    dropzonePillPhotos: "Camera Photos (JPG/PNG)",
+    cardDeedBadge: "3 Traps Hidden",
+    cardDeedTitle: "Test Real Sale Deed (തീറാധാരം)",
+    cardDeedDesc: "See how AI detects hidden pathway rights (*നടപ്പുവഴി*), Paddy Land (*നിലം*), and senior citizen maintenance conditions.",
+    cardDeedCta: "▶ Test Sale Deed PDF →",
+    cardEcBadge: "₹45L Bank Loan",
+    cardEcTitle: "Test 30-Yr Bank EC (കുടിക്കടം)",
+    cardEcDesc: "See how we catch undisclosed bank mortgages and missing release deeds (*ഒഴിവുമുറി*) before your advance gets trapped.",
+    cardEcCta: "▶ Test SRO EC PDF →",
+    cardUploadBadge: "PDF / Photo",
+    cardUploadTitle: "Check My Own Deed / Photo",
+    cardUploadDesc: "Upload a PDF or snap a photo of any Malayalam/English Kerala deed, partition paper, or agreement.",
+    cardUploadCta: "📂 Browse or Drop File →",
     btnBrowse: "📁 Browse Files",
     btnSampleDeed: "✨ Ingest Sale Deed (PDF)",
     btnSampleEc: "📜 Ingest SRO EC (PDF)",
     btnDownloadDeed: "⬇️ Download Test Deed",
+    btnDownloadDeedText: "⬇️ Download Test Deed PDF",
+    pwaOnline: "Online Mode",
+    pwaOffline: "Offline Field Mode",
+    quickPrompt1: "What documents should I ask the seller for before paying token advance?",
+    quickPrompt2: "How do I know if the road is wide enough to get a building permit (KPBR)?",
+    quickPrompt3: "How to check if land is listed as Nilam in the 2008 Paddy Land Data Bank?",
+    btnAutoDemarcate: "✨ Auto-Demarcate",
+    btnBhunaksha: "🏛️ BhuNaksha FMB",
+    btnDatabank: "🌾 Data Bank",
     welcomeTitle: "നമസ്കാരം! Welcome to Kandezhuthu AI (കണ്ടെഴുത്ത് - ആധാരംനോക്കി).",
-    welcomeP1: "I am your specialized assistant for evaluating Kerala land deeds (*Aadharam*), prior lineage (*Munnadharam*), and property regulatory risks before you advance token money to a seller or broker.",
-    welcomeP2: "<strong>📄 Scanned Malayalam Deed OCR:</strong> Click <strong>📎 Upload Scanned Deed</strong> or drag & drop any PDF/image of a Kerala deed to automatically extract survey numbers, boundaries, prior deeds, and evaluate title traps!",
-    welcomeP3: "<strong>🗺️ Interactive Google Maps & Satellite Inspector:</strong>",
-    welcomeP4: "Inspect any plot in Kerala using the interactive Satellite Map on the right. Search for your village or outline boundaries to calculate land extent in <strong>Kerala Cents</strong>, measure access road width against KPBR building rules, and check field verification essentials!",
+    welcomeP1: "Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong>",
+    welcomeP2: "Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:",
     inputPlaceholder: "Paste deed excerpt, ask questions, or click 📎 to upload a scanned deed...",
     sendBtn: "Send",
     mapHeaderTitle: "Satellite Inspector",
@@ -2508,20 +2594,41 @@ const TRANSLATIONS = {
       kpbr: "കേരള പഞ്ചായത്ത് കെട്ടിട നിർമ്മാണ ചട്ടങ്ങൾ (KPBR 2019) പ്രകാരം ഒരു വീട് വെയ്ക്കാൻ പെർമിറ്റ് ലഭിക്കുന്നതിന് മിനിമം എത്ര വീതിയുള്ള വഴി വേണം?",
       form6: "2008-ലെ നെൽവയൽ നിയമം സെക്ഷൻ 27A (ഫോം 6) പ്രകാരം ഡാറ്റാ ബാങ്കിൽ ഇല്ലാത്ത ഭൂമി തരംമാറ്റുന്നതിനുള്ള ഫീസ് നിരക്കുകൾ എന്തൊക്കെയാണ്? 25 സെന്റ് വരെയുള്ള സൗജന്യ ഇളവ് ആർക്കൊക്കെ ലഭിക്കും?",
       survey_kallu: "ഭൂമിക്ക് അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപ് സർവേ കല്ല്, അതിരുകൾ, റോഡ് പ്രവേശനം എന്നിവയിൽ നേരിട്ട് സ്ഥലത്ത് ചെന്ന് എന്തൊക്കെ പരിശോധിക്കണം?",
+      advance_docs: "കേരളത്തിൽ സ്ഥലം വാങ്ങുമ്പോൾ ടോക്കൺ അഡ്വാൻസ് നൽകുന്നതിന് മുൻപ് വിൽപ്പനക്കാരനിൽ നിന്ന് എന്തൊക്കെ രേഖകളാണ് (ആധാരം, മുന്നാധാരം, കുടിക്കടം, ലൊക്കേഷൻ സ്കെച്ച്, നികുതി രസീത്) നിർബന്ധമായും വാങ്ങി പരിശോധിക്കേണ്ടത്?",
     },
     dropzoneTag: "ക്ലൗഡ് ഡോക്യുമെന്റ് AI & മൾട്ടിമോഡൽ വിഷൻ",
     dropzoneTitle: "കേരള ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ (EC) ഇവിടെ വലിച്ചിടുക",
     dropzoneDesc: "നാലതിരുകൾ, സർവേ നമ്പറുകൾ, മുന്നാധാര വിവരങ്ങൾ എന്നിവ നേരിട്ട് വേർതിരിച്ചെടുത്ത് 4 പ്രധാന നിയമപ്രശ്നങ്ങൾ കണ്ടെത്തുന്നു",
     dropzonePillLang: "മലയാളം & ഇംഗ്ലീഷ്",
+    dropzonePillPhotos: "ക്യാമറ ഫോട്ടോകൾ (JPG/PNG)",
+    cardDeedBadge: "3 കുരുക്കുകൾ അടങ്ങിയത്",
+    cardDeedTitle: "മാതൃകാ തീറാധാരം പരിശോധിക്കുക",
+    cardDeedDesc: "നടപ്പുവഴി അവകാശം, നിലം/തണ്ണീർത്തട പ്രശ്നങ്ങൾ, മുതിർന്ന പൗര സംരക്ഷണ നിബന്ധനകൾ എന്നിവ കണ്ടെത്തുന്നത് കാണുക.",
+    cardDeedCta: "▶ തീറാധാരം PDF പരിശോധിക്കുക →",
+    cardEcBadge: "₹45 ലക്ഷം ബാങ്ക് വായ്പ",
+    cardEcTitle: "30 വർഷത്തെ ബാങ്ക് കുടിക്കടം (EC)",
+    cardEcDesc: "രഹസ്യമായി പണയം വെച്ച ബാങ്ക് ബാധ്യതകളും റിലീസ് ആധാരങ്ങളുടെ (ഒഴിവുമുറി) കുറവും കണ്ടെത്തുന്നത് കാണുക.",
+    cardCtaEc: "▶ SRO കുടിക്കടം PDF കാണുക →",
+    cardUploadBadge: "PDF / ഫോട്ടോ",
+    cardUploadTitle: "സ്വന്തം ആധാരം / ഫോട്ടോ പരിശോധിക്കുക",
+    cardDescUpload: "മലയാളത്തിലോ ഇംഗ്ലീഷിലോ ഉള്ള തീറാധാരം, ഭാഗപത്രം, കുടിക്കടം എന്നിവയുടെ ഫോട്ടോയോ PDF-ഓ അപ്‌ലോഡ് ചെയ്യുക.",
+    cardCtaUpload: "📂 ഫയൽ തിരഞ്ഞെടുക്കുക / ഡ്രോപ്പ് ചെയ്യുക →",
     btnBrowse: "📁 ഫയലുകൾ തിരഞ്ഞെടുക്കുക",
     btnSampleDeed: "✨ മാതൃകാ തീറാധാരം (PDF)",
     btnSampleEc: "📜 മാതൃകാ കുടിക്കടം (PDF)",
     btnDownloadDeed: "⬇️ ടെസ്റ്റ് ആധാരം ഡൗൺലോഡ് ചെയ്യുക",
+    btnDownloadDeedText: "⬇️ ടെസ്റ്റ് ആധാരം ഡൗൺലോഡ് ചെയ്യുക",
+    pwaOnline: "ഓൺലൈൻ മോഡ്",
+    pwaOffline: "ഓഫ്‌ലൈൻ പരിശോധനാ മോഡ്",
+    quickPrompt1: "അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപ് വിൽപ്പനക്കാരനിൽ നിന്ന് എന്തൊക്കെ രേഖകൾ വാങ്ങണം?",
+    quickPrompt2: "വീടുപണിക്ക് അനുമതി ലഭിക്കാൻ വഴിക്ക് എത്ര വീതി വേണം (KPBR ചട്ടങ്ങൾ)?",
+    quickPrompt3: "2008-ലെ നെൽവയൽ ഡാറ്റാ ബാങ്കിൽ ഭൂമി 'നിലം' ആണോ എന്ന് എങ്ങനെ പരിശോധിക്കാം?",
+    btnAutoDemarcate: "✨ അതിരുകൾ കണ്ടെത്തുക",
+    btnBhunaksha: "🏛️ ഭൂരേഖ FMB",
+    btnDatabank: "🌾 ഡാറ്റാ ബാങ്ക്",
     welcomeTitle: "നമസ്കാരം! കണ്ടെഴുത്ത് AI (ആധാരംനോക്കി) ലേക്ക് സ്വാഗതം.",
-    welcomeP1: "കേരളത്തിലെ ഭൂമി ഇടപാടുകളിൽ അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപായി ആധാരം, മുന്നാധാരങ്ങൾ, കുടിക്കടം, അനുബന്ധ സർക്കാർ നിയമങ്ങൾ എന്നിവ പരിശോധിക്കാൻ നിങ്ങളെ സഹായിക്കുന്ന പ്രത്യേക AI സഹായിയാണ് ഞാൻ.",
-    welcomeP2: "<strong>📄 മലയാളം ആധാര സ്കാനിംഗ്:</strong> <strong>📎 ആധാരം അപ്‌ലോഡ് ചെയ്യുക</strong> എന്നതിൽ ക്ലിക്ക് ചെയ്യുകയോ അല്ലെങ്കിൽ ആധാരത്തിന്റെ ഫോട്ടോ/PDF ഇവിടെ വലിച്ചിടുകയോ ചെയ്താൽ സർവേ നമ്പറുകൾ, അതിരുകൾ, മുന്നാധാരങ്ങൾ എന്നിവ വേർതിരിച്ച് തട്ടിപ്പുകൾ പരിശോധിക്കാം!",
-    welcomeP3: "<strong>🗺️ ഉപഗ്രഹ നിരീക്ഷണ മാപ്പ് (Google Satellite):</strong>",
-    welcomeP4: "വലതുവശത്തുള്ള സാറ്റലൈറ്റ് മാപ്പ് വഴി കേരളത്തിലെ ഏത് സ്ഥലവും പരിശോധിക്കാം. വില്ലേജ് തിരയുകയോ അതിരുകൾ അടയാളപ്പെടുത്തി ഭൂമിയുടെ വിസ്തീർണ്ണം <strong>സെന്റിൽ (Kerala Cents)</strong> കണക്കാക്കുകയോ, KPBR കെട്ടിട നിർമ്മാണ ചട്ടപ്രകാരം വഴി വീതി അളക്കുകയോ ചെയ്യാം!",
+    welcomeP1: "കേരളത്തിൽ ഭൂമിയോ വീടോ വാങ്ങുകയാണോ? <strong>രേഖകൾ കൃത്യമായി പരിശോധിച്ച് ബോധ്യപ്പെടാതെ വിൽപ്പനക്കാരനോ ബ്രോക്കർക്കോ ടോക്കൺ അഡ്വാൻസ് നൽകരുത്.</strong>",
+    welcomeP2: "മുകളിൽ കാണുന്ന <strong>3 മാതൃകാ കാർഡുകളിൽ ഒന്നിൽ ക്ലിക്ക് ചെയ്ത്</strong> നിമിഷങ്ങൾക്കകം പരിശോധന നടത്താം, അല്ലെങ്കിൽ സംശയങ്ങൾ താഴെ ചോദിക്കാം:",
     inputPlaceholder: "ആധാരത്തിലെ വിവരങ്ങൾ നൽകുക, സംശയങ്ങൾ ചോദിക്കുക, അല്ലെങ്കിൽ 📎 ക്ലിക്ക് ചെയ്ത് ആധാരം അപ്‌ലോഡ് ചെയ്യുക...",
     sendBtn: "അയക്കുക",
     mapHeaderTitle: "ഉപഗ്രഹ നിരീക്ഷണം",
@@ -2647,6 +2754,36 @@ function setLanguage(lang) {
   if (elDzDesc) elDzDesc.textContent = t.dropzoneDesc;
   const elDzLang = document.getElementById("dropzone-pill-lang");
   if (elDzLang) elDzLang.textContent = t.dropzonePillLang;
+  const dropzonePillPhotos = document.getElementById("dropzone-pill-photos");
+  if (dropzonePillPhotos) dropzonePillPhotos.textContent = t.dropzonePillPhotos;
+
+  const cardBadgeDeed = document.getElementById("card-badge-deed");
+  if (cardBadgeDeed) cardBadgeDeed.textContent = t.cardDeedBadge;
+  const cardTitleDeed = document.getElementById("card-title-deed");
+  if (cardTitleDeed) cardTitleDeed.textContent = t.cardDeedTitle;
+  const cardDescDeed = document.getElementById("card-desc-deed");
+  if (cardDescDeed) cardDescDeed.textContent = t.cardDeedDesc;
+  const cardCtaDeed = document.getElementById("card-cta-deed");
+  if (cardCtaDeed) cardCtaDeed.textContent = t.cardDeedCta;
+
+  const cardBadgeEc = document.getElementById("card-badge-ec");
+  if (cardBadgeEc) cardBadgeEc.textContent = t.cardEcBadge;
+  const cardTitleEc = document.getElementById("card-title-ec");
+  if (cardTitleEc) cardTitleEc.textContent = t.cardEcTitle;
+  const cardDescEc = document.getElementById("card-desc-ec");
+  if (cardDescEc) cardDescEc.textContent = t.cardEcDesc;
+  const cardCtaEc = document.getElementById("card-cta-ec");
+  if (cardCtaEc) cardCtaEc.textContent = t.cardEcCta;
+
+  const cardBadgeUpload = document.getElementById("card-badge-upload");
+  if (cardBadgeUpload) cardBadgeUpload.textContent = t.cardUploadBadge;
+  const cardTitleUpload = document.getElementById("card-title-upload");
+  if (cardTitleUpload) cardTitleUpload.textContent = t.cardUploadTitle;
+  const cardDescUpload = document.getElementById("card-desc-upload");
+  if (cardDescUpload) cardDescUpload.textContent = t.cardUploadDesc;
+  const cardCtaUpload = document.getElementById("card-cta-upload");
+  if (cardCtaUpload) cardCtaUpload.textContent = t.cardUploadCta;
+
   const btnBrowse = document.getElementById("btn-browse-text");
   if (btnBrowse) btnBrowse.textContent = t.btnBrowse;
   const btnSampleDeedTxt = document.getElementById("btn-sample-deed-text");
@@ -2654,18 +2791,33 @@ function setLanguage(lang) {
   const btnSampleEcTxt = document.getElementById("btn-sample-ec-text");
   if (btnSampleEcTxt) btnSampleEcTxt.textContent = t.btnSampleEc;
   const btnDownloadDeedTxt = document.getElementById("btn-download-deed-text");
-  if (btnDownloadDeedTxt) btnDownloadDeedTxt.textContent = t.btnDownloadDeed;
+  if (btnDownloadDeedTxt) btnDownloadDeedTxt.textContent = t.btnDownloadDeedText;
 
-  const welcomeBubble = document.getElementById("welcome-bubble");
-  if (welcomeBubble && welcomeBubble.getAttribute("data-custom") !== "true") {
-    welcomeBubble.innerHTML = `
-      <strong>${t.welcomeTitle}</strong>
-      <p>${t.welcomeP1}</p>
-      <p style="margin-top: 0.5rem;">${t.welcomeP2}</p>
-      <p style="margin-top: 0.5rem;">${t.welcomeP3}</p>
-      <p>${t.welcomeP4}</p>
-    `;
+  const elWelcomeTitle = document.getElementById("welcome-bubble-title");
+  if (elWelcomeTitle) elWelcomeTitle.textContent = t.welcomeTitle;
+  const elWelcomeP1 = document.getElementById("welcome-bubble-p1");
+  if (elWelcomeP1) elWelcomeP1.innerHTML = t.welcomeP1;
+  const elWelcomeP2 = document.getElementById("welcome-bubble-p2");
+  if (elWelcomeP2) elWelcomeP2.innerHTML = t.welcomeP2;
+
+  const qp1 = document.getElementById("quick-prompt-1");
+  if (qp1) qp1.innerHTML = `💡 ${t.quickPrompt1}`;
+  const qp2 = document.getElementById("quick-prompt-2");
+  if (qp2) qp2.innerHTML = `📐 ${t.quickPrompt2}`;
+  const qp3 = document.getElementById("quick-prompt-3");
+  if (qp3) qp3.innerHTML = `🌾 ${t.quickPrompt3}`;
+
+  const pwaStatusText = document.getElementById("pwa-status-text");
+  if (pwaStatusText) {
+    pwaStatusText.textContent = navigator.onLine ? t.pwaOnline : t.pwaOffline;
   }
+
+  const toolAutoDemarcate = document.getElementById("tool-auto-demarcate");
+  if (toolAutoDemarcate) toolAutoDemarcate.textContent = t.btnAutoDemarcate;
+  const btnBhunaksha = document.getElementById("btn-bhunaksha");
+  if (btnBhunaksha) btnBhunaksha.textContent = t.btnBhunaksha;
+  const btnDatabank = document.getElementById("btn-databank");
+  if (btnDatabank) btnDatabank.textContent = t.btnDatabank;
 
   const elInput = document.getElementById("input");
   if (elInput) elInput.placeholder = t.inputPlaceholder;
@@ -3266,7 +3418,7 @@ function renderDeedAuditCard(container, data, fileName) {
         <div class="whatsapp-header">
           <div class="whatsapp-title">📱 Malayalam WhatsApp Question for Seller:</div>
           <div class="whatsapp-actions">
-            <button class="copy-btn" onclick="copyWhatsApp(this, '${safeWa}')">📋 Copy</button>
+            <button class="copy-btn" onclick="copyWhatsApp(this)">📋 Copy</button>
             <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>
           </div>
         </div>
@@ -3540,7 +3692,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
         <div class="whatsapp-header">
           <div class="whatsapp-title">📱 Malayalam WhatsApp Questions for Broker / Seller:</div>
           <div class="whatsapp-actions">
-            <button class="copy-btn" onclick="copyWhatsApp(this, '${safeWa}')">📋 Copy Draft</button>
+            <button class="copy-btn" onclick="copyWhatsApp(this)">📋 Copy Draft</button>
             <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">💬 Send WhatsApp</a>
           </div>
         </div>
