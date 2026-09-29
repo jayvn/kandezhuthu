@@ -664,18 +664,41 @@ button#send-btn:hover:not(:disabled) {
 .hud-stat-val {
   color: #262a33 !important;
   font-weight: 700 !important;
+  font-family: var(--ft-font-serif) !important;
+  font-feature-settings: "tnum" 1, "lnum" 1 !important;
 }
 
-.hud-stat-val.cents {
+.hud-stat-val.cents,
+#hud-cents {
   color: #990f3d !important;
+  font-family: var(--ft-font-serif) !important;
+  font-size: 1.15rem !important;
   font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+#hud-sqm {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  color: #262a33 !important;
+  letter-spacing: 0.01em !important;
 }
 
 /* Live Plot HUD Elevation & Flood Exposure */
 #hud-elevation-box {
-  background: #f6ede2 !important;
-  border: 1px solid #e9decf !important;
+  background: #fffdf9 !important;
+  border: 1px solid #d4c5b9 !important;
+  border-top: 2px solid #262a33 !important;
   border-radius: 4px !important;
+  box-shadow: 0 3px 10px rgba(38, 42, 51, 0.07), 0 1px 2px rgba(153, 15, 61, 0.03) !important;
+  padding: 6px 9px !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+#hud-elevation-box:hover {
+  box-shadow: 0 4px 14px rgba(38, 42, 51, 0.1), 0 1px 3px rgba(153, 15, 61, 0.05) !important;
 }
 
 #hud-elevation {
@@ -689,12 +712,19 @@ button#send-btn:hover:not(:disabled) {
 
 #hud-elevation-text {
   color: #262a33 !important;
+  font-family: var(--ft-font-serif) !important;
+  font-size: 1.08rem !important;
   font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
 }
 
 #hud-basin-text {
   color: #66605c !important;
+  font-family: var(--ft-font-sans) !important;
   font-size: 10.5px !important;
+  border-top: 1px solid #e9decf !important;
+  padding-top: 3px !important;
+  margin-top: 4px !important;
 }
 
 /* HUD Actions Bar & Buttons */
@@ -768,3 +798,431 @@ button#send-btn:hover:not(:disabled) {
   background: #fffdf9 !important;
   color: #990f3d !important;
 }
+
+/* ==========================================================================
+   ITERATION CYCLE 2: Financial Times (FT) 'Lex' Column & Editorial Tables
+   Aesthetic:
+   - Dark slate border-top: 2px solid #262a33
+   - Hairline separator: 1px solid #e9decf
+   - Editorial ivory/paper card surface: #fffdf9
+   - Serif numerals and authoritative legal tabular typography
+   ========================================================================== */
+
+/* 1. FT 'Lex' Column Statutory Financial Callouts */
+.lex-callout,
+.lex-box,
+.statutory-callout,
+.financial-transparency-card,
+.buyer-verdict-box,
+.prior-deeds-box,
+div[style*="border-left:3px solid #990f3d"] {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  border-top: 2px solid #262a33 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(38, 42, 51, 0.05), 0 1px 2px rgba(153, 15, 61, 0.03) !important;
+  padding: 0.85rem 1rem !important;
+  color: #262a33 !important;
+  position: relative !important;
+}
+
+.financial-transparency-card {
+  background: #fffdf9 !important;
+}
+
+/* Lex Column Header & Sub-headers */
+.lex-header,
+.statutory-callout-header,
+.financial-transparency-card > div:first-child {
+  border-bottom: 1px solid #e9decf !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0.65rem !important;
+}
+
+.lex-header h3,
+.lex-header h4,
+.financial-transparency-card span[style*="font-weight:700"] {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.96rem !important;
+  font-weight: 700 !important;
+  color: #262a33 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Lex Stat Boxes inside Financial Cards (Purchase Price, Fair Value, Bank Liens) */
+.financial-transparency-card div[style*="grid"] > div,
+.lex-stat-cell {
+  background: #fbf5ee !important;
+  border: 1px solid #e9decf !important;
+  border-top: 2px solid #262a33 !important;
+  border-radius: 3px !important;
+  padding: 7px 10px !important;
+  box-shadow: 0 1px 3px rgba(38, 42, 51, 0.04) !important;
+}
+
+.financial-transparency-card div[style*="grid"] > div > div:first-child,
+.lex-stat-label {
+  font-family: var(--ft-font-sans) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: #66605c !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.financial-transparency-card div[style*="grid"] > div > div:nth-child(2),
+.lex-stat-number {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #262a33 !important;
+  margin-top: 2px !important;
+  font-feature-settings: "tnum" 1, "lnum" 1 !important;
+}
+
+/* Hairline Separators */
+.hairline-separator,
+.hairline-sep,
+.lex-separator,
+hr.hairline {
+  border: none !important;
+  border-top: 1px solid #e9decf !important;
+  margin: 0.65rem 0 !important;
+}
+
+/* 2. Editorial Fair Value & Statutory Tables */
+table,
+.fair-value-table,
+.statutory-table,
+.lex-table,
+.audit-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border-top: 2px solid #262a33 !important;
+  border-bottom: 2px solid #262a33 !important;
+  margin: 0.75rem 0 !important;
+  background: #fffdf9 !important;
+  font-size: 0.82rem !important;
+}
+
+table thead th,
+.fair-value-table th,
+.statutory-table th,
+.lex-table th {
+  background: #f6ede2 !important;
+  color: #262a33 !important;
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  padding: 8px 10px !important;
+  border-top: 2px solid #262a33 !important;
+  border-bottom: 1px solid #262a33 !important;
+  border-left: none !important;
+  border-right: none !important;
+  text-align: left !important;
+}
+
+table tbody td,
+.fair-value-table td,
+.statutory-table td,
+.lex-table td {
+  padding: 8px 10px !important;
+  border-bottom: 1px solid #e9decf !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  color: #262a33 !important;
+  vertical-align: middle !important;
+}
+
+table tbody tr:nth-child(even) td,
+.fair-value-table tr:nth-child(even) td,
+.statutory-table tr:nth-child(even) td,
+.lex-table tr:nth-child(even) td {
+  background: #fcf7f1 !important;
+}
+
+table tbody tr:hover td,
+.fair-value-table tr:hover td,
+.statutory-table tr:hover td,
+.lex-table tr:hover td {
+  background: #f5ebe0 !important;
+}
+
+table td strong,
+.fair-value-table td strong,
+.statutory-table td strong {
+  font-family: var(--ft-font-serif) !important;
+  font-weight: 700 !important;
+  color: #262a33 !important;
+}
+
+/* Deed Grid (Tabular Property Attributes) */
+.deed-grid {
+  border: 1px solid #e9decf !important;
+  border-top: 2px solid #262a33 !important;
+  background: #fffdf9 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px rgba(38, 42, 51, 0.04) !important;
+}
+
+.deed-grid-item {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  padding: 7px 10px !important;
+}
+
+.deed-grid-label {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: #66605c !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.deed-grid-val {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  color: #262a33 !important;
+  margin-top: 2px !important;
+  font-feature-settings: "tnum" 1, "lnum" 1 !important;
+}
+
+/* ==========================================================================
+   3. Serif Header Quotes for Court Precedents
+   Landmark Precedents: Mary Roy v. State of Kerala, HMGA Sec 8, Kerala Paddy Act
+   ========================================================================== */
+
+.timeline-flag-pill,
+.finding-alert,
+.court-precedent-card,
+.statutory-precedent-box {
+  background: #fffdf9 !important;
+  border: 1px solid #e9decf !important;
+  border-top: 2px solid #262a33 !important;
+  border-left: 4px solid #990f3d !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 6px rgba(38, 42, 51, 0.05) !important;
+  padding: 0.55rem 0.75rem !important;
+  margin-bottom: 0.45rem !important;
+}
+
+.timeline-flag-pill.warning,
+.finding-alert.warning {
+  border-left-color: #0f5499 !important;
+}
+
+/* Serif Precedent Headers with Opening & Closing Typographic Quotes */
+.timeline-flag-title,
+.finding-alert-header,
+.precedent-title,
+.court-precedent-header {
+  font-family: var(--ft-font-serif) !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  color: #990f3d !important;
+  letter-spacing: -0.01em !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+}
+
+.timeline-flag-pill.warning .timeline-flag-title,
+.finding-alert.warning .finding-alert-header {
+  color: #0f5499 !important;
+}
+
+/* Authentic Serif Header Quote Marks */
+.timeline-flag-title::before,
+.finding-alert-header > span:first-child::before,
+.precedent-quote-title::before {
+  content: "“" !important;
+  font-family: var(--ft-font-serif) !important;
+  font-size: 1.35em !important;
+  line-height: 0 !important;
+  color: #990f3d !important;
+  vertical-align: -0.1em !important;
+  margin-right: 1px !important;
+}
+
+.timeline-flag-title::after,
+.finding-alert-header > span:first-child::after,
+.precedent-quote-title::after {
+  content: "”" !important;
+  font-family: var(--ft-font-serif) !important;
+  font-size: 1.35em !important;
+  line-height: 0 !important;
+  color: #990f3d !important;
+  vertical-align: -0.1em !important;
+  margin-left: 1px !important;
+}
+
+.timeline-flag-pill.warning .timeline-flag-title::before,
+.timeline-flag-pill.warning .timeline-flag-title::after {
+  color: #0f5499 !important;
+}
+
+/* Precedent Statute Citation Line with Hairline Separator */
+.timeline-flag-statute,
+.precedent-statute,
+.court-precedent-citation,
+.finding-alert div[style*="font-size:0.72rem"] {
+  font-family: var(--ft-font-serif) !important;
+  font-style: italic !important;
+  font-size: 0.77rem !important;
+  color: #66605c !important;
+  border-bottom: 1px solid #e9decf !important;
+  padding-bottom: 3px !important;
+  margin-top: 3px !important;
+  margin-bottom: 4px !important;
+}
+
+.timeline-flag-desc,
+.precedent-body {
+  font-family: var(--ft-font-sans) !important;
+  color: #262a33 !important;
+  font-size: 0.77rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Precedent Quote Block (Mary Roy / HMGA / Paddy Land Act) */
+.precedent-quote-box,
+.court-quote {
+  font-family: var(--ft-font-serif) !important;
+  font-style: italic !important;
+  font-size: 0.85rem !important;
+  line-height: 1.5 !important;
+  color: #262a33 !important;
+  background: #fbf5ee !important;
+  border: 1px solid #e9decf !important;
+  border-left: 3px solid #990f3d !important;
+  padding: 0.5rem 0.75rem !important;
+  margin: 0.45rem 0 !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+/* ==========================================================================
+   4. Elegant FT Stat Badges with Serif Numeric Display for Extents
+   Extents: Cents, Ares, Sq.M (m²)
+   ========================================================================== */
+
+.timeline-extent-tag,
+.extent-badge,
+.ft-stat-badge,
+.badge-extent,
+.stat-badge-extent {
+  background: #f6ede2 !important;
+  border: 1px solid #d4c5b9 !important;
+  color: #990f3d !important;
+  font-family: var(--ft-font-serif) !important;
+  font-weight: 700 !important;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.02em !important;
+  padding: 2px 8px !important;
+  border-radius: 3px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  box-shadow: 0 1px 3px rgba(38, 42, 51, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  font-feature-settings: "tnum" 1, "lnum" 1 !important;
+  transition: all 0.15s ease !important;
+}
+
+.timeline-extent-tag:hover,
+.extent-badge:hover,
+.ft-stat-badge:hover {
+  background: #fbebee !important;
+  border-color: #990f3d !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary Extent Badges (Ares, Sq.M) */
+.extent-badge.secondary,
+.stat-badge-extent.secondary {
+  background: #fbf5ee !important;
+  border: 1px solid #e9decf !important;
+  color: #0f5499 !important;
+}
+
+/* ==========================================================================
+   5. Satellite Map Layer Controls Dropdown & HUD Elevation Enhancements
+   ========================================================================== */
+
+/* Satellite Map Layer Controls Dropdown */
+.map-layer-select,
+#layer-select,
+select.map-layer-select {
+  background-color: #fffdf9 !important;
+  color: #262a33 !important;
+  border: 1px solid #d4c5b9 !important;
+  border-top: 2px solid #262a33 !important;
+  border-radius: 4px !important;
+  font-family: var(--ft-font-sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  padding: 0.32rem 0.65rem !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(38, 42, 51, 0.08), 0 1px 2px rgba(153, 15, 61, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.15s ease !important;
+  outline: none !important;
+}
+
+.map-layer-select:hover,
+#layer-select:hover {
+  background-color: #fbf5ee !important;
+  border-color: #990f3d !important;
+  box-shadow: 0 3px 8px rgba(38, 42, 51, 0.1), 0 1px 3px rgba(153, 15, 61, 0.06) !important;
+}
+
+.map-layer-select:focus,
+#layer-select:focus {
+  border-color: #990f3d !important;
+  box-shadow: 0 0 0 2px rgba(153, 15, 61, 0.18), 0 3px 8px rgba(38, 42, 51, 0.1) !important;
+}
+
+.map-layer-select option,
+#layer-select option {
+  background-color: #fffdf9 !important;
+  color: #262a33 !important;
+  font-family: var(--ft-font-sans) !important;
+  font-size: 0.78rem !important;
+  padding: 4px 8px !important;
+}
+
+/* HUD Elevation & Flood Hazard Badge */
+#hud-flood-badge,
+.badge-road {
+  font-family: var(--ft-font-sans) !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  padding: 2px 7px !important;
+  border-radius: 3px !important;
+  letter-spacing: 0.2px !important;
+  box-shadow: 0 1px 2px rgba(38, 42, 51, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+#hud-flood-badge.pass,
+.badge-road.pass {
+  background: #edf7ed !important;
+  color: #1e4620 !important;
+  border: 1px solid #c8e6c9 !important;
+}
+
+#hud-flood-badge.warn,
+.badge-road.warn {
+  background: #fff8e1 !important;
+  color: #795548 !important;
+  border: 1px solid #ffe082 !important;
+}
+
+#hud-flood-badge.fail,
+.badge-road.fail {
+  background: #fbebee !important;
+  color: #990f3d !important;
+  border: 1px solid #f5c2cb !important;
+}
+
