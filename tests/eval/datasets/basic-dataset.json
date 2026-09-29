@@ -1,30 +1,31 @@
 {
   "eval_cases": [
     {
-      "eval_case_id": "greeting",
+      "eval_case_id": "kerala_title_audit_scope",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "Hello, what can you help me with?"}]
+        "parts": [{"text": "Namaskaram! I am planning to buy 8 cents of residential land in Aluva. What legal checks should I perform on the title deed before paying advance money?"}]
       }
     },
     {
-      "eval_case_id": "weather_query",
+      "eval_case_id": "paddy_land_form5_form6",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "What's the weather like in San Francisco?"}]
+        "parts": [{"text": "The broker told me the plot looks like dry land with coconut trees, but the tax receipt says 'Nilam' (നിലം). Can I construct a house right away, and what are Form 5 and Form 6?"}]
       }
     },
     {
-      "eval_case_id": "capital_lookup",
+      "eval_case_id": "kpbr_road_width_inquiry",
       "prompt": {
         "role": "user",
-        "parts": [{"text": "What is the capital of France?"}]
-      },
-      "reference": {
-        "response": {
-          "role": "model",
-          "parts": [{"text": "The capital of France is Paris."}]
-        }
+        "parts": [{"text": "The seller is selling 5 cents of land in a Grama Panchayat with a 2-meter concrete pathway. Will I get a building permit under Kerala Panchayat Building Rules (KPBR 2019)?"}]
+      }
+    },
+    {
+      "eval_case_id": "mary_roy_christian_succession",
+      "prompt": {
+        "role": "user",
+        "parts": [{"text": "The seller inherited the property through a 1980 partition deed where only the sons signed and the daughters were excluded. Is this title safe under Kerala law?"}]
       }
     }
   ]

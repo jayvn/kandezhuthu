@@ -57,7 +57,8 @@ kandezhuthu/
 │       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
 ├── data/
 │   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
-│   └── sample_deeds/            # Synthetic Kerala title deed PDF
+│   ├── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
+│   └── sample_deeds/            # Synthetic Kerala title deed PDFs
 ├── tests/                       # Unit, integration, and UI tests
 └── pyproject.toml               # Project dependencies (uv)
 ```
@@ -73,8 +74,8 @@ kandezhuthu/
 
 ### 2. Installation
 ```bash
-git clone <your-repo-url>
-cd <repo-folder>
+git clone https://github.com/jayvn/kandezhuthu.git
+cd kandezhuthu
 uv sync
 ```
 

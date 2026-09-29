@@ -29,13 +29,24 @@ kandezhuthu/
 │   ├── agent.py                 # ADK Agent definition, root prompt, and exposed tool interfaces
 │   ├── fast_api_app.py          # FastAPI backend server with A2A Protocol (/a2a/kandezhuthu)
 │   ├── app_utils/               # A2A routing, sessions, and GCP services
+│   ├── db/                      # SQLite WAL connection, schema, knowledge repository & seed data
 │   └── domain/
 │       ├── models.py            # Pydantic schemas (DeedNode, ECRecord, RiskFlag, CleanTitleScorecard, DeedSanityResult)
+│       ├── deed_ocr.py          # Multimodal deed vision extraction using Gemini Flash
 │       ├── single_deed_scanner.py # SingleDeedScanner engine: 4 trap categories, scoring, Malayalam WhatsApp generator
 │       └── auditor.py           # MunnadharamAuditor engine: multi-decade title chain continuity & EC cross-validation
+├── frontend/
+│   ├── main.py                  # Full-stack FastAPI server with Web UI, OCR and upload endpoints
+│   └── static/
+│       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
+├── data/
+│   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
+│   ├── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
+│   └── sample_deeds/            # Synthetic Kerala title deed PDFs
 ├── tests/
 │   ├── unit/                    # Fast deterministic unit tests (scanner & auditor)
 │   ├── integration/             # Live agent & FastAPI e2e tests
+│   ├── ui/                      # Playwright UI & browser workflow tests
 │   └── eval/                    # Response quality & eval datasets
 ├── GEMINI.md                    # Project-specific AI assistant guidance (this file)
 └── pyproject.toml               # Project dependencies and configurations managed via uv
