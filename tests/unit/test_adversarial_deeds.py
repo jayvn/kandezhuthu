@@ -219,6 +219,65 @@ class TestBilingualAndNoisyOCR(unittest.TestCase):
         self.assertEqual(result.verdict, Verdict.CAUTION)
         self.assertTrue(any(f.trap_type == TrapCategory.MAINTENANCE_CONDITIONAL_CLAUSE for f in result.findings))
 
+    def test_kseb_high_tension_easement_detection(self):
+        """Test deed containing KSEB transmission corridor restriction (വൈദ്യുതി ലൈൻ പോകുന്നതിനുള്ള അവകാശം)."""
+        deed_text = """
+        തീറാധാരം രജിസ്ട്രേഷൻ വിവരണം:
+        റീ-സർവേ 312/8-ൽപ്പെട്ട 14 സെന്റ് പുരയിടം.
+        പ്രത്യേക നിയന്ത്രണ വ്യവസ്ഥ: വസ്തുവിന്റെ കിഴക്കേ അതിരിലൂടെ കെ.എസ്.ഇ.ബി (KSEB) ഹൈടെൻഷൻ വൈദ്യുതി ലൈൻ പോകുന്നതിനുള്ള അവകാശം 
+        അനുവദിച്ചിട്ടുള്ളതും പ്രസ്തുത ട്രാൻസ്മിഷൻ ലൈനിന്റെ താഴെ സ്ഥിര കെട്ടിട നിർമ്മാണങ്ങൾ നടത്താൻ പാടില്ലാത്തതുമാകുന്നു.
+        """
+        result = self.scanner.scan(deed_text)
+        self.assertEqual(result.verdict, Verdict.CAUTION)
+        self.assertTrue(any(f.trap_type == TrapCategory.EASEMENT_RIGHT_OF_WAY for f in result.findings))
+        kseb_finding = next(f for f in result.findings if f.trap_type == TrapCategory.EASEMENT_RIGHT_OF_WAY)
+        self.assertIn("വൈദ്യുതി ലൈൻ", kseb_finding.matched_snippet)
+        self.assertIn("Easements Act", kseb_finding.kerala_statute)
+
+    def test_crz_coastal_regulation_setback(self):
+        """Test coastal backwater buffer restriction (തീരദേശ പരിപാലന നിയമം / CRZ)."""
+        deed_text = """
+        Sale Deed for 12 Cents in Re-Survey 104/2, Kochi Taluk, Ernakulam.
+        Schedule Description: Waterfront garden land abutting the tidal backwaters.
+        Statutory Restriction: Subject to coastal backwater buffer zone restrictions under 
+        തീരദേശ പരിപാലന നിയമം (Coastal Regulation Zone / CRZ notification) requiring mandatory 
+        No Development Zone (NDZ) setback from the High Tide Line.
+        """
+        result = self.scanner.scan(deed_text)
+        self.assertEqual(result.verdict, Verdict.DANGER)
+        self.assertTrue(any(f.trap_type == TrapCategory.CRZ_COASTAL_REGULATION_RISK for f in result.findings))
+        crz_finding = next(f for f in result.findings if f.trap_type == TrapCategory.CRZ_COASTAL_REGULATION_RISK)
+        self.assertEqual(crz_finding.severity, "CRITICAL")
+        self.assertIn("CRZ", crz_finding.kerala_statute)
+
+    def test_waqf_and_devaswom_trust_alienation(self):
+        """Test deed reciting temple/mosque trust property with statutory alienation bar."""
+        # 1. Temple Devaswom Trust Deed
+        devaswom_text = """
+        തീറാധാരം ഷെഡ്യൂൾ: റീ-സർവേ 205/6, വിസ്തീർണ്ണം 18 സെന്റ്.
+        പൂർവ്വ ചരിത്രം: ഈ വസ്തു പരമ്പരാഗതമായി ദേവസ്വം ബോർഡ് ക്ഷേത്ര ട്രസ്റ്റ് വക സ്വത്ത് ആകുന്നു. 
+        ട്രസ്റ്റി കൈമാറ്റ വിലക്ക് നിലനിൽക്കെ മുൻകൂർ ദേവസ്വം ബോർഡ് അനുമതിയില്ലാതെ നേരിട്ട് തീറു നൽകുന്നു.
+        """
+        result_devaswom = self.scanner.scan(devaswom_text)
+        self.assertEqual(result_devaswom.verdict, Verdict.DANGER)
+        self.assertTrue(any(f.trap_type == TrapCategory.TRUST_DEVASWOM_WAQF_ALIENATION for f in result_devaswom.findings))
+        devaswom_finding = next(f for f in result_devaswom.findings if f.trap_type == TrapCategory.TRUST_DEVASWOM_WAQF_ALIENATION)
+        self.assertEqual(devaswom_finding.severity, "CRITICAL")
+        self.assertIn("Devaswom", devaswom_finding.kerala_statute)
+
+        # 2. Waqf Mosque Trust Deed
+        waqf_text = """
+        Sale Deed No. 512/2020: Conveyance of 8 Cents in Re-Survey 77/1.
+        Property is dedicated in perpetuity as Waqf property (വഖഫ് സ്വത്ത്) under Islamic law,
+        alienated by committee without prior sanction order from the Kerala State Waqf Board.
+        """
+        result_waqf = self.scanner.scan(waqf_text)
+        self.assertEqual(result_waqf.verdict, Verdict.DANGER)
+        self.assertTrue(any(f.trap_type == TrapCategory.TRUST_DEVASWOM_WAQF_ALIENATION for f in result_waqf.findings))
+        waqf_finding = next(f for f in result_waqf.findings if f.trap_type == TrapCategory.TRUST_DEVASWOM_WAQF_ALIENATION)
+        self.assertEqual(waqf_finding.severity, "CRITICAL")
+        self.assertIn("Waqf Act", waqf_finding.kerala_statute)
+
 
 class TestExtentArithmeticAndConversions(unittest.TestCase):
     """Validates exact conversions between Hectares, Ares, Cents, Sq.M, and Sq.Ft."""
