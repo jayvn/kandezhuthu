@@ -112,26 +112,27 @@ def show_chapter_banner(page, title: str, subtitle: str, step: int | None = None
       }
       banner.style.cssText = `
         position: fixed;
-        top: 14px;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 155px;
+        right: 24px;
+        left: auto;
+        transform: none;
         z-index: 999999;
         background: rgba(15, 23, 42, 0.92);
         color: #ffffff;
-        padding: 8px 20px;
-        border-radius: 24px;
+        padding: 8px 18px;
+        border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
         backdrop-filter: blur(10px);
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         pointer-events: none;
         transition: opacity 0.35s ease, transform 0.35s ease;
       `;
       banner.innerHTML = `
-        <span style="background:#059669; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; white-space:nowrap; letter-spacing:0.5px;">SCENE ${stepNum}/10</span>
+        <span style="background:#990f3d; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; white-space:nowrap; letter-spacing:0.5px;">SCENE ${stepNum}/10</span>
         <span style="font-weight:700; font-size:13px; color:#ffffff; white-space:nowrap;">${titleText}</span>
         <span style="color:#64748b; font-size:12px; user-select:none;">•</span>
         <span style="color:#94a3b8; font-size:12px; white-space:nowrap;">${subtitleText}</span>

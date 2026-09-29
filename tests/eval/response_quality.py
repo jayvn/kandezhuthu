@@ -54,8 +54,14 @@ class _Verdict(BaseModel):
 
 def _check_forbidden_clean_title(text: str) -> bool:
     """Returns True if forbidden 100% clean title claims are detected."""
+    sanitized = re.sub(
+        r"\b(never|not|cannot|can't|don't|do\s+not)\s+(?:claim|promise|guarantee|declare|state|assure)?\s*[^\.\n,;]*?(?:100\s*%|100\s*percent)\s*(?:clean|clear|safe)\s*title",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
     for pat in FORBIDDEN_100_PERCENT_PATTERNS:
-        if pat.search(text):
+        if pat.search(sanitized):
             return True
     return False
 
