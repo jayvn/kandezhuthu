@@ -3120,6 +3120,30 @@ function refreshHUDLanguage() {
       ? 'പെരിയാർ നദീതടം • തറ ഉയരം: ≥0.75 മീറ്റർ'
       : 'Periyar River Basin • Plinth: ≥0.75m';
   }
+
+  // Refresh sample marker popup if open
+  if (currentMarker && currentMarker.getPopup() && currentMarker.getPopup().isOpen()) {
+    const popContent = currentMarker.getPopup().getContent();
+    if (popContent && (popContent.includes("345/1") || popContent.includes("Sample Plot") || popContent.includes("മാതൃകാ പ്ലോട്ട്"))) {
+      const title = isMl ? "റീ-സർവേ 345/1 മാതൃകാ പ്ലോട്ട്" : "Re-Sy 345/1 Sample Plot";
+      const village = isMl ? "ആലുവ വെസ്റ്റ്" : "Aluva West";
+      const syLbl = isMl ? "സർവേ നമ്പർ:" : "Survey:";
+      const extLbl = isMl ? "വിസ്തീർണ്ണം:" : "Extent:";
+      const centsUnit = isMl ? "സെന്റ്" : "Cents";
+      const source = isMl ? "✓ കൃത്യതയുള്ള 10-സെന്റ് അതിർത്തി" : "✓ Calibrated 10-Cent Footprint";
+      currentMarker.setPopupContent(`
+        <b>${title}</b><br>
+        ${syLbl} <strong>345/1</strong> (${village})<br>
+        ${extLbl} <strong>10.00 ${centsUnit}</strong> (404.7 m²)<br>
+        <small style="color:#0f5132; font-weight:600;">${source}</small>
+      `);
+    }
+  }
+
+  const pwaStatusText = document.getElementById("pwa-status-text");
+  if (pwaStatusText && navigator.onLine) {
+    pwaStatusText.textContent = isMl ? "ഓൺലൈൻ മോഡ്" : "Online Mode";
+  }
 }
 
 function onChipClick(key) {
@@ -4831,16 +4855,21 @@ function applyPlotPolygon(coords, meta = {}) {
 
   const actualAreaSqM = calculatePolygonArea(polygonPoints);
   const actualCents = meta.extentCents || parseFloat((actualAreaSqM / 40.4686).toFixed(2));
-  const title = meta.title || "Demarcated Plot";
-  const sy = meta.surveyNo || "Re-Sy Plot";
-  const village = meta.village || "Kerala Village";
+  const isMl = currentLanguage === "ml";
+  const title = meta.title || (isMl ? "അടയാളപ്പെടുത്തിയ പ്ലോട്ട്" : "Demarcated Plot");
+  const sy = meta.surveyNo || (isMl ? "റീ-സർവേ പ്ലോട്ട്" : "Re-Sy Plot");
+  const village = meta.village || (isMl ? "കേരള വില്ലേജ്" : "Kerala Village");
+  const syLbl = isMl ? "സർവേ നമ്പർ:" : "Survey:";
+  const extLbl = isMl ? "വിസ്തീർണ്ണം:" : "Extent:";
+  const centsUnit = isMl ? "സെന്റ്" : "Cents";
+  const defaultSource = isMl ? "✓ അടയാളപ്പെടുത്തിയ അതിർത്തി" : "✓ Demarcated Boundary";
 
   currentMarker = L.marker([centerLat, centerLng], { riseOnHover: true }).addTo(map);
   currentMarker.bindPopup(`
     <b>${title}</b><br>
-    Survey: <strong>${sy}</strong> (${village})<br>
-    Extent: <strong>${actualCents} Cents</strong> (${(actualCents * 40.4686).toFixed(1)} m²)<br>
-    <small style="color:#0f5132; font-weight:600;">${meta.source ? '✓ ' + meta.source : '✓ Demarcated Boundary'}</small>
+    ${syLbl} <strong>${sy}</strong> (${village})<br>
+    ${extLbl} <strong>${actualCents} ${centsUnit}</strong> (${(actualCents * 40.4686).toFixed(1)} m²)<br>
+    <small style="color:#0f5132; font-weight:600;">${meta.source ? '✓ ' + meta.source : defaultSource}</small>
   `).openPopup();
 
   // Road indicator if roadWidth is known
@@ -4862,18 +4891,21 @@ function applyPlotPolygon(coords, meta = {}) {
   }
 
   document.getElementById("guidance-icon").textContent = "✨";
-  document.getElementById("guidance-text").textContent = `Demarcated ${actualCents} Cents (${title}). Drag green corner stones to adjust boundary.`;
+  document.getElementById("guidance-text").textContent = isMl
+    ? `${actualCents} സെന്റ് അതിർത്തി അടയാളപ്പെടുത്തി (${title}). അതിരുകൾ മാറ്റാൻ പച്ച അതിർത്തിക്കല്ലുകൾ നീക്കുക.`
+    : `Demarcated ${actualCents} Cents (${title}). Drag green corner stones to adjust boundary.`;
 }
 
 function createSamplePlot(lat, lng) {
+  const isMl = currentLanguage === "ml";
   const coords = generateCalibratedFootprint(lat, lng, 10.0, "1:1");
   applyPlotPolygon(coords, {
-    title: "Re-Sy 345/1 Sample Plot",
+    title: isMl ? "റീ-സർവേ 345/1 മാതൃകാ പ്ലോട്ട്" : "Re-Sy 345/1 Sample Plot",
     extentCents: 10.0,
     surveyNo: "345/1",
-    village: "Aluva West",
+    village: isMl ? "ആലുവ വെസ്റ്റ്" : "Aluva West",
     roadWidth: 3.2,
-    source: "Calibrated 10-Cent Footprint"
+    source: isMl ? "കൃത്യതയുള്ള 10-സെന്റ് അതിർത്തി" : "Calibrated 10-Cent Footprint"
   });
 }
 
