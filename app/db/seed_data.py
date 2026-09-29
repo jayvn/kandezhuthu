@@ -522,7 +522,10 @@ def seed_demo_audit(conn):
 
 def seed_fair_value_benchmarks(conn):
     """Seeds Kerala notified benchmark Fair Values per Are under Section 28A."""
-    from scrapers.scrape_fair_value import KeralaFairValueScraper
+    try:
+        from scrapers.scrape_fair_value import KeralaFairValueScraper
+    except ImportError:
+        return
 
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM fair_value_benchmarks")

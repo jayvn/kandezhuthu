@@ -23,6 +23,7 @@ COPY ./pyproject.toml ./README.md ./uv.lock* ./
 COPY ./app ./app
 COPY ./data ./data
 COPY ./frontend ./frontend
+COPY ./scrapers ./scrapers
 
 RUN uv sync --frozen
 

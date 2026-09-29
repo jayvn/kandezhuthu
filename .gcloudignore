@@ -5,7 +5,6 @@
 __pycache__/
 *.pyc
 tests/
-scrapers/
 .pytest_cache/
 .ruff_cache/
 *.png
