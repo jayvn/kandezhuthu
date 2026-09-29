@@ -1,0 +1,19 @@
+{"id": 1, "district": "Ernakulam", "taluk": "Aluva", "village": "Aluva West", "sro_name": "Aluva", "sro_code": "SRO-EKM-01"}
+{"id": 2, "district": "Ernakulam", "taluk": "Aluva", "village": "Aluva East", "sro_name": "Aluva", "sro_code": "SRO-EKM-01"}
+{"id": 3, "district": "Ernakulam", "taluk": "Kanayannur", "village": "Ernakulam", "sro_name": "Ernakulam", "sro_code": "SRO-EKM-02"}
+{"id": 4, "district": "Ernakulam", "taluk": "Kochi", "village": "Mattancherry", "sro_name": "Mattancherry", "sro_code": "SRO-EKM-03"}
+{"id": 5, "district": "Ernakulam", "taluk": "Kunnathunad", "village": "Perumbavoor", "sro_name": "Perumbavoor", "sro_code": "SRO-EKM-04"}
+{"id": 6, "district": "Thiruvananthapuram", "taluk": "Thiruvananthapuram", "village": "Pattom", "sro_name": "Thiruvananthapuram", "sro_code": "SRO-TVM-01"}
+{"id": 7, "district": "Thiruvananthapuram", "taluk": "Neyyattinkara", "village": "Neyyattinkara", "sro_name": "Neyyattinkara", "sro_code": "SRO-TVM-02"}
+{"id": 8, "district": "Kollam", "taluk": "Kollam", "village": "Kollam East", "sro_name": "Kollam", "sro_code": "SRO-KLM-01"}
+{"id": 9, "district": "Thrissur", "taluk": "Thrissur", "village": "Thrissur", "sro_name": "Thrissur", "sro_code": "SRO-TSR-01"}
+{"id": 10, "district": "Kozhikode", "taluk": "Kozhikode", "village": "Kozhikode City", "sro_name": "Kozhikode", "sro_code": "SRO-KKD-01"}
+{"id": 11, "district": "Kottayam", "taluk": "Kottayam", "village": "Kottayam", "sro_name": "Kottayam", "sro_code": "SRO-KTM-01"}
+{"id": 12, "district": "Palakkad", "taluk": "Palakkad", "village": "Palakkad", "sro_name": "Palakkad", "sro_code": "SRO-PLK-01"}
+{"id": 13, "district": "Malappuram", "taluk": "Eranad", "village": "Manjeri", "sro_name": "Manjeri", "sro_code": "SRO-MLP-01"}
+{"id": 14, "district": "Alappuzha", "taluk": "Ambalappuzha", "village": "Alappuzha", "sro_name": "Alappuzha", "sro_code": "SRO-ALP-01"}
+{"id": 15, "district": "Kannur", "taluk": "Kannur", "village": "Kannur", "sro_name": "Kannur", "sro_code": "SRO-KNR-01"}
+{"id": 16, "district": "Pathanamthitta", "taluk": "Kozhencherry", "village": "Pathanamthitta", "sro_name": "Pathanamthitta", "sro_code": "SRO-PTA-01"}
+{"id": 17, "district": "Idukki", "taluk": "Thodupuzha", "village": "Thodupuzha", "sro_name": "Thodupuzha", "sro_code": "SRO-IDK-01"}
+{"id": 18, "district": "Wayanad", "taluk": "Vythiri", "village": "Kalpetta", "sro_name": "Kalpetta", "sro_code": "SRO-WYD-01"}
+{"id": 19, "district": "Kasaragod", "taluk": "Kasaragod", "village": "Kasaragod", "sro_name": "Kasaragod", "sro_code": "SRO-KSD-01"}

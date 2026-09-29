@@ -97,8 +97,8 @@
       "synced": true,
       "bucket": "bwg3-qwiklabs-gcp-03-690fd21cfd7e",
       "gcs_uri_prefix": "gs://bwg3-qwiklabs-gcp-03-690fd21cfd7e/kandezhuthu-data/",
-      "uploaded_files_count": 19,
-      "last_synced_at": "2026-09-29T12:18:28.092890+00:00"
+      "uploaded_files_count": 42,
+      "last_synced_at": "2026-09-29T12:23:56.563647+00:00"
     },
     "firestore": {
       "synced": true,
@@ -117,7 +117,174 @@
         "kandezhuthu_risk_flags": 6,
         "kandezhuthu_single_deed_scans": 29
       },
-      "last_synced_at": "2026-09-29T12:18:29.303798+00:00"
+      "last_synced_at": "2026-09-29T12:23:57.865441+00:00"
+    }
+  },
+  "scalable_formats": {
+    "generated_at": "2026-09-29T12:23:34.941470+00:00",
+    "formats": [
+      "parquet",
+      "jsonl",
+      "geojson",
+      "rag-jsonl"
+    ],
+    "total_files": 23,
+    "overall_parquet_savings_percent": 38.28,
+    "files": {
+      "parquet/building_rules": {
+        "format": "parquet",
+        "file": "scalable/parquet/building_rules.parquet",
+        "records": 5,
+        "size_bytes": 6219,
+        "sha256": "11d4623a263b9622be103c54cc52564094f1c456342cafe37d608ca13dcf4467"
+      },
+      "jsonl/building_rules": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/building_rules.jsonl",
+        "records": 5,
+        "size_bytes": 2575,
+        "sha256": "24dceca0535ec4abd07beba5a892a6384a912d4d92d2e616fa119a70aa99786c"
+      },
+      "parquet/paddy_land_fee_slabs": {
+        "format": "parquet",
+        "file": "scalable/parquet/paddy_land_fee_slabs.parquet",
+        "records": 4,
+        "size_bytes": 3188,
+        "sha256": "fe51c0eeae95763e9bd2399c55713a575375c7e8ef99134b639a72bfb2b7d90b"
+      },
+      "jsonl/paddy_land_fee_slabs": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/paddy_land_fee_slabs.jsonl",
+        "records": 4,
+        "size_bytes": 1236,
+        "sha256": "402e9bacead7a61d118286602605bd0b3fd9d0e51bf025a0495cdb53d9812926"
+      },
+      "parquet/legal_precedents": {
+        "format": "parquet",
+        "file": "scalable/parquet/legal_precedents.parquet",
+        "records": 11,
+        "size_bytes": 11208,
+        "sha256": "cbab1631390125eb71e2972b65bdcb7eac2076e7313591ce8b166e74ffc102f7"
+      },
+      "jsonl/legal_precedents": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/legal_precedents.jsonl",
+        "records": 11,
+        "size_bytes": 8765,
+        "sha256": "2145ce91c8738ec49d5021cab060477864c34741fe381ecc15a36f45aef04a10"
+      },
+      "parquet/administrative_divisions": {
+        "format": "parquet",
+        "file": "scalable/parquet/administrative_divisions.parquet",
+        "records": 19,
+        "size_bytes": 2872,
+        "sha256": "85a4e9c26854a3e5482b93b8f702d8260b25fe8eded9d69fad7c382955a89057"
+      },
+      "jsonl/administrative_divisions": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/administrative_divisions.jsonl",
+        "records": 19,
+        "size_bytes": 2541,
+        "sha256": "5a74b62345c33df99306b5a8d22cf23943d90f8050c1418c0df1c7e447e95efa"
+      },
+      "parquet/properties": {
+        "format": "parquet",
+        "file": "scalable/parquet/properties.parquet",
+        "records": 2,
+        "size_bytes": 3129,
+        "sha256": "76c86d59ad8e75853a1c72c13c6157dc19b774e503c2803619fcbda12f6de8e0"
+      },
+      "jsonl/properties": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/properties.jsonl",
+        "records": 2,
+        "size_bytes": 521,
+        "sha256": "37fbfa435c6173d4cf7fba762724d1d281e3489bb4afe63347ca1051b31f4a77"
+      },
+      "parquet/deed_records": {
+        "format": "parquet",
+        "file": "scalable/parquet/deed_records.parquet",
+        "records": 5,
+        "size_bytes": 6823,
+        "sha256": "fab695cb5abe3b60afb63f4a230cb199da69a398b4477b2820b8371f43250a83"
+      },
+      "jsonl/deed_records": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/deed_records.jsonl",
+        "records": 5,
+        "size_bytes": 2782,
+        "sha256": "dc57a7dd4dc9ef41f73d21be98d24f2d864955684f590e5fe6af7185f9bec721"
+      },
+      "parquet/encumbrance_records": {
+        "format": "parquet",
+        "file": "scalable/parquet/encumbrance_records.parquet",
+        "records": 5,
+        "size_bytes": 2817,
+        "sha256": "8baaa57c697ebbf0d4b92acdc638dc326d9288cf85a8d80d7c17ef511f1355c5"
+      },
+      "jsonl/encumbrance_records": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/encumbrance_records.jsonl",
+        "records": 5,
+        "size_bytes": 1008,
+        "sha256": "6a05cd1fd556cef8dd37dbbd05362ccf859ab7d5bc6e9fb3c73d65c2bec2befa"
+      },
+      "parquet/audit_reports": {
+        "format": "parquet",
+        "file": "scalable/parquet/audit_reports.parquet",
+        "records": 2,
+        "size_bytes": 8050,
+        "sha256": "ab7094cd22de46cda1ce26ed6f5e009a45d24d9cc0a9ba465ab0b41fc0b8ad6e"
+      },
+      "jsonl/audit_reports": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/audit_reports.jsonl",
+        "records": 2,
+        "size_bytes": 2213,
+        "sha256": "9376be017253481b63cb56c0c9f1e3498fd71df811e76a0adfe15ac596c2af92"
+      },
+      "parquet/risk_flags": {
+        "format": "parquet",
+        "file": "scalable/parquet/risk_flags.parquet",
+        "records": 6,
+        "size_bytes": 5737,
+        "sha256": "91e4f4d9a8f34e3113d28002b20c69135ad2cd27efcaf48181329406d0f9283f"
+      },
+      "jsonl/risk_flags": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/risk_flags.jsonl",
+        "records": 6,
+        "size_bytes": 3028,
+        "sha256": "6b548987d0f124f31fb0691bf040c2d75b85b53af0f8295e70558c537dab68e8"
+      },
+      "parquet/single_deed_scans": {
+        "format": "parquet",
+        "file": "scalable/parquet/single_deed_scans.parquet",
+        "records": 29,
+        "size_bytes": 18175,
+        "sha256": "4fe1d93ab78e638ab5c618d0bfcba78736c12e76640b4fe213f8249683801c21"
+      },
+      "jsonl/single_deed_scans": {
+        "format": "jsonl",
+        "file": "scalable/jsonl/single_deed_scans.jsonl",
+        "records": 29,
+        "size_bytes": 78866,
+        "sha256": "137ba6a490a1ec756373aa8beaed763eea0d9a9e2f1b6ab16c394bb8f084f4e0"
+      },
+      "rag/knowledge_rag_chunks": {
+        "format": "jsonl-rag",
+        "file": "scalable/rag/knowledge_rag_chunks.jsonl",
+        "records": 25,
+        "size_bytes": 52641,
+        "sha256": "6f1502a3f566938d3aed9f4e752860052923add8b5bfd3b91273e20553e38711"
+      },
+      "geojson/cadastral_parcels": {
+        "format": "geojson",
+        "file": "scalable/geojson/cadastral_parcels.geojson",
+        "records": 2,
+        "size_bytes": 1709,
+        "sha256": "5b74a483faad70a2cd5857f859e0e91c58c25051b8a6e44e9708087eede0d383"
+      }
     }
   }
 }

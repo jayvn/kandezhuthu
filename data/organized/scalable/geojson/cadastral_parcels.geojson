@@ -1,0 +1,87 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "aluva_345_1",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              76.353,
+              10.108
+            ],
+            [
+              76.3535,
+              10.108
+            ],
+            [
+              76.3535,
+              10.1085
+            ],
+            [
+              76.353,
+              10.1085
+            ],
+            [
+              76.353,
+              10.108
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "survey_no": "345/1",
+        "village": "Aluva West",
+        "taluk": "Aluva",
+        "district": "Ernakulam",
+        "extent_cents": 12.5,
+        "land_type": "Purayidam",
+        "elevation_msl_m": 8.5,
+        "flood_risk": "LOW"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kakkanad_182_4",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              76.341,
+              10.015
+            ],
+            [
+              76.3418,
+              10.015
+            ],
+            [
+              76.3418,
+              10.0158
+            ],
+            [
+              76.341,
+              10.0158
+            ],
+            [
+              76.341,
+              10.015
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "survey_no": "182/4",
+        "village": "Kakkanad",
+        "taluk": "Kanakayannur",
+        "district": "Ernakulam",
+        "extent_cents": 15.0,
+        "land_type": "Nilam (Paddy Land)",
+        "elevation_msl_m": 2.1,
+        "flood_risk": "HIGH"
+      }
+    }
+  ]
+}

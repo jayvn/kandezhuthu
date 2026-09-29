@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-09-29T12:23:34.941288+00:00",
+  "summary": {
+    "total_collections_benchmarked": 10,
+    "total_json_bytes": 110531,
+    "total_jsonl_bytes": 103535,
+    "total_parquet_bytes": 68218,
+    "overall_parquet_compression_savings_percent": 38.28
+  },
+  "format_suitability_matrix": {
+    "Apache Parquet (.parquet)": {
+      "paradigm": "Columnar, compressed binary",
+      "best_use_case": "High-volume analytical queries, BigQuery external tables, Polars/DuckDB joins",
+      "cloud_tool": "Google Cloud BigQuery & Vertex AI Batch Predictions",
+      "advantages": "Column pruning, predicate pushdown, 60-80% smaller storage footprint, strict schema typing"
+    },
+    "JSON Lines (.jsonl)": {
+      "paradigm": "Line-delimited streaming text",
+      "best_use_case": "Large batch ingestion, BigQuery streaming inserts, Gemini fine-tuning, RAG document chunks",
+      "cloud_tool": "BigQuery & Vertex AI Search / RAG Engine",
+      "advantages": "Memory-efficient O(1) stream parsing, appendable without rewriting entire array"
+    },
+    "GeoJSON (.geojson)": {
+      "paradigm": "Standard spatial vectors",
+      "best_use_case": "Cadastral boundary inspection, survey plot rendering, BhuNaksha GIS mapping",
+      "cloud_tool": "BigQuery GIS, Google Maps JavaScript API, Leaflet",
+      "advantages": "Universal standard across all mapping and cadastral libraries"
+    },
+    "Native Firestore": {
+      "paradigm": "NoSQL document database",
+      "best_use_case": "Real-time client synchronization, point lookups by deed ID/survey number",
+      "cloud_tool": "Google Cloud Firestore Native",
+      "advantages": "Sub-millisecond latency point lookups, ACID transactions, offline persistence"
+    },
+    "SQLite (WAL Mode)": {
+      "paradigm": "Embedded relational + Full-Text Search (FTS5)",
+      "best_use_case": "Zero-dependency local legal diligence, statutory BM25 search, instant local unit tests",
+      "cloud_tool": "Local runtime / Cloud Run container",
+      "advantages": "Self-contained single file, zero cloud cost, atomic transactions"
+    }
+  },
+  "collections_breakdown": [
+    {
+      "collection": "building_rules",
+      "record_count": 5,
+      "json_size_bytes": 2912,
+      "jsonl_size_bytes": 2575,
+      "parquet_size_bytes": 6219,
+      "parquet_savings_percent": -113.56
+    },
+    {
+      "collection": "paddy_land_fee_slabs",
+      "record_count": 4,
+      "json_size_bytes": 1362,
+      "jsonl_size_bytes": 1236,
+      "parquet_size_bytes": 3188,
+      "parquet_savings_percent": -134.07
+    },
+    {
+      "collection": "legal_precedents",
+      "record_count": 11,
+      "json_size_bytes": 9284,
+      "jsonl_size_bytes": 8765,
+      "parquet_size_bytes": 11208,
+      "parquet_savings_percent": -20.72
+    },
+    {
+      "collection": "administrative_divisions",
+      "record_count": 19,
+      "json_size_bytes": 3132,
+      "jsonl_size_bytes": 2541,
+      "parquet_size_bytes": 2872,
+      "parquet_savings_percent": 8.3
+    },
+    {
+      "collection": "properties",
+      "record_count": 2,
+      "json_size_bytes": 617,
+      "jsonl_size_bytes": 521,
+      "parquet_size_bytes": 3129,
+      "parquet_savings_percent": -407.13
+    },
+    {
+      "collection": "deed_records",
+      "record_count": 5,
+      "json_size_bytes": 3349,
+      "jsonl_size_bytes": 2782,
+      "parquet_size_bytes": 6823,
+      "parquet_savings_percent": -103.73
+    },
+    {
+      "collection": "encumbrance_records",
+      "record_count": 5,
+      "json_size_bytes": 1271,
+      "jsonl_size_bytes": 1008,
+      "parquet_size_bytes": 2817,
+      "parquet_savings_percent": -121.64
+    },
+    {
+      "collection": "audit_reports",
+      "record_count": 2,
+      "json_size_bytes": 2399,
+      "jsonl_size_bytes": 2213,
+      "parquet_size_bytes": 8050,
+      "parquet_savings_percent": -235.56
+    },
+    {
+      "collection": "risk_flags",
+      "record_count": 6,
+      "json_size_bytes": 3264,
+      "jsonl_size_bytes": 3028,
+      "parquet_size_bytes": 5737,
+      "parquet_savings_percent": -75.77
+    },
+    {
+      "collection": "single_deed_scans",
+      "record_count": 29,
+      "json_size_bytes": 82941,
+      "jsonl_size_bytes": 78866,
+      "parquet_size_bytes": 18175,
+      "parquet_savings_percent": 78.09
+    }
+  ]
+}

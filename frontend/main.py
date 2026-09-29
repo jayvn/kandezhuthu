@@ -5,6 +5,7 @@ Supports both:
 2. Cloud Deployed Mode: When AGENT_ENGINE_RESOURCE_NAME is set, proxies to Agent Engine via A2A protocol.
 """
 
+import json
 import os
 import sys
 import time
@@ -558,6 +559,33 @@ async def get_collection_data(name: str, limit: int = 50):
         return JSONResponse({"collection": name, "count": len(items), "items": items})
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=404)
+
+
+@app.get("/api/data/scalable_formats")
+async def get_scalable_formats():
+    """Returns storage benchmarks, format suitability matrix, and active scalable datasets."""
+    benchmark_file = Path(__file__).resolve().parent.parent / "data" / "organized" / "scalable" / "format_benchmark.json"
+    if not benchmark_file.exists():
+        data_api = DataAPI()
+        data_api.export_scalable_formats()
+
+    if benchmark_file.exists():
+        return JSONResponse(json.loads(benchmark_file.read_text(encoding="utf-8")))
+    return JSONResponse({"error": "Scalable format benchmark not found."}, status_code=404)
+
+
+@app.post("/api/data/export_scalable")
+async def export_scalable_data(sync_cloud: bool = True):
+    """Generates Parquet, JSONL, GeoJSON, and RAG chunked datasets, optionally syncing to GCS."""
+    data_api = DataAPI()
+    export_result = data_api.export_scalable_formats()
+    cloud_result = None
+    if sync_cloud:
+        cloud_result = data_api.sync_to_gcs()
+    return JSONResponse({
+        "export": export_result,
+        "cloud_sync": cloud_result,
+    })
 
 
 @app.get("/api/sample_deed")
