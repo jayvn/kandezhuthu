@@ -77,6 +77,74 @@ CURSOR_HELPER_JS = """
 """
 
 
+CHAPTER_SCENES = [
+    (1, "Bilingual Malayalam & English Interface", "Instant one-click language toggle with pure English mode"),
+    (2, "Satellite GIS & Topographic Flood Risk", "Elevation HUD, KSDMA flood exposure & wetland detection"),
+    (3, "KPBR 2019 Access Road Measurement", "Kerala Panchayat Building Rules motorable pathway compliance"),
+    (4, "Cadastral Plot Boundary Demarcation", "Digital polygon sealing and calibrated cent extent calculation"),
+    (5, "Physical Field Inspection Checklist", "5 non-negotiable physical checks (Survey stones, boundary encroachment)"),
+    (6, "30-Year Prior Title Lineage Audit", "Automated Munnadharam trace detecting Mary Roy defect & bank mortgage"),
+    (7, "Multimodal Gemini 3.8 Flash Vision OCR", "Instant extraction of deed recitals, boundaries & statutory red flags"),
+    (8, "English WhatsApp Seller Inquiry Card", "Polite, attorney-grade WhatsApp draft with one-click copy"),
+    (9, "Advocate Due Diligence Dossier Export", "Downloadable court-grade legal verification report (PDF)"),
+    (10, "Ethical Non-AI Guardrails & Split View", "Clear boundary between document audit and ground realities"),
+]
+
+
+def show_chapter_banner(page, title: str, subtitle: str, step: int | None = None) -> None:
+    """Injects an elegant floating banner at top-center of the viewport."""
+    if step is None:
+        for num, s_title, _ in CHAPTER_SCENES:
+            if s_title.strip().lower() == str(title).strip().lower() or str(title).strip().lower() in s_title.strip().lower():
+                step = num
+                break
+    if step is None:
+        step = getattr(show_chapter_banner, "_counter", 1)
+        show_chapter_banner._counter = step + 1
+
+    js_code = """
+    ([stepNum, titleText, subtitleText]) => {
+      let banner = document.getElementById('demo-chapter-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'demo-chapter-banner';
+        document.body.appendChild(banner);
+      }
+      banner.style.cssText = `
+        position: fixed;
+        top: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 999999;
+        background: rgba(15, 23, 42, 0.92);
+        color: #ffffff;
+        padding: 8px 20px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        pointer-events: none;
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      `;
+      banner.innerHTML = `
+        <span style="background:#059669; color:#fff; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; white-space:nowrap; letter-spacing:0.5px;">SCENE ${stepNum}/10</span>
+        <span style="font-weight:700; font-size:13px; color:#ffffff; white-space:nowrap;">${titleText}</span>
+        <span style="color:#64748b; font-size:12px; user-select:none;">•</span>
+        <span style="color:#94a3b8; font-size:12px; white-space:nowrap;">${subtitleText}</span>
+      `;
+      banner.style.opacity = '1';
+    }
+    """
+    try:
+        page.evaluate(js_code, [str(step), title, subtitle])
+    except Exception as e:
+        print(f"  [Notice] Chapter banner overlay notice: {e}")
+
+
 class DemoVideoRecorder:
     """Orchestrates and captures a cinematic user journey through Kandezhuthu AI."""
 
@@ -98,6 +166,10 @@ class DemoVideoRecorder:
 
         # Pace multiplier
         self.multiplier = 1.0 if pace == "cinematic" else (0.6 if pace == "normal" else 0.3)
+
+    def show_chapter_banner(self, page, title: str, subtitle: str, step: int | None = None) -> None:
+        """Injects chapter/milestone toast banner overlay into the page."""
+        show_chapter_banner(page, title, subtitle, step=step)
 
     def pause(self, seconds: float) -> None:
         """Paces the recording for human readability."""
@@ -165,6 +237,12 @@ class DemoVideoRecorder:
             print("[Scene 1/10] Loading Application & Showcasing Malayalam Bilingual Switcher...")
             page.goto(self.base_url, wait_until="networkidle")
             page.evaluate(CURSOR_HELPER_JS)
+            self.show_chapter_banner(
+                page,
+                "Bilingual Malayalam & English Interface",
+                "Instant one-click language toggle with pure English mode",
+                step=1,
+            )
             self.pause(1.5)
 
             # Move cursor across the brand banner
@@ -184,6 +262,13 @@ class DemoVideoRecorder:
             # SCENE 2: Satellite GIS Discovery & Topographic Elevation HUD
             # -------------------------------------------------------------
             print("\n[Scene 2/10] Satellite GIS Discovery & Multi-Preset Elevation Inspection...")
+            self.show_chapter_banner(
+                page,
+                "Satellite GIS & Topographic Flood Risk",
+                "Elevation HUD, KSDMA flood exposure & wetland detection",
+                step=2,
+            )
+            self.pause(0.5)
 
             # Select Kakkanad elevated midlands preset
             print("  → Switching preset to Kakkanad (Elevated Midlands)...")
@@ -212,6 +297,13 @@ class DemoVideoRecorder:
             # SCENE 3: Road Access Measurement under KPBR 2019
             # -------------------------------------------------------------
             print("\n[Scene 3/10] Measuring Access Road Width under Kerala Panchayat Building Rules...")
+            self.show_chapter_banner(
+                page,
+                "KPBR 2019 Access Road Measurement",
+                "Kerala Panchayat Building Rules motorable pathway compliance",
+                step=3,
+            )
+            self.pause(0.5)
             self.smooth_move_and_click(page, "#tool-road", pre_delay=0.2, post_delay=0.8)
 
             map_box = page.locator("#map-view").bounding_box()
@@ -237,6 +329,13 @@ class DemoVideoRecorder:
             # SCENE 4: Cadastral Plot Boundary Sealing & Plinth Calculation
             # -------------------------------------------------------------
             print("\n[Scene 4/10] Sealing Cadastral Plot Geometry & Area Extent...")
+            self.show_chapter_banner(
+                page,
+                "Cadastral Plot Boundary Demarcation",
+                "Digital polygon sealing and calibrated cent extent calculation",
+                step=4,
+            )
+            self.pause(0.5)
             self.smooth_move_and_click(page, "#tool-plot", pre_delay=0.3, post_delay=0.8)
 
             if map_box:
@@ -265,6 +364,13 @@ class DemoVideoRecorder:
             # SCENE 5: Physical Field Inspection Checklist Drawer
             # -------------------------------------------------------------
             print("\n[Scene 5/10] Opening Physical Field Inspection Checklist Drawer...")
+            self.show_chapter_banner(
+                page,
+                "Physical Field Inspection Checklist",
+                "5 non-negotiable physical checks (Survey stones, boundary encroachment)",
+                step=5,
+            )
+            self.pause(0.5)
             self.smooth_move_and_click(page, "#btn-checklist-toggle", pre_delay=0.3, post_delay=1.0)
 
             # Check off vital non-paper ground reality items
@@ -284,6 +390,13 @@ class DemoVideoRecorder:
             # SCENE 6: 30-Year Munnadharam Prior Title Lineage Audit
             # -------------------------------------------------------------
             print("\n[Scene 6/10] Auditing 30-Year Prior Title Lineage (*Munnadharam*)...")
+            self.show_chapter_banner(
+                page,
+                "30-Year Prior Title Lineage Audit",
+                "Automated Munnadharam trace detecting Mary Roy defect & bank mortgage",
+                step=6,
+            )
+            self.pause(0.5)
             self.smooth_move_and_click(page, "#chip-timeline-aluva", pre_delay=0.4, post_delay=2.5)
 
             # Scroll through timeline in the chat pane to reveal defects
@@ -298,43 +411,112 @@ class DemoVideoRecorder:
             self.pause(1.8)
 
             # -------------------------------------------------------------
-            # SCENE 7: Multimodal Title Deed OCR Recital Extraction
+            # SCENE 7: Multimodal Gemini 3.8 Flash Vision OCR
             # -------------------------------------------------------------
             print("\n[Scene 7/10] Running Multimodal Gemini Vision OCR on Title Deed...")
-            self.smooth_move_and_click(page, "#chip-sample-deed", pre_delay=0.4, post_delay=3.0)
+            self.show_chapter_banner(
+                page,
+                "Multimodal Gemini 3.8 Flash Vision OCR",
+                "Instant extraction of deed recitals, boundaries & statutory red flags",
+                step=7,
+            )
+            self.pause(0.5)
+            self.smooth_move_and_click(page, "#chip-sample-deed", pre_delay=0.4, post_delay=0.8)
 
-            # Scroll down to display extracted survey numbers and prior title lineage
-            page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 400, behavior: 'smooth' })")
-            self.pause(2.5)
+            try:
+                page.wait_for_selector(".deed-audit-card", timeout=20000)
+            except Exception as e:
+                print(f"  [Notice] Waiting for deed card: {e}")
+            self.pause(2.0)
+
+            try:
+                page.wait_for_selector(".whatsapp-card", timeout=10000)
+            except Exception as e:
+                print(f"  [Notice] Waiting for whatsapp card: {e}")
+
+            # Smoothly scroll through the card so viewers can read:
+            # 1) Extracted Survey & Boundaries Schedule
+            boundary_el = page.locator(".boundary-box").first
+            if boundary_el.count() > 0:
+                try:
+                    boundary_el.scroll_into_view_if_needed(timeout=2000)
+                except Exception:
+                    page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 250, behavior: 'smooth' })")
+            else:
+                page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 250, behavior: 'smooth' })")
+            self.pause(2.0)
+
+            # 2) Statutory Red Flags Detected
+            findings_el = page.locator(".findings-box").first
+            if findings_el.count() > 0:
+                try:
+                    findings_el.scroll_into_view_if_needed(timeout=2000)
+                except Exception:
+                    page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 250, behavior: 'smooth' })")
+            else:
+                page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 250, behavior: 'smooth' })")
+            self.pause(2.0)
+
             page.screenshot(path=str(self.screenshots_dir / "07_multimodal_deed_ocr.png"))
 
             # -------------------------------------------------------------
-            # SCENE 8: Native Malayalam WhatsApp Seller Inquiry Card
+            # SCENE 8: English WhatsApp Seller Inquiry Card
             # -------------------------------------------------------------
-            print("\n[Scene 8/10] Interacting with Malayalam WhatsApp Seller Inquiry Card...")
-            page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 250, behavior: 'smooth' })")
-            self.pause(1.2)
+            print("\n[Scene 8/10] Interacting with English WhatsApp Seller Inquiry Card...")
+            self.show_chapter_banner(
+                page,
+                "English WhatsApp Seller Inquiry Card",
+                "Polite, attorney-grade WhatsApp draft with one-click copy",
+                step=8,
+            )
+            self.pause(0.5)
 
-            # Click Copy Draft button on the WhatsApp card if visible
-            copy_btn = page.locator(".whatsapp-card .copy-btn, .whatsapp-actions .copy-btn, button:has-text('Copy')").first
+            # Scroll to reveal the .whatsapp-card
+            page.locator("#chat-pane").evaluate("el => el.scrollBy({ top: 300, behavior: 'smooth' })")
+            self.pause(1.0)
+            wa_card = page.locator(".whatsapp-card").last
+            if wa_card.count() > 0:
+                try:
+                    wa_card.scroll_into_view_if_needed(timeout=2000)
+                except Exception:
+                    pass
+
+            # Smoothly move cursor to .whatsapp-card .copy-btn, click it!
+            copy_btn = page.locator(".whatsapp-card .copy-btn").last
+            if copy_btn.count() == 0:
+                copy_btn = page.locator(".whatsapp-card button:has-text('Copy')").last
+
             try:
-                if copy_btn.count() > 0 and copy_btn.is_visible():
+                if copy_btn.count() > 0:
                     box = copy_btn.bounding_box()
                     if box:
-                        page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2, steps=8)
-                        self.pause(0.3)
+                        page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2, steps=10)
+                        self.pause(0.4)
                         page.mouse.down()
                         self.pause(0.1)
                         page.mouse.up()
-                        self.pause(1.5)
-                        page.screenshot(path=str(self.screenshots_dir / "08_whatsapp_card_copied.png"))
+                    else:
+                        copy_btn.click(force=True)
+                else:
+                    self.smooth_move_and_click(page, ".whatsapp-card .copy-btn, .copy-btn", pre_delay=0.3, post_delay=0.5)
             except Exception as e:
                 print(f"  [Notice] Copy button click: {e}")
+
+            # Pause 1.5 seconds to let the 'Copied!' feedback show on screen!
+            self.pause(1.5)
+            page.screenshot(path=str(self.screenshots_dir / "08_whatsapp_card_copied.png"))
 
             # -------------------------------------------------------------
             # SCENE 9: Advocate Legal Due Diligence Dossier Export
             # -------------------------------------------------------------
             print("\n[Scene 9/10] Triggering Advocate Title Vetting Dossier (PDF Export)...")
+            self.show_chapter_banner(
+                page,
+                "Advocate Due Diligence Dossier Export",
+                "Downloadable court-grade legal verification report (PDF)",
+                step=9,
+            )
+            self.pause(0.5)
             self.smooth_move_and_click(page, "#btn-hud-export", pre_delay=0.4, post_delay=2.0)
             self.pause(1.5)
             page.screenshot(path=str(self.screenshots_dir / "09_dossier_exported.png"))
@@ -343,6 +525,13 @@ class DemoVideoRecorder:
             # SCENE 10: Ethical Non-AI Guardrails & Final Overview
             # -------------------------------------------------------------
             print("\n[Scene 10/10] Ethical Non-AI Guardrail Disclaimer & Split View Finale...")
+            self.show_chapter_banner(
+                page,
+                "Ethical Non-AI Guardrails & Split View",
+                "Clear boundary between document audit and ground realities",
+                step=10,
+            )
+            self.pause(0.5)
             # Scroll to top of chat to show clean split overview
             page.locator("#chat-pane").evaluate("el => el.scrollTo({ top: 0, behavior: 'smooth' })")
             self.pause(1.5)
@@ -398,7 +587,7 @@ def transcode_video(
         "-preset",
         "fast",
         "-crf",
-        "21",
+        "20",
         "-pix_fmt",
         "yuv420p",
         "-movflags",
