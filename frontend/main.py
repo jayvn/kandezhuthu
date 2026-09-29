@@ -145,6 +145,7 @@ async def get_plot_elevation(req: Request):
     lng = None
     locality = None
     cents = None
+    lang = req.query_params.get("lang") or "en"
 
     if req.method == "POST":
         try:
@@ -156,6 +157,8 @@ async def get_plot_elevation(req: Request):
                 lng = float(lng_val)
             locality = body.get("locality") or body.get("place_name")
             cents = float(body.get("cents")) if body.get("cents") else None
+            if "lang" in body:
+                lang = body["lang"]
         except Exception:
             pass
 
@@ -175,7 +178,10 @@ async def get_plot_elevation(req: Request):
 
     calculator = ElevationFloodCalculator()
     res = calculator.calculate(latitude=lat, longitude=lng, locality_hint=locality, plot_extent_cents=cents)
-    return JSONResponse(res.model_dump())
+    out_dict = res.model_dump()
+    if lang == "en" and out_dict.get("whatsapp_inquiry_for_seller_en"):
+        out_dict["whatsapp_inquiry_for_seller"] = out_dict["whatsapp_inquiry_for_seller_en"]
+    return JSONResponse(out_dict)
 
 
 @app.get("/api/ocr_capabilities")
@@ -206,7 +212,11 @@ async def get_ocr_capabilities():
 
 
 @app.post("/api/upload_deed")
-async def upload_deed(file: UploadFile = File(...), user_id: str = "kandezhuthu-user"):  # noqa: B008
+async def upload_deed(
+    file: UploadFile = File(...),
+    user_id: str = "kandezhuthu-user",
+    lang: str = "en",
+):  # noqa: B008
     """Accepts scanned deed (PDF/PNG/JPEG/WEBP), runs Cloud Document AI / Gemini Multimodal OCR, and returns structured audit."""
     content = await file.read()
     mime_type = file.content_type or "application/pdf"
@@ -240,11 +250,17 @@ async def upload_deed(file: UploadFile = File(...), user_id: str = "kandezhuthu-
     out_data = result.model_dump()
     out_data["file_name"] = file_name
     out_data["file_size_bytes"] = len(content)
+    if lang == "en" and out_data.get("whatsapp_draft_en"):
+        out_data["whatsapp_draft"] = out_data["whatsapp_draft_en"]
     return JSONResponse(out_data)
 
 
 @app.post("/api/upload_ec")
-async def upload_ec(file: UploadFile = File(...), user_id: str = "kandezhuthu-user"):  # noqa: B008
+async def upload_ec(
+    file: UploadFile = File(...),
+    user_id: str = "kandezhuthu-user",
+    lang: str = "en",
+):  # noqa: B008
     """Accepts SRO Encumbrance Certificate (EC / കുടിക്കടം), extracts tabular entries, and cross-references against title deeds."""
     content = await file.read()
     file_name = file.filename or "uploaded_ec.pdf"
@@ -262,6 +278,8 @@ async def upload_ec(file: UploadFile = File(...), user_id: str = "kandezhuthu-us
     out_dict = result.model_dump()
     out_dict["file_name"] = file_name
     out_dict["file_size_bytes"] = len(content)
+    if lang == "en" and out_dict.get("whatsapp_inquiry_en"):
+        out_dict["whatsapp_inquiry"] = out_dict["whatsapp_inquiry_en"]
     return JSONResponse(out_dict)
 
 
