@@ -231,4 +231,6 @@ service-account*.json
 # Keep the demo GIF (README embeds it); ignore the large raw recording.
 *.webm
 artifacts/demo_video/raw/
+artifacts/demo_video/*.mp4
+artifacts/demo_video/*.gif
 tests/ui/screenshots/*.pdf
