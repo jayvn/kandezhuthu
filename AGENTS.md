@@ -58,6 +58,8 @@ kandezhuthu/
 │   ├── integration/             # Live agent & FastAPI e2e tests
 │   ├── ui/                      # Playwright UI & browser workflow tests
 │   └── eval/                    # Response quality & eval datasets
+├── docs/
+│   └── data-sources.md          # Public data sources, scraping jobs, target data model
 ├── AGENTS.md                    # AI assistant guidance (this file; CLAUDE.md imports it)
 └── pyproject.toml               # Project dependencies and configurations managed via uv
 ```

@@ -18,6 +18,8 @@ Remaining work, ordered by impact within each section.
 
 ## Real data
 
+Sources, request shapes and the target data model for items 21–29 and 31–34: `docs/data-sources.md`.
+
 20. **Timeline and PDF dossier only show demo presets.** They are hidden outside demo mode.
     → Feed them from a real `MunnadharamAuditor` result and a real EC audit, so a buyer's own chain can be shown and exported. Do not keep feeding them from `seed_demo_audit` (the invented Aluva Re-Sy 345/1 file).
 
@@ -67,10 +69,18 @@ Remaining work, ordered by impact within each section.
 28. **The buyer does not know which prior deeds to get.** Public search is SRO + document number + year. Name and survey search is for the SRO, so there is no citizen query "every deed on survey 123/4." The EC is the index. Section 57 of the Registration Act, 1908, lets any person get a Book 1 copy; Book 4 wills are not the same. `audit_ec` already diffs EC document numbers against uploaded deeds, but only when the nature looks like a sale or `theeradharam`, and it files the miss under `conflicting_alienations` (now worded as a missing deed, with the PEARL View Document step). Partitions, gifts, settlements, and releases never enter. `prior_doc_referenced` is unused. The SRO regex runs past the name ("SRO: Aluva Survey 345/1" gives `Aluva Survey 345/1`). Certified copy and online view are different products: the 2024 certified-copy SOP still ends at the SRO (copying fee, ₹50 stamp paper, print). PEARL View Document (`keralaregistration.gov.in/pearlpublic`, Queries → View → Document) is first-page preview, ₹100 for the full scan for 15 days. Pre-1980 scans were still a backlog in the 2024 PEARL note, with a 2025 target; do not hardcode a cutoff. The EC covers its search period only: a recital outside the window, a parent survey before subdivision, or another office will not be on it.
     → Gap list = union of parsed EC rows and `prior_doc_referenced` on uploaded deeds, minus uploaded documents. For each gap show document number, year, and SRO, matched to item 27. Name both PEARL actions: View Document (the scan to upload and OCR) and Certified Copy (SRO visit, for the advocate). Stop the SRO match at the name. Do not scrape PEARL or Ente Bhoomi.
 
-29. **Data Bank and BhuNaksha still have no source that was verified.** There is no statewide parcel API for the LLMC data bank; what exists are local-body gazettes and land-use layers, which are not a BTR classification. Do not infer "not paddy" from a satellite tile. Whether a plot is in the data bank stays a document check: BTR says nilam or not, data-bank inclusion or not, Form 5 / Form 6 present or not.
-    → Leave both as "not on file" until a gazette or an official extract for that village is in hand. Do not invent a status the way resurvey rows were invented.
+29. **Data Bank has no parsed source, and BhuNaksha has none that was verified.** The LLMC data bank is published as gazette PDFs, one local body at a time, on district NIC document libraries (e.g. kannur.nic.in) and in compose. There is no statewide parcel API. Land-use layers are not a BTR classification; do not infer "not paddy" from a satellite tile.
+    → Crawl the 14 district NIC libraries and a compose search for `data bank` / `നിലം`. Parse survey, block, subdivision, extent, class; drop possessor names. A survey in the PDF means "listed in <gazette>". Absent from every PDF for that local body stays "not found", not "not paddy". BTR nilam/purayidam and Form 5 / Form 6 remain document checks.
 30. **The PDF dossier fills gaps with invented values.** `dossier_pdf.py` defaults classification to `Purayidam`, score to 75, document number to "Unregistered / Under Audit", and village to "Kerala" when the audit lacks them.
     → Print "Not read" for any field the audit does not have. Do this with item 20.
+31. **No gazette index.** Each feature would rediscover its own PDFs.
+    → Add `gazette_documents` (compose record as identity, archive.org as mirror, sha256 dedupe). Fair-value, data-bank, Section 13/13A and building-rule parsers read from it.
+32. **Sources don't share a join key.** Gazettes often use old survey numbers, resurveyed villages use re-survey numbers, and IGR, LGD and the gazettes spell villages differently.
+    → Build LGD ↔ IGR ↔ gazette village and old ↔ re-survey crosswalks before any parcel check.
+33. **Sources get merged into one `land_type` / area.**
+    → Store each source as a `parcel_observation` row (source, attribute, value, evidence, source_url, sha256, retrieved_at) and flag disagreements. No owner or possessor names.
+34. **No parcel shape or land-use layer.**
+    → Load indian_cadastrals polygons (check coverage per district), the LGD village CSV and LRIS land-use/wetland/road layers. Label LRIS wetland as land use, not BTR. Compare GIS area with the deed area; don't replace it.
 
 ## Structure
 
