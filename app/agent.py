@@ -445,14 +445,15 @@ def check_kerala_databank_and_cadastral(
     extent_cents: float = 10.0,
     fair_value_per_are: float = 240000.0,
 ) -> str:
-    """Checks the statutory Kerala 2008 Agricultural Data Bank status and returns BhuNaksha cadastral parcel geometry.
+    """Checks the Kerala 2008 Agricultural Data Bank records on file and returns an approximate plot outline.
 
     Evaluates:
-    1. Whether the survey number is listed as Nilam / Paddy Land in the local Krishi Bhavan Data Bank.
+    1. Whether the survey number is listed as Nilam / Paddy Land in the Data Bank records on file.
+       `is_listed_in_databank` is null when no record is on file: say it was not found, never that the land is clear.
     2. Applicable statutory conversion procedures (Form 5 exclusion vs Form 6 Section 27A fee).
     3. Calculated Section 27A fee (free under 25 cents; 10% for 25-50 cents).
     4. Building permit issuance eligibility under KPBR 2019.
-    5. Official FMB-style cadastral sub-division sketch geometry and segment dimensions in meters.
+    5. An approximate square outline sized from the extent. It is not the FMB sketch; do not present it as one.
 
     Args:
         survey_no: Survey or Re-Survey number (e.g. '182/4', '345/1', '412/3').
@@ -461,7 +462,7 @@ def check_kerala_databank_and_cadastral(
         fair_value_per_are: Government notified Fair Value in INR per are.
 
     Returns:
-        JSON string with DataBankCheckResult and CadastralParcel FMB sketch coordinates.
+        JSON string with DataBankCheckResult and an approximate CadastralParcel outline.
     """
     from app.domain.cadastral_databank import BhuNakshaCadastralService, KeralaDataBankService
 
