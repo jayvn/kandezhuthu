@@ -57,9 +57,9 @@ kandezhuthu/
 │       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
 ├── data/
 │   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
-│   ├── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
-│   └── sample_deeds/            # Synthetic Kerala title deed PDFs
+│   └── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
 ├── tests/                       # Unit, integration, and UI tests
+│   └── fixtures/                # Made-up demo data (sample deeds, presets, timelines)
 └── pyproject.toml               # Project dependencies (uv)
 ```
 
@@ -95,6 +95,11 @@ Launch the full-stack web application with the dual-pane UI, drag-and-drop deed 
 uv run python -m frontend.main
 ```
 Open **`http://localhost:8080`** in your browser.
+
+To try the app with sample deeds, map presets and demo timelines, run it in demo mode:
+```bash
+KANDEZ_FIXTURES=tests/fixtures KANDEZ_DB_PATH=data/demo.db uv run python -m frontend.main
+```
 
 ### 5. Running the ADK Agent Playground
 To interact with the root agent using the Google ADK development UI:

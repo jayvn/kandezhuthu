@@ -41,9 +41,9 @@ kandezhuthu/
 │       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
 ├── data/
 │   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
-│   ├── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
-│   └── sample_deeds/            # Synthetic Kerala title deed PDFs
+│   └── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
 ├── tests/
+│   ├── fixtures/                # Made-up demo data (JSON, sample deed PDFs) + tools/ that generate it
 │   ├── unit/                    # Fast deterministic unit tests (scanner & auditor)
 │   ├── integration/             # Live agent & FastAPI e2e tests
 │   ├── ui/                      # Playwright UI & browser workflow tests
@@ -80,7 +80,8 @@ Run Python commands with `uv run` from the repository root:
 | `agents-cli playground` | Launch local ADK dev UI with auto-reload |
 | `agents-cli lint` | Run code quality checks (ruff, ty, codespell) |
 | `uv run python -m app.fast_api_app` | Run local FastAPI server with A2A protocol endpoint |
-| `uv run uvicorn frontend.main:app --port 8081` | Run the web UI |
+| `uv run uvicorn frontend.main:app --port 8081` | Run the web UI (real data only) |
+| `KANDEZ_FIXTURES=tests/fixtures KANDEZ_DB_PATH=data/demo.db uv run uvicorn frontend.main:app --port 8081` | Run the web UI in demo mode (sample deeds, presets, timelines) |
 | `uv run pytest tests/unit` | Fast deterministic tests (scanner, auditor, extents, eval judge) |
 | `agents-cli deploy` | Deploy to Agent Runtime on Google Cloud (requires explicit user confirmation) |
 
@@ -96,3 +97,4 @@ Run Python commands with `uv run` from the repository root:
 - **Bilingual Integrity**: Maintain accurate Malayalam legal terminology (e.g., ആധാരം, മുന്നാധാരം, തീറാധാരം, ഭാഗപത്രം, ഒഴിവുമുറി, നിലം, പുരയിടം, നടപ്പുവഴി, സർവേ കല്ല്) and ensure Malayalam WhatsApp inquiry messages remain culturally polite and natural.
 - **No preaching**: The user knows this is an AI tool. The app and the agent do the job directly: no disclaimers, "consult an advocate" reminders or AI-limitation notices in the UI, agent replies, WhatsApp text or PDFs.
 - **Never claim a 100% clean title**: State what was checked and what was found.
+- **No made-up data in the app**: Sample deeds, registries, rates, coordinates and timelines belong in `tests/fixtures/` and load only in demo mode (`app/fixtures.py`). Without real data, the app says what is missing and where to check it; it never fills in values.

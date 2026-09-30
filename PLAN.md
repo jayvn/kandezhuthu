@@ -8,10 +8,17 @@ Remaining work after the FT / streamlining pass. Ordered by impact.
 ## Tests
 
 1. **UI tests reference removed elements.** `tests/ui/test_ui_playwright.py`, `test_contextual_chips_and_hud.py`, `test_cadastral_map_tools.py` and `test_bilingual_workflow_ui.py` look up IDs that no longer exist (`btn-undo`, `btn-hud-export`, `chip-sample-deed`, `legal-disclaimer`, `btn-pdf-export`, `step-nav-label`, `badge-kerala`).
-   → Update them to the new flow. Also replace the hardcoded `/ms-playwright/chromium-1234/...` browser path, and have the suite start the web UI itself instead of expecting one on :8081.
+   → Update them to the new flow. Also replace the hardcoded `/ms-playwright/chromium-1234/...` browser path, and have the suite start the web UI itself (in demo mode, `app.fixtures.DEMO_ENV`) instead of expecting one on :8081.
 2. **Eval dataset still rewards disclaimers.** About 10 `reference` answers in `tests/eval/datasets/basic-dataset.json` mention advocates or disclaimers, which the judge's keyword overlap scores.
    → Rewrite the references to state findings only.
 3. **Live checks not yet done**: agent replies with real Gemini credentials (Markdown only, no LaTeX, no disclaimers), and satellite tiles on a normal network.
+
+## Real data
+
+4a. **Timeline and PDF dossier only show demo presets.** They are hidden outside demo mode.
+   → Feed them from real `MunnadharamAuditor` / EC audit results so a buyer's own chain can be shown and exported.
+4b. **No live source for Data Bank, BhuNaksha parcels, fair values or resurvey status.** The app reports these as not verified.
+   → Add real sources where one exists (for example a fair-value import) using the same JSON shape as `tests/fixtures/`.
 
 ## Copy
 
