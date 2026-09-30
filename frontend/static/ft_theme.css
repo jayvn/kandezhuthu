@@ -1262,3 +1262,24 @@ select.map-layer-select {
   color: var(--ft-border-strong) !important;
 }
 
+
+/* Map load failure */
+.map-unavailable {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  padding: 2rem; text-align: center; color: var(--ft-muted-text);
+  font-family: var(--ft-font-serif); background: var(--ft-paper-secondary);
+}
+
+/* Rendered agent markdown */
+.bubble h1, .bubble h2, .bubble h3, .bubble h4 {
+  font-family: var(--ft-font-serif) !important; color: var(--ft-dark-text) !important;
+  margin: 0.9rem 0 0.35rem !important; line-height: 1.25 !important;
+}
+.bubble h1 { font-size: 1.3rem !important; }
+.bubble h2 { font-size: 1.15rem !important; }
+.bubble h3, .bubble h4 { font-size: 1rem !important; }
+.bubble ul, .bubble ol { margin: 0.35rem 0 0.35rem 1.2rem; padding: 0; }
+.bubble li { margin: 0.15rem 0; }
+.bubble hr { border: 0; border-top: 1px solid var(--ft-border); margin: 0.8rem 0; }
+.bubble table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; }
+.bubble th, .bubble td { border-bottom: 1px solid var(--ft-border); padding: 4px 8px; text-align: left; }

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
 <!-- Leaflet CSS for Google Maps / Satellite tile layers -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#990f3d">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2797,7 +2797,9 @@
   ▲ <strong>Statutory Disclaimer:</strong> Kandezhuthu AI is an investigatory triage tool, not a legal title insurer. Satellite measurements and deed scans are preliminary; always conduct on-ground survey with licensed surveyors and consult a Kerala High Court advocate before parting with earnest money.
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="/static/vendor/leaflet/leaflet.js"></script>
+<script src="/static/vendor/marked.min.js"></script>
+<script src="/static/vendor/purify.min.js"></script>
 
 <script>
 const log = document.getElementById("log");
@@ -3662,60 +3664,53 @@ function appendMsg(who, htmlContent) {
   return b;
 }
 
+const WA_HEADING = /^[#>*\s]*(?:\*\*)?\s*'?(?:വാട്സാപ്പ് ചോദ്യം|WhatsApp Message|WhatsApp Inquiry|ചോദിക്കേണ്ട ചോദ്യം)[^\n]*$/im;
+
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function renderMarkdownBlock(text) {
+  // Models sometimes emit LaTeX arrows; show them as plain glyphs.
+  text = text
+    .replace(/\$\\(?:leftarrow|gets|longleftarrow)\$/g, "←")
+    .replace(/\$\\(?:rightarrow|to|longrightarrow)\$/g, "→");
+  if (window.marked && window.DOMPurify) {
+    return DOMPurify.sanitize(marked.parse(text, { gfm: true, breaks: true }));
+  }
+  return "<p>" + escapeHtml(text).replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br>") + "</p>";
+}
+
 function formatMarkdown(text) {
   if (!text) return "";
-  let html = text
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n- (.*)/g, '<li>$1</li>');
+  // Pull the WhatsApp draft out before rendering so it becomes a copyable card.
+  const heading = text.match(WA_HEADING);
+  if (!heading) return renderMarkdownBlock(text);
 
-  // Robust Malayalam WhatsApp Inquiry Card Parser
-  const waRegex = /(?:വാട്സാപ്പ് ചോദ്യം|WhatsApp Message|WhatsApp Inquiry|ചോദിക്കേണ്ട ചോദ്യം)[^:]*:\s*([\s\S]*?)(?:(?=###|##|\n\s*---\s*\n|\n\s*⚖️|\n\s*\*\*Mandatory|$))/i;
-  const waMatch = html.match(waRegex);
-  if (waMatch && waMatch[1]) {
-    let rawSection = waMatch[1].trim();
-    // Stop at any disclaimer or horizontal rule separator
-    const splitParts = rawSection.split(/\n\s*---\s*\n|\n\s*⚖️|\n\s*\*\*Mandatory/i);
-    let rawQuote = splitParts[0];
+  const before = text.slice(0, heading.index);
+  let rest = text.slice(heading.index + heading[0].length);
+  const next = rest.search(/\n\s*(?:#{1,6}\s|---\s*\n)/);
+  const after = next >= 0 ? rest.slice(next) : "";
+  let draft = (next >= 0 ? rest.slice(0, next) : rest).trim();
 
-    // Extract quote if wrapped in quotation marks
-    const quoteMatch = rawQuote.match(/["“]([^"”]{15,})["”]/);
-    if (quoteMatch) {
-      rawQuote = quoteMatch[1].trim();
-    } else {
-      rawQuote = rawQuote.replace(/^[>\s*]+/gm, '').replace(/<[^>]+>/g, '').trim();
-    }
-    rawQuote = rawQuote.replace(/^```[a-z]*\s*/i, '').replace(/\s*```$/g, '').trim();
+  const quoted = draft.match(/["“]([^"”]{15,})["”]/);
+  draft = (quoted ? quoted[1] : draft)
+    .replace(/^```[a-z]*\s*/i, "").replace(/\s*```$/, "")
+    .replace(/^[>\s]+/gm, "").trim();
+  if (draft.length <= 10) return renderMarkdownBlock(text);
 
-    if (rawQuote.length > 10) {
-      const encodedWaText = encodeURIComponent(rawQuote);
-      const waCard = `
-        <div class="whatsapp-card">
-          <div class="whatsapp-header">
-            <span class="whatsapp-title">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം (WhatsApp)' : 'WhatsApp Inquiry for Seller / Broker'}</span>
-            <div class="whatsapp-actions">
-              <button class="copy-btn" onclick="copyText(this)">
-                Copy Draft
-              </button>
-              <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${encodedWaText}" target="_blank">
-                Open in WhatsApp
-              </a>
-            </div>
-          </div>
-          <div class="whatsapp-text">${rawQuote}</div>
+  const waCard = `
+    <div class="whatsapp-card">
+      <div class="whatsapp-header">
+        <span class="whatsapp-title">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കാൻ (WhatsApp)' : 'Message for the seller'}</span>
+        <div class="whatsapp-actions">
+          <button class="copy-btn" onclick="copyText(this)">Copy</button>
+          <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${encodeURIComponent(draft)}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
-      `;
-      html = html.replace(waMatch[0], waCard);
-    }
-  }
-
-  return '<p>' + html + '</p>';
+      </div>
+      <div class="whatsapp-text">${escapeHtml(draft)}</div>
+    </div>`;
+  return renderMarkdownBlock(before) + waCard + (after.trim() ? renderMarkdownBlock(after) : "");
 }
 
 function fallbackCopy(text) {
@@ -5266,6 +5261,11 @@ const KERALA_PRESETS = {
 };
 
 function initMap() {
+  if (typeof L === "undefined") {
+    const mv = document.getElementById("map-view");
+    if (mv) mv.innerHTML = '<div class="map-unavailable">Map could not load. Check your connection and reload.</div>';
+    return;
+  }
   const googleTileSubdomains = ['mt0', 'mt1', 'mt2', 'mt3'];
   
   googleHybridLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
