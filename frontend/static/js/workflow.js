@@ -36,62 +36,6 @@ function renderStepTicks() {
   });
 }
 
-function updateStepNavBar() {
-  const stepNum = currentWorkflowStep;
-  const prevBtn = document.getElementById("btn-prev-step");
-  const nextBtn = document.getElementById("btn-next-step");
-  const navText = {
-    en: {
-      prev: [
-        "← Back",
-        "← Back",
-        "← Back",
-        "← Back"
-      ],
-      next: [
-        "Next: Prior deeds →",
-        "Next: Site →",
-        "Next: Follow-up →",
-        "Start over ↺"
-      ]
-    },
-    ml: {
-      prev: [
-        "← തിരികെ",
-        "← തിരികെ",
-        "← തിരികെ",
-        "← തിരികെ"
-      ],
-      next: [
-        "അടുത്തത്: മുന്നാധാരം →",
-        "അടുത്തത്: സ്ഥലം →",
-        "അടുത്തത്: തുടർനടപടി →",
-        "വീണ്ടും തുടങ്ങുക ↺"
-      ]
-    }
-  };
-
-  const lang = currentLanguage || "en";
-
-  if (prevBtn) {
-    prevBtn.disabled = (stepNum === 1);
-    prevBtn.textContent = (navText[lang] || navText.en).prev[stepNum - 1];
-  }
-
-  if (nextBtn) {
-    nextBtn.textContent = (navText[lang] || navText.en).next[stepNum - 1];
-    nextBtn.classList.toggle("restart", stepNum === 4);
-  }
-
-}
-
-function syncChipsBar() {
-  const bar = document.getElementById("chips-container");
-  if (!bar) return;
-  const anyVisible = [...bar.querySelectorAll(".chip")].some(c => c.style.display !== "none");
-  bar.style.display = anyVisible ? "" : "none";
-}
-
 function initTouchDragScroll(containerId) {
   const container = document.getElementById(containerId) || (typeof containerId === 'string' && containerId.startsWith('.') ? document.querySelector(containerId) : null);
   if (!container) return;
@@ -235,182 +179,51 @@ function toggleSatelliteHybridView() {
 }
 
 function triggerWhatsAppInquiry() {
-  ensureStep4ActionCard();
-  setTimeout(() => {
-    const waCard = document.querySelector(".whatsapp-card") || document.querySelector(".step4-action-banner");
-    if (waCard) {
-      waCard.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, 100);
+  onStepClick(4);
 }
 
+// Highlights the step the user is on. Called by the code as work moves along.
 function setWorkflowStep(stepNum) {
   if (stepNum < 1 || stepNum > 4) return;
   currentWorkflowStep = stepNum;
-
-  // 1. Active step and ticks for finished work
   renderStepTicks();
+  if (stepNum > 1) collapseStartCard();
+}
 
-  // 2. Update step navigation bar controls
-  updateStepNavBar();
-
-  // 3. Progressive Disclosure
-  const dropzoneContainer = document.getElementById("deed-dropzone-container");
-  const categoryTabs = document.querySelector(".category-tabs");
-  const dropzone = document.getElementById("deed-dropzone");
-  const toggleBtn = document.getElementById("dropzone-toggle-btn");
-
-  // Redundant category-tabs row is permanently hidden (workflow steps encapsulate these cleanly)
-  if (categoryTabs) {
-    categoryTabs.style.setProperty("display", "none", "important");
-  }
-
+// A click on a step does that step's job for the current property.
+function onStepClick(stepNum) {
+  const isMl = currentLanguage === "ml";
+  setWorkflowStep(stepNum);
   if (stepNum === 1) {
-    // Step 1: Ingest Document
-    // SHOW #deed-dropzone-container (full un-minimized dropzone with the test deed cards)
-    if (dropzoneContainer) {
-      dropzoneContainer.style.removeProperty("display");
-      dropzoneContainer.style.setProperty("display", "block", "important");
-      dropzoneContainer.classList.remove("minimized");
+    const card = document.getElementById("deed-dropzone-container");
+    if (card) {
+      card.classList.remove("collapsed");
+      card.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    if (dropzone) {
-      dropzone.classList.remove("collapsed");
-    }
-    if (toggleBtn) {
-      toggleBtn.textContent = (currentLanguage === "ml") ? "− ചുരുക്കുക" : "− Minimize";
-    }
-
-    // Step 1 dedicated chips: Document Ingest only
-    const step1AllowedChips = [
-      "chip-sample-deed",
-      "chip-sample-ec",
-      "chip-upload-deed"
-    ];
-    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
-      chip.style.setProperty("display", step1AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
-    });
-    syncChipsBar();
-
-    if (currentViewMode === "map") {
-      setViewMode("split");
-    }
-
   } else if (stepNum === 2) {
-    // Step 2: Prior Title & Encumbrance
-    // COMPLETELY HIDE #deed-dropzone-container (display: none !important;) so the chat pane has full 100% vertical space
-    if (dropzoneContainer) {
-      dropzoneContainer.style.setProperty("display", "none", "important");
-    }
-
-    // Step 2 dedicated chips: Lineage Audit only
-    const step2AllowedChips = [
-      "chip-timeline-aluva",
-      "chip-mary-roy",
-      "chip-timeline-clean",
-      "chip-fair-value"
-    ];
-    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
-      chip.style.setProperty("display", step2AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
-    });
-    syncChipsBar();
-
-    if (currentViewMode === "map") {
-      setViewMode("split");
-    }
-
-  } else if (stepNum === 3) {
-    // Step 3: Satellite & KPBR
-    // COMPLETELY HIDE #deed-dropzone-container
-    if (dropzoneContainer) {
-      dropzoneContainer.style.setProperty("display", "none", "important");
-    }
-
-    // Switch view mode to split (or map on small screens)
-    if (window.innerWidth < 768) {
-      setViewMode("map");
+    if (window._lastDeedData) {
+      auditPriorDeedsOfScannedDeed();
     } else {
-      setViewMode("split");
+      appendMsg("agent", isMl
+        ? `മുന്നാധാരങ്ങളും 30 വർഷത്തെ EC-യും അപ്‌ലോഡ് ചെയ്യുക, അല്ലെങ്കിൽ ആദ്യം ഇപ്പോഴത്തെ ആധാരം സ്കാൻ ചെയ്യുക.<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">മാതൃക: 3 പിഴവുകളുള്ള ശൃംഖല</button>`
+        : `Upload the prior deeds and the 30-year EC, or scan the current deed first.<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">See a sample chain with 3 defects</button>`);
     }
-
-    // Show satellite tools (#tool-road, #tool-plot) and presets (#preset-select)
-    const toolRoad = document.getElementById("tool-road");
-    if (toolRoad) toolRoad.style.display = "";
-    const toolPlot = document.getElementById("tool-plot");
-    if (toolPlot) toolPlot.style.display = "";
-    const presetSelect = document.getElementById("preset-select");
-    if (presetSelect) presetSelect.style.display = "";
-
-    // Set map tool for satellite plot verification
-    setMapTool("plot");
-
-    // Step 3 dedicated chips: Satellite & KPBR only
-    const step3AllowedChips = [
-      "chip-measure-road",
-      "chip-demarcate-plot",
-      "chip-check-elevation"
-    ];
-    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
-      chip.style.setProperty("display", step3AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
-    });
-    syncChipsBar();
-
-    // Ensure HUD is open/visible
-    const hud = document.getElementById("map-hud");
-    if (hud && hud.classList.contains("collapsed")) {
-      toggleHUD();
-    }
-    if (typeof map !== "undefined" && map) {
-      setTimeout(() => { map.invalidateSize(); }, 200);
-    }
-
+  } else if (stepNum === 3) {
+    if (window.innerWidth < 768) setViewMode("map");
+    if (typeof map !== "undefined" && map) setTimeout(() => map.invalidateSize(), 200);
+    document.getElementById("map-search")?.focus();
   } else if (stepNum === 4) {
-    // Step 4: Due Diligence & Action
-    // COMPLETELY HIDE #deed-dropzone-container
-    if (dropzoneContainer) {
-      dropzoneContainer.style.setProperty("display", "none", "important");
-    }
-
-    // Show action chips / checklist toggle (#btn-checklist-toggle)
-    const btnChecklist = document.getElementById("btn-checklist-toggle");
-    if (btnChecklist) btnChecklist.style.display = "";
-
-    // Step 4 dedicated chips: Action & Resolution only
-    const step4AllowedChips = [
-      "chip-open-checklist",
-      "chip-wa-inquiry",
-      "chip-export-dossier"
-    ];
-    document.querySelectorAll(".chips-bar .chip").forEach(chip => {
-      chip.style.setProperty("display", step4AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
-    });
-    syncChipsBar();
-
-    // Automatically open or highlight field checklist and ensure WhatsApp inquiry card
-    toggleChecklist(true);
     ensureStep4ActionCard();
-
     setTimeout(() => {
-      const waCard = document.querySelector(".whatsapp-card") || document.querySelector(".step4-action-banner");
-      if (waCard) {
-        waCard.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 150);
+      document.querySelector(".step4-action-banner")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
   }
 }
 
-function nextWorkflowStep() {
-  if (currentWorkflowStep < 4) {
-    setWorkflowStep(currentWorkflowStep + 1);
-  } else {
-    // Restart Audit ↺
-    setWorkflowStep(1);
-  }
-}
-
-function prevWorkflowStep() {
-  if (currentWorkflowStep > 1) {
-    setWorkflowStep(currentWorkflowStep - 1);
-  }
+// The start card and the suggestions step aside once the user has begun.
+function collapseStartCard() {
+  document.getElementById("deed-dropzone-container")?.classList.add("collapsed");
+  document.getElementById("suggestions")?.classList.add("hidden");
 }
 
 async function exportDossierPDF(preset = 'aluva_broken') {
@@ -552,6 +365,7 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
+  collapseStartCard();
 
   const lower = text.toLowerCase();
   if (lower.includes("timeline") || (lower.includes("ownership") && lower.includes("history")) || lower.includes("munnadharam") || lower.includes("മുന്നാധാരം")) {

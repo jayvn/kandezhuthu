@@ -9,10 +9,6 @@ Remaining work, ordered by impact within each section.
 
 The buyer's question is: *can I pay the advance, and what do I still need?* Every screen should answer that. Today the first screen shows about 30 controls (three rows of navigation, three ways to start, eight map tools, a five-box plot panel) before the user has done anything.
 
-1. **Too many ways in.** The chat pane has the drop area with three cards, a welcome bubble with three questions and a chip row. All of them do the same job: start a check.
-   → One start card: "Drop your deed or EC" with Upload, plus one "Try a sample" link. Move the three questions under the input as quiet suggestions, and hide them after the first message.
-2. **Three rows of navigation.** Header (language, Chat / Split / Map), the 1–4 stepper with Back / Next, then a per-step chip row. The stepper only switches which chips are shown, and its steps aren't real stages of the buyer's work.
-   → Header: brand and language only. Drop Back / Next and the chip row. Keep the four steps as a slim progress line that shows what has been checked (✓) and what is still missing, and is clickable.
 3. **The map toolbar overflows** (eight buttons, the last cut off) and asks the user to pick tools before they have a plot.
    → The map starts with one thing: search or tap to pin your plot. Show the other tools only after a pin: Measure road, Draw plot, Data Bank. Move Outline from extent into Draw plot, and the layer picker and region presets into a small ⋯ menu.
 4. **The plot panel covers the map** and shows empty boxes before there is a plot.
@@ -21,8 +17,8 @@ The buyer's question is: *can I pay the advance, and what do I still need?* Ever
    → Order: verdict and findings first, then the facts (survey no, village, extent, classification), then one row of actions (Ask seller, Check prior deeds, PDF). Drop the model badge and the hint line.
 6. **The seller message is scattered.** Every card has its own WhatsApp draft.
    → One "Ask the seller" message that collects the questions from every check so far, reachable from the progress line.
-7. **Mobile:** the drop area fills the whole first screen, and the map is a separate mode.
-   → On phones, stack the result first and the map below it as a collapsible section. Collapse the drop area once a document is scanned or a message sent.
+7. **Mobile:** the map is a separate mode behind the Chat | Map switch.
+   → On phones, stack the result first and the map below it as a collapsible section.
 8. **Mixed type roles.** HUD labels are serif caps and values sans, buttons mix weights, and there are about 9 font sizes.
    → Define a scale (12 / 14 / 16 / 20 / 28). Serif for headings and big numbers (extent, score); sans for labels, buttons and body.
 9. **Glyph accessibility.** ●▲■ have no text equivalent for screen readers (the verdict box already marks them `aria-hidden`).

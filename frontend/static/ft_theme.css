@@ -140,13 +140,12 @@ header {
 /* ==========================================================================
    Editorial Typography Overrides
    ========================================================================== */
-h1, h2, h3, h4,
+h1,
+h2,
+h3,
+h4,
 .brand-title,
-.dropzone-title strong,
-.step-nav-title,
-.step-nav-label,
 .workflow-step,
-.layman-card-title,
 .hud-stat-label,
 #hud-locality-title,
 .timeline-title,
@@ -166,23 +165,29 @@ h1, h2, h3, h4,
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
 }
 
+/* Progress line: text tabs, the active one underlined, finished ones ticked. */
 .workflow-step {
-  background: #f6ede2 !important;
-  border: 1px solid #e9decf !important;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
   color: #66605c !important;
+  font: 600 14px/1.2 var(--ft-font-sans) !important;
+  padding: 0.35rem 0.1rem !important;
+  box-shadow: none !important;
+  cursor: pointer;
 }
 
 .workflow-step:hover {
-  background: #fbebee !important;
   color: #990f3d !important;
-  border-color: #f5c2cb !important;
 }
 
 .workflow-step.active {
-  background: #990f3d !important;
-  border-color: #7c0c32 !important;
-  color: #ffffff !important;
-  box-shadow: 0 1px 3px rgba(153, 15, 61, 0.25) !important;
+  color: #990f3d !important;
+  border-bottom-color: #990f3d !important;
+}
+
+.workflow-step.completed {
+  color: #0d7680 !important;
 }
 
 .workflow-step-num {
@@ -191,33 +196,17 @@ h1, h2, h3, h4,
 }
 
 .workflow-step.active .workflow-step-num {
-  background: #ffffff !important;
-  color: #990f3d !important;
+  background: #990f3d !important;
+  color: #ffffff !important;
+}
+
+.workflow-step.completed .workflow-step-num {
+  background: #0d7680 !important;
+  color: #ffffff !important;
 }
 
 /* Step Navigation Bar */
-.step-nav-bar {
-  background: #f6ede2 !important;
-  border-bottom: 1px solid #e9decf !important;
-}
 
-.step-nav-label {
-  color: #262a33 !important;
-}
-
-.step-nav-btn {
-  border: 1px solid #e9decf !important;
-  background: #fffdf9 !important;
-  color: #262a33 !important;
-}
-
-.step-nav-btn:hover:not(:disabled) {
-  background: #fff1e5 !important;
-  border-color: #d4c5b9 !important;
-  color: #262a33 !important;
-}
-
-.step-nav-btn.next,
 #btn-next-step,
 .btn-primary {
   background: #990f3d !important;
@@ -227,105 +216,15 @@ h1, h2, h3, h4,
   box-shadow: 0 1px 2px rgba(153, 15, 61, 0.25) !important;
 }
 
-.step-nav-btn.next:hover:not(:disabled),
 #btn-next-step:hover:not(:disabled),
 .btn-primary:hover:not(:disabled) {
   background: #7c0c32 !important;
   color: #ffffff !important;
 }
 
-.step-nav-btn.next.restart {
-  background: #0f5499 !important;
-  border-color: #0c437a !important;
-  color: #ffffff !important;
-}
-
-.step-nav-btn.next.restart:hover:not(:disabled) {
-  background: #0c437a !important;
-}
-
 /* ==========================================================================
    Quick Chips & Presets (Financial Times Editorial Tags)
    ========================================================================== */
-.chips-container {
-  background: #f6ede2 !important;
-  border-bottom: 1px solid #e9decf !important;
-}
-
-.chips-bar {
-  scrollbar-width: thin !important;
-  scrollbar-color: #c8b8a6 #e9decf !important;
-}
-
-.chips-bar::-webkit-scrollbar {
-  height: 4px !important;
-}
-
-.chips-bar::-webkit-scrollbar-track {
-  background: #e9decf !important;
-  border-radius: 2px !important;
-}
-
-.chips-bar::-webkit-scrollbar-thumb {
-  background: #c8b8a6 !important;
-  border-radius: 2px !important;
-}
-
-.chips-bar::-webkit-scrollbar-thumb:hover {
-  background: #a89886 !important;
-}
-
-.chip {
-  background: #f6ede2 !important;
-  border: 1px solid #e9decf !important;
-  color: #262a33 !important;
-  font-size: 11.5px !important;
-  font-weight: 600 !important;
-  padding: 5px 12px !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
-  transition: all 0.15s ease !important;
-  display: inline-flex;
-  align-items: center !important;
-  gap: 0.35rem !important;
-  user-select: none !important;
-  line-height: 1.3 !important;
-}
-
-.chip:hover {
-  background: #ecdcc9 !important;
-  border-color: #990f3d !important;
-  color: #262a33 !important;
-  transform: translateY(-1px) !important;
-}
-
-.chip.active,
-.chip.selected,
-.chip:active {
-  background: #990f3d !important;
-  color: #ffffff !important;
-  border-color: #7c0c32 !important;
-}
-
-.chip.featured {
-  background: #fbebee !important;
-  border: 1px solid #f5c2cb !important;
-  color: #990f3d !important;
-  font-weight: 600 !important;
-}
-
-.chip.featured:hover {
-  background: #ecdcc9 !important;
-  border-color: #990f3d !important;
-  color: #990f3d !important;
-}
-
-.chip.featured.active,
-.chip.featured.selected {
-  background: #990f3d !important;
-  color: #ffffff !important;
-  border-color: #7c0c32 !important;
-}
 
 .chip-sm {
   background: #f6ede2 !important;
@@ -451,7 +350,6 @@ button#send-btn:hover:not(:disabled) {
 
 .primary-action-btn,
 .hud-btn-primary,
-.dropzone-btn.primary,
 .timeline-btn.primary {
   background: #990f3d !important;
   color: #ffffff !important;
@@ -460,7 +358,6 @@ button#send-btn:hover:not(:disabled) {
 
 .primary-action-btn:hover,
 .hud-btn-primary:hover,
-.dropzone-btn.primary:hover,
 .timeline-btn.primary:hover {
   background: #7c0c32 !important;
 }
@@ -1232,11 +1129,8 @@ select.map-layer-select {
    Typographic Glyph Icons (replace emoji)
    ========================================================================== */
 .drop-icon-animated,
-.dropzone-icon,
-.layman-card-icon,
 #guidance-icon,
 .lang-icon-badge,
-.workflow-arrow,
 .timeline-party-arrow {
   font-family: var(--ft-font-serif) !important;
   font-style: normal !important;
@@ -1247,20 +1141,13 @@ select.map-layer-select {
   font-size: 2.4rem !important;
   animation: none !important;
 }
-.dropzone-icon,
-.layman-card-icon {
-  font-size: 1.35rem !important;
-  font-weight: 600 !important;
-}
 .lang-icon-badge {
   font-family: var(--ft-font-ml) !important;
   font-weight: 700 !important;
 }
-.workflow-arrow,
 .timeline-party-arrow {
   color: var(--ft-border-strong) !important;
 }
-
 
 /* Map load failure */
 .map-unavailable {
@@ -1291,7 +1178,6 @@ select.map-layer-select {
   border: 1px solid var(--ft-border-strong); color: var(--ft-muted-text);
 }
 .offline-badge[hidden] { display: none !important; }
-.workflow-bar .step-nav-controls { display: flex; gap: 0.4rem; flex-shrink: 0; }
 
 /* Map info panel: compact card, collapses to a one-line summary */
 .map-hud { max-width: 360px !important; }
@@ -1318,30 +1204,36 @@ select.map-layer-select {
 
   .workflow-bar { flex-wrap: wrap; row-gap: 0.35rem; padding: 0.4rem 0.6rem !important; overflow: visible !important; }
   .workflow-steps { gap: 0.25rem; }
-  .workflow-arrow { display: none !important; }
-  .workflow-step:not(.active) [id^="wf-text-"] { display: none; }
-  .workflow-step { padding: 0.25rem 0.45rem !important; }
-  .workflow-bar .step-nav-controls { margin-left: auto; }
-  .step-nav-btn.prev { display: none; }
-
-  .layman-quickstart-grid { grid-template-columns: 1fr !important; }
-  .layman-card-desc { display: none; }
+  .workflow-step { padding: 0.25rem 0.1rem !important; font-size: 13px !important; }
+  .workflow-steps { gap: 0.6rem !important; justify-content: space-between; width: 100%; }
+  .workflow-step:not(.completed) .workflow-step-num { display: none !important; }
 }
 
 /* ==========================================================================
    FT shapes: square corners, hairlines, no soft shadows
    ========================================================================== */
-.deed-dropzone, .layman-card, .bubble, .whatsapp-card, .whatsapp-text, .chip, .map-hud,
-.hud-stat-box, .map-tool-btn, .step-nav-btn, .workflow-step, .dropzone-btn, .copy-btn,
-.wa-direct-btn, .hud-btn, .buyer-verdict-box, .checklist-panel, .custom-modal-card,
-#input, #send-btn, .upload-trigger-btn, .map-search-input, .map-preset-select, .map-layer-select {
+.bubble,
+.whatsapp-card,
+.whatsapp-text,
+.map-hud,
+.hud-stat-box,
+.map-tool-btn,
+.workflow-step,
+.copy-btn,
+.wa-direct-btn,
+.hud-btn,
+.buyer-verdict-box,
+.checklist-panel,
+.custom-modal-card,
+#input,
+#send-btn,
+.upload-trigger-btn,
+.map-search-input,
+.map-preset-select,
+.map-layer-select {
   border-radius: 2px !important;
   box-shadow: none !important;
 }
-.deed-dropzone { border: 1px dashed var(--ft-border-strong) !important; background: var(--ft-card-bg) !important; }
-.layman-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; }
-.layman-card:hover { border-color: var(--ft-claret) !important; }
-.layman-card-badge { background: transparent !important; color: var(--ft-muted-text) !important; border: 1px solid var(--ft-border) !important; }
 .whatsapp-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; border-left: 3px solid var(--ft-slate) !important; }
 .whatsapp-title { color: var(--ft-dark-text) !important; font-family: var(--ft-font-serif) !important; }
 .whatsapp-text { background: var(--ft-paper) !important; border: 0 !important; color: var(--ft-dark-text) !important; }
@@ -1352,3 +1244,72 @@ select.map-layer-select {
 .buyer-verdict-box.clear { color: var(--ft-slate) !important; }
 .buyer-verdict-box .buyer-verdict-text { color: var(--ft-dark-text) !important; }
 .map-guidance-bar { background: var(--ft-paper-secondary) !important; border-bottom: 1px solid var(--ft-border) !important; }
+
+/* ==========================================================================
+   Start card, suggestions, link buttons
+   ========================================================================== */
+.start-card {
+  margin: 1rem;
+  padding: 1.25rem;
+  border: 1px dashed #d4c5b9;
+  background: #fffdf9;
+  text-align: center;
+}
+.start-card.collapsed { display: none; }
+.start-card-title {
+  font: 600 20px/1.3 var(--ft-font-serif);
+  color: #262a33;
+  margin: 0 0 0.25rem;
+}
+.start-card-desc {
+  font-size: 14px;
+  color: #66605c;
+  margin: 0 0 0.9rem;
+}
+.start-card-upload {
+  background: #990f3d;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.6rem;
+  font: 600 16px/1 var(--ft-font-sans);
+  cursor: pointer;
+}
+.start-card-upload:hover { background: #7c0c32; }
+.start-card-samples {
+  margin: 0.9rem 0 0;
+  font-size: 14px;
+  color: #66605c;
+}
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #0f5499;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.link-btn:hover { color: #990f3d; }
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1rem 0.5rem;
+}
+.suggestions.hidden { display: none; }
+.suggestion {
+  background: none;
+  border: 1px solid #e9decf;
+  color: #66605c;
+  font: 400 13px/1.3 var(--ft-font-sans);
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  cursor: pointer;
+}
+.suggestion:hover { color: #990f3d; border-color: #990f3d; }
+
+/* Chat | Map switch is for phones; desktop shows both side by side. */
+@media (min-width: 768px) {
+  .view-switch { display: none !important; }
+}

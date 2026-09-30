@@ -34,175 +34,63 @@
       <button type="button" class="lang-btn" id="lang-btn-ml" onclick="setLanguage('ml')">മലയാളം</button>
     </div>
     <div class="view-switch">
-      <button class="view-btn" data-mode="chat" id="view-btn-chat" onclick="setViewMode('chat')">Chat</button>
-      <button class="view-btn active" data-mode="split" id="view-btn-split" onclick="setViewMode('split')">Split View</button>
-      <button class="view-btn" data-mode="map" id="view-btn-map" onclick="setViewMode('map')">Map & Satellite</button>
+      <button class="view-btn active" data-mode="chat" id="view-btn-chat" onclick="setViewMode('chat')">Chat</button>
+      <button class="view-btn" data-mode="map" id="view-btn-map" onclick="setViewMode('map')">Map</button>
     </div>
     <span id="pwa-status-badge" class="offline-badge" hidden><span id="pwa-status-text">Offline</span></span>
   </div>
 </header>
 
-<div class="workflow-bar" id="workflow-bar">
+<nav class="workflow-bar" id="workflow-bar" aria-label="Progress">
   <div class="workflow-steps" id="workflow-steps">
-    <div class="workflow-step active" id="wf-step-1" onclick="setWorkflowStep(1)" title="Step 1: Ingest Kerala Sale Deed or Encumbrance Certificate (EC)">
+    <button type="button" class="workflow-step active" id="wf-step-1" onclick="onStepClick(1)">
       <span class="workflow-step-num" id="wf-num-1">1</span>
-      <span class="workflow-step-badge" id="wf-badge-1" style="display:none;" title="Step 1 Completed">✓</span>
       <span id="wf-text-1">Document</span>
-    </div>
-    <span class="workflow-arrow">→</span>
-    <div class="workflow-step" id="wf-step-2" onclick="setWorkflowStep(2)" title="Step 2: 30-Year Prior Title Lineage & Encumbrance cross-validation">
+    </button>
+    <button type="button" class="workflow-step" id="wf-step-2" onclick="onStepClick(2)">
       <span class="workflow-step-num" id="wf-num-2">2</span>
-      <span class="workflow-step-badge" id="wf-badge-2" style="display:none;" title="Step 2 Completed">✓</span>
       <span id="wf-text-2">Prior deeds</span>
-    </div>
-    <span class="workflow-arrow">→</span>
-    <div class="workflow-step" id="wf-step-3" onclick="setWorkflowStep(3)" title="Step 3: Satellite GIS, KPBR Road Access Width, Cadastral Plot Boundary, Flood Risk">
+    </button>
+    <button type="button" class="workflow-step" id="wf-step-3" onclick="onStepClick(3)">
       <span class="workflow-step-num" id="wf-num-3">3</span>
-      <span class="workflow-step-badge" id="wf-badge-3" style="display:none;" title="Step 3 Completed">✓</span>
       <span id="wf-text-3">Site</span>
-    </div>
-    <span class="workflow-arrow">→</span>
-    <div class="workflow-step" id="wf-step-4" onclick="setWorkflowStep(4)" title="Step 4: Field Checklist, WhatsApp Seller Inquiry, Advocate PDF Dossier">
+    </button>
+    <button type="button" class="workflow-step" id="wf-step-4" onclick="onStepClick(4)">
       <span class="workflow-step-num" id="wf-num-4">4</span>
-      <span class="workflow-step-badge" id="wf-badge-4" style="display:none;" title="Step 4 Completed">✓</span>
-      <span id="wf-text-4">Follow-up</span>
-    </div>
+      <span id="wf-text-4">Ask seller</span>
+    </button>
   </div>
-  <div class="step-nav-controls">
-    <button type="button" class="step-nav-btn prev" id="btn-prev-step" onclick="prevWorkflowStep()" disabled>← Back</button>
-    <button type="button" class="step-nav-btn next" id="btn-next-step" onclick="nextWorkflowStep()">Next: Prior deeds →</button>
-  </div>
-</div>
+</nav>
 
 <div id="main-container">
   <div id="chat-pane">
     <div id="drop-overlay" class="drop-overlay">
       <div class="drop-card">
         <div class="drop-icon-animated">¶</div>
-        <div class="drop-title" id="drop-overlay-title">Drop Scanned Kerala Deed or EC Here</div>
-        <div class="drop-subtitle" id="drop-overlay-subtitle">Directly ingests Malayalam/English deed text using Google Cloud Document AI & Gemini Multimodal Vision</div>
-        <div class="drop-badges">
-          <span>PDF Documents</span>
-          <span>PNG Scans</span>
-          <span>JPG/JPEG</span>
-          <span>WEBP</span>
-          <span id="drop-badge-ec">Encumbrance Certificate (EC)</span>
-        </div>
+        <div class="drop-title" id="drop-overlay-title">Drop the deed or EC here</div>
       </div>
     </div>
 
-    <div class="chips-container" id="chips-container">
-      <div class="chips-bar">
-        <!-- Step 1 (Ingest Document) Chips -->
-
-        <!-- Step 2 (Prior Title & Encumbrance) Chips -->
-        <div class="chip featured" data-cat="lineage" id="chip-timeline-aluva" style="display:none;" onclick="openOwnershipTimeline('aluva_broken')" title="Open Interactive 30-Year Ownership Timeline with 3 Critical Defects">
-          Sample: Aluva chain with 3 defects
-        </div>
-        <div class="chip" data-cat="statutory" id="chip-mary-roy" style="display:none;" onclick="onChipClick('mary_roy')" title="Audit Christian Coparcenary and Mary Roy excluded daughters defect">
-          Mary Roy Coparcenary Defect
-        </div>
-        <div class="chip" data-cat="lineage" id="chip-timeline-clean" style="display:none;" onclick="openOwnershipTimeline('clean_title')" title="Open a sample 39-year chain where no gaps were found">
-          Sample: 39-year chain, no gaps found
-        </div>
-        <div class="chip" data-cat="lineage" id="chip-fair-value" style="display:none;" onclick="onChipClick('fair_value')" title="Audit public purchase prices, fair value, and consideration history">
-          Fair Value & Stamp Duty Audit
-        </div>
-
-        <!-- Step 3 (Ground & Satellite Verification) Chips -->
-        <div class="chip" data-cat="field" id="chip-measure-road" style="display:none;" onclick="setMapTool('road'); setViewMode('split');" title="Measure road access width for KPBR building permit">
-          Measure Road Width (KPBR 2019)
-        </div>
-        <div class="chip" data-cat="satellite" id="chip-demarcate-plot" style="display:none;" onclick="onDemarcatePlotChip()" title="Demarcate boundary corner stones and seal cadastral plot extent">
-          Demarcate & Seal Cadastral Plot
-        </div>
-        <div class="chip" data-cat="satellite" id="chip-check-elevation" style="display:none;" onclick="onCheckElevationChip()" title="Inspect elevation MSL and Periyar flood basin risk">
-          Check Elevation & Flood Exposure
-        </div>
-
-        <!-- Step 4 (Due Diligence & Action) Chips -->
-        <div class="chip" data-cat="action" id="chip-open-checklist" style="display:none;" onclick="toggleChecklist(true)" title="Open on-site field verification checklist drawer">
-          Open On-Site Field Checklist
-        </div>
-        <div class="chip" data-cat="action" id="chip-wa-inquiry" style="display:none;" onclick="triggerWhatsAppInquiry()" title="Draft legal WhatsApp inquiry message for seller or broker">
-          WhatsApp Inquiry for Seller
-        </div>
-        <div class="chip" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportCurrentDeedDossier()" title="Export the scanned deed's findings as a PDF">
-          Export Advocate Dossier (PDF)
-        </div>
-
+    <section class="start-card" id="deed-dropzone-container">
+      <div class="start-card-body" id="deed-dropzone">
+        <h2 class="start-card-title" id="dropzone-title">Drop your deed or EC here</h2>
+        <p class="start-card-desc" id="dropzone-desc">PDF or photo, English or Malayalam.</p>
+        <button type="button" class="start-card-upload" onclick="document.getElementById('deed-file-input').click()"><span id="btn-browse-text">Upload</span></button>
+        <p class="start-card-samples">
+          <span id="start-samples-label">Try a sample:</span>
+          <button type="button" class="link-btn" onclick="runSampleDeedOCR('deed')"><span id="card-title-deed">Sale deed</span></button>
+          <span aria-hidden="true">·</span>
+          <button type="button" class="link-btn" onclick="runSampleDeedOCR('ec')"><span id="card-title-ec">30-year EC</span></button>
+        </p>
       </div>
-    </div>
+    </section>
 
-    <!-- Dedicated Deed Drag & Drop Zone for Laymen -->
-    <div class="deed-dropzone-container" id="deed-dropzone-container">
-      <div class="deed-dropzone" id="deed-dropzone" onclick="document.getElementById('deed-file-input').click()" title="Click to browse or drop any deed file">
-        <div class="dropzone-content">
-          <div class="dropzone-icon">§</div>
-          <div class="dropzone-text">
-            <div class="dropzone-title">
-              <strong id="dropzone-title">Drop a deed or EC here</strong>
-            </div>
-            <div class="dropzone-desc" id="dropzone-desc">
-              PDF or photo, English or Malayalam. Or try a sample:
-            </div>
-          </div>
-        </div>
+    <div id="log"></div>
 
-        <!-- 3 Layman 1-Click Action Cards -->
-        <div class="layman-quickstart-grid" onclick="event.stopPropagation()">
-          <div class="layman-card card-deed" onclick="runSampleDeedOCR('deed')" title="Click to test with real Kerala Sale Deed PDF">
-            <div class="layman-card-top">
-              <span class="layman-card-icon">¶</span>
-              <span class="layman-card-badge" id="card-badge-deed">Sample</span>
-            </div>
-            <div class="layman-card-title" id="card-title-deed">Sale deed</div>
-            <div class="layman-card-desc" id="card-desc-deed">Pathway easement, paddy land and a maintenance clause.</div>
-            <div class="layman-card-cta" id="card-cta-deed">Scan →</div>
-          </div>
-
-          <div class="layman-card card-ec" onclick="runSampleDeedOCR('ec')" title="Click to test with official Kerala SRO Encumbrance Certificate PDF">
-            <div class="layman-card-top">
-              <span class="layman-card-icon">₹</span>
-              <span class="layman-card-badge" id="card-badge-ec">Sample</span>
-            </div>
-            <div class="layman-card-title" id="card-title-ec">30-year EC</div>
-            <div class="layman-card-desc" id="card-desc-ec">Finds undisclosed bank mortgages and missing release deeds.</div>
-            <div class="layman-card-cta" id="card-cta-ec">Scan →</div>
-          </div>
-
-          <div class="layman-card card-upload" onclick="document.getElementById('deed-file-input').click()" title="Click to upload your own Kerala deed PDF or image">
-            <div class="layman-card-top">
-              <span class="layman-card-icon">↑</span>
-              <span class="layman-card-badge" id="card-badge-upload">PDF / Photo</span>
-            </div>
-            <div class="layman-card-title" id="card-title-upload">Your document</div>
-            <div class="layman-card-desc" id="card-desc-upload">Sale deed, partition deed, agreement or EC.</div>
-            <div class="layman-card-cta" id="card-cta-upload">Upload →</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="log">
-      <div class="msg agent">
-        <div class="msg-label">Kandezhuthu AI</div>
-        <div class="bubble" id="welcome-bubble">
-          <strong id="welcome-bubble-title">Kandezhuthu AI</strong>
-          <p id="welcome-bubble-p1">Drop a deed or EC above, paste a clause below, or ask a question.</p>
-          <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.6rem;">
-            <button type="button" class="dropzone-btn secondary" id="quick-prompt-1" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('advance_docs')">
-              What documents should I get from the seller?
-            </button>
-            <button type="button" class="dropzone-btn secondary" id="quick-prompt-2" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('kpbr')">
-              How do I know if the road is wide enough to get a building permit (KPBR)?
-            </button>
-            <button type="button" class="dropzone-btn secondary" id="quick-prompt-3" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('wetland')">
-              How to check if land is listed as Nilam in the 2008 Paddy Land Data Bank?
-            </button>
-          </div>
-        </div>
-      </div>
+    <div class="suggestions" id="suggestions">
+      <button type="button" class="suggestion" id="quick-prompt-1" onclick="onChipClick('advance_docs')">What documents should I get from the seller?</button>
+      <button type="button" class="suggestion" id="quick-prompt-2" onclick="onChipClick('kpbr')">How wide must the road be for a building permit?</button>
+      <button type="button" class="suggestion" id="quick-prompt-3" onclick="onChipClick('wetland')">How do I check if the land is in the Data Bank?</button>
     </div>
 
     <form id="form">

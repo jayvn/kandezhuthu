@@ -171,78 +171,6 @@
 
   /* Quick action chips container */
   /* Quick action chips container & FT editorial tags */
-  .chips-container {
-    position: relative;
-    background: #f6ede2;
-    border-bottom: 1px solid #e9decf;
-  }
-  .chips-bar {
-    padding: 0.55rem 0.9rem;
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    white-space: nowrap;
-    scrollbar-width: thin;
-    scrollbar-color: #c8b8a6 #e9decf;
-  }
-  .chips-bar::-webkit-scrollbar {
-    height: 4px;
-  }
-  .chips-bar::-webkit-scrollbar-track {
-    background: #e9decf;
-    border-radius: 2px;
-  }
-  .chips-bar::-webkit-scrollbar-thumb {
-    background: #c8b8a6;
-    border-radius: 2px;
-  }
-  .chips-bar::-webkit-scrollbar-thumb:hover {
-    background: #a89886;
-  }
-  .chip {
-    background: #f6ede2;
-    border: 1px solid #e9decf;
-    color: #262a33;
-    font-size: 11.5px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    user-select: none;
-    line-height: 1.3;
-  }
-  .chip:hover {
-    background: #ecdcc9;
-    border-color: #990f3d;
-    color: #262a33;
-    transform: translateY(-1px);
-  }
-  .chip.active,
-  .chip.selected,
-  .chip:active {
-    background: #990f3d;
-    color: #ffffff;
-    border-color: #7c0c32;
-  }
-  .chip.featured {
-    background: #fbebee;
-    border: 1px solid #f5c2cb;
-    color: #990f3d;
-    font-weight: 600;
-  }
-  .chip.featured:hover {
-    background: #ecdcc9;
-    border-color: #990f3d;
-    color: #990f3d;
-  }
-  .chip.featured.active,
-  .chip.featured.selected {
-    background: #990f3d;
-    color: #ffffff;
-    border-color: #7c0c32;
-  }
 
   /* Chat log */
   #log {
@@ -496,144 +424,11 @@
   }
 
   /* Dedicated Deed Dropzone Card in Chat Pane */
-  .deed-dropzone-container {
-    padding: 0.6rem 0.9rem 0.2rem 0.9rem;
-    transition: all 0.2s ease;
-  }
-  .deed-dropzone {
-    background: linear-gradient(135deg, #eef5f5 0%, #eef5f5 100%);
-    border: 1.5px dashed #5ea9ad;
-    border-radius: 10px;
-    padding: 0.65rem 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 4px rgba(13, 118, 128, 0.08);
-  }
-  .deed-dropzone-container.minimized {
-    padding: 0.3rem 0.9rem 0.1rem 0.9rem;
-  }
-  .deed-dropzone-container.minimized .deed-dropzone {
-    padding: 0.35rem 0.65rem;
-  }
-  .deed-dropzone-container.minimized .dropzone-content,
-  .deed-dropzone-container.minimized .dropzone-footer,
-  .deed-dropzone-container.minimized .layman-card-desc,
-  .deed-dropzone-container.minimized .layman-card-cta {
-    display: none !important;
-  }
-  .deed-dropzone-container.minimized .layman-quickstart-grid {
-    margin-top: 0.35rem;
-    gap: 0.45rem;
-  }
-  .deed-dropzone-container.minimized .layman-card {
-    padding: 0.35rem 0.55rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .deed-dropzone-container.minimized .layman-card-top {
-    margin-bottom: 0;
-  }
-  .deed-dropzone-container.minimized .layman-card-title {
-    font-size: 0.72rem;
-    margin-bottom: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .dropzone-toggle-btn {
-    margin-left: auto;
-    background: #ffffff;
-    border: 1px solid #a8cfd1;
-    border-radius: 4px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: #0d7680;
-    padding: 1px 8px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .dropzone-toggle-btn:hover {
-    background: #dcebec;
-  }
-  .deed-dropzone:hover, .deed-dropzone.drag-hover {
-    background: #eef5f5;
-    border-color: #0d7680;
-    box-shadow: 0 6px 18px rgba(13, 118, 128, 0.16);
-    transform: translateY(-1px);
-  }
-  .dropzone-badge-row {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-bottom: 0.45rem;
-  }
-  .dropzone-live-pulse {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #0d7680;
-    box-shadow: 0 0 0 0 rgba(13, 118, 128, 0.7);
-    animation: pulseDropzone 1.8s infinite;
-  }
+
   @keyframes pulseDropzone {
     0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 118, 128, 0.7); }
     70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(13, 118, 128, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 118, 128, 0); }
-  }
-  .dropzone-tag {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #0d7680;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .dropzone-model {
-    font-size: 0.68rem;
-    font-weight: 600;
-    background: #0d7680;
-    color: #fff;
-    padding: 1px 6px;
-    border-radius: 10px;
-  }
-  .dropzone-content {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.55rem;
-  }
-  .dropzone-icon {
-    font-size: 1.8rem;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-  .dropzone-title {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: #262a33;
-    line-height: 1.35;
-  }
-  .dropzone-desc {
-    font-size: 0.75rem;
-    color: #66605c;
-    margin-top: 2px;
-    line-height: 1.3;
-  }
-  .dropzone-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    border-top: 1px solid rgba(13, 118, 128, 0.2);
-    padding-top: 0.45rem;
-  }
-  .dropzone-formats {
-    display: flex;
-    gap: 0.3rem;
-    align-items: center;
-    flex-wrap: wrap;
   }
   .format-pill {
     font-size: 0.66rem;
@@ -648,145 +443,8 @@
     background: #eef5f5;
     color: #0d7680;
   }
-  .dropzone-btns {
-    display: flex;
-    gap: 0.4rem;
-  }
-  .dropzone-btn {
-    border: none;
-    border-radius: 6px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.15s ease;
-  }
-  .dropzone-btn.primary {
-    background: #990f3d;
-    color: white;
-  }
-  .dropzone-btn.primary:hover {
-    background: #7c0c32;
-  }
-  .dropzone-btn.secondary {
-    background: #ffffff;
-    color: #990f3d;
-    border: 1px solid #a8cfd1;
-  }
-  .dropzone-btn.secondary:hover {
-    background: #eef5f5;
-    border-color: #0d7680;
-  }
-  .dropzone-btn.highlight {
-    background: #dcebec;
-    color: #0a5c63;
-    border: 1.5px solid #0d7680;
-    font-weight: 700;
-  }
-  .dropzone-btn.highlight:hover {
-    background: #a8cfd1;
-  }
 
   /* Layman Quick Start Cards */
-  .layman-quickstart-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 0.6rem;
-    margin-top: 0.65rem;
-  }
-  .layman-card {
-    background: #ffffff;
-    border: 1.5px solid #e9decf;
-    border-radius: 10px;
-    padding: 0.75rem 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-  }
-  .layman-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(15, 81, 50, 0.12);
-  }
-  .layman-card.card-deed {
-    border-color: #a8cfd1;
-    background: linear-gradient(180deg, #ffffff 0%, #eef5f5 100%);
-  }
-  .layman-card.card-deed:hover {
-    border-color: #0d7680;
-  }
-  .layman-card.card-ec {
-    border-color: #ecd2a8;
-    background: linear-gradient(180deg, #ffffff 0%, #fbf0e0 100%);
-  }
-  .layman-card.card-ec:hover {
-    border-color: #a35c00;
-  }
-  .layman-card.card-upload {
-    border-color: #9fb8d8;
-    background: linear-gradient(180deg, #ffffff 0%, #eef2f7 100%);
-  }
-  .layman-card.card-upload:hover {
-    border-color: #0f5499;
-  }
-  .layman-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.35rem;
-  }
-  .layman-card-icon {
-    font-size: 1.3rem;
-    line-height: 1;
-  }
-  .layman-card-badge {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 2px 6px;
-    border-radius: 6px;
-    text-transform: uppercase;
-  }
-  .layman-card.card-deed .layman-card-badge {
-    background: #dcebec;
-    color: #0d7680;
-  }
-  .layman-card.card-ec .layman-card-badge {
-    background: #f7e3c8;
-    color: #8a4d00;
-  }
-  .layman-card.card-upload .layman-card-badge {
-    background: #e1e9f3;
-    color: #0f5499;
-  }
-  .layman-card-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #262a33;
-    line-height: 1.25;
-    margin-bottom: 0.25rem;
-  }
-  .layman-card-desc {
-    font-size: 0.72rem;
-    color: #66605c;
-    line-height: 1.35;
-    margin-bottom: 0.5rem;
-  }
-  .layman-card-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #990f3d;
-    margin-top: auto;
-  }
 
   /* Buyer Warning Box in Card */
   .buyer-verdict-box {
@@ -1510,23 +1168,6 @@
     .workflow-steps {
       flex-shrink: 0;
     }
-    .step-nav-bar {
-      padding: 0.4rem 0.75rem;
-      gap: 0.5rem;
-      white-space: nowrap;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scroll-behavior: smooth;
-      touch-action: pan-x;
-    }
-    .step-nav-left {
-      flex-shrink: 0;
-      min-width: 0;
-    }
-    .step-nav-controls {
-      flex-shrink: 0;
-    }
   }
 
   @media (max-width: 640px) {
@@ -1536,17 +1177,6 @@
     .map-preset-select { max-width: 100%; flex: 1 1 100%; }
     .map-search-group { width: 100%; flex: 1 1 100%; }
     .map-hud { bottom: 6px; left: 6px; right: 6px; padding: 0.65rem 0.75rem; }
-    .step-nav-bar {
-      padding: 0.35rem 0.5rem;
-      gap: 0.4rem;
-    }
-    .step-nav-label {
-      font-size: 0.78rem;
-    }
-    .step-nav-btn {
-      padding: 0.28rem 0.55rem;
-      font-size: 0.72rem;
-    }
   }
 
   /* Guided 3-Step Workflow Bar */
@@ -1626,29 +1256,6 @@
   .workflow-step.completed .workflow-step-num {
     display: none;
   }
-  .workflow-step-badge {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #0d7680;
-    color: #ffffff;
-    border: 1.5px solid #990f3d;
-    font-size: 0.72rem;
-    font-weight: 800;
-    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.25);
-    line-height: 1;
-    flex-shrink: 0;
-  }
-  .workflow-step.completed .workflow-step-badge {
-    display: inline-flex;
-  }
-  .workflow-arrow {
-    color: #a89886;
-    font-size: 0.85rem;
-  }
   .export-report-btn {
     background: #990f3d;
     color: #ffffff;
@@ -1670,56 +1277,7 @@
   }
 
   /* Step Navigation Bar & Progressive Disclosure Controls */
-  .step-nav-bar {
-    background: #fdfbf7;
-    border-bottom: 1px solid #e9decf;
-    padding: 0.45rem 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    font-size: 0.8rem;
-    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.02);
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    touch-action: pan-x;
-    scrollbar-width: thin;
-    scrollbar-color: #e9decf transparent;
-  }
-  .step-nav-bar::-webkit-scrollbar {
-    height: 3px;
-  }
-  .step-nav-bar::-webkit-scrollbar-thumb {
-    background: #e9decf;
-    border-radius: 2px;
-  }
-  .step-nav-bar.touch-dragging {
-    cursor: grabbing;
-    user-select: none;
-    scroll-behavior: auto;
-  }
-  .step-nav-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-width: 0;
-  }
-  .step-nav-label {
-    font-family: var(--ft-font-serif);
-    font-weight: 700;
-    color: #262a33;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .step-nav-badges {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
+
   .step-check-badge {
     display: inline-flex;
     align-items: center;
@@ -1738,63 +1296,9 @@
     font-weight: 800;
     color: #0d7680;
   }
-  .step-nav-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    flex-shrink: 0;
-  }
-  .step-nav-btn {
-    border: 1px solid #e9decf;
-    background: #ffffff;
-    color: #4d4845;
-    padding: 0.3rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-  .step-nav-btn:hover:not(:disabled) {
-    background: #f6ede2;
-    color: #262a33;
-    border-color: #a89886;
-  }
-  .step-nav-btn:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    border-color: #e9decf;
-  }
-  .step-nav-btn.next {
-    background: #990f3d;
-    color: #ffffff;
-    border-color: #0a5c63;
-    font-weight: 700;
-  }
-  .step-nav-btn.next:hover:not(:disabled) {
-    background: #7c0c32;
-    color: #ffffff;
-  }
-  .step-nav-btn.next.restart {
-    background: #262a33;
-    border-color: #262a33;
-  }
-  .step-nav-btn.next.restart:hover:not(:disabled) {
-    background: #4d4845;
-  }
 
   /* Categorized Action Tabs - Hidden: 4-step workflow encapsulates these phases cleanly */
-  .category-tabs {
-    display: none !important;
-    gap: 0.25rem;
-    padding: 0.35rem 0.9rem 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-  }
+
   .category-tab {
     padding: 0.35rem 0.7rem;
     font-size: 0.75rem;
