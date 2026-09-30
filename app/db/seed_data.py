@@ -373,36 +373,34 @@ def seed_knowledge_corpus_fts(conn):
 def seed_administrative_divisions(conn):
     """Seeds Kerala 14 Districts and key SROs."""
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM administrative_divisions")
-    if cursor.fetchone()[0] > 0:
-        return
+    cursor.execute("DELETE FROM administrative_divisions")
 
     divisions = [
-        ("Ernakulam", "Aluva", "Aluva West", "Aluva", "SRO-EKM-01"),
-        ("Ernakulam", "Aluva", "Aluva East", "Aluva", "SRO-EKM-01"),
-        ("Ernakulam", "Kanayannur", "Ernakulam", "Ernakulam", "SRO-EKM-02"),
-        ("Ernakulam", "Kochi", "Mattancherry", "Mattancherry", "SRO-EKM-03"),
-        ("Ernakulam", "Kunnathunad", "Perumbavoor", "Perumbavoor", "SRO-EKM-04"),
-        ("Thiruvananthapuram", "Thiruvananthapuram", "Pattom", "Thiruvananthapuram", "SRO-TVM-01"),
-        ("Thiruvananthapuram", "Neyyattinkara", "Neyyattinkara", "Neyyattinkara", "SRO-TVM-02"),
-        ("Kollam", "Kollam", "Kollam East", "Kollam", "SRO-KLM-01"),
-        ("Thrissur", "Thrissur", "Thrissur", "Thrissur", "SRO-TSR-01"),
-        ("Kozhikode", "Kozhikode", "Kozhikode City", "Kozhikode", "SRO-KKD-01"),
-        ("Kottayam", "Kottayam", "Kottayam", "Kottayam", "SRO-KTM-01"),
-        ("Palakkad", "Palakkad", "Palakkad", "Palakkad", "SRO-PLK-01"),
-        ("Malappuram", "Eranad", "Manjeri", "Manjeri", "SRO-MLP-01"),
-        ("Alappuzha", "Ambalappuzha", "Alappuzha", "Alappuzha", "SRO-ALP-01"),
-        ("Kannur", "Kannur", "Kannur", "Kannur", "SRO-KNR-01"),
-        ("Pathanamthitta", "Kozhencherry", "Pathanamthitta", "Pathanamthitta", "SRO-PTA-01"),
-        ("Idukki", "Thodupuzha", "Thodupuzha", "Thodupuzha", "SRO-IDK-01"),
-        ("Wayanad", "Vythiri", "Kalpetta", "Kalpetta", "SRO-WYD-01"),
-        ("Kasaragod", "Kasaragod", "Kasaragod", "Kasaragod", "SRO-KSD-01"),
+        ("Ernakulam", "Aluva", "Aluva West", "Aluva"),
+        ("Ernakulam", "Aluva", "Aluva East", "Aluva"),
+        ("Ernakulam", "Kanayannur", "Ernakulam", "Ernakulam"),
+        ("Ernakulam", "Kochi", "Mattancherry", "Mattancherry"),
+        ("Ernakulam", "Kunnathunad", "Perumbavoor", "Perumbavoor"),
+        ("Thiruvananthapuram", "Thiruvananthapuram", "Pattom", "Thiruvananthapuram"),
+        ("Thiruvananthapuram", "Neyyattinkara", "Neyyattinkara", "Neyyattinkara"),
+        ("Kollam", "Kollam", "Kollam East", "Kollam"),
+        ("Thrissur", "Thrissur", "Thrissur", "Thrissur"),
+        ("Kozhikode", "Kozhikode", "Kozhikode City", "Kozhikode"),
+        ("Kottayam", "Kottayam", "Kottayam", "Kottayam"),
+        ("Palakkad", "Palakkad", "Palakkad", "Palakkad"),
+        ("Malappuram", "Eranad", "Manjeri", "Manjeri"),
+        ("Alappuzha", "Ambalappuzha", "Alappuzha", "Alappuzha"),
+        ("Kannur", "Kannur", "Kannur", "Kannur"),
+        ("Pathanamthitta", "Kozhencherry", "Pathanamthitta", "Pathanamthitta"),
+        ("Idukki", "Thodupuzha", "Thodupuzha", "Thodupuzha"),
+        ("Wayanad", "Vythiri", "Kalpetta", "Kalpetta"),
+        ("Kasaragod", "Kasaragod", "Kasaragod", "Kasaragod"),
     ]
 
     cursor.executemany(
         """
-        INSERT INTO administrative_divisions (district, taluk, village, sro_name, sro_code)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO administrative_divisions (district, taluk, village, sro_name)
+        VALUES (?, ?, ?, ?)
         """,
         divisions,
     )
