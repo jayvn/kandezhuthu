@@ -337,16 +337,16 @@ class ElevationFloodCalculator:
     def _evaluate_wetland_topography(self, elevation_m: float, risk: FloodRiskLevel) -> str:
         if elevation_m < 3.5:
             return (
-                "⚠️ CRITICAL WETLAND RISK: Lands under 3.5m MSL in Kerala are frequently classified in Village BTR "
+                "▲ CRITICAL WETLAND RISK: Lands under 3.5m MSL in Kerala are frequently classified in Village BTR "
                 "as 'Nilam' (Paddy Land), 'Nanja', or 'Wetland'. Verify the property is NOT listed in the "
                 "Krishi Bhavan Agricultural Data Bank under the 2008 Act before paying earnest money."
             )
         if elevation_m < 8.0:
             return (
-                "ℹ️ Moderate Topographic Risk: Verify whether the land was reclaimed or converted prior to 2008. "
+                "Moderate Topographic Risk: Verify whether the land was reclaimed or converted prior to 2008. "
                 "If revenue records show 'Nilam', Form 6 Section 27A fee regularisation may be required."
             )
-        return "✅ Dry Land Profile: Natural midland/upland elevation consistent with 'Purayidam' (Garden Land / Dry Land)."
+        return "Dry Land Profile: Natural midland/upland elevation consistent with 'Purayidam' (Garden Land / Dry Land)."
 
     def _calculate_recommended_plinth(self, elevation_m: float, risk: FloodRiskLevel) -> float:
         if risk == FloodRiskLevel.CRITICAL:
@@ -369,7 +369,7 @@ class ElevationFloodCalculator:
         if risk in (FloodRiskLevel.CRITICAL, FloodRiskLevel.HIGH):
             items.insert(
                 0,
-                "🚨 Inspect soil bearing capacity with a geotechnical core test before finalizing foundation design (pile vs spread footing).",
+                "Inspect soil bearing capacity with a geotechnical core test before finalizing foundation design (pile vs spread footing).",
             )
         return items
 

@@ -40,7 +40,7 @@ self.addEventListener('fetch', (event) => {
         return new Response(
           JSON.stringify({
             offline: true,
-            message: "⚡ Offline Mode: Field inspection is active without 4G cellular data. Plot measurements, boundary waypoints (Survey Kallu), and checklist notes are cached locally."
+            message: "Offline Mode: Field inspection is active without 4G cellular data. Plot measurements, boundary waypoints (Survey Kallu), and checklist notes are cached locally."
           }),
           { headers: { 'Content-Type': 'application/json' } }
         );

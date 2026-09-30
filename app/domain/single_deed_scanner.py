@@ -32,9 +32,9 @@ class TrapCategory(str, Enum):
 
 
 class Verdict(str, Enum):
-    ALL_CLEAR = "🟢 ALL CLEAR - No Fatal Traps Detected in Text"
-    CAUTION = "🟡 CAUTION - Restrictive Covenants Detected"
-    DANGER = "🔴 DANGER - Fatal Legal / Regulatory Trap Found"
+    ALL_CLEAR = "● NO KNOWN RED FLAGS - Lawyer Review Still Required"
+    CAUTION = "▲ CAUTION - Restrictive Covenants Detected"
+    DANGER = "■ DANGER - Fatal Legal / Regulatory Trap Found"
 
 
 class TrapFinding(BaseModel):
@@ -464,8 +464,9 @@ class SingleDeedScanner:
         else:
             verdict = Verdict.ALL_CLEAR
             advice = (
-                "No fatal legal traps (easements, wetland status, minor rights, or maintenance covenants) were detected in this snippet. "
-                "Safe to proceed with customary Encumbrance Certificate (EC) verification and field survey inspection."
+                "None of the known red-flag phrases (easements, wetland status, minor rights, maintenance covenants) were found in this text. "
+                "This is not a clean-title opinion: a pattern scan cannot see what the deed omits. Get the Encumbrance Certificate (EC), "
+                "inspect the site, and have an advocate review the title before paying any advance."
             )
 
         return DeedSanityResult(
