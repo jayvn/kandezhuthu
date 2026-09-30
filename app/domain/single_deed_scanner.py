@@ -477,8 +477,22 @@ class SingleDeedScanner:
                 # "no right of way ...", "free from easements" -> not a trap
                 if self._NEGATION_BEFORE.search(text[max(0, match.start() - 40):match.start()]):
                     continue
-                start = max(0, match.start() - 20)
-                end = min(len(text), match.end() + 30)
-                snippet = text[start:end].strip().replace("\n", " ")
-                return snippet, desc, mal_title
+                return self._clause_around(text, match.start(), match.end()), desc, mal_title
         return None
+
+    @staticmethod
+    def _clause_around(text: str, start: int, end: int, reach: int = 120) -> str:
+        """Widen a match to its clause (sentence or line), capped at `reach` chars each side."""
+        lo = max(0, start - reach)
+        cut = max(text.rfind(ch, lo, start) for ch in ".\n;")
+        if cut >= 0:
+            lo = cut + 1
+        elif lo > 0:
+            lo = text.find(" ", lo, start) + 1 or lo
+        hi = min(len(text), end + reach)
+        stops = [i for i in (text.find(ch, end, hi) for ch in ".\n;") if i >= 0]
+        if stops:
+            hi = min(stops) + 1
+        elif hi < len(text):
+            hi = text.rfind(" ", end, hi) if text.rfind(" ", end, hi) > end else hi
+        return " ".join(text[lo:hi].split())

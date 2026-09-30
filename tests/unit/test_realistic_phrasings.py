@@ -56,3 +56,11 @@ def test_negated_clause_does_not_hide_later_real_one():
     text = ("No right of way exists on the south. However, the northern "
             "owner retains a 3 feet passage along the east.")
     assert T.EASEMENT_RIGHT_OF_WAY in categories(text)
+
+
+def test_snippet_is_the_whole_clause():
+    text = ("Conveyance of 12 Cents in Re-Sy 89/2.\n"
+            "Described in revenue records as Nilam (Kandom), cultivated with plantains.\n"
+            "East: road.")
+    finding = scanner.scan(text).findings[0]
+    assert finding.matched_snippet == "Described in revenue records as Nilam (Kandom), cultivated with plantains."
