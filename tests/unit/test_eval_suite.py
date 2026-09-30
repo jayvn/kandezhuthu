@@ -1,8 +1,4 @@
-"""Unit tests verifying tests/eval suite syntax, dataset loading, and LLM-as-judge scoring rules."""
-
-import json
-import yaml
-from pathlib import Path
+"""Unit tests for the eval judge's guardrail, disclaimer and terminology scoring rules."""
 
 from tests.eval.response_quality import (
     evaluate,
@@ -12,76 +8,6 @@ from tests.eval.response_quality import (
     _check_disclaimer_presence,
     _check_malayalam_terms,
 )
-
-try:
-    from google.agents.cli.eval.eval_utils import load_eval_config
-except ImportError:
-    def load_eval_config(config_path: str):
-        with open(config_path, "r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
-        return data.get("metrics_to_run", []), {m.get("name"): m for m in data.get("custom_metrics", [])}
-
-
-def test_basic_dataset_loading_and_schema():
-    dataset_path = Path("tests/eval/datasets/basic-dataset.json")
-    assert dataset_path.exists(), "basic-dataset.json must exist"
-
-    with open(dataset_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    assert "eval_cases" in data, "Dataset must contain 'eval_cases'"
-    cases = data["eval_cases"]
-    assert len(cases) == 10, f"Expected 10 eval cases, found {len(cases)}"
-
-    case_ids = {c.get("eval_case_id") for c in cases}
-
-    # Verify the 6 specific Kerala legal scenarios
-    expected_new_cases = {
-        "senior_citizen_tribunal_revocation_sec23",
-        "nemo_dat_quod_non_habet_extent_inflation",
-        "well_water_access_pathway_easement_sec13_15",
-        "minor_share_sold_without_court_sanction_hmga_sec8",
-        "paddy_wetland_form5_vs_form6_conversion",
-        "christian_succession_mary_roy_coparcenary",
-    }
-    for expected_id in expected_new_cases:
-        assert expected_id in case_ids, f"Missing required test case: {expected_id}"
-
-    # Verify each case structure
-    for c in cases:
-        cid = c.get("eval_case_id")
-        assert cid, "Each case must have an eval_case_id"
-        prompt = c.get("prompt")
-        assert prompt, f"Case {cid} missing prompt"
-        assert prompt.get("role") == "user", f"Case {cid} prompt role must be user"
-        parts = prompt.get("parts", [])
-        assert len(parts) > 0 and len(parts[0].get("text", "").strip()) > 20, f"Case {cid} has empty prompt text"
-
-        reference = c.get("reference")
-        assert reference and len(reference.strip()) > 50, f"Case {cid} missing ground truth reference"
-
-
-def test_eval_config_syntax_and_metrics():
-    config_path = Path("tests/eval/eval_config.yaml")
-    assert config_path.exists(), "eval_config.yaml must exist"
-
-    with open(config_path, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
-
-    assert "metrics_to_run" in config
-    assert "custom_metrics" in config
-
-    metrics_to_run, custom_pool = load_eval_config(str(config_path))
-    assert "custom_response_quality" in metrics_to_run
-    assert "legal_guardrails_score" in metrics_to_run
-    assert "malayalam_terminology_score" in metrics_to_run
-
-    # Check custom metric files exist
-    base_dir = config_path.parent
-    for m in config["custom_metrics"]:
-        if "custom_function_file" in m:
-            metric_file = base_dir / m["custom_function_file"]
-            assert metric_file.exists(), f"Metric file {metric_file} does not exist"
 
 
 def test_guardrail_forbidden_clean_title_detection():

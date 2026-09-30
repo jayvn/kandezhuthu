@@ -12,7 +12,7 @@
 |---|---|---|---|
 | **Deterministic Unit Tests** | ✅ **10/10 Passed** (1.62s) | `uv run pytest tests/unit/` | `test_munnadharam_auditor.py` & `test_single_deed_scanner.py` |
 | **Integration & Server E2E** | ✅ **4/4 Passed** (28.38s) | `uv run pytest tests/integration/` | Uses isolated `TEST_PORT=8005` to avoid dev collisions |
-| **Playwright Master UI Suites** | ✅ **8/8 Passed** | `python3 -m tests.ui.run_all_ui_tests` | Dual-pane, HUD, Lineage, OCR, PDF, Cadastre & Bilingual |
+| **Playwright Master UI Suites** | ✅ **8/8 Passed** | `uv run pytest tests/ui` (needs the web UI on :8081) | Dual-pane, HUD, Lineage, OCR, PDF, Cadastre & Bilingual |
 | **UI Polish & Dropzone** | ✅ **Completed** | `frontend/static/index.html` | Minimized mode preserves quickstart buttons; instant geocoding |
 
 ---
@@ -140,7 +140,7 @@ When each agent completes its tasks:
    ```bash
    uv run pytest tests/unit/
    uv run pytest tests/integration/
-   python3 -m tests.ui.run_all_ui_tests
+   uv run pytest tests/ui
    ```
 4. **Prune Worktree**:
    ```bash

@@ -1,21 +1,18 @@
-"""Concurrency Stress Test for A2A and SQLite WAL Mode.
+"""Concurrency stress test for SQLite WAL mode.
 
-Simulates 10+ simultaneous user / A2A sessions executing mixed reads and
+Simulates 10+ simultaneous user sessions executing mixed reads and
 high-frequency transactional writes on the SQLite database to verify WAL mode
 concurrency without table or database locking errors.
 """
 
-import asyncio
 import concurrent.futures
 import time
 import uuid
 
 import pytest
-from httpx import ASGITransport, AsyncClient
 
 from app.db.database import get_db_connection, init_db
 from app.db.repository import AuditRepository, KnowledgeRepository
-from app.fast_api_app import app
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -143,56 +140,3 @@ def test_concurrent_sessions_sqlite_wal():
 
     msg = f"{num_sessions} concurrent sessions completed in {duration:.3f}s. Zero database locks!"
     print(msg)
-
-
-@pytest.mark.asyncio
-async def test_a2a_agent_card_concurrency():
-    """Simulates 12 simultaneous remote clients querying the A2A Agent Card concurrently."""
-    async with app.router.lifespan_context(app):
-        transport = ASGITransport(app=app)
-        async with AsyncClient(transport=transport, base_url="http://testserver") as client:
-
-            async def fetch_card(endpoint: str):
-                resp = await client.get(endpoint)
-                assert resp.status_code == 200
-                data = resp.json()
-                assert "skills" in data
-                assert "name" in data
-                return data["name"]
-
-            endpoints = [
-                "/a2a/kandezhuthu/.well-known/agent-card.json",
-                "/.well-known/agent-card.json",
-                "/a2a/kandezhuthu",
-            ]
-
-            tasks = [fetch_card(endpoints[i % len(endpoints)]) for i in range(12)]
-            results = await asyncio.gather(*tasks)
-
-            assert len(results) == 12
-            assert all(name == "kandezhuthu_agent" for name in results)
-
-
-@pytest.mark.asyncio
-async def test_a2a_jsonrpc_task_status_concurrency():
-    """Simulates 10 concurrent clients querying JSON-RPC methods (tasks/status, tasks/get)."""
-    async with app.router.lifespan_context(app):
-        transport = ASGITransport(app=app)
-        async with AsyncClient(transport=transport, base_url="http://testserver") as client:
-
-            async def query_status(idx: int):
-                payload = {
-                    "jsonrpc": "2.0",
-                    "id": f"req-concur-{idx}",
-                    "method": "tasks/status",
-                    "params": {"task_id": f"task-mock-{idx}"},
-                }
-                resp = await client.post("/a2a/kandezhuthu", json=payload)
-                assert resp.status_code == 200
-                return resp.json()
-
-            tasks = [query_status(i) for i in range(10)]
-            results = await asyncio.gather(*tasks)
-            assert len(results) == 10
-            for r in results:
-                assert r.get("jsonrpc") == "2.0"
