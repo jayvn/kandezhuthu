@@ -234,3 +234,8 @@ artifacts/demo_video/raw/
 artifacts/demo_video/*.mp4
 artifacts/demo_video/*.gif
 tests/ui/screenshots/*.pdf
+
+# Generated output (recreated by UI tests, scripts/record_demo.py, DataAPI)
+tests/ui/screenshots/
+artifacts/
+data/organized/
