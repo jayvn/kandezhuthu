@@ -2643,7 +2643,7 @@
           <div class="hud-stat-label" id="hud-lbl-road">Road Width (KPBR 2019)</div>
           <div class="hud-stat-val" id="hud-road">
             <span id="hud-road-text" style="font-size: 0.78rem;">Not Measured</span>
-            <span class="badge-road warn" id="hud-road-badge">No Road Measured</span>
+            <span class="badge-road" id="hud-road-badge">No Road Measured</span>
           </div>
         </div>
         <div class="hud-stat-box full-width" id="hud-elevation-box">
@@ -5526,7 +5526,7 @@ function clearMapDrawings() {
   document.getElementById("hud-sqm").textContent = "0.0 Ares (0.0 m²)";
   document.getElementById("hud-road-text").textContent = "Not Measured";
   const badgeEl = document.getElementById("hud-road-badge");
-  badgeEl.className = "badge-road warn";
+  badgeEl.className = "badge-road";
   badgeEl.textContent = "No Road Measured";
   updateUndoState();
 }

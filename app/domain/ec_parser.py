@@ -126,7 +126,10 @@ class EncumbranceCertificateAuditor:
         if claim_m:
             claimants = [p.strip() for p in claim_m.group(1).split(",") if p.strip()]
 
-        is_undischarged = any(k in block_text.lower() for k in self.BANK_KEYWORDS) and not any(r in block_text.lower() for r in self.RELEASE_KEYWORDS)
+        # "Undischarged" contains "discharge", so strip the negated forms before
+        # looking for release words.
+        release_text = re.sub(r"\b(?:un|not\s+)discharged\b", "", block_text.lower())
+        is_undischarged = any(k in block_text.lower() for k in self.BANK_KEYWORDS) and not any(r in release_text for r in self.RELEASE_KEYWORDS)
         is_attachment = any(a in block_text.lower() for a in self.ATTACHMENT_KEYWORDS)
 
         return ECEntry(
