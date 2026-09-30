@@ -1327,3 +1327,28 @@ select.map-layer-select {
   .layman-quickstart-grid { grid-template-columns: 1fr !important; }
   .layman-card-desc { display: none; }
 }
+
+/* ==========================================================================
+   FT shapes: square corners, hairlines, no soft shadows
+   ========================================================================== */
+.deed-dropzone, .layman-card, .bubble, .whatsapp-card, .whatsapp-text, .chip, .map-hud,
+.hud-stat-box, .map-tool-btn, .step-nav-btn, .workflow-step, .dropzone-btn, .copy-btn,
+.wa-direct-btn, .hud-btn, .buyer-verdict-box, .checklist-panel, .custom-modal-card,
+#input, #send-btn, .upload-trigger-btn, .map-search-input, .map-preset-select, .map-layer-select {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.deed-dropzone { border: 1px dashed var(--ft-border-strong) !important; background: var(--ft-card-bg) !important; }
+.layman-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; }
+.layman-card:hover { border-color: var(--ft-claret) !important; }
+.layman-card-badge { background: transparent !important; color: var(--ft-muted-text) !important; border: 1px solid var(--ft-border) !important; }
+.whatsapp-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; border-left: 3px solid var(--ft-slate) !important; }
+.whatsapp-title { color: var(--ft-dark-text) !important; font-family: var(--ft-font-serif) !important; }
+.whatsapp-text { background: var(--ft-paper) !important; border: 0 !important; color: var(--ft-dark-text) !important; }
+.wa-direct-btn { background: var(--ft-slate) !important; color: #fff !important; }
+.buyer-verdict-box { border: 0 !important; border-left: 3px solid currentColor !important; background: var(--ft-card-bg) !important; }
+.buyer-verdict-box.danger { color: var(--ft-claret) !important; }
+.buyer-verdict-box.caution { color: #a35c00 !important; }
+.buyer-verdict-box.clear { color: var(--ft-slate) !important; }
+.buyer-verdict-box .buyer-verdict-text { color: var(--ft-dark-text) !important; }
+.map-guidance-bar { background: var(--ft-paper-secondary) !important; border-bottom: 1px solid var(--ft-border) !important; }

@@ -18,10 +18,10 @@
     --primary: #990f3d;
     --primary-light: #fbebee;
     --primary-hover: #7c0c32;
-    --accent: #d97706;
-    --accent-light: #fef3c7;
-    --danger: #b02a37;
-    --danger-light: #f8d7da;
+    --accent: #a35c00;
+    --accent-light: #fbf0e0;
+    --danger: #990f3d;
+    --danger-light: #f5d6de;
     --bg: #fff1e5;
     --surface: #fffdf9;
     --border: #e9decf;
@@ -66,10 +66,10 @@
   .lang-switch {
     display: inline-flex;
     align-items: center;
-    background: #f1f5f9;
+    background: #f6ede2;
     padding: 3px;
     border-radius: 9999px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
     gap: 2px;
     position: relative;
@@ -83,7 +83,7 @@
     padding-right: 2px;
     font-size: 0.82rem;
     line-height: 1;
-    color: #475569;
+    color: #66605c;
   }
   .lang-btn {
     border: none;
@@ -93,7 +93,7 @@
     font-weight: 600;
     border-radius: 9999px;
     cursor: pointer;
-    color: #475569;
+    color: #66605c;
     transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
@@ -104,7 +104,7 @@
     text-shadow: none;
   }
   .lang-btn:hover:not(.active) {
-    color: #0f172a;
+    color: #262a33;
     background: rgba(0, 0, 0, 0.05);
   }
   .lang-btn.active {
@@ -118,7 +118,7 @@
   .view-switch {
     display: inline-flex;
     align-items: center;
-    background: #f1f5f9;
+    background: #f6ede2;
     padding: 3px;
     border-radius: 8px;
     border: 1px solid var(--border);
@@ -152,8 +152,8 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   .badge-kerala {
-    background: #ecfdf5; color: #047857; font-size: 0.74rem; font-weight: 600;
-    padding: 0.25rem 0.6rem; border-radius: 20px; border: 1px solid #a7f3d0;
+    background: #eef5f5; color: #0d7680; font-size: 0.74rem; font-weight: 600;
+    padding: 0.25rem 0.6rem; border-radius: 20px; border: 1px solid #a8cfd1;
     display: none;
   }
   @media (min-width: 900px) {
@@ -301,10 +301,10 @@
   .bubble p:last-child { margin-bottom: 0; }
   .bubble ul, .bubble ol { margin-left: 1.2rem; margin-bottom: 0.55rem; }
   .bubble li { margin-bottom: 0.25rem; }
-  .bubble strong { color: #0f172a; }
+  .bubble strong { color: #262a33; }
   .msg.user .bubble strong { color: #fff; }
   .bubble blockquote {
-    background: #f8fafc;
+    background: #f6ede2;
     border-left: 4px solid #990f3d;
     padding: 0.5rem 0.8rem;
     margin: 0.6rem 0;
@@ -314,8 +314,8 @@
 
   /* WhatsApp Draft Card */
   .whatsapp-card {
-    background: #f0fdf4;
-    border: 1.5px solid #86efac;
+    background: #eef5f5;
+    border: 1.5px solid #a8cfd1;
     border-radius: 10px;
     padding: 0.85rem 1rem;
     margin: 0.8rem 0;
@@ -331,7 +331,7 @@
   .whatsapp-title {
     font-size: 0.78rem;
     font-weight: 700;
-    color: #15803d;
+    color: #0d7680;
     display: flex; align-items: center; gap: 0.35rem;
   }
   .whatsapp-actions {
@@ -341,14 +341,14 @@
   }
   .whatsapp-text {
     font-size: 0.92rem;
-    color: #166534;
+    color: #0d7680;
     line-height: 1.55;
     margin-bottom: 0.4rem;
     font-family: 'Noto Sans Malayalam', sans-serif;
     background: #ffffff;
     padding: 0.65rem 0.8rem;
     border-radius: 6px;
-    border: 1px solid #bbf7d0;
+    border: 1px solid #a8cfd1;
   }
   .copy-btn, .wa-direct-btn {
     border: none;
@@ -369,10 +369,10 @@
   .copy-btn.copied { background: #0d7680 !important; color: #ffffff !important; }
   
   .wa-direct-btn {
-    background: #25d366;
+    background: #0d7680;
     color: #fff;
   }
-  .wa-direct-btn:hover { background: #128c7e; }
+  .wa-direct-btn:hover { background: #0a5c63; }
 
   /* Typing dots loading bubble */
   .typing-indicator {
@@ -436,7 +436,7 @@
     flex-shrink: 0;
   }
   button#send-btn:hover { background: #7c0c32; }
-  button#send-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+  button#send-btn:disabled { background: #a89886; cursor: not-allowed; }
 
   /* Upload button */
   .upload-trigger-btn {
@@ -444,7 +444,7 @@
     height: 48px;
     border: 1.5px solid var(--border);
     border-radius: 10px;
-    background: #f8fafc;
+    background: #f6ede2;
     color: #990f3d;
     font-size: 1.25rem;
     cursor: pointer;
@@ -455,7 +455,7 @@
     flex-shrink: 0;
   }
   .upload-trigger-btn:hover {
-    background: #ecfdf5;
+    background: #eef5f5;
     border-color: #990f3d;
     transform: translateY(-1px);
   }
@@ -464,9 +464,9 @@
   .drop-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(236, 253, 245, 0.94);
+    background: rgba(238, 245, 245, 0.94);
     backdrop-filter: blur(4px);
-    border: 3px dashed #10b981;
+    border: 3px dashed #0d7680;
     z-index: 1000;
     display: none;
     align-items: center;
@@ -481,7 +481,7 @@
     padding: 2rem 2.5rem;
     border-radius: 16px;
     box-shadow: 0 20px 40px rgba(15, 81, 50, 0.18);
-    border: 1px solid #a7f3d0;
+    border: 1px solid #a8cfd1;
     max-width: 440px;
     margin: 1rem;
     animation: scaleInDrop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -503,12 +503,12 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
-  .drop-title { font-size: 1.15rem; font-weight: 700; color: #065f46; margin-bottom: 0.3rem; }
-  .drop-subtitle { font-size: 0.82rem; color: #475569; line-height: 1.4; margin-bottom: 0.8rem; }
+  .drop-title { font-size: 1.15rem; font-weight: 700; color: #0d7680; margin-bottom: 0.3rem; }
+  .drop-subtitle { font-size: 0.82rem; color: #66605c; line-height: 1.4; margin-bottom: 0.8rem; }
   .drop-badges { display: flex; justify-content: center; gap: 0.4rem; flex-wrap: wrap; }
   .drop-badges span {
-    font-size: 0.7rem; font-weight: 700; background: #ecfdf5; color: #047857;
-    padding: 3px 8px; border-radius: 12px; border: 1px solid #a7f3d0;
+    font-size: 0.7rem; font-weight: 700; background: #eef5f5; color: #0d7680;
+    padding: 3px 8px; border-radius: 12px; border: 1px solid #a8cfd1;
   }
 
   /* Dedicated Deed Dropzone Card in Chat Pane */
@@ -517,13 +517,13 @@
     transition: all 0.2s ease;
   }
   .deed-dropzone {
-    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
-    border: 1.5px dashed #34d399;
+    background: linear-gradient(135deg, #eef5f5 0%, #eef5f5 100%);
+    border: 1.5px dashed #5ea9ad;
     border-radius: 10px;
     padding: 0.65rem 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.08);
+    box-shadow: 0 1px 4px rgba(13, 118, 128, 0.08);
   }
   .deed-dropzone-container.minimized {
     padding: 0.3rem 0.9rem 0.1rem 0.9rem;
@@ -561,22 +561,22 @@
   .dropzone-toggle-btn {
     margin-left: auto;
     background: #ffffff;
-    border: 1px solid #a7f3d0;
+    border: 1px solid #a8cfd1;
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    color: #047857;
+    color: #0d7680;
     padding: 1px 8px;
     cursor: pointer;
     transition: all 0.15s ease;
   }
   .dropzone-toggle-btn:hover {
-    background: #d1fae5;
+    background: #dcebec;
   }
   .deed-dropzone:hover, .deed-dropzone.drag-hover {
-    background: #e6fcf0;
-    border-color: #059669;
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.16);
+    background: #eef5f5;
+    border-color: #0d7680;
+    box-shadow: 0 6px 18px rgba(13, 118, 128, 0.16);
     transform: translateY(-1px);
   }
   .dropzone-badge-row {
@@ -589,26 +589,26 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    background: #0d7680;
+    box-shadow: 0 0 0 0 rgba(13, 118, 128, 0.7);
     animation: pulseDropzone 1.8s infinite;
   }
   @keyframes pulseDropzone {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 118, 128, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(13, 118, 128, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 118, 128, 0); }
   }
   .dropzone-tag {
     font-size: 0.72rem;
     font-weight: 700;
-    color: #047857;
+    color: #0d7680;
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
   .dropzone-model {
     font-size: 0.68rem;
     font-weight: 600;
-    background: #065f46;
+    background: #0d7680;
     color: #fff;
     padding: 1px 6px;
     border-radius: 10px;
@@ -627,12 +627,12 @@
   .dropzone-title {
     font-size: 0.88rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #262a33;
     line-height: 1.35;
   }
   .dropzone-desc {
     font-size: 0.75rem;
-    color: #475569;
+    color: #66605c;
     margin-top: 2px;
     line-height: 1.3;
   }
@@ -642,7 +642,7 @@
     justify-content: space-between;
     gap: 0.6rem;
     flex-wrap: wrap;
-    border-top: 1px solid rgba(16, 185, 129, 0.2);
+    border-top: 1px solid rgba(13, 118, 128, 0.2);
     padding-top: 0.45rem;
   }
   .dropzone-formats {
@@ -655,14 +655,14 @@
     font-size: 0.66rem;
     font-weight: 700;
     background: #ffffff;
-    color: #047857;
-    border: 1px solid #a7f3d0;
+    color: #0d7680;
+    border: 1px solid #a8cfd1;
     border-radius: 4px;
     padding: 1px 5px;
   }
   .format-pill.lang {
-    background: #ecfdf5;
-    color: #065f46;
+    background: #eef5f5;
+    color: #0d7680;
   }
   .dropzone-btns {
     display: flex;
@@ -690,20 +690,20 @@
   .dropzone-btn.secondary {
     background: #ffffff;
     color: #990f3d;
-    border: 1px solid #a7f3d0;
+    border: 1px solid #a8cfd1;
   }
   .dropzone-btn.secondary:hover {
-    background: #f0fdf4;
-    border-color: #059669;
+    background: #eef5f5;
+    border-color: #0d7680;
   }
   .dropzone-btn.highlight {
-    background: #dcfce7;
-    color: #14532d;
-    border: 1.5px solid #22c55e;
+    background: #dcebec;
+    color: #0a5c63;
+    border: 1.5px solid #0d7680;
     font-weight: 700;
   }
   .dropzone-btn.highlight:hover {
-    background: #bbf7d0;
+    background: #a8cfd1;
   }
 
   /* Layman Quick Start Cards */
@@ -715,7 +715,7 @@
   }
   .layman-card {
     background: #ffffff;
-    border: 1.5px solid #cbd5e1;
+    border: 1.5px solid #e9decf;
     border-radius: 10px;
     padding: 0.75rem 0.85rem;
     cursor: pointer;
@@ -732,25 +732,25 @@
     box-shadow: 0 6px 16px rgba(15, 81, 50, 0.12);
   }
   .layman-card.card-deed {
-    border-color: #86efac;
-    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    border-color: #a8cfd1;
+    background: linear-gradient(180deg, #ffffff 0%, #eef5f5 100%);
   }
   .layman-card.card-deed:hover {
-    border-color: #16a34a;
+    border-color: #0d7680;
   }
   .layman-card.card-ec {
-    border-color: #fed7aa;
-    background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+    border-color: #ecd2a8;
+    background: linear-gradient(180deg, #ffffff 0%, #fbf0e0 100%);
   }
   .layman-card.card-ec:hover {
-    border-color: #ea580c;
+    border-color: #a35c00;
   }
   .layman-card.card-upload {
-    border-color: #93c5fd;
-    background: linear-gradient(180deg, #ffffff 0%, #eff6ff 100%);
+    border-color: #9fb8d8;
+    background: linear-gradient(180deg, #ffffff 0%, #eef2f7 100%);
   }
   .layman-card.card-upload:hover {
-    border-color: #2563eb;
+    border-color: #0f5499;
   }
   .layman-card-top {
     display: flex;
@@ -770,27 +770,27 @@
     text-transform: uppercase;
   }
   .layman-card.card-deed .layman-card-badge {
-    background: #dcfce7;
-    color: #166534;
+    background: #dcebec;
+    color: #0d7680;
   }
   .layman-card.card-ec .layman-card-badge {
-    background: #ffedd5;
-    color: #9a3412;
+    background: #f7e3c8;
+    color: #8a4d00;
   }
   .layman-card.card-upload .layman-card-badge {
-    background: #dbeafe;
-    color: #1e40af;
+    background: #e1e9f3;
+    color: #0f5499;
   }
   .layman-card-title {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #262a33;
     line-height: 1.25;
     margin-bottom: 0.25rem;
   }
   .layman-card-desc {
     font-size: 0.72rem;
-    color: #475569;
+    color: #66605c;
     line-height: 1.35;
     margin-bottom: 0.5rem;
   }
@@ -814,19 +814,19 @@
     gap: 0.35rem;
   }
   .buyer-verdict-box.danger {
-    background: #fef2f2;
-    border: 1.5px solid #f87171;
-    color: #991b1b;
+    background: #fbebee;
+    border: 1.5px solid #c75b7a;
+    color: #7c0c32;
   }
   .buyer-verdict-box.caution {
-    background: #fffbeb;
-    border: 1.5px solid #fde68a;
-    color: #92400e;
+    background: #fbf0e0;
+    border: 1.5px solid #ecd2a8;
+    color: #8a4d00;
   }
   .buyer-verdict-box.clear {
-    background: #f0fdf4;
-    border: 1.5px solid #86efac;
-    color: #166534;
+    background: #eef5f5;
+    border: 1.5px solid #a8cfd1;
+    color: #0d7680;
   }
   .buyer-verdict-title {
     font-size: 0.88rem;
@@ -843,11 +843,11 @@
   /* Progress card during upload & vision OCR */
   .ocr-progress-card {
     background: #ffffff;
-    border: 1.5px solid #a7f3d0;
+    border: 1.5px solid #a8cfd1;
     border-radius: 10px;
     padding: 0.85rem 1rem;
     margin: 0.5rem 0;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+    box-shadow: 0 4px 12px rgba(13, 118, 128, 0.08);
   }
   .ocr-progress-header {
     display: flex;
@@ -855,14 +855,14 @@
     gap: 0.5rem;
     font-size: 0.84rem;
     font-weight: 700;
-    color: #065f46;
+    color: #0d7680;
     margin-bottom: 0.6rem;
   }
   .ocr-spinner {
     width: 14px;
     height: 14px;
-    border: 2px solid #a7f3d0;
-    border-top-color: #059669;
+    border: 2px solid #a8cfd1;
+    border-top-color: #0d7680;
     border-radius: 50%;
     animation: spinOcr 0.8s linear infinite;
   }
@@ -876,24 +876,24 @@
   }
   .ocr-step {
     font-size: 0.74rem;
-    color: #64748b;
+    color: #66605c;
     display: flex;
     align-items: center;
     gap: 0.4rem;
   }
   .ocr-step.done {
-    color: #059669;
+    color: #0d7680;
     font-weight: 600;
   }
   .ocr-step.active {
-    color: #0f172a;
+    color: #262a33;
     font-weight: 700;
   }
 
   .deed-engine-badge {
-    background: #ecfdf5;
-    color: #047857;
-    border: 1px solid #a7f3d0;
+    background: #eef5f5;
+    color: #0d7680;
+    border: 1px solid #a8cfd1;
     font-size: 0.7rem;
     font-weight: 600;
     padding: 2px 7px;
@@ -906,9 +906,9 @@
     margin-top: 0.65rem;
   }
   .deed-action-btn {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     background: #ffffff;
-    color: #1e293b;
+    color: #262a33;
     font-size: 0.76rem;
     font-weight: 600;
     padding: 5px 10px;
@@ -920,7 +920,7 @@
     transition: all 0.15s;
   }
   .deed-action-btn:hover {
-    background: #f8fafc;
+    background: #f6ede2;
     border-color: #990f3d;
     color: #990f3d;
   }
@@ -928,16 +928,16 @@
   /* Deed Audit Card */
   .deed-audit-card {
     background: #ffffff;
-    border: 1.5px solid #cbd5e1;
+    border: 1.5px solid #e9decf;
     border-radius: 12px;
     overflow: hidden;
     margin: 0.75rem 0;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   }
   .deed-card-header {
-    background: #f8fafc;
+    background: #f6ede2;
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9decf;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -945,10 +945,10 @@
     gap: 0.5rem;
   }
   .deed-title-group { display: flex; align-items: center; gap: 0.5rem; }
-  .deed-doc-tag { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+  .deed-doc-tag { font-size: 0.95rem; font-weight: 700; color: #262a33; }
   .deed-type-badge {
-    background: #e2e8f0;
-    color: #334155;
+    background: #e9decf;
+    color: #4d4845;
     padding: 2px 7px;
     border-radius: 4px;
     font-size: 0.72rem;
@@ -963,9 +963,9 @@
     align-items: center;
     gap: 0.35rem;
   }
-  .deed-score-badge.clear { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
-  .deed-score-badge.caution { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-  .deed-score-badge.danger { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+  .deed-score-badge.clear { background: #dcebec; color: #0d7680; border: 1px solid #a8cfd1; }
+  .deed-score-badge.caution { background: #fbf0e0; color: #a35c00; border: 1px solid #ecd2a8; }
+  .deed-score-badge.danger { background: #fbebee; color: #990f3d; border: 1px solid #e6a3b6; }
 
   .deed-card-body { padding: 0.85rem 1rem; }
   .deed-grid {
@@ -975,57 +975,57 @@
     margin-bottom: 0.85rem;
   }
   .deed-grid-item {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #f6ede2;
+    border: 1px solid #e9decf;
     border-radius: 8px;
     padding: 0.45rem 0.65rem;
   }
-  .deed-grid-label { font-size: 0.67rem; text-transform: uppercase; color: #64748b; font-weight: 600; }
-  .deed-grid-val { font-size: 0.92rem; font-weight: 700; color: #0f172a; margin-top: 2px; }
+  .deed-grid-label { font-size: 0.67rem; text-transform: uppercase; color: #66605c; font-weight: 600; }
+  .deed-grid-val { font-size: 0.92rem; font-weight: 700; color: #262a33; margin-top: 2px; }
 
   /* Boundaries list */
   .boundary-box {
-    background: #faf5ff;
-    border: 1px solid #e9d5ff;
+    background: #eef2f7;
+    border: 1px solid #c3d3e8;
     border-radius: 8px;
     padding: 0.6rem 0.8rem;
     margin-bottom: 0.85rem;
   }
-  .boundary-title { font-size: 0.78rem; font-weight: 700; color: #6b21a8; margin-bottom: 0.35rem; }
-  .boundary-row { font-size: 0.82rem; color: #374151; margin-bottom: 0.25rem; display: flex; gap: 0.4rem; }
-  .boundary-dir { font-weight: 700; min-width: 65px; color: #7e22ce; }
+  .boundary-title { font-size: 0.78rem; font-weight: 700; color: #0a3d70; margin-bottom: 0.35rem; }
+  .boundary-row { font-size: 0.82rem; color: #4d4845; margin-bottom: 0.25rem; display: flex; gap: 0.4rem; }
+  .boundary-dir { font-weight: 700; min-width: 65px; color: #0f5499; }
 
   /* Prior deeds pills */
   .prior-deeds-box {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background: #eef2f7;
+    border: 1px solid #c3d3e8;
     border-radius: 8px;
     padding: 0.6rem 0.8rem;
     margin-bottom: 0.85rem;
   }
-  .prior-title { font-size: 0.78rem; font-weight: 700; color: #1e40af; margin-bottom: 0.35rem; }
-  .prior-item { font-size: 0.82rem; color: #1e3a8a; margin-bottom: 0.2rem; }
+  .prior-title { font-size: 0.78rem; font-weight: 700; color: #0f5499; margin-bottom: 0.35rem; }
+  .prior-item { font-size: 0.82rem; color: #0a3d70; margin-bottom: 0.2rem; }
 
   /* Findings / Warnings */
   .findings-box {
     margin-bottom: 0.85rem;
   }
   .finding-alert {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-left: 4px solid #f59e0b;
+    background: #fbf0e0;
+    border: 1px solid #ecd2a8;
+    border-left: 4px solid #c07a1a;
     border-radius: 6px;
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.45rem;
     font-size: 0.82rem;
   }
   .finding-alert.critical {
-    background: #fef2f2;
-    border-color: #fecaca;
-    border-left-color: #ef4444;
+    background: #fbebee;
+    border-color: #f0c2cf;
+    border-left-color: #990f3d;
   }
-  .finding-alert-header { font-weight: 700; color: #92400e; display: flex; justify-content: space-between; margin-bottom: 0.2rem; }
-  .finding-alert.critical .finding-alert-header { color: #991b1b; }
+  .finding-alert-header { font-weight: 700; color: #8a4d00; display: flex; justify-content: space-between; margin-bottom: 0.2rem; }
+  .finding-alert.critical .finding-alert-header { color: #7c0c32; }
 
   /* Map Pane */
   #map-pane {
@@ -1067,7 +1067,7 @@
     font-size: 0.77rem;
     font-weight: 500;
     color: var(--text);
-    background: #f8fafc;
+    background: #f6ede2;
     outline: none;
     cursor: pointer;
     max-width: 250px;
@@ -1103,7 +1103,7 @@
 
   /* Map Toolbar */
   .map-toolbar {
-    background: #f8fafc;
+    background: #f6ede2;
     border-bottom: 1px solid var(--border);
     padding: 0.4rem 0.85rem;
     display: flex;
@@ -1128,16 +1128,16 @@
     transition: all 0.15s ease;
     white-space: nowrap;
   }
-  .map-tool-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+  .map-tool-btn:hover { background: #f6ede2; border-color: #e9decf; }
   .map-tool-btn.active {
     background: #990f3d;
     color: #ffffff;
     border-color: #990f3d;
   }
   .map-tool-btn.highlight {
-    background: #fef3c7;
-    border-color: #fde68a;
-    color: #92400e;
+    background: #fbf0e0;
+    border-color: #ecd2a8;
+    color: #8a4d00;
   }
   .map-tool-btn:disabled {
     opacity: 0.45;
@@ -1150,7 +1150,7 @@
     font-size: 0.75rem;
     background: #ffffff;
     font-weight: 600;
-    color: #334155;
+    color: #4d4845;
     cursor: pointer;
     margin-left: auto;
     flex-shrink: 0;
@@ -1158,14 +1158,14 @@
 
   /* Interactive Tool Guidance Bar */
   .map-guidance-bar {
-    background: #ecfdf5;
-    border-bottom: 1px solid #a7f3d0;
+    background: #eef5f5;
+    border-bottom: 1px solid #a8cfd1;
     padding: 0.35rem 0.85rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: #065f46;
+    color: #0d7680;
     z-index: 490;
     gap: 0.5rem;
   }
@@ -1194,10 +1194,10 @@
   }
   .guidance-btn.secondary {
     background: #ffffff;
-    border: 1px solid #a7f3d0;
-    color: #065f46;
+    border: 1px solid #a8cfd1;
+    color: #0d7680;
   }
-  .guidance-btn.secondary:hover { background: #d1fae5; }
+  .guidance-btn.secondary:hover { background: #dcebec; }
   .guidance-btn.primary {
     background: #990f3d;
     color: #ffffff;
@@ -1214,7 +1214,7 @@
 
   /* Segment distance label tooltip styling (Survey FMB style) */
   .fmb-segment-label {
-    background: rgba(15, 23, 42, 0.85) !important;
+    background: rgba(38, 42, 51, 0.85) !important;
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     border-radius: 4px !important;
     color: #ffffff !important;
@@ -1224,7 +1224,7 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
     white-space: nowrap !important;
   }
-  .fmb-segment-label:before { border-top-color: rgba(15, 23, 42, 0.85) !important; }
+  .fmb-segment-label:before { border-top-color: rgba(38, 42, 51, 0.85) !important; }
 
   /* Draggable Survey Kallu (Corner Stone) Marker */
   .custom-kallu-marker {
@@ -1236,7 +1236,7 @@
   }
   .custom-kallu-marker div:hover {
     transform: scale(1.35);
-    box-shadow: 0 0 8px #22c55e !important;
+    box-shadow: 0 0 8px #0d7680 !important;
   }
 
   .map-hud {
@@ -1351,9 +1351,9 @@
     font-weight: 700;
     margin-top: 3px;
   }
-  .badge-road.pass { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-  .badge-road.warn { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-  .badge-road.fail { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+  .badge-road.pass { background: #dcebec; color: #0d7680; border: 1px solid #a8cfd1; }
+  .badge-road.warn { background: #fbf0e0; color: #a35c00; border: 1px solid #ecd2a8; }
+  .badge-road.fail { background: #fbebee; color: #990f3d; border: 1px solid #f0c2cf; }
 
   #hud-elevation-box {
     background: #f6ede2;
@@ -1593,8 +1593,8 @@
     gap: 0.4rem;
     padding: 0.28rem 0.65rem;
     border-radius: 20px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #f6ede2;
+    border: 1px solid #e9decf;
     color: var(--text-muted);
     font-weight: 600;
     cursor: pointer;
@@ -1602,9 +1602,9 @@
     transition: all 0.15s ease;
   }
   .workflow-step:hover {
-    background: #f1f5f9;
+    background: #f6ede2;
     color: var(--text);
-    border-color: #cbd5e1;
+    border-color: #e9decf;
   }
   .workflow-step.active {
     background: #fbebee;
@@ -1613,21 +1613,21 @@
     box-shadow: 0 1px 3px rgba(153, 15, 61, 0.15);
   }
   .workflow-step.completed {
-    background: #f0fdf4;
-    border-color: #86efac;
-    color: #166534;
+    background: #eef5f5;
+    border-color: #a8cfd1;
+    color: #0d7680;
   }
   .workflow-step.completed:hover {
-    background: #dcfce7;
-    border-color: #4ade80;
-    color: #14532d;
+    background: #dcebec;
+    border-color: #5ea9ad;
+    color: #0a5c63;
   }
   .workflow-step-num {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #e2e8f0;
-    color: #475569;
+    background: #e9decf;
+    color: #66605c;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1649,7 +1649,7 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #16a34a;
+    background: #0d7680;
     color: #ffffff;
     border: 1.5px solid #990f3d;
     font-size: 0.72rem;
@@ -1662,7 +1662,7 @@
     display: inline-flex;
   }
   .workflow-arrow {
-    color: #94a3b8;
+    color: #a89886;
     font-size: 0.85rem;
   }
   .export-report-btn {
@@ -1688,7 +1688,7 @@
   /* Step Navigation Bar & Progressive Disclosure Controls */
   .step-nav-bar {
     background: #fdfbf7;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9decf;
     padding: 0.45rem 1.1rem;
     display: flex;
     align-items: center;
@@ -1702,13 +1702,13 @@
     scroll-behavior: smooth;
     touch-action: pan-x;
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
+    scrollbar-color: #e9decf transparent;
   }
   .step-nav-bar::-webkit-scrollbar {
     height: 3px;
   }
   .step-nav-bar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #e9decf;
     border-radius: 2px;
   }
   .step-nav-bar.touch-dragging {
@@ -1725,7 +1725,7 @@
   .step-nav-label {
     font-family: var(--ft-font-serif);
     font-weight: 700;
-    color: #1e293b;
+    color: #262a33;
     font-size: 0.85rem;
     white-space: nowrap;
     overflow: hidden;
@@ -1740,9 +1740,9 @@
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    background: #f0fdf4;
-    border: 1px solid #16a34a;
-    color: #166534;
+    background: #eef5f5;
+    border: 1px solid #0d7680;
+    color: #0d7680;
     padding: 2px 7px;
     border-radius: 12px;
     font-size: 0.72rem;
@@ -1752,7 +1752,7 @@
   }
   .step-check-badge .check-icon {
     font-weight: 800;
-    color: #16a34a;
+    color: #0d7680;
   }
   .step-nav-controls {
     display: flex;
@@ -1761,9 +1761,9 @@
     flex-shrink: 0;
   }
   .step-nav-btn {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     background: #ffffff;
-    color: #334155;
+    color: #4d4845;
     padding: 0.3rem 0.75rem;
     border-radius: 6px;
     font-size: 0.76rem;
@@ -1775,19 +1775,19 @@
     gap: 0.35rem;
   }
   .step-nav-btn:hover:not(:disabled) {
-    background: #f1f5f9;
-    color: #0f172a;
-    border-color: #94a3b8;
+    background: #f6ede2;
+    color: #262a33;
+    border-color: #a89886;
   }
   .step-nav-btn:disabled {
     opacity: 0.45;
     cursor: not-allowed;
-    border-color: #e2e8f0;
+    border-color: #e9decf;
   }
   .step-nav-btn.next {
     background: #990f3d;
     color: #ffffff;
-    border-color: #0b3d26;
+    border-color: #0a5c63;
     font-weight: 700;
   }
   .step-nav-btn.next:hover:not(:disabled) {
@@ -1795,11 +1795,11 @@
     color: #ffffff;
   }
   .step-nav-btn.next.restart {
-    background: #1e293b;
-    border-color: #0f172a;
+    background: #262a33;
+    border-color: #262a33;
   }
   .step-nav-btn.next.restart:hover:not(:disabled) {
-    background: #334155;
+    background: #4d4845;
   }
 
   /* Categorized Action Tabs - Hidden: 4-step workflow encapsulates these phases cleanly */
@@ -1824,19 +1824,19 @@
   }
   .category-tab:hover {
     color: var(--text);
-    background: #f8fafc;
+    background: #f6ede2;
   }
   .category-tab.active {
     color: #990f3d;
     border-bottom-color: #990f3d;
     font-weight: 700;
-    background: #f0fdf4;
+    background: #eef5f5;
   }
 
   /* Interactive Ownership Timeline Styles */
   .timeline-card {
     background: #ffffff;
-    border: 1.5px solid #cbd5e1;
+    border: 1.5px solid #e9decf;
     border-radius: 12px;
     padding: 1rem 1.15rem;
     margin: 0.75rem 0;
@@ -1848,7 +1848,7 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 0.75rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9decf;
     padding-bottom: 0.75rem;
     margin-bottom: 0.85rem;
     flex-wrap: wrap;
@@ -1882,15 +1882,15 @@
     border-radius: 6px;
     font-size: 0.73rem;
     font-weight: 600;
-    border: 1px solid #e2e8f0;
-    background: #f8fafc;
-    color: #334155;
+    border: 1px solid #e9decf;
+    background: #f6ede2;
+    color: #4d4845;
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
   }
   .timeline-preset-btn:hover {
-    background: #f1f5f9;
+    background: #f6ede2;
   }
   .timeline-preset-btn.active {
     background: #990f3d;
@@ -1909,7 +1909,7 @@
     top: 6px;
     bottom: 16px;
     width: 2.5px;
-    background: #cbd5e1;
+    background: #e9decf;
     border-radius: 2px;
   }
   .timeline-item {
@@ -1927,7 +1927,7 @@
     height: 24px;
     border-radius: 50%;
     background: #ffffff;
-    border: 3px solid #64748b;
+    border: 3px solid #66605c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1937,37 +1937,37 @@
     transition: transform 0.15s ease;
   }
   .timeline-item.valid .timeline-marker {
-    border-color: #16a34a;
-    background: #dcfce7;
-    color: #15803d;
+    border-color: #0d7680;
+    background: #dcebec;
+    color: #0d7680;
   }
   .timeline-item.warning .timeline-marker {
-    border-color: #d97706;
-    background: #fef3c7;
-    color: #b45309;
+    border-color: #a35c00;
+    background: #fbf0e0;
+    color: #a35c00;
   }
   .timeline-item.broken .timeline-marker {
-    border-color: #dc2626;
-    background: #fee2e2;
-    color: #b91c1c;
+    border-color: #990f3d;
+    background: #fbebee;
+    color: #990f3d;
   }
   .timeline-item:hover .timeline-marker {
     transform: scale(1.15);
   }
   .timeline-node-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #f6ede2;
+    border: 1px solid #e9decf;
     border-radius: 9px;
     padding: 0.75rem 0.9rem;
     transition: all 0.15s ease;
   }
   .timeline-item.broken .timeline-node-card {
-    border-color: #fca5a5;
-    background: #fff5f5;
+    border-color: #e6a3b6;
+    background: #fbebee;
   }
   .timeline-item.warning .timeline-node-card {
-    border-color: #fcd34d;
-    background: #fffbeb;
+    border-color: #ecd2a8;
+    background: #fbf0e0;
   }
   .timeline-node-header {
     display: flex;
@@ -1980,7 +1980,7 @@
   .timeline-doc-title {
     font-size: 0.88rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #262a33;
     display: flex;
     align-items: center;
     gap: 0.35rem;
@@ -1995,9 +1995,9 @@
     font-weight: 700;
   }
   .timeline-extent-tag {
-    background: #e0f2fe;
-    color: #0369a1;
-    border: 1px solid #bae6fd;
+    background: #eef2f7;
+    color: #0f5499;
+    border: 1px solid #c3d3e8;
     padding: 1px 6px;
     border-radius: 4px;
     font-size: 0.72rem;
@@ -2005,7 +2005,7 @@
   }
   .timeline-parties {
     font-size: 0.79rem;
-    color: #334155;
+    color: #4d4845;
     margin-bottom: 0.4rem;
     display: flex;
     align-items: center;
@@ -2013,7 +2013,7 @@
     flex-wrap: wrap;
   }
   .timeline-party-arrow {
-    color: #64748b;
+    color: #66605c;
     font-weight: 700;
   }
   .timeline-flags-list {
@@ -2024,34 +2024,34 @@
   }
   .timeline-flag-pill {
     background: #ffffff;
-    border: 1px solid #fecaca;
-    border-left: 3.5px solid #dc2626;
+    border: 1px solid #f0c2cf;
+    border-left: 3.5px solid #990f3d;
     border-radius: 6px;
     padding: 0.4rem 0.6rem;
     font-size: 0.76rem;
     line-height: 1.4;
   }
   .timeline-flag-pill.warning {
-    border-color: #fde68a;
-    border-left-color: #d97706;
+    border-color: #ecd2a8;
+    border-left-color: #a35c00;
   }
   .timeline-flag-title {
     font-weight: 700;
-    color: #b91c1c;
+    color: #990f3d;
     display: flex;
     align-items: center;
     gap: 0.3rem;
   }
   .timeline-flag-pill.warning .timeline-flag-title {
-    color: #b45309;
+    color: #a35c00;
   }
   .timeline-flag-statute {
     font-size: 0.7rem;
-    color: #64748b;
+    color: #66605c;
     margin-top: 2px;
   }
   .timeline-flag-desc {
-    color: #334155;
+    color: #4d4845;
     margin-top: 2px;
   }
   .timeline-actions {
@@ -2059,11 +2059,11 @@
     gap: 0.4rem;
     margin-top: 0.75rem;
     padding-top: 0.6rem;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid #e9decf;
     flex-wrap: wrap;
   }
   .timeline-btn {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     background: #ffffff;
     padding: 0.3rem 0.6rem;
     border-radius: 6px;
@@ -2073,12 +2073,12 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    color: #334155;
+    color: #4d4845;
     transition: all 0.15s;
   }
   .timeline-btn:hover {
-    background: #f1f5f9;
-    border-color: #94a3b8;
+    background: #f6ede2;
+    border-color: #a89886;
   }
   .timeline-btn.primary {
     background: #990f3d;
@@ -2125,7 +2125,7 @@
     background: #ffffff;
     border-radius: 14px;
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     width: 100%;
     max-width: 520px;
     max-height: 90vh;
@@ -2142,14 +2142,14 @@
     justify-content: space-between;
     align-items: center;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f6ede2;
   }
   .modal-close-btn {
     background: none;
     border: none;
     font-size: 1.1rem;
     cursor: pointer;
-    color: #64748b;
+    color: #66605c;
     border-radius: 6px;
     width: 28px;
     height: 28px;
@@ -2157,12 +2157,12 @@
     align-items: center;
     justify-content: center;
   }
-  .modal-close-btn:hover { background: #f1f5f9; color: #1e293b; }
+  .modal-close-btn:hover { background: #f6ede2; color: #262a33; }
   .modal-tabs {
     display: flex;
     gap: 0.35rem;
     margin: 0.85rem 0 1rem 0;
-    background: #f1f5f9;
+    background: #f6ede2;
     padding: 4px;
     border-radius: 8px;
     overflow-x: auto;
@@ -2175,7 +2175,7 @@
     background: transparent;
     font-size: 0.74rem;
     font-weight: 600;
-    color: #475569;
+    color: #66605c;
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.15s ease;
@@ -2211,19 +2211,19 @@
   .chip-sm {
     padding: 0.25rem 0.6rem;
     border-radius: 14px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e9decf;
     background: #ffffff;
     font-size: 0.73rem;
     font-weight: 600;
-    color: #334155;
+    color: #4d4845;
     cursor: pointer;
     transition: all 0.15s ease;
   }
-  .chip-sm:hover { background: #f8fafc; border-color: #94a3b8; }
+  .chip-sm:hover { background: #f6ede2; border-color: #a89886; }
   .chip-sm.active {
-    background: #dcfce7;
-    border-color: #86efac;
-    color: #166534;
+    background: #dcebec;
+    border-color: #a8cfd1;
+    color: #0d7680;
   }
 </style>
 <link rel="stylesheet" href="/static/ft_theme.css">
@@ -2510,24 +2510,24 @@
 
         <!-- Tab 1: Auto-Detect -->
         <div class="modal-tab-pane" id="pane-detect">
-          <p style="font-size:0.83rem; color:#475569; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Detects real physical compound walls (<code>barrier=wall/fence</code>), building perimeters, or cadastral boundaries around the active satellite pin.
           </p>
-          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:0.65rem 0.85rem; margin-bottom:0.85rem;">
-            <div style="font-size:0.75rem; font-weight:600; color:#1e293b; margin-bottom:0.2rem;">Target Coordinates (Active Pin):</div>
+          <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:8px; padding:0.65rem 0.85rem; margin-bottom:0.85rem;">
+            <div style="font-size:0.75rem; font-weight:600; color:#262a33; margin-bottom:0.2rem;">Target Coordinates (Active Pin):</div>
             <div id="detect-modal-coords" style="font-size:0.82rem; font-family:monospace; color:#990f3d; font-weight:600;">10.1076, 76.3516</div>
           </div>
           <div style="margin-bottom:0.85rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#334155; display:block; margin-bottom:0.3rem;">Search Radius around Pin:</label>
-            <select id="detect-radius-select" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Search Radius around Pin:</label>
+            <select id="detect-radius-select" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
               <option value="60">60 meters (Immediate plot & compound)</option>
               <option value="80" selected>80 meters (Standard sub-division)</option>
               <option value="120">120 meters (Broad parcel cluster)</option>
             </select>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#334155; display:block; margin-bottom:0.3rem;">Target Extent (Optional - for validation):</label>
-            <input type="number" id="detect-target-cents" placeholder="e.g. 10.0 Cents" step="0.1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Target Extent (Optional - for validation):</label>
+            <input type="number" id="detect-target-cents" placeholder="e.g. 10.0 Cents" step="0.1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
           </div>
           <button class="primary-action-btn" onclick="executeAutoDetectBoundaries()" id="btn-run-detect" style="width:100%;">
             <span>Detect Surrounding Boundaries</span>
@@ -2536,11 +2536,11 @@
 
         <!-- Tab 2: Generate from Extent -->
         <div class="modal-tab-pane" id="pane-extent" style="display:none;">
-          <p style="font-size:0.83rem; color:#475569; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Places a mathematically calibrated boundary footprint matching the exact land extent in <strong>Kerala Cents</strong>, with draggable survey corner stones (<em>Survey Kallu</em>) and live FMB dimensions.
           </p>
           <div style="margin-bottom:0.75rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#334155; display:block; margin-bottom:0.4rem;">Quick Extent Selection:</label>
+            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.4rem;">Quick Extent Selection:</label>
             <div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.6rem;">
               <button type="button" class="chip-sm" onclick="setExtentInput(3)">3 Cents</button>
               <button type="button" class="chip-sm" onclick="setExtentInput(5)">5 Cents</button>
@@ -2551,13 +2551,13 @@
               <button type="button" class="chip-sm" onclick="setExtentInput(25)">25 Cents</button>
             </div>
             <div style="display:flex; align-items:center; gap:0.5rem;">
-              <input type="number" id="custom-extent-input" value="10.0" step="0.25" min="0.5" max="1000" oninput="updateExtentSqmDisplay(this.value)" style="flex:1; padding:7px 10px; border-radius:6px; border:1px solid #cbd5e1; font-weight:600; font-size:0.85rem;">
-              <span style="font-size:0.82rem; font-weight:600; color:#475569;">Cents (= <span id="extent-sqm-calc">404.7</span> m²)</span>
+              <input type="number" id="custom-extent-input" value="10.0" step="0.25" min="0.5" max="1000" oninput="updateExtentSqmDisplay(this.value)" style="flex:1; padding:7px 10px; border-radius:6px; border:1px solid #e9decf; font-weight:600; font-size:0.85rem;">
+              <span style="font-size:0.82rem; font-weight:600; color:#66605c;">Cents (= <span id="extent-sqm-calc">404.7</span> m²)</span>
             </div>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#334155; display:block; margin-bottom:0.3rem;">Plot Aspect Ratio:</label>
-            <select id="extent-aspect-ratio" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Plot Aspect Ratio:</label>
+            <select id="extent-aspect-ratio" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
               <option value="1:1" selected>Square (1:1 - Standard Residential)</option>
               <option value="1:1.5">Road Frontage (1:1.5 - Wide Frontage)</option>
               <option value="1.5:1">Deep Plot (1.5:1 - Narrow Frontage)</option>
@@ -2571,22 +2571,22 @@
 
         <!-- Tab 3: BhuNaksha FMB Lookup -->
         <div class="modal-tab-pane" id="pane-cadastral" style="display:none;">
-          <p style="font-size:0.83rem; color:#475569; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Demarcates the official digital cadastral sub-division parcel with FMB ladder dimensions and adjacent survey numbers under Kerala Land Records.
           </p>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.75rem;">
             <div>
-              <label style="font-size:0.78rem; font-weight:600; color:#334155; display:block; margin-bottom:0.25rem;">Re-Survey No:</label>
-              <input type="text" id="cadastral-survey-input" value="345/1" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+              <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Re-Survey No:</label>
+              <input type="text" id="cadastral-survey-input" value="345/1" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
             </div>
             <div>
-              <label style="font-size:0.78rem; font-weight:600; color:#334155; display:block; margin-bottom:0.25rem;">Village:</label>
-              <input type="text" id="cadastral-village-input" value="Aluva West" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+              <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Village:</label>
+              <input type="text" id="cadastral-village-input" value="Aluva West" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
             </div>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#334155; display:block; margin-bottom:0.25rem;">Deed Extent (Cents):</label>
-            <input type="number" id="cadastral-cents-input" value="10.0" step="0.5" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:0.8rem;">
+            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Deed Extent (Cents):</label>
+            <input type="number" id="cadastral-cents-input" value="10.0" step="0.5" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
           </div>
           <button class="primary-action-btn" onclick="executeFetchCadastralParcel()" style="width:100%;">
             <span>Fetch BhuNaksha Cadastral Parcel</span>
@@ -2595,15 +2595,15 @@
 
         <!-- Tab 4: Import Coordinates / Survey Files -->
         <div class="modal-tab-pane" id="pane-import" style="display:none;">
-          <p style="font-size:0.83rem; color:#475569; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Import boundary survey coordinates from smartphone GPS, surveyor Total Station, or KML/GPX/GeoJSON files.
           </p>
           <div style="margin-bottom:0.75rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#334155; display:block; margin-bottom:0.25rem;">Paste Survey Corner Coordinates (one lat,lng per line):</label>
-            <textarea id="import-coords-text" rows="4" placeholder="10.10750, 76.35140&#10;10.10770, 76.35140&#10;10.10770, 76.35165&#10;10.10750, 76.35165" style="width:100%; padding:6px 10px; font-family:monospace; font-size:0.78rem; border-radius:6px; border:1px solid #cbd5e1;"></textarea>
+            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Paste Survey Corner Coordinates (one lat,lng per line):</label>
+            <textarea id="import-coords-text" rows="4" placeholder="10.10750, 76.35140&#10;10.10770, 76.35140&#10;10.10770, 76.35165&#10;10.10750, 76.35165" style="width:100%; padding:6px 10px; font-family:monospace; font-size:0.78rem; border-radius:6px; border:1px solid #e9decf;"></textarea>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#334155; display:block; margin-bottom:0.25rem;">Or Upload Survey File (.kml, .gpx, .geojson, .txt):</label>
+            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Or Upload Survey File (.kml, .gpx, .geojson, .txt):</label>
             <input type="file" id="import-file-input" accept=".kml,.gpx,.geojson,.json,.txt" onchange="handleSurveyFileUpload(this.files[0])" style="font-size:0.8rem; width:100%;">
           </div>
           <button class="primary-action-btn" onclick="executeImportCoordinates()" style="width:100%;">
@@ -2655,7 +2655,7 @@
             <span id="hud-elevation-text" style="font-size: 0.85rem; font-weight: 700;">6.5m MSL</span>
             <span class="badge-road warn" id="hud-flood-badge">▲ Moderate Flood Risk</span>
           </div>
-          <div id="hud-basin-text" style="font-size: 0.7rem; color: #475569; margin-top: 3px;">Periyar River Basin • Plinth: ≥0.75m</div>
+          <div id="hud-basin-text" style="font-size: 0.7rem; color: #66605c; margin-top: 3px;">Periyar River Basin • Plinth: ≥0.75m</div>
         </div>
       </div>
 
@@ -2673,7 +2673,7 @@
     <div class="checklist-panel" id="checklist-panel">
       <div class="checklist-header">
         <span id="chk-panel-title">On-Site Field Check Essentials</span>
-        <button class="checklist-close-btn" onclick="toggleChecklist(false)" style="border:none; background:transparent; font-size:0.9rem; cursor:pointer; color:#64748b;">✕</button>
+        <button class="checklist-close-btn" onclick="toggleChecklist(false)" style="border:none; background:transparent; font-size:0.9rem; cursor:pointer; color:#66605c;">✕</button>
       </div>
       <div class="checklist-row">
         <input type="checkbox" id="chk-kallu" onchange="updateChecklistProgress()">
@@ -2695,7 +2695,7 @@
         <input type="checkbox" id="chk-flood" onchange="updateChecklistProgress()">
         <label for="chk-flood" id="chk-lbl-flood"><strong>Flood Watermarks:</strong> Check compound walls & poles for 2018 monsoon waterlines.</label>
       </div>
-      <div id="chk-hint" style="font-size:0.7rem; color:#64748b; margin-top:0.3rem; border-top:1px dashed #e2e8f0; padding-top:0.3rem;">
+      <div id="chk-hint" style="font-size:0.7rem; color:#66605c; margin-top:0.3rem; border-top:1px dashed #e9decf; padding-top:0.3rem;">
         Tick items as you verify them on-site with your surveyor.
       </div>
     </div>
@@ -3639,7 +3639,7 @@ function copyText(btn, text) {
     const originalBg = btn.style.backgroundColor;
     const originalColor = btn.style.color;
     btn.innerHTML = "✓ Copied!";
-    btn.style.backgroundColor = "#16a34a";
+    btn.style.backgroundColor = "#0d7680";
     btn.style.color = "#ffffff";
     btn.classList.add("copied");
     setTimeout(() => {
@@ -3801,7 +3801,7 @@ async function handleDeedUpload(file) {
     }, 300);
 
   } catch (err) {
-    loadingBubble.innerHTML = `<span style="color:#b91c1c;">▲ Error analyzing deed document: ${err.message}</span>`;
+    loadingBubble.innerHTML = `<span style="color:#990f3d;">▲ Error analyzing deed document: ${err.message}</span>`;
   }
 }
 
@@ -3844,7 +3844,7 @@ async function runSampleDeedOCR(docType = "deed") {
       renderDeedAuditCard(loadingBubble, result, fileName);
     }, 400);
   } catch (err) {
-    loadingBubble.innerHTML = `<span style="color:#b91c1c;">▲ Error scanning document: ${err.message}</span>`;
+    loadingBubble.innerHTML = `<span style="color:#990f3d;">▲ Error scanning document: ${err.message}</span>`;
   }
 }
 
@@ -3856,7 +3856,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (data.is_nil_encumbrance !== undefined || data.entries !== undefined) {
     const ecScore = data.safety_score ?? 100;
     const isNil = data.is_nil_encumbrance;
-    const badgeColor = isNil ? "#10b981" : (data.risk_flags && data.risk_flags.length ? "#ef4444" : "#f59e0b");
+    const badgeColor = isNil ? "#0d7680" : (data.risk_flags && data.risk_flags.length ? "#990f3d" : "#c07a1a");
     const badgeText = isNil ? "● NIL ENCUMBRANCE (Nil-EC)" : (data.risk_flags && data.risk_flags.length ? "■ ACTIVE LIABILITIES / GEHAN" : "▲ RECORDED TRANSACTIONS");
 
     let entriesHtml = "";
@@ -3866,12 +3866,12 @@ function renderDeedAuditCard(container, data, fileName) {
           <strong>Official SRO EC Registration Entries (${data.total_entries_count}):</strong>
           <div style="display:flex; flex-direction:column; gap:6px; margin-top:6px;">
             ${data.entries.map(e => `
-              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:6px 10px;">
+              <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:6px; padding:6px 10px;">
                 <div style="display:flex; justify-content:space-between; font-weight:700;">
                   <span>Doc #${e.doc_number} (${e.year}) - SRO ${e.sro_name}</span>
-                  <span style="color:${e.is_undischarged_liability || e.is_court_attachment ? '#b91c1c' : '#166534'};">${e.nature_of_act}</span>
+                  <span style="color:${e.is_undischarged_liability || e.is_court_attachment ? '#990f3d' : '#0d7680'};">${e.nature_of_act}</span>
                 </div>
-                <div style="color:#64748b; font-size:0.75rem; margin-top:2px;">
+                <div style="color:#66605c; font-size:0.75rem; margin-top:2px;">
                   ${e.claimants && e.claimants.length ? `Favoring: ${e.claimants.join(', ')} | ` : ''}
                   ${e.liability_amount_inr ? `Liability: ₹${e.liability_amount_inr.toLocaleString()} | ` : ''}
                   ${e.notes ? e.notes : ''}
@@ -3886,12 +3886,12 @@ function renderDeedAuditCard(container, data, fileName) {
     let risksHtml = "";
     if (data.risk_flags && data.risk_flags.length) {
       risksHtml = `
-        <div style="margin-top:10px; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:8px 12px;">
-          <div style="font-weight:700; color:#991b1b; font-size:0.84rem; margin-bottom:4px;">■ Critical Encumbrance Flags:</div>
+        <div style="margin-top:10px; background:#fbebee; border:1px solid #f0c2cf; border-radius:8px; padding:8px 12px;">
+          <div style="font-weight:700; color:#7c0c32; font-size:0.84rem; margin-bottom:4px;">■ Critical Encumbrance Flags:</div>
           ${data.risk_flags.map(r => `
-            <div style="font-size:0.8rem; color:#7f1d1d; margin-bottom:6px;">
+            <div style="font-size:0.8rem; color:#5f0926; margin-bottom:6px;">
               <strong>${r.title}:</strong> ${r.description}<br>
-              <small style="color:#991b1b;">Remedy: ${r.remedial_action}</small>
+              <small style="color:#7c0c32;">Remedy: ${r.remedial_action}</small>
             </div>
           `).join('')}
         </div>
@@ -3903,13 +3903,13 @@ function renderDeedAuditCard(container, data, fileName) {
         <div class="deed-audit-header">
           <div>
             <div style="font-size:0.92rem; font-weight:700; color:#990f3d;">SRO Encumbrance Certificate (EC) Audit</div>
-            <div style="font-size:0.75rem; color:#64748b;">${fileName} • Search Period: ${data.ec_period || '30 Years'}</div>
+            <div style="font-size:0.75rem; color:#66605c;">${fileName} • Search Period: ${data.ec_period || '30 Years'}</div>
           </div>
           <div style="background:${badgeColor}; color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:12px;">
             ${badgeText} (${ecScore}/100)
           </div>
         </div>
-        <div style="font-size:0.84rem; color:#334155; margin-top:8px;">${data.summary}</div>
+        <div style="font-size:0.84rem; color:#4d4845; margin-top:8px;">${data.summary}</div>
         ${risksHtml}
         ${entriesHtml}
         <div class="whatsapp-card" style="margin-top:12px;">
@@ -3992,7 +3992,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (sanity.findings && sanity.findings.length) {
     findingsHtml = `
       <div class="findings-box">
-        <div style="font-weight:700; color:#b91c1c; font-size:0.82rem; margin-bottom:0.35rem;">▲ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
+        <div style="font-weight:700; color:#990f3d; font-size:0.82rem; margin-bottom:0.35rem;">▲ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
         ${sanity.findings.map(f => {
           let exp = f.explanation || '';
           if (currentLanguage === 'en') {
@@ -4005,7 +4005,7 @@ function renderDeedAuditCard(container, data, fileName) {
               <span style="font-size:0.7rem; text-transform:uppercase;">${f.severity}</span>
             </div>
             <div>${exp}</div>
-            <div style="font-size:0.72rem; color:#6b7280; margin-top:3px;"><strong>Statute:</strong> ${f.kerala_statute}</div>
+            <div style="font-size:0.72rem; color:#66605c; margin-top:3px;"><strong>Statute:</strong> ${f.kerala_statute}</div>
           </div>`;
         }).join("")}
       </div>
@@ -4017,7 +4017,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (data.building_rules) {
     const br = data.building_rules;
     buildingHtml = `
-      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#166534;">
+      <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#0d7680;">
         <strong>Building Rules Match (${br.rule_citation || 'KPBR 2019'}):</strong><br>
         • Min Access Road Width: <strong>${br.min_road_width_m} meters</strong><br>
         • Setbacks: Front ${br.front_setback_m}m | Rear ${br.rear_setback_m}m | Sides ${br.side_setback_1_m}m & ${br.side_setback_2_m}m
@@ -4030,7 +4030,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (data.paddy_conversion && data.paddy_conversion.statutory_conversion_fee_inr > 0) {
     const pc = data.paddy_conversion;
     paddyHtml = `
-      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#92400e;">
+      <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#8a4d00;">
         <strong>Form 6 Section 27A Conversion Fee:</strong><br>
         • Estimated Govt Fee: <strong>₹${pc.statutory_conversion_fee_inr.toLocaleString('en-IN')}</strong> (${pc.applicable_slab_percentage}% slab)<br>
         • Free Exemption Applied: ${pc.free_exemption_cents} Cents (Govt exemption for residential plots up to 25 cents).
@@ -4080,10 +4080,10 @@ function renderDeedAuditCard(container, data, fileName) {
         <div class="deed-title-group">
           <span>¶</span>
           <span class="deed-doc-tag">${meta.document_number ? `Doc ${meta.document_number}` : fileName}</span>
-          ${meta.year ? `<span style="font-size:0.8rem; color:#64748b;">(${meta.year})</span>` : ""}
+          ${meta.year ? `<span style="font-size:0.8rem; color:#66605c;">(${meta.year})</span>` : ""}
           <span class="deed-type-badge">${meta.deed_type || "Kerala Title Deed"}</span>
           <span class="deed-engine-badge">${data.ocr_engine_used || meta.ocr_engine_used || 'Gemini 3.8 Flash Vision'}</span>
-          ${meta.sro_name ? `<span style="font-size:0.75rem; color:#475569;">SRO ${meta.sro_name}</span>` : ""}
+          ${meta.sro_name ? `<span style="font-size:0.75rem; color:#66605c;">SRO ${meta.sro_name}</span>` : ""}
         </div>
         <div class="deed-score-badge ${scoreClass}">
           <span>${scoreIcon}</span>
@@ -4108,7 +4108,7 @@ function renderDeedAuditCard(container, data, fileName) {
           </div>
           <div class="deed-grid-item">
             <div class="deed-grid-label">Land Classification</div>
-            <div class="deed-grid-val" style="${meta.is_paddy_wetland_risk ? 'color:#b91c1c;' : 'color:#15803d;'}">
+            <div class="deed-grid-val" style="${meta.is_paddy_wetland_risk ? 'color:#990f3d;' : 'color:#0d7680;'}">
               ${meta.revenue_classification} ${meta.is_paddy_wetland_risk ? '▲' : '✓'}
             </div>
           </div>
@@ -4133,8 +4133,8 @@ function renderDeedAuditCard(container, data, fileName) {
           </button>
         </div>
 
-        <div class="dossier-export-banner" style="margin-top:0.75rem; padding:0.65rem 0.85rem; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
-          <div style="font-size:0.78rem; color:#166534; line-height:1.35;">
+        <div class="dossier-export-banner" style="margin-top:0.75rem; padding:0.65rem 0.85rem; background:#eef5f5; border:1px solid #a8cfd1; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
+          <div style="font-size:0.78rem; color:#0d7680; line-height:1.35;">
             <strong>Advocate Title Vetting Dossier:</strong><br/>
             PDF brief with boundary schedule and SRO checklist.
           </div>
@@ -4144,7 +4144,7 @@ function renderDeedAuditCard(container, data, fileName) {
           </button>
         </div>
 
-        <div style="font-size:0.72rem; color:#64748b; margin-top:0.6rem; border-top:1px dashed #e2e8f0; padding-top:0.5rem;">
+        <div style="font-size:0.72rem; color:#66605c; margin-top:0.6rem; border-top:1px dashed #e9decf; padding-top:0.5rem;">
           <em>Ask follow-up questions about this property below (e.g. "Can I construct a house on this plot?", "Is the pathway legally binding on future buyers?").</em>
         </div>
       </div>
@@ -4207,7 +4207,7 @@ async function openOwnershipTimeline(preset = 'aluva_broken') {
     const data = await res.json();
     renderOwnershipTimeline(loadingBubble, data, preset);
   } catch (err) {
-    loadingBubble.innerHTML = `<span style="color:#b91c1c;">▲ Error loading ownership timeline: ${err.message}</span>`;
+    loadingBubble.innerHTML = `<span style="color:#990f3d;">▲ Error loading ownership timeline: ${err.message}</span>`;
   }
 }
 
@@ -4250,17 +4250,17 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
     let financialHtml = "";
     if (node.consideration_display) {
       financialHtml = `
-        <div style="margin-top:0.45rem; padding:0.45rem 0.65rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-size:0.75rem;">
+        <div style="margin-top:0.45rem; padding:0.45rem 0.65rem; background:#f6ede2; border:1px solid #e9decf; border-radius:6px; font-size:0.75rem;">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
             <span style="font-weight:700; color:#990f3d; display:flex; align-items:center; gap:4px;">
               <span>₹</span>
               <span>${node.consideration_display}</span>
             </span>
-            ${node.price_per_cent ? `<span style="background:#e0f2fe; color:#0369a1; padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.72rem;">${node.price_per_cent}</span>` : ''}
-            ${node.stamp_duty_paid ? `<span style="background:#f1f5f9; color:#475569; padding:1px 6px; border-radius:4px; font-size:0.7rem;">Stamp Duty: ${node.stamp_duty_paid}</span>` : ''}
+            ${node.price_per_cent ? `<span style="background:#eef2f7; color:#0f5499; padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.72rem;">${node.price_per_cent}</span>` : ''}
+            ${node.stamp_duty_paid ? `<span style="background:#f6ede2; color:#66605c; padding:1px 6px; border-radius:4px; font-size:0.7rem;">Stamp Duty: ${node.stamp_duty_paid}</span>` : ''}
           </div>
-          ${node.financial_note ? `<div style="color:#334155; margin-top:3px; font-size:0.73rem;">${node.financial_note}</div>` : ''}
-          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#64748b; font-size:0.7rem; margin-top:2px;"><strong>Kerala Govt Fair Value ${currentLanguage === 'ml' ? '(ന്യായവില Sec 28A)' : '(Sec 28A)'}:</strong> ${node.govt_fair_value}</div>` : ''}
+          ${node.financial_note ? `<div style="color:#4d4845; margin-top:3px; font-size:0.73rem;">${node.financial_note}</div>` : ''}
+          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#66605c; font-size:0.7rem; margin-top:2px;"><strong>Kerala Govt Fair Value ${currentLanguage === 'ml' ? '(ന്യായവില Sec 28A)' : '(Sec 28A)'}:</strong> ${node.govt_fair_value}</div>` : ''}
         </div>
       `;
     }
@@ -4273,11 +4273,11 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             <div class="timeline-doc-title">
               <span class="timeline-year-tag">${node.year}</span>
               <span>${node.deed_type}</span>
-              <span style="font-weight:400; color:#475569; font-size:0.78rem;">${currentLanguage === 'ml' && node.deed_malayalam ? `(${node.deed_malayalam})` : ''}</span>
+              <span style="font-weight:400; color:#66605c; font-size:0.78rem;">${currentLanguage === 'ml' && node.deed_malayalam ? `(${node.deed_malayalam})` : ''}</span>
             </div>
             <div style="display:flex; align-items:center; gap:0.35rem;">
               <span class="timeline-extent-tag">${node.extent_cents} Cents</span>
-              <span style="font-size:0.73rem; background:#f1f5f9; padding:1px 5px; border-radius:4px; color:#475569;">Doc #${node.doc_number}</span>
+              <span style="font-size:0.73rem; background:#f6ede2; padding:1px 5px; border-radius:4px; color:#66605c;">Doc #${node.doc_number}</span>
             </div>
           </div>
 
@@ -4285,10 +4285,10 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             <span><strong>From:</strong> ${node.from_parties.join(", ")}</span>
             <span class="timeline-party-arrow">→</span>
             <span><strong>To:</strong> ${node.to_parties.join(", ")}</span>
-            <span style="color:#64748b; font-size:0.73rem;">· SRO ${node.sro}</span>
+            <span style="color:#66605c; font-size:0.73rem;">· SRO ${node.sro}</span>
           </div>
 
-          ${node.notes ? `<div style="font-size:0.77rem; color:#475569; margin-top:2px;"><em>${node.notes}</em></div>` : ''}
+          ${node.notes ? `<div style="font-size:0.77rem; color:#66605c; margin-top:2px;"><em>${node.notes}</em></div>` : ''}
           ${financialHtml}
           ${flagsHtml}
         </div>
@@ -4319,38 +4319,38 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
   if (data.financial_transparency) {
     const ft = data.financial_transparency;
     finTransHtml = `
-      <div class="financial-transparency-card" style="margin-bottom:0.85rem; padding:0.75rem 0.9rem; background:linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border:1px solid #86efac; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+      <div class="financial-transparency-card" style="margin-bottom:0.85rem; padding:0.75rem 0.9rem; background:linear-gradient(135deg, #eef5f5 0%, #eef5f5 100%); border:1px solid #a8cfd1; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
           <div style="display:flex; align-items:center; gap:6px;">
             <span style="font-size:1.05rem;">₹</span>
-            <span style="font-weight:700; color:#14532d; font-size:0.84rem;">Public Purchase Price & Valuation Intelligence</span>
-            <span style="background:#bbf7d0; color:#166534; font-size:0.68rem; font-weight:700; padding:1px 7px; border-radius:10px;">SRO PUBLIC RECORD</span>
+            <span style="font-weight:700; color:#0a5c63; font-size:0.84rem;">Public Purchase Price & Valuation Intelligence</span>
+            <span style="background:#a8cfd1; color:#0d7680; font-size:0.68rem; font-weight:700; padding:1px 7px; border-radius:10px;">SRO PUBLIC RECORD</span>
           </div>
-          <span style="font-size:0.7rem; color:#166534; font-weight:600;">Registration Act 1908 (Sec 51) · Book 1</span>
+          <span style="font-size:0.7rem; color:#0d7680; font-weight:600;">Registration Act 1908 (Sec 51) · Book 1</span>
         </div>
 
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:6px; margin-top:6px; font-size:0.76rem;">
-          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcfce7;">
-            <div style="color:#64748b; font-size:0.68rem; font-weight:600;">LAST REGISTERED PURCHASE PRICE</div>
+          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
+            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">LAST REGISTERED PURCHASE PRICE</div>
             <div style="font-weight:800; color:#990f3d; font-size:0.95rem; margin-top:1px;">${ft.last_purchase_price}</div>
-            <div style="color:#475569; font-size:0.7rem;">by ${ft.last_buyer} (${ft.last_purchase_year})</div>
+            <div style="color:#66605c; font-size:0.7rem;">by ${ft.last_buyer} (${ft.last_purchase_year})</div>
           </div>
-          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcfce7;">
-            <div style="color:#64748b; font-size:0.68rem; font-weight:600;">HISTORICAL RATE & FAIR VALUE</div>
-            <div style="font-weight:800; color:#0369a1; font-size:0.92rem; margin-top:1px;">${ft.historical_rate_per_cent}</div>
-            <div style="color:#475569; font-size:0.68rem;">Govt Fair Value: ${ft.current_govt_fair_value}</div>
+          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
+            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">HISTORICAL RATE & FAIR VALUE</div>
+            <div style="font-weight:800; color:#0f5499; font-size:0.92rem; margin-top:1px;">${ft.historical_rate_per_cent}</div>
+            <div style="color:#66605c; font-size:0.68rem;">Govt Fair Value: ${ft.current_govt_fair_value}</div>
           </div>
-          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcfce7;">
-            <div style="color:#64748b; font-size:0.68rem; font-weight:600;">ACTIVE BANK LIEN (SRO EC)</div>
-            <div style="font-weight:800; color:${ft.active_bank_lien_inr.includes('Nil') ? '#166534' : '#b91c1c'}; font-size:0.92rem; margin-top:1px;">${ft.active_bank_lien_inr}</div>
-            <div style="color:#475569; font-size:0.7rem;">${ft.active_bank_lien_inr.includes('Nil') ? '✓ Clean 30-Yr Search' : '■ Undischarged Gehan Mortgage'}</div>
+          <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
+            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">ACTIVE BANK LIEN (SRO EC)</div>
+            <div style="font-weight:800; color:${ft.active_bank_lien_inr.includes('Nil') ? '#0d7680' : '#990f3d'}; font-size:0.92rem; margin-top:1px;">${ft.active_bank_lien_inr}</div>
+            <div style="color:#66605c; font-size:0.7rem;">${ft.active_bank_lien_inr.includes('Nil') ? '✓ Clean 30-Yr Search' : '■ Undischarged Gehan Mortgage'}</div>
           </div>
         </div>
 
-        <div style="margin-top:7px; font-size:0.75rem; color:#15803d; line-height:1.4;">
+        <div style="margin-top:7px; font-size:0.75rem; color:#0d7680; line-height:1.4;">
           <strong>Pricing Intelligence:</strong> ${ft.market_price_context}
         </div>
-        <div style="margin-top:4px; font-size:0.71rem; color:#b45309; line-height:1.35;">
+        <div style="margin-top:4px; font-size:0.71rem; color:#a35c00; line-height:1.35;">
           ▲ <strong>Kerala Stamp Act Sec 45A:</strong> ${ft.undervaluation_warning}
         </div>
       </div>
@@ -4385,7 +4385,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
         </button>
       </div>
 
-      <div style="background:${data.chain_intact ? '#f0fdf4' : '#fff5f5'}; border:1px solid ${data.chain_intact ? '#bbf7d0' : '#fecaca'}; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.8rem; color:${data.chain_intact ? '#166534' : '#991b1b'}; margin-bottom:0.75rem;">
+      <div style="background:${data.chain_intact ? '#eef5f5' : '#fbebee'}; border:1px solid ${data.chain_intact ? '#a8cfd1' : '#f0c2cf'}; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.8rem; color:${data.chain_intact ? '#0d7680' : '#7c0c32'}; margin-bottom:0.75rem;">
         <strong>Audit Summary:</strong> ${data.summary}
       </div>
 
@@ -4566,11 +4566,11 @@ function ensureStep4ActionCard() {
     const waEncoded = encodeURIComponent(waText);
 
     appendMsg("agent", `
-      <div class="step4-action-banner" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px; margin-bottom:12px;">
-        <div style="font-weight:700; color:#166534; font-size:0.92rem; margin-bottom:4px;">
+      <div class="step4-action-banner" style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin-bottom:12px;">
+        <div style="font-weight:700; color:#0d7680; font-size:0.92rem; margin-bottom:4px;">
           Step 4 Due Diligence: Seller Inquiry & Advocate Legal Dossier
         </div>
-        <p style="font-size:0.8rem; color:#14532d; margin-bottom:10px;">
+        <p style="font-size:0.8rem; color:#0a5c63; margin-bottom:10px;">
           Complete on-site verification using the checklist drawer, share this formal inquiry with the seller, and export the comprehensive title audit dossier for your High Court advocate.
         </p>
         <div class="whatsapp-card" style="margin-top:8px;">
@@ -4585,7 +4585,7 @@ function ensureStep4ActionCard() {
         </div>
         <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
           <button class="export-report-btn" onclick="toggleChecklist(true)" style="background:#990f3d;">Open Field Checklist</button>
-          <button class="export-report-btn" onclick="exportDossierPDF('aluva_broken')" style="background:#1e293b;">Export Legal Dossier (PDF)</button>
+          <button class="export-report-btn" onclick="exportDossierPDF('aluva_broken')" style="background:#262a33;">Export Legal Dossier (PDF)</button>
         </div>
       </div>
     `);
@@ -4996,7 +4996,7 @@ form.addEventListener("submit", async (e) => {
     }
 
     const answerHtml = `
-      <div style="line-height:1.55; color:#1e293b; font-size:0.88rem;">
+      <div style="line-height:1.55; color:#262a33; font-size:0.88rem;">
         <h4 style="color:#990f3d; margin-top:0; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
           <span>§</span>
           <span>Yes, Historical Purchase Price is a Statutory Public Record in Kerala!</span>
@@ -5004,7 +5004,7 @@ form.addEventListener("submit", async (e) => {
         <p style="margin-bottom:0.5rem;">
           Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds${currentLanguage === 'ml' ? ' / <em>തീറാധാരം</em>' : ''}) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
         </p>
-        <div style="background:#f8fafc; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size:0.83rem;">
+        <div style="background:#f6ede2; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size:0.83rem;">
           <strong>Three Key Statutory Price & Valuation Realities in Kerala:</strong>
           <ol style="margin:4px 0 0 18px; padding:0;">
             <li style="margin-bottom:3px;"><strong>Registered Consideration${currentLanguage === 'ml' ? ' (പ്രതിഫല തുക)' : ''}:</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy${currentLanguage === 'ml' ? ' (<em>പകർപ്പ്</em>)' : ''} from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
@@ -5012,7 +5012,7 @@ form.addEventListener("submit", async (e) => {
             <li style="margin-bottom:2px;"><strong>Undervaluation Penalties (Section 45A Kerala Stamp Act):</strong> If a deed is registered below market value to evade 8% stamp duty or capital gains tax, District Registrar audits assess deficit duty with 12% penal interest, which becomes a <strong>first statutory charge / revenue recovery lien directly on the land</strong>.</li>
           </ol>
         </div>
-        <p style="margin-bottom:0.4rem; font-size:0.83rem; color:#475569;">
+        <p style="margin-bottom:0.4rem; font-size:0.83rem; color:#66605c;">
           Below is the chronological 30-year ownership and consideration audit for this property, detailing exactly what previous owners paid per Cent, their registered bank liabilities, and fair value benchmarks:
         </p>
       </div>
@@ -5239,7 +5239,7 @@ function addPlotVertex(lat, lng) {
   const vertexIndex = polygonPoints.length;
   const kalluIcon = L.divIcon({
     className: 'custom-kallu-marker',
-    html: `<div style="width:14px; height:14px; background:#22c55e; border:2.5px solid #990f3d; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${vertexIndex} (Survey Kallu) - Drag to adjust"></div>`,
+    html: `<div style="width:14px; height:14px; background:#0d7680; border:2.5px solid #990f3d; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${vertexIndex} (Survey Kallu) - Drag to adjust"></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7]
   });
@@ -5294,7 +5294,7 @@ function updatePlotDisplay() {
     currentPolygon = L.polygon(polygonPoints, {
       color: "#990f3d",
       weight: 2.5,
-      fillColor: "#10b981",
+      fillColor: "#0d7680",
       fillOpacity: 0.35,
       dashArray: polygonPoints.length === 2 ? "5, 5" : undefined
     }).addTo(map);
@@ -5365,8 +5365,8 @@ function addRoadPoint(lat, lng) {
 
   const roadMarker = L.circleMarker([lat, lng], {
     radius: 5,
-    color: "#b02a37",
-    fillColor: "#ef4444",
+    color: "#990f3d",
+    fillColor: "#990f3d",
     fillOpacity: 1
   }).addTo(map);
   vertexMarkers.push(roadMarker);
@@ -5384,7 +5384,7 @@ function addRoadPoint(lat, lng) {
     if (currentRoadLine) map.removeLayer(currentRoadLine);
 
     currentRoadLine = L.polyline(roadPoints, {
-      color: "#dc2626",
+      color: "#990f3d",
       weight: 4,
       dashArray: "6, 6"
     }).addTo(map);
@@ -5530,7 +5530,7 @@ function applyPlotPolygon(coords, meta = {}) {
   polygonPoints.forEach((pt, idx) => {
     const kalluIcon = L.divIcon({
       className: 'custom-kallu-marker',
-      html: `<div style="width:14px; height:14px; background:#22c55e; border:2.5px solid #990f3d; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${idx + 1} (Survey Kallu) - Drag to adjust"></div>`,
+      html: `<div style="width:14px; height:14px; background:#0d7680; border:2.5px solid #990f3d; border-radius:50%; box-shadow:0 1px 4px rgba(0,0,0,0.45); cursor:grab;" title="Corner Stone #${idx + 1} (Survey Kallu) - Drag to adjust"></div>`,
       iconSize: [14, 14],
       iconAnchor: [7, 7]
     });
@@ -5585,7 +5585,7 @@ function applyPlotPolygon(coords, meta = {}) {
     const roadStart = L.latLng(p1.lat, p1.lng - 0.00003);
     const roadEnd = L.latLng(p1.lat, p1.lng);
     currentRoadLine = L.polyline([roadStart, roadEnd], {
-      color: "#dc2626",
+      color: "#990f3d",
       weight: 3.5,
       dashArray: "4, 4"
     }).addTo(map);
@@ -5730,16 +5730,16 @@ async function executeAutoDetectBoundaries() {
       }
 
       appendMsg("agent", `
-        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px; margin:6px 0;">
-          <div style="font-weight:700; color:#166534; font-size:0.92rem; display:flex; align-items:center; gap:6px;">
+        <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin:6px 0;">
+          <div style="font-weight:700; color:#0d7680; font-size:0.92rem; display:flex; align-items:center; gap:6px;">
             <span>◆</span> <span>${data.source_title} Demarcated</span>
           </div>
-          <div style="font-size:0.83rem; color:#14532d; margin-top:6px;">
+          <div style="font-size:0.83rem; color:#0a5c63; margin-top:6px;">
             Extent: <strong>${data.extent_cents} Cents</strong> (${(data.extent_cents * 40.4686).toFixed(1)} m²) | Perimeter: <strong>${data.perimeter_m}m</strong><br>
             Source: <em>${data.source}</em>
             ${fmbInfo}
           </div>
-          <div style="margin-top:8px; font-size:0.78rem; color:#166534; background:#dcfce7; padding:6px 10px; border-radius:6px;">
+          <div style="margin-top:8px; font-size:0.78rem; color:#0d7680; background:#dcebec; padding:6px 10px; border-radius:6px;">
             ${data.message}
           </div>
         </div>
@@ -5785,11 +5785,11 @@ function executeGenerateExtentPlot() {
   closeAutoDemarcateModal();
 
   appendMsg("agent", `
-    <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:10px; padding:12px; margin:6px 0;">
-      <div style="font-weight:700; color:#065f46; font-size:0.92rem;">
+    <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin:6px 0;">
+      <div style="font-weight:700; color:#0d7680; font-size:0.92rem;">
         Calibrated Extent Demarcated: ${cents} Cents
       </div>
-      <div style="font-size:0.83rem; color:#064e3b; margin-top:4px;">
+      <div style="font-size:0.83rem; color:#0a5c63; margin-top:4px;">
         Placed exact ${cents} Cents (${(cents * 40.4686).toFixed(1)} m²) plot footprint with aspect ratio <strong>${ratio}</strong>.<br>
         Each corner stone${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ല്</em>)' : ''} can now be dragged on the satellite map to align with physical fences or trees.
       </div>
@@ -5835,11 +5835,11 @@ async function executeFetchCadastralParcel() {
       }
 
       appendMsg("agent", `
-        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:12px; margin:6px 0;">
-          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#92400e; font-size:0.95rem;">
+        <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
+          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
             <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
           </div>
-          <div style="font-size:0.84rem; color:#451a03; margin-top:6px;">
+          <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
             Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
           </div>
           <div style="font-size:0.82rem; margin-top:8px;">
@@ -6141,7 +6141,7 @@ function updateChecklistProgress() {
   const count = checks.filter(Boolean).length;
   document.getElementById("chk-badge").textContent = `${count}/5`;
   if (count === 5) {
-    document.getElementById("chk-badge").style.background = "#15803d";
+    document.getElementById("chk-badge").style.background = "#0d7680";
   } else {
     document.getElementById("chk-badge").style.background = "#990f3d";
   }
@@ -6251,10 +6251,10 @@ async function fetchCadastralOverlay() {
 
     if (map && data.polygon_coordinates) {
       _cadastralLayer = L.polygon(data.polygon_coordinates, {
-        color: '#d97706',
+        color: '#a35c00',
         weight: 3,
         dashArray: '6, 6',
-        fillColor: '#fef3c7',
+        fillColor: '#fbf0e0',
         fillOpacity: 0.35
       }).addTo(map);
 
@@ -6284,25 +6284,25 @@ async function fetchCadastralOverlay() {
     }
 
     appendMsg("agent", `
-      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:12px; margin:6px 0;">
-        <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#92400e; font-size:0.95rem;">
+      <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
           <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
         </div>
-        <div style="font-size:0.84rem; color:#451a03; margin-top:6px;">
+        <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
           Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent Plots: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
         </div>
         <div style="font-size:0.82rem; margin-top:8px;">
           <strong>Field Measurement Book (FMB) Side Measurements:</strong>
           <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
         </div>
-        <div style="margin-top:8px; font-size:0.78rem; color:#78350f; background:#fef3c7; padding:6px 10px; border-radius:6px;">
+        <div style="margin-top:8px; font-size:0.78rem; color:#6b3d00; background:#fbf0e0; padding:6px 10px; border-radius:6px;">
           ▲ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ലുകൾ</em>)' : ''} against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
         </div>
       </div>
     `);
 
   } catch (err) {
-    appendMsg("agent", `<span style="color:#b91c1c;">▲ Error retrieving BhuNaksha sketch: ${err.message}</span>`);
+    appendMsg("agent", `<span style="color:#990f3d;">▲ Error retrieving BhuNaksha sketch: ${err.message}</span>`);
   }
 }
 
@@ -6331,45 +6331,45 @@ async function checkDataBankStatus() {
     const data = await res.json();
 
     const isListed = data.is_listed_in_databank;
-    const badgeColor = isListed ? "#ef4444" : "#10b981";
+    const badgeColor = isListed ? "#990f3d" : "#0d7680";
     const badgeText = isListed ? "■ LISTED IN DATA BANK (Nilam)" : "● NOT IN DATA BANK (Purayidam / Unnotified)";
 
     let feeHtml = "";
     if (data.fee_calculation) {
       const f = data.fee_calculation;
       feeHtml = `
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px; margin-top:8px; font-size:0.8rem;">
-          <strong>Section 27A Conversion Fee:</strong> ${f.is_fee_exempt ? '<span style="color:#059669; font-weight:700;">₹0 (Free exemption under 25 cents)</span>' : `₹${f.statutory_conversion_fee_inr.toLocaleString()} (${f.applicable_fee_percentage}%)`}
-          <br><small style="color:#64748b;">${f.statutory_citation} • Fair Value: ₹${f.fair_value_per_are_inr.toLocaleString()}/Are</small>
+        <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:6px; padding:8px; margin-top:8px; font-size:0.8rem;">
+          <strong>Section 27A Conversion Fee:</strong> ${f.is_fee_exempt ? '<span style="color:#0d7680; font-weight:700;">₹0 (Free exemption under 25 cents)</span>' : `₹${f.statutory_conversion_fee_inr.toLocaleString()} (${f.applicable_fee_percentage}%)`}
+          <br><small style="color:#66605c;">${f.statutory_citation} • Fair Value: ₹${f.fair_value_per_are_inr.toLocaleString()}/Are</small>
         </div>
       `;
     }
 
     const waText = (currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry;
     appendMsg("agent", `
-      <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin:6px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+      <div style="background:#ffffff; border:1px solid #e9decf; border-radius:10px; padding:12px; margin:6px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
           <strong style="color:#990f3d; font-size:0.92rem;">Kerala Agricultural Data Bank Audit (2008 Act)</strong>
           <span style="font-size:0.74rem; font-weight:700; color:#fff; background:${badgeColor}; padding:2px 8px; border-radius:12px;">${badgeText}</span>
         </div>
-        <div style="font-size:0.83rem; color:#334155;">
+        <div style="font-size:0.83rem; color:#4d4845;">
           Survey: <strong>${data.survey_no}</strong> | Krishi Bhavan: <strong>${data.krishi_bhavan_name}</strong><br>
           Classification: <strong>${data.entry_status}</strong><br>
           Required Statutory Form: <strong>${data.recommended_statutory_form}</strong>
         </div>
         ${feeHtml}
-        <div style="margin-top:8px; font-size:0.8rem; color:#b45309; background:#fffbeb; padding:6px 8px; border-radius:6px;">
+        <div style="margin-top:8px; font-size:0.8rem; color:#a35c00; background:#fbf0e0; padding:6px 8px; border-radius:6px;">
           <strong>Building Permit Status:</strong> ${data.building_permit_eligibility}
         </div>
-        <div style="margin-top:8px; font-size:0.8rem; background:#f0fdf4; border:1px solid #bbf7d0; padding:8px; border-radius:6px;">
-          <div style="font-weight:700; color:#166534; margin-bottom:3px;">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം:' : 'WhatsApp Inquiry for Seller:'}</div>
-          <div style="color:#14532d;">"${waText}"</div>
+        <div style="margin-top:8px; font-size:0.8rem; background:#eef5f5; border:1px solid #a8cfd1; padding:8px; border-radius:6px;">
+          <div style="font-weight:700; color:#0d7680; margin-bottom:3px;">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം:' : 'WhatsApp Inquiry for Seller:'}</div>
+          <div style="color:#0a5c63;">"${waText}"</div>
         </div>
       </div>
     `);
 
   } catch (err) {
-    appendMsg("agent", `<span style="color:#b91c1c;">▲ Error checking Data Bank: ${err.message}</span>`);
+    appendMsg("agent", `<span style="color:#990f3d;">▲ Error checking Data Bank: ${err.message}</span>`);
   }
 }
 
