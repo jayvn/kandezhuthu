@@ -2309,13 +2309,13 @@
 
         <!-- Step 2 (Prior Title & Encumbrance) Chips -->
         <div class="chip featured" data-cat="lineage" id="chip-timeline-aluva" style="display:none;" onclick="openOwnershipTimeline('aluva_broken')" title="Open Interactive 30-Year Ownership Timeline with 3 Critical Defects">
-          Aluva 30-Yr Lineage (3 Traps)
+          Sample: Aluva chain with 3 defects
         </div>
         <div class="chip" data-cat="statutory" id="chip-mary-roy" style="display:none;" onclick="onChipClick('mary_roy')" title="Audit Christian Coparcenary and Mary Roy excluded daughters defect">
           Mary Roy Coparcenary Defect
         </div>
-        <div class="chip" data-cat="lineage" id="chip-timeline-clean" style="display:none;" onclick="openOwnershipTimeline('clean_title')" title="Open 100% Clean 39-Year Prior Deeds Timeline">
-          Clean 39-Yr Title Audit
+        <div class="chip" data-cat="lineage" id="chip-timeline-clean" style="display:none;" onclick="openOwnershipTimeline('clean_title')" title="Open a sample 39-year chain where no gaps were found">
+          Sample: 39-year chain, no gaps found
         </div>
         <div class="chip" data-cat="lineage" id="chip-fair-value" style="display:none;" onclick="onChipClick('fair_value')" title="Audit public purchase prices, fair value, and consideration history">
           Fair Value & Stamp Duty Audit
@@ -2741,9 +2741,9 @@ const TRANSLATIONS = {
       sampleDeed: "Test Kerala Sale Deed (1420/2014)",
       sampleEc: "Test 30-Yr Bank EC (Undisclosed Mortgage)",
       uploadDeed: "Browse / Snap Deed Photo",
-      timelineAluva: "Aluva 30-Yr Lineage (3 Traps)",
+      timelineAluva: "Sample: Aluva chain with 3 defects",
       maryRoy: "Mary Roy Coparcenary Defect",
-      timelineClean: "Clean 39-Yr Title Audit",
+      timelineClean: "Sample: 39-year chain, no gaps found",
       fairValue: "Fair Value & Stamp Duty Audit",
       measureRoad: "Measure Road Width (KPBR 2019)",
       demarcatePlot: "Demarcate & Seal Cadastral Plot",
@@ -2902,9 +2902,9 @@ const TRANSLATIONS = {
       sampleDeed: "മാതൃകാ തീറാധാരം (1420/2014)",
       sampleEc: "30-വർഷ ബാങ്ക് കുടിക്കടം (പണയം)",
       uploadDeed: "ആധാരം / ഫോട്ടോ തിരഞ്ഞെടുക്കുക",
-      timelineAluva: "ആലുവ 30-വർഷ ടൈംലൈൻ (3 കുരുക്കുകൾ)",
+      timelineAluva: "മാതൃക: ആലുവ ശൃംഖല (3 കുരുക്കുകൾ)",
       maryRoy: "മേരി റോയ് വിധി: പെൺമക്കളുടെ അവകാശം",
-      timelineClean: "കുറ്റമറ്റ ആധാരം (39 വർഷം)",
+      timelineClean: "മാതൃക: 39 വർഷം, വിടവില്ല",
       fairValue: "ന്യായവില & മുദ്രവില ഓഡിറ്റ്",
       measureRoad: "വഴി വീതി അളക്കുക (KPBR 2019)",
       demarcatePlot: "അതിരുകൾ അടയാളപ്പെടുത്തുക",
@@ -4208,10 +4208,10 @@ async function openOwnershipTimeline(preset = 'aluva_broken') {
   const presetLabels = {
     aluva_broken: "Aluva Broken Chain (Doc 1420/2014 · Mary Roy Defect & Federal Bank Mortgage)",
     kakkanad_wetland: "Kakkanad Wetland & Minor Share (Doc 1204/2015 · Sec 8 HMGA & Data Bank)",
-    clean_title: "Clean 39-Year Lineage Chain (Doc 945/2018 · Complete Continuity 100/100)"
+    clean_title: "39-Year Lineage Chain (Doc 945/2018 · no gaps found)"
   };
 
-  appendMsg("user", `<strong>Timeline Audit Request:</strong> Trace 30-Year Ownership Lineage for <em>${presetLabels[preset] || preset}</em>`);
+  appendMsg("user", `<strong>Sample timeline:</strong> <em>${presetLabels[preset] || preset}</em>`);
 
   const loadingBubble = appendMsg("agent", `
     <div class="typing-indicator">
@@ -4404,7 +4404,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
           Kakkanad (Wetland & Minor Share)
         </button>
         <button class="timeline-preset-btn ${currentPreset === 'clean_title' ? 'active' : ''}" onclick="openOwnershipTimeline('clean_title')">
-          ● 100% Clean Title Chain (39 Yrs)
+          ● No gaps found (39 Yrs)
         </button>
       </div>
 

@@ -992,7 +992,7 @@ async def get_timeline_demo(preset: str = "aluva_broken", lang: str = "en"):
             "risk_verdict": "NO KNOWN RED FLAGS",
             "risk_color": "clear",
             "chain_intact": True,
-            "summary": "Flawless 39-year title continuity: 100% unbroken chain from 1985 Pattayam to current owner, consistent 10.0 Cents extent, all heirs represented, and clean EC.",
+            "summary": "No gaps found in 39 years: continuous chain from the 1985 Pattayam to the current owner, 10.0 cents throughout, all heirs represented, and no charges on the EC.",
             "financial_transparency": {
                 "is_public_record": True,
                 "legal_basis": "Registration Act, 1908 (Sections 51 & 57) - SRO Book 1 Public Record",
