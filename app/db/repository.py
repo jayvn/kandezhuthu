@@ -55,23 +55,22 @@ class KnowledgeRepository:
 
         with get_db_connection() as conn:
             cursor = conn.cursor()
+            # Slab bounds are "above min, up to max"; the 0-cent slab also takes 0.
             cursor.execute(
                 """
                 SELECT * FROM paddy_land_fee_slabs
-                WHERE min_cents <= ? AND max_cents >= ?
+                WHERE min_cents < ? OR min_cents = 0
+                ORDER BY min_cents DESC
                 LIMIT 1
                 """,
-                (plot_cents, plot_cents),
+                (plot_cents,),
             )
             row = cursor.fetchone()
-            if not row:
-                percentage = 30.0
-                desc = "Exceeds 100 cents (Standard maximum slab)"
-                citation = "Section 27A(3) Schedule"
-            else:
-                percentage = row["fee_percentage_of_fair_value"]
-                desc = row["description"]
-                citation = row["statutory_citation"]
+            if row is None:
+                return {"error": "Paddy land fee slabs are not loaded."}
+            percentage = row["fee_percentage_of_fair_value"]
+            desc = row["description"]
+            citation = row["statutory_citation"]
 
             statutory_fee = (percentage / 100.0) * total_fair_value
 
@@ -85,13 +84,13 @@ class KnowledgeRepository:
                 "is_fee_exempt": (percentage == 0.0),
                 "description": desc,
                 "statutory_citation": citation,
-                "supreme_court_ruling_warning": (
-                    "Under Supreme Court of India precedent (State of Kerala v. Landowner, 2025), "
-                    "there is NO pro-rata deduction. If total holding exceeds 25 cents, fee is levied on the entire plot extent, not just the excess."
+                "extent_rule": (
+                    "The G.O. applies the rate to the whole holding. A 2023 Kerala High Court line of cases "
+                    "computes the 10% only on the extent above 25 cents."
                 ),
                 "anti_fragmentation_rule": (
-                    "Exemption applies only to plots that did not exceed 25 cents as of 30 December 2017 (G.O.(P) No. 1166/2020/Rev). "
-                    "Plots fragmented from larger holdings after 30-12-2017 are ineligible for 0% fee."
+                    "Exemption applies only to holdings that did not exceed 25 cents on 30 December 2017 (G.O.(Rt) No. 1166/2021/Rev). "
+                    "A holding split after 30-12-2017 is charged as one unit."
                 ),
                 "competent_authority": (
                     "Processed by Taluk-level Deputy Collectors across 71 taluks under Kerala Act 12 of 2024 (previously RDOs only)."

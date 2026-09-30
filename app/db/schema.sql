@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS paddy_land_fee_slabs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     min_cents REAL NOT NULL,
     max_cents REAL NOT NULL,
-    fee_percentage_of_fair_value REAL NOT NULL, -- 0.0 for <=25 cents, 10.0 for 25-50, etc.
+    fee_percentage_of_fair_value REAL NOT NULL, -- 0.0 up to 25 cents, 10.0 up to 1 acre, 20.0 above
     description TEXT NOT NULL,
     statutory_citation TEXT NOT NULL
 );

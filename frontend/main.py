@@ -546,7 +546,6 @@ async def get_fair_value_rates(village: str, district: str = None):
         "village": village,
         "district": district,
         "results": rates,
-        "revision": "S.R.O. No. 420/2023 (20% revised)"
     })
 
 
@@ -558,8 +557,8 @@ async def get_digital_survey_status(village: str, district: str = None):
     status = repo.check_digital_resurvey_status(village=village, district=district)
     return JSONResponse(status or {
         "village": village,
-        "status": "Pre-Digital Survey (Standard FMB/BTR)",
-        "advisory": "Standard manual records active. Verify FMB and Village BTR.",
+        "status": "Not on file",
+        "advisory": "No resurvey list for this village is on file. Check the village on Ente Bhoomi.",
         "portal_url": "https://entebhoomi.kerala.gov.in"
     })
 

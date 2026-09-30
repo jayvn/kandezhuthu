@@ -139,38 +139,31 @@ def seed_building_rules(conn):
 def seed_paddy_land_fee_slabs(conn):
     """Seeds Kerala Paddy Land Act Section 27A fee slabs."""
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM paddy_land_fee_slabs")
-    if cursor.fetchone()[0] > 0:
-        return
+    cursor.execute("DELETE FROM paddy_land_fee_slabs")
 
+    citation = "Section 27A, Kerala Conservation of Paddy Land and Wetland Act, 2008; G.O.(Rt) No. 1166/2021/Rev, 25 Feb 2021"
     slabs = [
         (
             0.0,
             25.0,
             0.0,
-            "Free conversion / Zero government fee for unnotified land up to 25 cents (10.11 ares) converted before 2008.",
-            "Kerala Conservation of Paddy Land & Wetland Act, 2008, Section 27A(3) Proviso & G.O.(P) No. 167/2020/RD",
+            "No fee, only if the holding was already 25 cents or less on 30 Dec 2017. "
+            "A later split of a larger holding into 25-cent pieces is charged as one unit.",
+            citation,
         ),
         (
-            25.01,
-            50.0,
-            10.0,
-            "10% of the notified fair value of the land for extents between 25 and 50 cents (10.11 to 20.23 ares).",
-            "Section 27A(3) read with Schedule to Act 28 of 2008 (Amended 2018)",
-        ),
-        (
-            50.01,
+            25.0,
             100.0,
-            20.0,
-            "20% of the notified fair value of the land for extents between 50 cents and 1 acre (20.23 to 40.47 ares).",
-            "Section 27A(3) read with Schedule to Act 28 of 2008 (Amended 2018)",
+            10.0,
+            "Holding above 25 cents up to 1 acre: 10% of fair value, same rate in panchayat, municipality and corporation.",
+            citation,
         ),
         (
-            100.01,
+            100.0,
             99999.0,
-            30.0,
-            "30% of the notified fair value of the land for extents exceeding 1 acre (above 40.47 ares).",
-            "Section 27A(3) read with Schedule to Act 28 of 2008 (Amended 2018)",
+            20.0,
+            "Holding above 1 acre (100 cents): 20% of fair value.",
+            citation,
         ),
     ]
 
@@ -380,36 +373,34 @@ def seed_knowledge_corpus_fts(conn):
 def seed_administrative_divisions(conn):
     """Seeds Kerala 14 Districts and key SROs."""
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM administrative_divisions")
-    if cursor.fetchone()[0] > 0:
-        return
+    cursor.execute("DELETE FROM administrative_divisions")
 
     divisions = [
-        ("Ernakulam", "Aluva", "Aluva West", "Aluva", "SRO-EKM-01"),
-        ("Ernakulam", "Aluva", "Aluva East", "Aluva", "SRO-EKM-01"),
-        ("Ernakulam", "Kanayannur", "Ernakulam", "Ernakulam", "SRO-EKM-02"),
-        ("Ernakulam", "Kochi", "Mattancherry", "Mattancherry", "SRO-EKM-03"),
-        ("Ernakulam", "Kunnathunad", "Perumbavoor", "Perumbavoor", "SRO-EKM-04"),
-        ("Thiruvananthapuram", "Thiruvananthapuram", "Pattom", "Thiruvananthapuram", "SRO-TVM-01"),
-        ("Thiruvananthapuram", "Neyyattinkara", "Neyyattinkara", "Neyyattinkara", "SRO-TVM-02"),
-        ("Kollam", "Kollam", "Kollam East", "Kollam", "SRO-KLM-01"),
-        ("Thrissur", "Thrissur", "Thrissur", "Thrissur", "SRO-TSR-01"),
-        ("Kozhikode", "Kozhikode", "Kozhikode City", "Kozhikode", "SRO-KKD-01"),
-        ("Kottayam", "Kottayam", "Kottayam", "Kottayam", "SRO-KTM-01"),
-        ("Palakkad", "Palakkad", "Palakkad", "Palakkad", "SRO-PLK-01"),
-        ("Malappuram", "Eranad", "Manjeri", "Manjeri", "SRO-MLP-01"),
-        ("Alappuzha", "Ambalappuzha", "Alappuzha", "Alappuzha", "SRO-ALP-01"),
-        ("Kannur", "Kannur", "Kannur", "Kannur", "SRO-KNR-01"),
-        ("Pathanamthitta", "Kozhencherry", "Pathanamthitta", "Pathanamthitta", "SRO-PTA-01"),
-        ("Idukki", "Thodupuzha", "Thodupuzha", "Thodupuzha", "SRO-IDK-01"),
-        ("Wayanad", "Vythiri", "Kalpetta", "Kalpetta", "SRO-WYD-01"),
-        ("Kasaragod", "Kasaragod", "Kasaragod", "Kasaragod", "SRO-KSD-01"),
+        ("Ernakulam", "Aluva", "Aluva West", "Aluva"),
+        ("Ernakulam", "Aluva", "Aluva East", "Aluva"),
+        ("Ernakulam", "Kanayannur", "Ernakulam", "Ernakulam"),
+        ("Ernakulam", "Kochi", "Mattancherry", "Mattancherry"),
+        ("Ernakulam", "Kunnathunad", "Perumbavoor", "Perumbavoor"),
+        ("Thiruvananthapuram", "Thiruvananthapuram", "Pattom", "Thiruvananthapuram"),
+        ("Thiruvananthapuram", "Neyyattinkara", "Neyyattinkara", "Neyyattinkara"),
+        ("Kollam", "Kollam", "Kollam East", "Kollam"),
+        ("Thrissur", "Thrissur", "Thrissur", "Thrissur"),
+        ("Kozhikode", "Kozhikode", "Kozhikode City", "Kozhikode"),
+        ("Kottayam", "Kottayam", "Kottayam", "Kottayam"),
+        ("Palakkad", "Palakkad", "Palakkad", "Palakkad"),
+        ("Malappuram", "Eranad", "Manjeri", "Manjeri"),
+        ("Alappuzha", "Ambalappuzha", "Alappuzha", "Alappuzha"),
+        ("Kannur", "Kannur", "Kannur", "Kannur"),
+        ("Pathanamthitta", "Kozhencherry", "Pathanamthitta", "Pathanamthitta"),
+        ("Idukki", "Thodupuzha", "Thodupuzha", "Thodupuzha"),
+        ("Wayanad", "Vythiri", "Kalpetta", "Kalpetta"),
+        ("Kasaragod", "Kasaragod", "Kasaragod", "Kasaragod"),
     ]
 
     cursor.executemany(
         """
-        INSERT INTO administrative_divisions (district, taluk, village, sro_name, sro_code)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO administrative_divisions (district, taluk, village, sro_name)
+        VALUES (?, ?, ?, ?)
         """,
         divisions,
     )
