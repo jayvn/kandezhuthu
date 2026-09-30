@@ -81,6 +81,8 @@ Sources, request shapes and the target data model for items 21–29 and 31–34:
     → Store each source as a `parcel_observation` row (source, attribute, value, evidence, source_url, sha256, retrieved_at) and flag disagreements. No owner or possessor names.
 34. **No parcel shape or land-use layer.**
     → Load indian_cadastrals polygons (check coverage per district), the LGD village CSV and LRIS land-use/wetland/road layers. Label LRIS wetland as land use, not BTR. Compare GIS area with the deed area; don't replace it.
+35. **Encumbrance index (`docs/encumbrance-index.md`) conflicts with item 28 and `docs/data-sources.md` §10.** Those say don't scrape PEARL and drop names. The index plan walks document details by `(SRO, year, number)` and keeps parties.
+    → Decide which rule holds. If the index goes ahead, start with its step 1 (judgment ground-truth set) and step 2 (payload check) before any walk.
 
 ## Structure
 
