@@ -28,6 +28,12 @@ from app.db.repository import KnowledgeRepository, AuditRepository
 # Latest Gemini Flash model for low-latency multimodal reasoning
 MODEL = "gemini-3.8-flash"
 
+FAIR_VALUE_REGISTER = (
+    "IGR fair value register (https://igr.kerala.gov.in/index.php/fairvalue/view_fairvalue): "
+    "district, RDO, taluk and village, then the survey number. The website figure is not the gazette; "
+    "confirm against the RDO/Collector notification."
+)
+
 
 def scan_single_deed(deed_text: str) -> str:
     """Scans a single Kerala title deed (or schedule snippet) for 4 fatal legal/regulatory traps.
@@ -181,8 +187,8 @@ def calculate_paddy_conversion_cost(
     """Calculates the exact government fee under Section 27A of the 2008 Paddy Land Act to convert Nilam to Purayidam.
 
     Args:
-        plot_cents: Extent in cents to be converted (e.g. 15.0, 32.0, 60.0). Note: <= 25 cents is statutory FREE / 0% fee!
-        fair_value_per_are: Optional government notified Fair Value in INR per are (1 are = 2.471 cents). If omitted, auto-looks up benchmark for village.
+        plot_cents: Extent in cents to be converted (e.g. 15.0, 32.0, 60.0). Holdings of 25 cents or less on 30 Dec 2017 pay no fee.
+        fair_value_per_are: Optional government notified Fair Value in INR per are (1 are = 2.471 cents). If omitted, looks up a stored rate for the village.
         village: Optional village name (e.g. 'Kakkanad', 'Aluva West') to automatically fetch Fair Value if fair_value_per_are is not provided.
         district: Optional district name (e.g. 'Ernakulam', 'Thiruvananthapuram').
 
@@ -190,15 +196,16 @@ def calculate_paddy_conversion_cost(
         JSON string with exact statutory conversion fee, exemption status, fee percentage, and legal citations.
     """
     repo = KnowledgeRepository()
+    if (not fair_value_per_are or fair_value_per_are <= 0) and village:
+        benchmarks = repo.get_fair_value_benchmark(village=village, district=district)
+        if benchmarks:
+            fair_value_per_are = benchmarks[0]["fair_value_per_are_inr"]
     if not fair_value_per_are or fair_value_per_are <= 0:
-        if village:
-            benchmarks = repo.get_fair_value_benchmark(village=village, district=district)
-            if benchmarks:
-                fair_value_per_are = benchmarks[0]["fair_value_per_are_inr"]
-            else:
-                fair_value_per_are = 350000.0  # Kerala standard municipal average
-        else:
-            fair_value_per_are = 350000.0  # Default standard benchmark
+        return json.dumps({
+            "fair_value_available": False,
+            "message": "The fee is a percentage of the fair value, and no fair value is on file for this plot.",
+            "where_to_check": FAIR_VALUE_REGISTER,
+        }, indent=2)
 
     calc = repo.calculate_paddy_conversion_fee(plot_cents=plot_cents, fair_value_per_are=fair_value_per_are)
     if village:
@@ -224,7 +231,7 @@ def lookup_fair_value_of_land(village: str, district: Optional[str] = None) -> s
             "village": village,
             "district": district,
             "fair_value_available": False,
-            "where_to_check": "Fair Value search on the Kerala Registration portal (keralaregistration.gov.in) by village and survey number.",
+            "where_to_check": FAIR_VALUE_REGISTER,
         }, indent=2)
     return json.dumps({
         "village": village,
@@ -232,7 +239,6 @@ def lookup_fair_value_of_land(village: str, district: Optional[str] = None) -> s
         "taluk": results[0]["taluk"],
         "benchmarks_count": len(results),
         "rates": results,
-        "gazette_revision": "All rates reflect the 20% statutory hike notified via S.R.O. No. 420/2023."
     }, indent=2)
 
 
