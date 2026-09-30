@@ -41,8 +41,17 @@ class EncumbranceCertificateAuditor:
         "ബാധ്യത തീർപ്പ്", "തീർപ്പുമുറി", "ക്ലിയറൻസ്"
     ]
 
+    # A line that opens a new EC entry: optional "Entry 3:" / "3." then the document number.
+    ENTRY_START = re.compile(
+        r"^\s*(?:entry\s*\d+\s*[:.\-]?\s*|\d{1,3}[.)]\s+)?(?:doc(?:ument)?\s*(?:no\.?)?\s*[:#.]?\s*)?\d+\s*/\s*(?:19|20)\d\d\b",
+        re.I,
+    )
+    DOC_REF = re.compile(r"(\d+)\s*/\s*((?:19|20)\d\d)\b")
+
     def __init__(self, property_identifier: str = "Kerala SRO Property"):
         self.property_identifier = property_identifier
+        # Documents each release entry names, keyed by the release's own doc number.
+        self._release_refs: dict[str, set[str]] = {}
 
     def parse_ec_text(self, raw_text: str) -> list[ECEntry]:
         """Parses raw OCR or copied tabular text from an SRO Encumbrance Certificate."""
@@ -59,13 +68,15 @@ class EncumbranceCertificateAuditor:
         current_block: list[str] = []
 
         for line in lines:
-            # Check if this line begins a new doc entry (e.g. "Doc No: 1420/2014" or "1420/2014" or "1. 3012/2022")
-            doc_match = re.search(r"(?:Doc(?:\s*No)?[:\.\s]+)?(\d+)\s*/\s*(19\d\d|20\d\d)", line, re.I)
-            if doc_match and (not current_block or len(current_block) >= 2):
+            # A new entry starts at a line that opens with a document number
+            # ("Doc No: 1420/2014", "1. 3012/2022", "Entry 2: Doc 100/2024").
+            if self.ENTRY_START.search(line) and current_block:
                 if current_block:
                     entry = self._parse_block("\n".join(current_block))
                     if entry:
                         entries.append(entry)
+                current_block = [line]
+            elif not current_block:
                 current_block = [line]
             else:
                 current_block.append(line)
@@ -91,14 +102,22 @@ class EncumbranceCertificateAuditor:
         if sro_m:
             sro = sro_m.group(1).strip()
 
-        # Nature detection
+        # "Undischarged" contains "discharge", so strip the negated forms before
+        # looking for release words.
+        release_text = re.sub(r"\b(?:un|not\s+)discharged\b", "", block_text.lower())
+        is_release = any(r in release_text for r in self.RELEASE_KEYWORDS)
+
+        # Nature detection. A release of a bank loan names the bank too, so
+        # releases are recognised first.
         nature = "Transaction"
-        if any(b in block_text.lower() for b in self.BANK_KEYWORDS):
+        if is_release:
+            nature = "Release / Discharge Receipt (ഒഴിവുമുറി)"
+            refs = {f"{m.group(1)}/{m.group(2)}" for m in self.DOC_REF.finditer(block_text)} - {doc_num}
+            self._release_refs[doc_num] = refs
+        elif any(b in block_text.lower() for b in self.BANK_KEYWORDS):
             nature = "Bank Mortgage / Gehan (ബാങ്ക് ബാധ്യത)"
         elif any(a in block_text.lower() for a in self.ATTACHMENT_KEYWORDS):
             nature = "Court / RR Attachment (കോടതി ജപ്തി)"
-        elif any(r in block_text.lower() for r in self.RELEASE_KEYWORDS):
-            nature = "Release / Discharge Receipt (ഒഴിവുമുറി)"
         elif re.search(r"sale|theer|തീറാധാരം|വിലയാധാരം", block_text, re.I):
             nature = "Theeradharam / Sale Deed (തീറാധാരം)"
         elif re.search(r"partition|bhagapat|ഭാഗപത്രം", block_text, re.I):
@@ -126,10 +145,7 @@ class EncumbranceCertificateAuditor:
         if claim_m:
             claimants = [p.strip() for p in claim_m.group(1).split(",") if p.strip()]
 
-        # "Undischarged" contains "discharge", so strip the negated forms before
-        # looking for release words.
-        release_text = re.sub(r"\b(?:un|not\s+)discharged\b", "", block_text.lower())
-        is_undischarged = any(k in block_text.lower() for k in self.BANK_KEYWORDS) and not any(r in release_text for r in self.RELEASE_KEYWORDS)
+        is_undischarged = any(k in block_text.lower() for k in self.BANK_KEYWORDS) and not is_release
         is_attachment = any(a in block_text.lower() for a in self.ATTACHMENT_KEYWORDS)
 
         return ECEntry(
@@ -167,13 +183,10 @@ class EncumbranceCertificateAuditor:
         court_attachments: list[str] = []
         conflicting_alienations: list[str] = []
 
-        # Find released documents
+        # A release clears only the documents it names.
         released_docs: set[str] = set()
         for entry in ec_entries:
-            if "release" in entry.nature_of_act.lower() or "receipt" in entry.nature_of_act.lower() or "ഒഴിവുമുറി" in entry.nature_of_act:
-                for target in ec_entries:
-                    if target.is_undischarged_liability and target.year <= entry.year:
-                        released_docs.add(target.doc_number)
+            released_docs |= self._release_refs.get(entry.doc_number, set())
 
         # Evaluate each EC entry
         for entry in ec_entries:
@@ -183,7 +196,7 @@ class EncumbranceCertificateAuditor:
                 party_str = f" in favor of {', '.join(entry.claimants)}" if entry.claimants else ""
                 desc = (
                     f"Doc #{entry.doc_number} ({entry.year}, SRO {entry.sro_name}) records an active bank mortgage / Gehan {liability_str}{party_str}. "
-                    f"No registered release deed or bank discharge certificate (ഭാരരഹിത സർട്ടിഫിക്കറ്റ്) is found on record. "
+                    f"No registered release deed or discharge naming this document (ഭാരരഹിത സർട്ടിഫിക്കറ്റ്) is on the EC. "
                     f"Property is subject to statutory attachment under SARFAESI Act, 2002."
                 )
                 undisclosed_mortgages.append(f"Doc #{entry.doc_number}: {liability_str}{party_str}")

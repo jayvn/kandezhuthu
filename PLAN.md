@@ -5,10 +5,6 @@
 
 Remaining work, ordered by impact within each section.
 
-## Correctness
-
-11. **EC parser merges entries.** Several entries can end up in one block, and a later "release" line then hides an earlier mortgage.
-    → Split on entry and document-number boundaries, then match releases to the document they discharge.
 ## Tests
 
 13. **UI tests reference removed elements.** `tests/ui/test_ui_playwright.py`, `test_contextual_chips_and_hud.py`, `test_cadastral_map_tools.py` and `test_bilingual_workflow_ui.py` look up IDs that no longer exist (`btn-undo`, `btn-hud-export`, `chip-sample-deed`, `legal-disclaimer`, `btn-pdf-export`, `step-nav-label`, `badge-kerala`, and since the UX pass `btn-next-step`, `chips-container`, `layman-card`, `tool-pin`, `btn-bhunaksha`, `exportPlotDossier`).
