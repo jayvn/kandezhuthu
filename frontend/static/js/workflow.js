@@ -123,7 +123,7 @@ function ensureStep4ActionCard() {
   const parts = collectSellerQuestions();
   if (!parts.length) {
     appendMsg("agent", `
-      <div class="step4-action-banner" style="font-size:0.85rem;">
+      <div class="step4-action-banner" style="font-size: var(--fs-14);">
         ${isMl
           ? 'ചോദിക്കാൻ ഇനിയും ഒന്നുമില്ല. ആധാരമോ EC-യോ സ്കാൻ ചെയ്യുക, അല്ലെങ്കിൽ മാപ്പിൽ പ്ലോട്ട് അടയാളപ്പെടുത്തുക; ആ പരിശോധനകളിൽ കണ്ടതിൽ നിന്നാണ് സന്ദേശം തയ്യാറാക്കുന്നത്.'
           : 'Nothing to ask yet. Scan the deed or EC, or pin the plot on the map. The message is built from what those checks find.'}
@@ -402,7 +402,7 @@ form.addEventListener("submit", async (e) => {
     }
 
     const answerHtml = `
-      <div style="line-height:1.55; color:#262a33; font-size:0.88rem;">
+      <div style="line-height:1.55; color:#262a33; font-size: var(--fs-14);">
         <h4 style="color:#990f3d; margin-top:0; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
           <span>§</span>
           <span>Yes, Historical Purchase Price is a Statutory Public Record in Kerala!</span>
@@ -410,7 +410,7 @@ form.addEventListener("submit", async (e) => {
         <p style="margin-bottom:0.5rem;">
           Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds${currentLanguage === 'ml' ? ' / <em>തീറാധാരം</em>' : ''}) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
         </p>
-        <div style="background:#f6ede2; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size:0.83rem;">
+        <div style="background:#f6ede2; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size: var(--fs-14);">
           <strong>Three Key Statutory Price & Valuation Realities in Kerala:</strong>
           <ol style="margin:4px 0 0 18px; padding:0;">
             <li style="margin-bottom:3px;"><strong>Registered Consideration${currentLanguage === 'ml' ? ' (പ്രതിഫല തുക)' : ''}:</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy${currentLanguage === 'ml' ? ' (<em>പകർപ്പ്</em>)' : ''} from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
@@ -418,7 +418,7 @@ form.addEventListener("submit", async (e) => {
             <li style="margin-bottom:2px;"><strong>Undervaluation Penalties (Section 45A Kerala Stamp Act):</strong> If a deed is registered below market value to evade 8% stamp duty or capital gains tax, District Registrar audits assess deficit duty with 12% penal interest, which becomes a <strong>first statutory charge / revenue recovery lien directly on the land</strong>.</li>
           </ol>
         </div>
-        <p style="margin-bottom:0.4rem; font-size:0.83rem; color:#66605c;">
+        <p style="margin-bottom:0.4rem; font-size: var(--fs-14); color:#66605c;">
           Below is the chronological 30-year ownership and consideration audit for this property, detailing exactly what previous owners paid per Cent, their registered bank liabilities, and fair value benchmarks:
         </p>
       </div>
@@ -430,7 +430,7 @@ form.addEventListener("submit", async (e) => {
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
-        <span style="font-size:0.85rem; color:#990f3d; margin-left:6px; font-weight:600;">
+        <span style="font-size: var(--fs-14); color:#990f3d; margin-left:6px; font-weight:600;">
           Loading statutory purchase price and valuation audit...
         </span>
       </div>
@@ -459,7 +459,7 @@ form.addEventListener("submit", async (e) => {
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
-      <span style="font-size:0.85rem; color:#990f3d; margin-left:6px; font-weight:500;">
+      <span style="font-size: var(--fs-14); color:#990f3d; margin-left:6px; font-weight:500;">
         ${(TRANSLATIONS[currentLanguage] || TRANSLATIONS.en).typingAnalysis}
       </span>
     </div>

@@ -9,13 +9,6 @@ Remaining work, ordered by impact within each section.
 
 The buyer's question is: *can I pay the advance, and what do I still need?* Every screen should answer that. Today the first screen shows about 30 controls (three rows of navigation, three ways to start, eight map tools, a five-box plot panel) before the user has done anything.
 
-7. **Mobile:** the map is a separate mode behind the Chat | Map switch.
-   → On phones, stack the result first and the map below it as a collapsible section.
-8. **Mixed type roles.** HUD labels are serif caps and values sans, buttons mix weights, and there are about 9 font sizes.
-   → Define a scale (12 / 14 / 16 / 20 / 28). Serif for headings and big numbers (extent, score); sans for labels, buttons and body.
-9. **Glyph accessibility.** ●▲■ have no text equivalent for screen readers (the verdict box already marks them `aria-hidden`).
-   → Add `<span class="sr-only">Danger:</span>` and similar labels next to each status glyph.
-
 ## Correctness
 
 10. **Wrong locality without a Maps key.** The elevation fallback names the nearest landmark it knows, so a Kaloor pin becomes "Kakkanad" in the flood WhatsApp text.

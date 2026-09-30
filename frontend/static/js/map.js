@@ -136,7 +136,7 @@ function setPin(lat, lng) {
     riseOnHover: true
   }).addTo(map);
 
-  currentMarker.bindPopup(`<b>${currentLanguage === "ml" ? "നിങ്ങളുടെ പ്ലോട്ട്" : "Your plot"}</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br><button onclick="openAutoDemarcateModal()" style="margin-top:6px; font-size:0.75rem; padding:4px 10px; background:#990f3d; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">${currentLanguage === "ml" ? "അതിർത്തി കണ്ടെത്തുക" : "Auto-outline here"}</button>`).openPopup();
+  currentMarker.bindPopup(`<b>${currentLanguage === "ml" ? "നിങ്ങളുടെ പ്ലോട്ട്" : "Your plot"}</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br><button onclick="openAutoDemarcateModal()" style="margin-top:6px; font-size: var(--fs-12); padding:4px 10px; background:#990f3d; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">${currentLanguage === "ml" ? "അതിർത്തി കണ്ടെത്തുക" : "Auto-outline here"}</button>`).openPopup();
   updateHUDLocation(lat, lng);
 
   const coordsEl = document.getElementById("detect-modal-coords");
@@ -622,15 +622,15 @@ async function executeAutoDetectBoundaries() {
 
       appendMsg("agent", `
         <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin:6px 0;">
-          <div style="font-weight:700; color:#0d7680; font-size:0.92rem; display:flex; align-items:center; gap:6px;">
+          <div style="font-weight:700; color:#0d7680; font-size: var(--fs-14); display:flex; align-items:center; gap:6px;">
             <span>◆</span> <span>${data.source_title} Demarcated</span>
           </div>
-          <div style="font-size:0.83rem; color:#0a5c63; margin-top:6px;">
+          <div style="font-size: var(--fs-14); color:#0a5c63; margin-top:6px;">
             Extent: <strong>${data.extent_cents} Cents</strong> (${(data.extent_cents * 40.4686).toFixed(1)} m²) | Perimeter: <strong>${data.perimeter_m}m</strong><br>
             Source: <em>${data.source}</em>
             ${fmbInfo}
           </div>
-          <div style="margin-top:8px; font-size:0.78rem; color:#0d7680; background:#dcebec; padding:6px 10px; border-radius:6px;">
+          <div style="margin-top:8px; font-size: var(--fs-12); color:#0d7680; background:#dcebec; padding:6px 10px; border-radius:6px;">
             ${data.message}
           </div>
         </div>
@@ -677,10 +677,10 @@ function executeGenerateExtentPlot() {
 
   appendMsg("agent", `
     <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin:6px 0;">
-      <div style="font-weight:700; color:#0d7680; font-size:0.92rem;">
+      <div style="font-weight:700; color:#0d7680; font-size: var(--fs-14);">
         Calibrated Extent Demarcated: ${cents} Cents
       </div>
-      <div style="font-size:0.83rem; color:#0a5c63; margin-top:4px;">
+      <div style="font-size: var(--fs-14); color:#0a5c63; margin-top:4px;">
         Placed exact ${cents} Cents (${(cents * 40.4686).toFixed(1)} m²) plot footprint with aspect ratio <strong>${ratio}</strong>.<br>
         Each corner stone${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ല്</em>)' : ''} can now be dragged on the satellite map to align with physical fences or trees.
       </div>
@@ -732,13 +732,13 @@ async function executeFetchCadastralParcel() {
 
       appendMsg("agent", `
         <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
-          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
+          <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size: var(--fs-16);">
             <span>§</span> <span>Approximate outline: Survey ${data.survey_no}, ${data.village}</span>
           </div>
-          <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
+          <div style="font-size: var(--fs-14); color:#4a2a00; margin-top:6px;">
             A square of <strong>${data.extent_cents} cents</strong> at the pin. The real shape is in the FMB sketch from the Village Office or <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
           </div>
-          <div style="font-size:0.82rem; margin-top:8px;">
+          <div style="font-size: var(--fs-14); margin-top:8px;">
             <strong>Sides of the square (meters):</strong>
             <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
           </div>
@@ -1201,17 +1201,17 @@ async function fetchCadastralOverlay() {
 
     appendMsg("agent", `
       <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
-        <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size: var(--fs-16);">
           <span>§</span> <span>Approximate outline: Survey ${data.survey_no}, ${data.village}</span>
         </div>
-        <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
+        <div style="font-size: var(--fs-14); color:#4a2a00; margin-top:6px;">
           A square of <strong>${data.extent_cents} cents</strong> at the pin. The real shape is in the FMB sketch from the Village Office or <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
         </div>
-        <div style="font-size:0.82rem; margin-top:8px;">
+        <div style="font-size: var(--fs-14); margin-top:8px;">
           <strong>Sides of the square (meters):</strong>
           <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
         </div>
-        <div style="margin-top:8px; font-size:0.78rem; color:#6b3d00; background:#fbf0e0; padding:6px 10px; border-radius:6px;">
+        <div style="margin-top:8px; font-size: var(--fs-12); color:#6b3d00; background:#fbf0e0; padding:6px 10px; border-radius:6px;">
           ▲ <strong>Field Instruction:</strong> Cross-verify all 4 boundary stones${currentLanguage === 'ml' ? ' (<em>സർവേ കല്ലുകൾ</em>)' : ''} against the above meter dimensions. Never purchase based solely on seller's oral demarcations.
         </div>
       </div>
@@ -1244,7 +1244,7 @@ async function checkDataBankStatus() {
     if (data.fee_calculation) {
       const f = data.fee_calculation;
       feeHtml = `
-        <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:6px; padding:8px; margin-top:8px; font-size:0.8rem;">
+        <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:6px; padding:8px; margin-top:8px; font-size: var(--fs-12);">
           <strong>Section 27A Conversion Fee:</strong> ${f.is_fee_exempt ? '<span style="color:#0d7680; font-weight:700;">₹0 (Free exemption under 25 cents)</span>' : `₹${f.statutory_conversion_fee_inr.toLocaleString()} (${f.applicable_fee_percentage}%)`}
           <br><small style="color:#66605c;">${f.statutory_citation} • Fair Value: ₹${f.fair_value_per_are_inr.toLocaleString()}/Are</small>
         </div>
@@ -1254,19 +1254,19 @@ async function checkDataBankStatus() {
     appendMsg("agent", `
       <div style="background:#ffffff; border:1px solid #e9decf; border-radius:10px; padding:12px; margin:6px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <strong style="color:#990f3d; font-size:0.92rem;">Kerala Agricultural Data Bank Audit (2008 Act)</strong>
-          <span style="font-size:0.74rem; font-weight:700; color:#fff; background:${badgeColor}; padding:2px 8px; border-radius:12px;">${badgeText}</span>
+          <strong style="color:#990f3d; font-size: var(--fs-14);">Kerala Agricultural Data Bank Audit (2008 Act)</strong>
+          <span style="font-size: var(--fs-12); font-weight:700; color:#fff; background:${badgeColor}; padding:2px 8px; border-radius:12px;">${badgeText}</span>
         </div>
-        <div style="font-size:0.83rem; color:#4d4845;">
+        <div style="font-size: var(--fs-14); color:#4d4845;">
           Survey: <strong>${data.survey_no}</strong> | Krishi Bhavan: <strong>${data.krishi_bhavan_name}</strong><br>
           Classification: <strong>${data.entry_status}</strong><br>
           Required Statutory Form: <strong>${data.recommended_statutory_form}</strong>
         </div>
         ${feeHtml}
-        <div style="margin-top:8px; font-size:0.8rem; color:#a35c00; background:#fbf0e0; padding:6px 8px; border-radius:6px;">
+        <div style="margin-top:8px; font-size: var(--fs-12); color:#a35c00; background:#fbf0e0; padding:6px 8px; border-radius:6px;">
           <strong>Building Permit Status:</strong> ${data.building_permit_eligibility}
         </div>
-        ${isListed == null ? `<div style="margin-top:6px; font-size:0.8rem;">${data.risk_advisory}</div>` : ''}
+        ${isListed == null ? `<div style="margin-top:6px; font-size: var(--fs-12);">${data.risk_advisory}</div>` : ''}
         <div class="deed-action-buttons">
           <button class="deed-action-btn primary" onclick="onStepClick(4)">${currentLanguage === 'ml' ? "ഉടമയോട് ചോദിക്കുക" : "Ask seller"}</button>
         </div>

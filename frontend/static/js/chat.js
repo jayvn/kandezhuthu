@@ -384,7 +384,7 @@ function renderDeedAuditCard(container, data, fileName) {
   const scanError = data && (data.error || (data.parts && data.parts[0] && data.parts[0].text));
   if (!data || scanError || (!data.sanity_result && data.entries === undefined && data.is_nil_encumbrance === undefined)) {
     container.innerHTML = `<span style="color:#990f3d;">▲ The document could not be read, so nothing was checked.</span>` +
-      (scanError ? `<div style="margin-top:6px; font-size:0.78rem; color:#66605c;">${escapeHtml(String(scanError))}</div>` : "");
+      (scanError ? `<div style="margin-top:6px; font-size: var(--fs-12); color:#66605c;">${escapeHtml(String(scanError))}</div>` : "");
     return;
   }
   window._lastUploadedDeedData = data;
@@ -401,7 +401,7 @@ function renderDeedAuditCard(container, data, fileName) {
     let entriesHtml = "";
     if (data.entries && data.entries.length) {
       entriesHtml = `
-        <div style="margin-top:10px; font-size:0.82rem;">
+        <div style="margin-top:10px; font-size: var(--fs-14);">
           <strong>Official SRO EC Registration Entries (${data.total_entries_count}):</strong>
           <div style="display:flex; flex-direction:column; gap:6px; margin-top:6px;">
             ${data.entries.map(e => `
@@ -410,7 +410,7 @@ function renderDeedAuditCard(container, data, fileName) {
                   <span>Doc #${e.doc_number} (${e.year}) - SRO ${e.sro_name}</span>
                   <span style="color:${e.is_undischarged_liability || e.is_court_attachment ? '#990f3d' : '#0d7680'};">${e.nature_of_act}</span>
                 </div>
-                <div style="color:#66605c; font-size:0.75rem; margin-top:2px;">
+                <div style="color:#66605c; font-size: var(--fs-12); margin-top:2px;">
                   ${e.claimants && e.claimants.length ? `Favoring: ${e.claimants.join(', ')} | ` : ''}
                   ${e.liability_amount_inr ? `Liability: ₹${e.liability_amount_inr.toLocaleString()} | ` : ''}
                   ${e.notes ? e.notes : ''}
@@ -426,9 +426,9 @@ function renderDeedAuditCard(container, data, fileName) {
     if (data.risk_flags && data.risk_flags.length) {
       risksHtml = `
         <div style="margin-top:10px; background:#fbebee; border:1px solid #f0c2cf; border-radius:8px; padding:8px 12px;">
-          <div style="font-weight:700; color:#7c0c32; font-size:0.84rem; margin-bottom:4px;">■ Critical Encumbrance Flags:</div>
+          <div style="font-weight:700; color:#7c0c32; font-size: var(--fs-14); margin-bottom:4px;">■ Critical Encumbrance Flags:</div>
           ${data.risk_flags.map(r => `
-            <div style="font-size:0.8rem; color:#5f0926; margin-bottom:6px;">
+            <div style="font-size: var(--fs-12); color:#5f0926; margin-bottom:6px;">
               <strong>${r.title}:</strong> ${r.description}<br>
               <small style="color:#7c0c32;">Remedy: ${r.remedial_action}</small>
             </div>
@@ -441,14 +441,14 @@ function renderDeedAuditCard(container, data, fileName) {
       <div class="deed-audit-card">
         <div class="deed-audit-header">
           <div>
-            <div style="font-size:0.92rem; font-weight:700; color:#990f3d;">SRO Encumbrance Certificate (EC) Audit</div>
-            <div style="font-size:0.75rem; color:#66605c;">${fileName} • Search Period: ${data.ec_period || '30 Years'}</div>
+            <div style="font-size: var(--fs-14); font-weight:700; color:#990f3d;">SRO Encumbrance Certificate (EC) Audit</div>
+            <div style="font-size: var(--fs-12); color:#66605c;">${fileName} • Search Period: ${data.ec_period || '30 Years'}</div>
           </div>
-          <div style="background:${badgeColor}; color:#fff; font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:12px;">
+          <div style="background:${badgeColor}; color:#fff; font-size: var(--fs-12); font-weight:700; padding:3px 10px; border-radius:12px;">
             ${badgeText} (${ecScore}/100)
           </div>
         </div>
-        <div style="font-size:0.84rem; color:#4d4845; margin-top:8px;">${data.summary}</div>
+        <div style="font-size: var(--fs-14); color:#4d4845; margin-top:8px;">${data.summary}</div>
         ${risksHtml}
         ${entriesHtml}
         <div class="deed-action-buttons">
@@ -525,7 +525,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (sanity.findings && sanity.findings.length) {
     findingsHtml = `
       <div class="findings-box">
-        <div style="font-weight:700; color:#990f3d; font-size:0.82rem; margin-bottom:0.35rem;">▲ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
+        <div style="font-weight:700; color:#990f3d; font-size: var(--fs-14); margin-bottom:0.35rem;">▲ ${currentLanguage === 'ml' ? 'കണ്ടെത്തിയ നിയമക്കുരുക്കുകൾ:' : 'Statutory Red Flags Detected:'}</div>
         ${sanity.findings.map(f => {
           let exp = f.explanation || '';
           if (currentLanguage === 'en') {
@@ -535,10 +535,10 @@ function renderDeedAuditCard(container, data, fileName) {
           <div class="finding-alert ${f.severity === 'CRITICAL' ? 'critical' : ''}">
             <div class="finding-alert-header">
               <span>${f.title} ${currentLanguage === 'ml' && f.title_malayalam ? `(${f.title_malayalam})` : ''}</span>
-              <span style="font-size:0.7rem; text-transform:uppercase;">${f.severity}</span>
+              <span style="font-size: var(--fs-12); text-transform:uppercase;">${f.severity}</span>
             </div>
             <div>${exp}</div>
-            <div style="font-size:0.72rem; color:#66605c; margin-top:3px;"><strong>Statute:</strong> ${f.kerala_statute}</div>
+            <div style="font-size: var(--fs-12); color:#66605c; margin-top:3px;"><strong>Statute:</strong> ${f.kerala_statute}</div>
           </div>`;
         }).join("")}
       </div>
@@ -550,7 +550,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (data.building_rules) {
     const br = data.building_rules;
     buildingHtml = `
-      <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#0d7680;">
+      <div style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size: var(--fs-12); color:#0d7680;">
         <strong>Building Rules Match (${br.rule_citation || 'KPBR 2019'}):</strong><br>
         • Min Access Road Width: <strong>${br.min_road_width_m} meters</strong><br>
         • Setbacks: Front ${br.front_setback_m}m | Rear ${br.rear_setback_m}m | Sides ${br.side_setback_1_m}m & ${br.side_setback_2_m}m
@@ -563,7 +563,7 @@ function renderDeedAuditCard(container, data, fileName) {
   if (data.paddy_conversion && data.paddy_conversion.statutory_conversion_fee_inr > 0) {
     const pc = data.paddy_conversion;
     paddyHtml = `
-      <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size:0.8rem; color:#8a4d00;">
+      <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:8px; padding:0.55rem 0.75rem; margin-bottom:0.85rem; font-size: var(--fs-12); color:#8a4d00;">
         <strong>Form 6 Section 27A Conversion Fee:</strong><br>
         • Estimated Govt Fee: <strong>₹${pc.statutory_conversion_fee_inr.toLocaleString('en-IN')}</strong> (${pc.applicable_slab_percentage}% slab)<br>
         • Free Exemption Applied: ${pc.free_exemption_cents} Cents (Govt exemption for residential plots up to 25 cents).
@@ -624,6 +624,7 @@ function renderDeedAuditCard(container, data, fileName) {
         </div>
         <div class="deed-score-badge ${scoreClass}">
           <span aria-hidden="true">${scoreIcon}</span>
+          <span class="sr-only">${{ danger: ml ? "അപകടം" : "Danger", caution: ml ? "ശ്രദ്ധിക്കുക" : "Caution", clear: ml ? "പ്രശ്നങ്ങളില്ല" : "No red flags" }[scoreClass]}:</span>
           <span>${score}/100</span>
         </div>
       </div>
@@ -699,7 +700,7 @@ async function openOwnershipTimeline(preset = 'aluva_broken') {
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
       <div class="typing-dot"></div>
-      <span style="font-size:0.85rem; color:#990f3d; margin-left:6px; font-weight:600;">
+      <span style="font-size: var(--fs-14); color:#990f3d; margin-left:6px; font-weight:600;">
         ${currentLanguage === 'ml' ? '30 വർഷത്തെ മുന്നാധാര ശൃംഖല പരിശോധിക്കുന്നു...' : 'Reconstructing 30-year chronological title chain across decades...'}
       </span>
     </div>
@@ -754,17 +755,17 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
     let financialHtml = "";
     if (node.consideration_display) {
       financialHtml = `
-        <div style="margin-top:0.45rem; padding:0.45rem 0.65rem; background:#f6ede2; border:1px solid #e9decf; border-radius:6px; font-size:0.75rem;">
+        <div style="margin-top:0.45rem; padding:0.45rem 0.65rem; background:#f6ede2; border:1px solid #e9decf; border-radius:6px; font-size: var(--fs-12);">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:4px;">
             <span style="font-weight:700; color:#990f3d; display:flex; align-items:center; gap:4px;">
               <span>₹</span>
               <span>${node.consideration_display}</span>
             </span>
-            ${node.price_per_cent ? `<span style="background:#eef2f7; color:#0f5499; padding:1px 6px; border-radius:4px; font-weight:700; font-size:0.72rem;">${node.price_per_cent}</span>` : ''}
-            ${node.stamp_duty_paid ? `<span style="background:#f6ede2; color:#66605c; padding:1px 6px; border-radius:4px; font-size:0.7rem;">Stamp Duty: ${node.stamp_duty_paid}</span>` : ''}
+            ${node.price_per_cent ? `<span style="background:#eef2f7; color:#0f5499; padding:1px 6px; border-radius:4px; font-weight:700; font-size: var(--fs-12);">${node.price_per_cent}</span>` : ''}
+            ${node.stamp_duty_paid ? `<span style="background:#f6ede2; color:#66605c; padding:1px 6px; border-radius:4px; font-size: var(--fs-12);">Stamp Duty: ${node.stamp_duty_paid}</span>` : ''}
           </div>
-          ${node.financial_note ? `<div style="color:#4d4845; margin-top:3px; font-size:0.73rem;">${node.financial_note}</div>` : ''}
-          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#66605c; font-size:0.7rem; margin-top:2px;"><strong>Kerala Govt Fair Value ${currentLanguage === 'ml' ? '(ന്യായവില Sec 28A)' : '(Sec 28A)'}:</strong> ${node.govt_fair_value}</div>` : ''}
+          ${node.financial_note ? `<div style="color:#4d4845; margin-top:3px; font-size: var(--fs-12);">${node.financial_note}</div>` : ''}
+          ${node.govt_fair_value && node.govt_fair_value !== 'N/A' ? `<div style="color:#66605c; font-size: var(--fs-12); margin-top:2px;"><strong>Kerala Govt Fair Value ${currentLanguage === 'ml' ? '(ന്യായവില Sec 28A)' : '(Sec 28A)'}:</strong> ${node.govt_fair_value}</div>` : ''}
         </div>
       `;
     }
@@ -777,11 +778,11 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             <div class="timeline-doc-title">
               <span class="timeline-year-tag">${node.year}</span>
               <span>${node.deed_type}</span>
-              <span style="font-weight:400; color:#66605c; font-size:0.78rem;">${currentLanguage === 'ml' && node.deed_malayalam ? `(${node.deed_malayalam})` : ''}</span>
+              <span style="font-weight:400; color:#66605c; font-size: var(--fs-12);">${currentLanguage === 'ml' && node.deed_malayalam ? `(${node.deed_malayalam})` : ''}</span>
             </div>
             <div style="display:flex; align-items:center; gap:0.35rem;">
               <span class="timeline-extent-tag">${node.extent_cents} Cents</span>
-              <span style="font-size:0.73rem; background:#f6ede2; padding:1px 5px; border-radius:4px; color:#66605c;">Doc #${node.doc_number}</span>
+              <span style="font-size: var(--fs-12); background:#f6ede2; padding:1px 5px; border-radius:4px; color:#66605c;">Doc #${node.doc_number}</span>
             </div>
           </div>
 
@@ -789,10 +790,10 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
             <span><strong>From:</strong> ${node.from_parties.join(", ")}</span>
             <span class="timeline-party-arrow">→</span>
             <span><strong>To:</strong> ${node.to_parties.join(", ")}</span>
-            <span style="color:#66605c; font-size:0.73rem;">· SRO ${node.sro}</span>
+            <span style="color:#66605c; font-size: var(--fs-12);">· SRO ${node.sro}</span>
           </div>
 
-          ${node.notes ? `<div style="font-size:0.77rem; color:#66605c; margin-top:2px;"><em>${node.notes}</em></div>` : ''}
+          ${node.notes ? `<div style="font-size: var(--fs-12); color:#66605c; margin-top:2px;"><em>${node.notes}</em></div>` : ''}
           ${financialHtml}
           ${flagsHtml}
         </div>
@@ -826,35 +827,35 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
       <div class="financial-transparency-card" style="margin-bottom:0.85rem; padding:0.75rem 0.9rem; background:linear-gradient(135deg, #eef5f5 0%, #eef5f5 100%); border:1px solid #a8cfd1; border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
           <div style="display:flex; align-items:center; gap:6px;">
-            <span style="font-size:1.05rem;">₹</span>
-            <span style="font-weight:700; color:#0a5c63; font-size:0.84rem;">Public Purchase Price & Valuation Intelligence</span>
-            <span style="background:#a8cfd1; color:#0d7680; font-size:0.68rem; font-weight:700; padding:1px 7px; border-radius:10px;">SRO PUBLIC RECORD</span>
+            <span style="font-size: var(--fs-16);">₹</span>
+            <span style="font-weight:700; color:#0a5c63; font-size: var(--fs-14);">Public Purchase Price & Valuation Intelligence</span>
+            <span style="background:#a8cfd1; color:#0d7680; font-size: var(--fs-12); font-weight:700; padding:1px 7px; border-radius:10px;">SRO PUBLIC RECORD</span>
           </div>
-          <span style="font-size:0.7rem; color:#0d7680; font-weight:600;">Registration Act 1908 (Sec 51) · Book 1</span>
+          <span style="font-size: var(--fs-12); color:#0d7680; font-weight:600;">Registration Act 1908 (Sec 51) · Book 1</span>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:6px; margin-top:6px; font-size:0.76rem;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:6px; margin-top:6px; font-size: var(--fs-12);">
           <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
-            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">LAST REGISTERED PURCHASE PRICE</div>
-            <div style="font-weight:800; color:#990f3d; font-size:0.95rem; margin-top:1px;">${ft.last_purchase_price}</div>
-            <div style="color:#66605c; font-size:0.7rem;">by ${ft.last_buyer} (${ft.last_purchase_year})</div>
+            <div style="color:#66605c; font-size: var(--fs-12); font-weight:600;">LAST REGISTERED PURCHASE PRICE</div>
+            <div style="font-weight:800; color:#990f3d; font-size: var(--fs-16); margin-top:1px;">${ft.last_purchase_price}</div>
+            <div style="color:#66605c; font-size: var(--fs-12);">by ${ft.last_buyer} (${ft.last_purchase_year})</div>
           </div>
           <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
-            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">HISTORICAL RATE & FAIR VALUE</div>
-            <div style="font-weight:800; color:#0f5499; font-size:0.92rem; margin-top:1px;">${ft.historical_rate_per_cent}</div>
-            <div style="color:#66605c; font-size:0.68rem;">Govt Fair Value: ${ft.current_govt_fair_value}</div>
+            <div style="color:#66605c; font-size: var(--fs-12); font-weight:600;">HISTORICAL RATE & FAIR VALUE</div>
+            <div style="font-weight:800; color:#0f5499; font-size: var(--fs-14); margin-top:1px;">${ft.historical_rate_per_cent}</div>
+            <div style="color:#66605c; font-size: var(--fs-12);">Govt Fair Value: ${ft.current_govt_fair_value}</div>
           </div>
           <div style="background:white; padding:6px 9px; border-radius:6px; border:1px solid #dcebec;">
-            <div style="color:#66605c; font-size:0.68rem; font-weight:600;">ACTIVE BANK LIEN (SRO EC)</div>
-            <div style="font-weight:800; color:${ft.active_bank_lien_inr.includes('Nil') ? '#0d7680' : '#990f3d'}; font-size:0.92rem; margin-top:1px;">${ft.active_bank_lien_inr}</div>
-            <div style="color:#66605c; font-size:0.7rem;">${ft.active_bank_lien_inr.includes('Nil') ? '✓ Clean 30-Yr Search' : '■ Undischarged Gehan Mortgage'}</div>
+            <div style="color:#66605c; font-size: var(--fs-12); font-weight:600;">ACTIVE BANK LIEN (SRO EC)</div>
+            <div style="font-weight:800; color:${ft.active_bank_lien_inr.includes('Nil') ? '#0d7680' : '#990f3d'}; font-size: var(--fs-14); margin-top:1px;">${ft.active_bank_lien_inr}</div>
+            <div style="color:#66605c; font-size: var(--fs-12);">${ft.active_bank_lien_inr.includes('Nil') ? '✓ Clean 30-Yr Search' : '■ Undischarged Gehan Mortgage'}</div>
           </div>
         </div>
 
-        <div style="margin-top:7px; font-size:0.75rem; color:#0d7680; line-height:1.4;">
+        <div style="margin-top:7px; font-size: var(--fs-12); color:#0d7680; line-height:1.4;">
           <strong>Pricing Intelligence:</strong> ${ft.market_price_context}
         </div>
-        <div style="margin-top:4px; font-size:0.71rem; color:#a35c00; line-height:1.35;">
+        <div style="margin-top:4px; font-size: var(--fs-12); color:#a35c00; line-height:1.35;">
           ▲ <strong>Kerala Stamp Act Sec 45A:</strong> ${ft.undervaluation_warning}
         </div>
       </div>
@@ -867,13 +868,13 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
         <div class="timeline-title-group">
           <div class="timeline-title">
             <span>§</span>
-            <span>30-Year Prior Title Lineage (*Munnadharam* Timeline)</span>
+            <span>${currentLanguage === "ml" ? "30 വർഷത്തെ മുന്നാധാര ശൃംഖല (മാതൃക)" : "30-year title chain (sample)"}</span>
           </div>
           <div class="timeline-subtitle">${data.property_identifier}</div>
         </div>
         <div class="deed-score-badge ${scoreClass}">
-          <span>${scoreIcon}</span>
-          <span>Score: ${score}/100 · ${data.risk_verdict}</span>
+          <span aria-hidden="true">${scoreIcon}</span>
+          <span>${score}/100 · ${data.risk_verdict}</span>
         </div>
       </div>
 
@@ -889,7 +890,7 @@ function renderOwnershipTimeline(container, data, currentPreset = 'aluva_broken'
         </button>
       </div>
 
-      <div style="background:${data.chain_intact ? '#eef5f5' : '#fbebee'}; border:1px solid ${data.chain_intact ? '#a8cfd1' : '#f0c2cf'}; border-radius:8px; padding:0.6rem 0.8rem; font-size:0.8rem; color:${data.chain_intact ? '#0d7680' : '#7c0c32'}; margin-bottom:0.75rem;">
+      <div style="background:${data.chain_intact ? '#eef5f5' : '#fbebee'}; border:1px solid ${data.chain_intact ? '#a8cfd1' : '#f0c2cf'}; border-radius:8px; padding:0.6rem 0.8rem; font-size: var(--fs-12); color:${data.chain_intact ? '#0d7680' : '#7c0c32'}; margin-bottom:0.75rem;">
         <strong>Audit Summary:</strong> ${data.summary}
       </div>
 

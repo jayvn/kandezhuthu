@@ -38,11 +38,11 @@
     width: 38px; height: 38px; border-radius: 10px;
     background: linear-gradient(135deg, #990f3d, #7c0c32);
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 1.25rem; font-weight: 700; flex-shrink: 0;
+    color: #fff; font-size: var(--fs-20); font-weight: 700; flex-shrink: 0;
   }
   .brand-text { min-width: 0; }
-  .brand-title { font-size: 1.05rem; font-weight: 700; color: #990f3d; font-family: var(--ft-font-serif); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .brand-subtitle { font-size: 0.74rem; color: var(--text-muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-title { font-size: var(--fs-16); font-weight: 700; color: #990f3d; font-family: var(--ft-font-serif); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .brand-subtitle { font-size: var(--fs-12); color: var(--text-muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
   .header-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
 
@@ -65,7 +65,7 @@
     justify-content: center;
     padding-left: 6px;
     padding-right: 2px;
-    font-size: 0.82rem;
+    font-size: var(--fs-14);
     line-height: 1;
     color: #66605c;
   }
@@ -73,7 +73,7 @@
     border: none;
     background: transparent;
     padding: 4px 11px;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     border-radius: 9999px;
     cursor: pointer;
@@ -112,7 +112,7 @@
     border: none;
     background: transparent;
     padding: 4px 9px;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     border-radius: 6px;
     cursor: pointer;
@@ -136,7 +136,7 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   .badge-kerala {
-    background: #eef5f5; color: #0d7680; font-size: 0.74rem; font-weight: 600;
+    background: #eef5f5; color: #0d7680; font-size: var(--fs-12); font-weight: 600;
     padding: 0.25rem 0.6rem; border-radius: 20px; border: 1px solid #a8cfd1;
     display: none;
   }
@@ -185,12 +185,12 @@
   .msg { display: flex; flex-direction: column; max-width: 92%; }
   .msg.user { align-self: flex-end; align-items: flex-end; }
   .msg.agent { align-self: flex-start; align-items: flex-start; }
-  .msg-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .msg-label { font-size: var(--fs-12); font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem; }
 
   .bubble {
     padding: 0.85rem 1.1rem;
     border-radius: 14px;
-    font-size: 0.92rem;
+    font-size: var(--fs-14);
     line-height: 1.55;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -208,7 +208,7 @@
   }
 
   /* Markdown & formatting in agent bubbles */
-  .bubble h2, .bubble h3, .bubble h4 { color: #990f3d; margin-top: 0.7rem; margin-bottom: 0.35rem; font-size: 1.02rem; }
+  .bubble h2, .bubble h3, .bubble h4 { color: #990f3d; margin-top: 0.7rem; margin-bottom: 0.35rem; font-size: var(--fs-16); }
   .bubble p { margin-bottom: 0.55rem; }
   .bubble p:last-child { margin-bottom: 0; }
   .bubble ul, .bubble ol { margin-left: 1.2rem; margin-bottom: 0.55rem; }
@@ -241,7 +241,7 @@
     gap: 0.4rem;
   }
   .whatsapp-title {
-    font-size: 0.78rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     color: #0d7680;
     display: flex; align-items: center; gap: 0.35rem;
@@ -252,7 +252,7 @@
     gap: 0.4rem;
   }
   .whatsapp-text {
-    font-size: 0.92rem;
+    font-size: var(--fs-14);
     color: #0d7680;
     line-height: 1.55;
     margin-bottom: 0.4rem;
@@ -266,7 +266,7 @@
     border: none;
     padding: 0.32rem 0.65rem;
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     display: inline-flex; align-items: center; gap: 0.3rem;
@@ -322,7 +322,7 @@
     padding: 0.65rem 0.9rem;
     border: 1.5px solid var(--border);
     border-radius: 10px;
-    font-size: 0.92rem;
+    font-size: var(--fs-14);
     line-height: 1.4;
     font-family: inherit;
     resize: none;
@@ -341,7 +341,7 @@
     background: #990f3d;
     color: #fff;
     font-weight: 600;
-    font-size: 0.92rem;
+    font-size: var(--fs-14);
     cursor: pointer;
     transition: background 0.15s;
     display: flex; align-items: center; justify-content: center; gap: 0.4rem;
@@ -358,7 +358,7 @@
     border-radius: 10px;
     background: #f6ede2;
     color: #990f3d;
-    font-size: 1.25rem;
+    font-size: var(--fs-20);
     cursor: pointer;
     transition: all 0.15s;
     display: flex;
@@ -407,7 +407,7 @@
     to { transform: scale(1); opacity: 1; }
   }
   .drop-icon-animated {
-    font-size: 3rem;
+    font-size: var(--fs-28);
     margin-bottom: 0.6rem;
     animation: bounceIcon 1.4s infinite ease-in-out;
   }
@@ -415,11 +415,11 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }
   }
-  .drop-title { font-size: 1.15rem; font-weight: 700; color: #0d7680; margin-bottom: 0.3rem; }
-  .drop-subtitle { font-size: 0.82rem; color: #66605c; line-height: 1.4; margin-bottom: 0.8rem; }
+  .drop-title { font-size: var(--fs-20); font-weight: 700; color: #0d7680; margin-bottom: 0.3rem; }
+  .drop-subtitle { font-size: var(--fs-14); color: #66605c; line-height: 1.4; margin-bottom: 0.8rem; }
   .drop-badges { display: flex; justify-content: center; gap: 0.4rem; flex-wrap: wrap; }
   .drop-badges span {
-    font-size: 0.7rem; font-weight: 700; background: #eef5f5; color: #0d7680;
+    font-size: var(--fs-12); font-weight: 700; background: #eef5f5; color: #0d7680;
     padding: 3px 8px; border-radius: 12px; border: 1px solid #a8cfd1;
   }
 
@@ -431,7 +431,7 @@
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(13, 118, 128, 0); }
   }
   .format-pill {
-    font-size: 0.66rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     background: #ffffff;
     color: #0d7680;
@@ -471,14 +471,14 @@
     color: #0d7680;
   }
   .buyer-verdict-title {
-    font-size: 0.88rem;
+    font-size: var(--fs-14);
     font-weight: 800;
     display: flex;
     align-items: center;
     gap: 6px;
   }
   .buyer-verdict-text {
-    font-size: 0.78rem;
+    font-size: var(--fs-12);
     line-height: 1.4;
   }
 
@@ -495,7 +495,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.84rem;
+    font-size: var(--fs-14);
     font-weight: 700;
     color: #0d7680;
     margin-bottom: 0.6rem;
@@ -517,7 +517,7 @@
     gap: 0.3rem;
   }
   .ocr-step {
-    font-size: 0.74rem;
+    font-size: var(--fs-12);
     color: #66605c;
     display: flex;
     align-items: center;
@@ -536,7 +536,7 @@
     background: #eef5f5;
     color: #0d7680;
     border: 1px solid #a8cfd1;
-    font-size: 0.7rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     padding: 2px 7px;
     border-radius: 12px;
@@ -551,7 +551,7 @@
     border: 1px solid #e9decf;
     background: #ffffff;
     color: #262a33;
-    font-size: 0.76rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     padding: 5px 10px;
     border-radius: 6px;
@@ -587,19 +587,19 @@
     gap: 0.5rem;
   }
   .deed-title-group { display: flex; align-items: center; gap: 0.5rem; }
-  .deed-doc-tag { font-size: 0.95rem; font-weight: 700; color: #262a33; }
+  .deed-doc-tag { font-size: var(--fs-16); font-weight: 700; color: #262a33; }
   .deed-type-badge {
     background: #e9decf;
     color: #4d4845;
     padding: 2px 7px;
     border-radius: 4px;
-    font-size: 0.72rem;
+    font-size: var(--fs-12);
     font-weight: 600;
   }
   .deed-score-badge {
     padding: 4px 10px;
     border-radius: 20px;
-    font-size: 0.78rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -622,8 +622,8 @@
     border-radius: 8px;
     padding: 0.45rem 0.65rem;
   }
-  .deed-grid-label { font-size: 0.67rem; text-transform: uppercase; color: #66605c; font-weight: 600; }
-  .deed-grid-val { font-size: 0.92rem; font-weight: 700; color: #262a33; margin-top: 2px; }
+  .deed-grid-label { font-size: var(--fs-12); text-transform: uppercase; color: #66605c; font-weight: 600; }
+  .deed-grid-val { font-size: var(--fs-14); font-weight: 700; color: #262a33; margin-top: 2px; }
 
   /* Boundaries list */
   .boundary-box {
@@ -633,8 +633,8 @@
     padding: 0.6rem 0.8rem;
     margin-bottom: 0.85rem;
   }
-  .boundary-title { font-size: 0.78rem; font-weight: 700; color: #0a3d70; margin-bottom: 0.35rem; }
-  .boundary-row { font-size: 0.82rem; color: #4d4845; margin-bottom: 0.25rem; display: flex; gap: 0.4rem; }
+  .boundary-title { font-size: var(--fs-12); font-weight: 700; color: #0a3d70; margin-bottom: 0.35rem; }
+  .boundary-row { font-size: var(--fs-14); color: #4d4845; margin-bottom: 0.25rem; display: flex; gap: 0.4rem; }
   .boundary-dir { font-weight: 700; min-width: 65px; color: #0f5499; }
 
   /* Prior deeds pills */
@@ -645,8 +645,8 @@
     padding: 0.6rem 0.8rem;
     margin-bottom: 0.85rem;
   }
-  .prior-title { font-size: 0.78rem; font-weight: 700; color: #0f5499; margin-bottom: 0.35rem; }
-  .prior-item { font-size: 0.82rem; color: #0a3d70; margin-bottom: 0.2rem; }
+  .prior-title { font-size: var(--fs-12); font-weight: 700; color: #0f5499; margin-bottom: 0.35rem; }
+  .prior-item { font-size: var(--fs-14); color: #0a3d70; margin-bottom: 0.2rem; }
 
   /* Findings / Warnings */
   .findings-box {
@@ -659,7 +659,7 @@
     border-radius: 6px;
     padding: 0.5rem 0.75rem;
     margin-bottom: 0.45rem;
-    font-size: 0.82rem;
+    font-size: var(--fs-14);
   }
   .finding-alert.critical {
     background: #fbebee;
@@ -694,7 +694,7 @@
     z-index: 500;
   }
   .map-title-tag {
-    font-size: 0.82rem;
+    font-size: var(--fs-14);
     font-weight: 700;
     color: #990f3d;
     display: flex;
@@ -706,7 +706,7 @@
     padding: 0.35rem 0.6rem;
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     font-weight: 500;
     color: var(--text);
     background: #f6ede2;
@@ -726,7 +726,7 @@
     padding: 0.35rem 0.65rem;
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     outline: none;
   }
   .map-search-input:focus { border-color: #990f3d; }
@@ -736,7 +736,7 @@
     border-radius: 6px;
     background: #990f3d;
     color: #fff;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     flex-shrink: 0;
@@ -760,7 +760,7 @@
     border: 1px solid var(--border);
     border-radius: 6px;
     background: #ffffff;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     color: var(--text);
     cursor: pointer;
@@ -789,7 +789,7 @@
     padding: 0.28rem 0.5rem;
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     background: #ffffff;
     font-weight: 600;
     color: #4d4845;
@@ -806,7 +806,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     color: #0d7680;
     z-index: 490;
     gap: 0.5rem;
@@ -829,7 +829,7 @@
     border: none;
     padding: 0.2rem 0.55rem;
     border-radius: 4px;
-    font-size: 0.72rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
@@ -860,7 +860,7 @@
     border: 1px solid rgba(255, 255, 255, 0.4) !important;
     border-radius: 4px !important;
     color: #ffffff !important;
-    font-size: 0.7rem !important;
+    font-size: var(--fs-12) !important;
     font-weight: 600 !important;
     padding: 1px 5px !important;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
@@ -896,7 +896,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    font-size: 0.82rem;
+    font-size: var(--fs-14);
     transition: all 0.2s ease;
   }
   .map-hud.minimized {
@@ -942,7 +942,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.78rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     cursor: pointer;
     color: #66605c;
@@ -972,7 +972,7 @@
   #hud-extent-lbl-title,
   #hud-elevation-lbl-title {
     font-family: var(--ft-font-serif);
-    font-size: 10px;
+    font-size: var(--fs-12);
     font-weight: 700;
     color: #66605c;
     letter-spacing: 0.5px;
@@ -981,15 +981,15 @@
     align-items: center;
     justify-content: space-between;
   }
-  .hud-stat-val { font-size: 0.88rem; font-weight: 700; color: #262a33; margin-top: 2px; }
-  .hud-stat-val.cents { color: #990f3d; font-size: 0.98rem; font-weight: 700; }
+  .hud-stat-val { font-size: var(--fs-14); font-weight: 700; color: #262a33; margin-top: 2px; }
+  .hud-stat-val.cents { color: #990f3d; font-size: var(--fs-16); font-weight: 700; }
   
   /* Road compliance pill */
   .badge-road {
     display: inline-block;
     padding: 1px 6px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     margin-top: 3px;
   }
@@ -1010,8 +1010,8 @@
     gap: 4px;
     color: #262a33;
   }
-  #hud-elevation-text { font-size: 0.85rem; font-weight: 700; color: #262a33; }
-  #hud-basin-text { font-size: 10.5px; color: #66605c; margin-top: 3px; }
+  #hud-elevation-text { font-size: var(--fs-14); font-weight: 700; color: #262a33; }
+  #hud-basin-text { font-size: var(--fs-12); color: #66605c; margin-top: 3px; }
 
   .hud-actions {
     display: flex;
@@ -1023,7 +1023,7 @@
     flex: 1;
     padding: 0.45rem 0.65rem;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     text-align: center;
@@ -1089,7 +1089,7 @@
     padding: 0.75rem 0.95rem;
     box-shadow: -4px 0 20px rgba(38, 42, 51, 0.1);
     z-index: 1000;
-    font-size: 0.77rem;
+    font-size: var(--fs-12);
     display: none;
     flex-direction: column;
     gap: 0.45rem;
@@ -1172,7 +1172,7 @@
 
   @media (max-width: 640px) {
     header { padding: 0.5rem 0.75rem; }
-    .brand-title { font-size: 0.95rem; }
+    .brand-title { font-size: var(--fs-16); }
     .map-header-bar { padding: 0.4rem 0.6rem; }
     .map-preset-select { max-width: 100%; flex: 1 1 100%; }
     .map-search-group { width: 100%; flex: 1 1 100%; }
@@ -1189,7 +1189,7 @@
     justify-content: space-between;
     gap: 0.75rem;
     overflow-x: auto;
-    font-size: 0.78rem;
+    font-size: var(--fs-12);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -1245,7 +1245,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.68rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     transition: all 0.15s ease;
   }
@@ -1259,7 +1259,7 @@
     border: none;
     padding: 0.32rem 0.7rem;
     border-radius: 7px;
-    font-size: 0.74rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -1284,7 +1284,7 @@
     color: #0d7680;
     padding: 2px 7px;
     border-radius: 12px;
-    font-size: 0.72rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     white-space: nowrap;
     box-shadow: 0 1px 2px rgba(22, 163, 74, 0.15);
@@ -1298,7 +1298,7 @@
 
   .category-tab {
     padding: 0.35rem 0.7rem;
-    font-size: 0.75rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     color: var(--text-muted);
     border-bottom: 2px solid transparent;
@@ -1344,7 +1344,7 @@
     gap: 0.2rem;
   }
   .timeline-title {
-    font-size: 1.02rem;
+    font-size: var(--fs-16);
     font-weight: 700;
     color: #990f3d;
     display: flex;
@@ -1352,7 +1352,7 @@
     gap: 0.4rem;
   }
   .timeline-subtitle {
-    font-size: 0.76rem;
+    font-size: var(--fs-12);
     color: var(--text-muted);
   }
   .timeline-preset-bar {
@@ -1365,7 +1365,7 @@
   .timeline-preset-btn {
     padding: 0.3rem 0.65rem;
     border-radius: 6px;
-    font-size: 0.73rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     border: 1px solid #e9decf;
     background: #f6ede2;
@@ -1416,7 +1416,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
+    font-size: var(--fs-12);
     font-weight: 700;
     z-index: 2;
     transition: transform 0.15s ease;
@@ -1463,7 +1463,7 @@
     margin-bottom: 0.35rem;
   }
   .timeline-doc-title {
-    font-size: 0.88rem;
+    font-size: var(--fs-14);
     font-weight: 700;
     color: #262a33;
     display: flex;
@@ -1476,7 +1476,7 @@
     color: #fff;
     padding: 1px 6px;
     border-radius: 4px;
-    font-size: 0.72rem;
+    font-size: var(--fs-12);
     font-weight: 700;
   }
   .timeline-extent-tag {
@@ -1485,11 +1485,11 @@
     border: 1px solid #c3d3e8;
     padding: 1px 6px;
     border-radius: 4px;
-    font-size: 0.72rem;
+    font-size: var(--fs-12);
     font-weight: 600;
   }
   .timeline-parties {
-    font-size: 0.79rem;
+    font-size: var(--fs-12);
     color: #4d4845;
     margin-bottom: 0.4rem;
     display: flex;
@@ -1513,7 +1513,7 @@
     border-left: 3.5px solid #990f3d;
     border-radius: 6px;
     padding: 0.4rem 0.6rem;
-    font-size: 0.76rem;
+    font-size: var(--fs-12);
     line-height: 1.4;
   }
   .timeline-flag-pill.warning {
@@ -1531,7 +1531,7 @@
     color: #a35c00;
   }
   .timeline-flag-statute {
-    font-size: 0.7rem;
+    font-size: var(--fs-12);
     color: #66605c;
     margin-top: 2px;
   }
@@ -1552,7 +1552,7 @@
     background: #ffffff;
     padding: 0.3rem 0.6rem;
     border-radius: 6px;
-    font-size: 0.73rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
@@ -1632,7 +1632,7 @@
   .modal-close-btn {
     background: none;
     border: none;
-    font-size: 1.1rem;
+    font-size: var(--fs-20);
     cursor: pointer;
     color: #66605c;
     border-radius: 6px;
@@ -1658,7 +1658,7 @@
     border: none;
     border-radius: 6px;
     background: transparent;
-    font-size: 0.74rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     color: #66605c;
     cursor: pointer;
@@ -1683,7 +1683,7 @@
     border: none;
     border-radius: 8px;
     padding: 0.6rem 1rem;
-    font-size: 0.85rem;
+    font-size: var(--fs-14);
     font-weight: 600;
     cursor: pointer;
     transition: background 0.15s ease;
@@ -1698,7 +1698,7 @@
     border-radius: 14px;
     border: 1px solid #e9decf;
     background: #ffffff;
-    font-size: 0.73rem;
+    font-size: var(--fs-12);
     font-weight: 600;
     color: #4d4845;
     cursor: pointer;

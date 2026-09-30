@@ -169,8 +169,8 @@
       <div class="custom-modal-card">
         <div class="modal-header">
           <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="font-size:1.3rem;">◆</span>
-            <h3 style="margin:0; font-size:1.1rem; color:#990f3d;">Auto-Demarcate Plot Boundaries</h3>
+            <span style="font-size: var(--fs-20);">◆</span>
+            <h3 style="margin:0; font-size: var(--fs-20); color:#990f3d;">Auto-Demarcate Plot Boundaries</h3>
           </div>
           <button class="modal-close-btn" onclick="closeAutoDemarcateModal()">✕</button>
         </div>
@@ -184,24 +184,24 @@
 
         <!-- Tab 1: Auto-Detect -->
         <div class="modal-tab-pane" id="pane-detect">
-          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size: var(--fs-14); color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Detects real physical compound walls (<code>barrier=wall/fence</code>), building perimeters, or cadastral boundaries around the active satellite pin.
           </p>
           <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:8px; padding:0.65rem 0.85rem; margin-bottom:0.85rem;">
-            <div style="font-size:0.75rem; font-weight:600; color:#262a33; margin-bottom:0.2rem;">Target Coordinates (Active Pin):</div>
-            <div id="detect-modal-coords" style="font-size:0.82rem; font-family:monospace; color:#990f3d; font-weight:600;">10.1076, 76.3516</div>
+            <div style="font-size: var(--fs-12); font-weight:600; color:#262a33; margin-bottom:0.2rem;">Target Coordinates (Active Pin):</div>
+            <div id="detect-modal-coords" style="font-size: var(--fs-14); font-family:monospace; color:#990f3d; font-weight:600;">10.1076, 76.3516</div>
           </div>
           <div style="margin-bottom:0.85rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Search Radius around Pin:</label>
-            <select id="detect-radius-select" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Search Radius around Pin:</label>
+            <select id="detect-radius-select" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
               <option value="60">60 meters (Immediate plot & compound)</option>
               <option value="80" selected>80 meters (Standard sub-division)</option>
               <option value="120">120 meters (Broad parcel cluster)</option>
             </select>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Target Extent (Optional - for validation):</label>
-            <input type="number" id="detect-target-cents" placeholder="e.g. 10.0 Cents" step="0.1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Target Extent (Optional - for validation):</label>
+            <input type="number" id="detect-target-cents" placeholder="e.g. 10.0 Cents" step="0.1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
           </div>
           <button class="primary-action-btn" onclick="executeAutoDetectBoundaries()" id="btn-run-detect" style="width:100%;">
             <span>Detect Surrounding Boundaries</span>
@@ -210,11 +210,11 @@
 
         <!-- Tab 2: Generate from Extent -->
         <div class="modal-tab-pane" id="pane-extent" style="display:none;">
-          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size: var(--fs-14); color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Places a mathematically calibrated boundary footprint matching the exact land extent in <strong>Kerala Cents</strong>, with draggable survey corner stones (<em>Survey Kallu</em>) and live FMB dimensions.
           </p>
           <div style="margin-bottom:0.75rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.4rem;">Quick Extent Selection:</label>
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.4rem;">Quick Extent Selection:</label>
             <div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:0.6rem;">
               <button type="button" class="chip-sm" onclick="setExtentInput(3)">3 Cents</button>
               <button type="button" class="chip-sm" onclick="setExtentInput(5)">5 Cents</button>
@@ -225,13 +225,13 @@
               <button type="button" class="chip-sm" onclick="setExtentInput(25)">25 Cents</button>
             </div>
             <div style="display:flex; align-items:center; gap:0.5rem;">
-              <input type="number" id="custom-extent-input" value="10.0" step="0.25" min="0.5" max="1000" oninput="updateExtentSqmDisplay(this.value)" style="flex:1; padding:7px 10px; border-radius:6px; border:1px solid #e9decf; font-weight:600; font-size:0.85rem;">
-              <span style="font-size:0.82rem; font-weight:600; color:#66605c;">Cents (= <span id="extent-sqm-calc">404.7</span> m²)</span>
+              <input type="number" id="custom-extent-input" value="10.0" step="0.25" min="0.5" max="1000" oninput="updateExtentSqmDisplay(this.value)" style="flex:1; padding:7px 10px; border-radius:6px; border:1px solid #e9decf; font-weight:600; font-size: var(--fs-14);">
+              <span style="font-size: var(--fs-14); font-weight:600; color:#66605c;">Cents (= <span id="extent-sqm-calc">404.7</span> m²)</span>
             </div>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.8rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Plot Aspect Ratio:</label>
-            <select id="extent-aspect-ratio" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.3rem;">Plot Aspect Ratio:</label>
+            <select id="extent-aspect-ratio" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
               <option value="1:1" selected>Square (1:1 - Standard Residential)</option>
               <option value="1:1.5">Road Frontage (1:1.5 - Wide Frontage)</option>
               <option value="1.5:1">Deep Plot (1.5:1 - Narrow Frontage)</option>
@@ -245,22 +245,22 @@
 
         <!-- Tab 3: BhuNaksha FMB Lookup -->
         <div class="modal-tab-pane" id="pane-cadastral" style="display:none;">
-          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size: var(--fs-14); color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Draws a square of the deed extent at the pin. The official FMB sketch is on <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
           </p>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.75rem;">
             <div>
-              <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Re-Survey No:</label>
-              <input type="text" id="cadastral-survey-input" value="" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+              <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Re-Survey No:</label>
+              <input type="text" id="cadastral-survey-input" value="" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
             </div>
             <div>
-              <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Village:</label>
-              <input type="text" id="cadastral-village-input" value="" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+              <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Village:</label>
+              <input type="text" id="cadastral-village-input" value="" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
             </div>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Deed Extent (Cents):</label>
-            <input type="number" id="cadastral-cents-input" value="10.0" step="0.5" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Deed Extent (Cents):</label>
+            <input type="number" id="cadastral-cents-input" value="10.0" step="0.5" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size: var(--fs-12);">
           </div>
           <button class="primary-action-btn" onclick="executeFetchCadastralParcel()" style="width:100%;">
             <span>Draw outline</span>
@@ -269,16 +269,16 @@
 
         <!-- Tab 4: Import Coordinates / Survey Files -->
         <div class="modal-tab-pane" id="pane-import" style="display:none;">
-          <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
+          <p style="font-size: var(--fs-14); color:#66605c; margin:0.3rem 0 0.75rem 0;">
             Import boundary survey coordinates from smartphone GPS, surveyor Total Station, or KML/GPX/GeoJSON files.
           </p>
           <div style="margin-bottom:0.75rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Paste Survey Corner Coordinates (one lat,lng per line):</label>
-            <textarea id="import-coords-text" rows="4" placeholder="10.10750, 76.35140&#10;10.10770, 76.35140&#10;10.10770, 76.35165&#10;10.10750, 76.35165" style="width:100%; padding:6px 10px; font-family:monospace; font-size:0.78rem; border-radius:6px; border:1px solid #e9decf;"></textarea>
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Paste Survey Corner Coordinates (one lat,lng per line):</label>
+            <textarea id="import-coords-text" rows="4" placeholder="10.10750, 76.35140&#10;10.10770, 76.35140&#10;10.10770, 76.35165&#10;10.10750, 76.35165" style="width:100%; padding:6px 10px; font-family:monospace; font-size: var(--fs-12); border-radius:6px; border:1px solid #e9decf;"></textarea>
           </div>
           <div style="margin-bottom:1rem;">
-            <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Or Upload Survey File (.kml, .gpx, .geojson, .txt):</label>
-            <input type="file" id="import-file-input" accept=".kml,.gpx,.geojson,.json,.txt" onchange="handleSurveyFileUpload(this.files[0])" style="font-size:0.8rem; width:100%;">
+            <label style="font-size: var(--fs-12); font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Or Upload Survey File (.kml, .gpx, .geojson, .txt):</label>
+            <input type="file" id="import-file-input" accept=".kml,.gpx,.geojson,.json,.txt" onchange="handleSurveyFileUpload(this.files[0])" style="font-size: var(--fs-12); width:100%;">
           </div>
           <button class="primary-action-btn" onclick="executeImportCoordinates()" style="width:100%;">
             <span>Plot Custom Boundary & Measure Extent</span>
@@ -300,36 +300,36 @@
       <div class="hud-stats-grid">
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-coords">Coordinates</div>
-          <div class="hud-stat-val" id="hud-coords" style="font-size: 0.78rem;">—</div>
+          <div class="hud-stat-val" id="hud-coords" style="font-size: var(--fs-12);">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-extent">
             <span id="hud-extent-lbl-title">Plot Extent</span>
-            <span id="hud-extent-lbl-sub" style="font-size:0.65rem; color:#990f3d;" title="1 Cent = 40.47 m² = 435.6 sq.ft">Kerala Cents</span>
+            <span id="hud-extent-lbl-sub" style="font-size: var(--fs-12); color:#990f3d;" title="1 Cent = 40.47 m² = 435.6 sq.ft">Kerala Cents</span>
           </div>
           <div class="hud-stat-val cents" id="hud-cents">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-area">Area (Revenue Ares & Sq.M)</div>
-          <div class="hud-stat-val" id="hud-sqm" style="font-size: 0.76rem;">—</div>
+          <div class="hud-stat-val" id="hud-sqm" style="font-size: var(--fs-12);">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-road">Road Width (KPBR 2019)</div>
           <div class="hud-stat-val" id="hud-road">
-            <span id="hud-road-text" style="font-size: 0.78rem;">Not Measured</span>
+            <span id="hud-road-text" style="font-size: var(--fs-12);">Not Measured</span>
             <span class="badge-road" id="hud-road-badge">No Road Measured</span>
           </div>
         </div>
         <div class="hud-stat-box full-width" id="hud-elevation-box">
           <div class="hud-stat-label" id="hud-lbl-elevation">
             <span id="hud-elevation-lbl-title">Elevation & Flood Exposure</span>
-            <span id="hud-elevation-lbl-sub" style="font-size:0.65rem; color:#990f3d;" title="Above Mean Sea Level (MSL) & KSDMA flood hazard rating">MSL</span>
+            <span id="hud-elevation-lbl-sub" style="font-size: var(--fs-12); color:#990f3d;" title="Above Mean Sea Level (MSL) & KSDMA flood hazard rating">MSL</span>
           </div>
           <div class="hud-stat-val" id="hud-elevation" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-            <span id="hud-elevation-text" style="font-size: 0.85rem; font-weight: 700;">—</span>
+            <span id="hud-elevation-text" style="font-size: var(--fs-14); font-weight: 700;">—</span>
             <span class="badge-road warn" id="hud-flood-badge"></span>
           </div>
-          <div id="hud-basin-text" style="font-size: 0.7rem; color: #66605c; margin-top: 3px;"></div>
+          <div id="hud-basin-text" style="font-size: var(--fs-12); color: #66605c; margin-top: 3px;"></div>
         </div>
       </div>
 
@@ -347,7 +347,7 @@
     <div class="checklist-panel" id="checklist-panel">
       <div class="checklist-header">
         <span id="chk-panel-title">On-Site Field Check Essentials</span>
-        <button class="checklist-close-btn" onclick="toggleChecklist(false)" style="border:none; background:transparent; font-size:0.9rem; cursor:pointer; color:#66605c;">✕</button>
+        <button class="checklist-close-btn" onclick="toggleChecklist(false)" style="border:none; background:transparent; font-size: var(--fs-14); cursor:pointer; color:#66605c;">✕</button>
       </div>
       <div class="checklist-row">
         <input type="checkbox" id="chk-kallu" onchange="updateChecklistProgress()">
@@ -369,7 +369,7 @@
         <input type="checkbox" id="chk-flood" onchange="updateChecklistProgress()">
         <label for="chk-flood" id="chk-lbl-flood"><strong>Flood Watermarks:</strong> Check compound walls & poles for 2018 monsoon waterlines.</label>
       </div>
-      <div id="chk-hint" style="font-size:0.7rem; color:#66605c; margin-top:0.3rem; border-top:1px dashed #e9decf; padding-top:0.3rem;">
+      <div id="chk-hint" style="font-size: var(--fs-12); color:#66605c; margin-top:0.3rem; border-top:1px dashed #e9decf; padding-top:0.3rem;">
         Tick items as you verify them on-site with your surveyor.
       </div>
     </div>
