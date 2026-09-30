@@ -73,62 +73,22 @@ When enhancing or modifying reasoning logic, adhere to these governing laws:
 
 ## Development Commands
 
-Always run Python commands using `uv run` inside `kandezhuthu/`:
+Run Python commands with `uv run` from the repository root:
 
 | Command | Purpose |
 |---|---|
 | `agents-cli playground` | Launch local ADK dev UI with auto-reload |
 | `agents-cli lint` | Run code quality checks (ruff, ty, codespell) |
 | `uv run python -m app.fast_api_app` | Run local FastAPI server with A2A protocol endpoint |
+| `uv run uvicorn frontend.main:app --port 8081` | Run the web UI |
+| `uv run pytest tests/unit` | Fast deterministic tests (scanner, auditor, extents, eval judge) |
 | `agents-cli deploy` | Deploy to Agent Runtime on Google Cloud (requires explicit user confirmation) |
-
----
-
-## Parallel Agent Collaboration & Git Worktree Workflow
-
-When multiple agents or subagents work concurrently on Kandezhuthu AI, they MUST avoid dirtying the primary working tree or colliding on git operations. Git worktrees allow multiple isolated checkouts linked to the same repository.
-
-### Guidelines for Parallel Worktrees
-1. **Isolated Workspaces**: Never execute concurrent edits or run write-heavy commands on the same working tree branch simultaneously. Use a separate worktree for each agent task or subagent session.
-2. **Standard Worktree Directory**: Place worktrees under `.worktrees/` at the repository root (`/config/Desktop/BuildWithGemini/.worktrees/<agent-task-name>`), which is gitignored.
-3. **Subagent Workspace Mode**: When invoking subagents via `invoke_subagent`, set `Workspace: 'share'` or `Workspace: 'branch'` so the subagent gets an isolated directory while sharing the underlying object store.
-
-### Standard Worktree Lifecycle
-
-```bash
-# 1. Create a dedicated worktree and feature branch from root
-git worktree add -b feat/<agent-task-name> .worktrees/<agent-task-name> HEAD
-
-# 2. Work inside the worktree's kandezhuthu directory
-cd .worktrees/<agent-task-name>/kandezhuthu
-# Run UV or agent commands here in isolation:
-uv run ...
-
-# 3. Commit frequently inside the worktree (following atomic commit rules)
-git add <target-files>
-git commit -m "feat(<scope>): <description of progress>"
-
-# 4. Integrate back to the main branch
-cd /config/Desktop/BuildWithGemini
-git checkout <target-branch>
-git merge --no-ff feat/<agent-task-name>
-
-# 5. Clean up the worktree when finished
-git worktree remove .worktrees/<agent-task-name>
-git worktree prune
-git branch -d feat/<agent-task-name>
-```
-
-### Safety Rules for Agents
-- **No Duplicate Branch Checkouts**: Git will error if two worktrees attempt to check out the same branch. Always create a unique branch per worktree (e.g., `agent/<name>-<topic>`).
-- **Never Touch Another Agent's Worktree**: Check `git worktree list` before creating or removing worktrees. Never delete a worktree that is currently active or owned by another agent/subagent.
-- **Keep Temporary Files Isolated**: Keep all scratch files and local test outputs within the designated worktree.
 
 ---
 
 ## Operational Guidelines for Coding Agents
 
-- **Parallel Worktree Discipline**: For concurrent or multi-step agent tasks, always spawn a dedicated git worktree in `.worktrees/` or use `Workspace: 'share'`/`'branch'` to prevent index lock contention and file overwrite conflicts.
+- **Parallel agents**: Give each concurrent agent its own git worktree under `.worktrees/` (gitignored) and its own branch.
 - **DO NOT RUN TESTS WITHOUT ASKING**: Do not run unit tests or integration tests unless explicitly requested by the user.
 - **Always Multi-Commit on the Way**: Always make frequent, small atomic git commits along the way as discrete steps and milestones are completed, rather than waiting to create a single large commit at the very end.
 - **Code preservation**: Only modify code directly targeted by the user's request. Preserve all surrounding code, config values (e.g., `model`), comments, and formatting.
