@@ -10,6 +10,7 @@ Built with a Neuro-Symbolic boundary:
 from __future__ import annotations
 
 import re
+import unicodedata
 from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, Field
@@ -31,9 +32,9 @@ class TrapCategory(str, Enum):
 
 
 class Verdict(str, Enum):
-    ALL_CLEAR = "🟢 ALL CLEAR - No Fatal Traps Detected in Text"
-    CAUTION = "🟡 CAUTION - Restrictive Covenants Detected"
-    DANGER = "🔴 DANGER - Fatal Legal / Regulatory Trap Found"
+    ALL_CLEAR = "● NO RED FLAGS FOUND"
+    CAUTION = "▲ CAUTION - Restrictive Covenants Detected"
+    DANGER = "■ DANGER - Fatal Legal / Regulatory Trap Found"
 
 
 class TrapFinding(BaseModel):
@@ -54,7 +55,7 @@ class DeedSanityResult(BaseModel):
     sanity_score: int = Field(description="0 (Unsafe) to 100 (Clean)")
     findings: List[TrapFinding]
     summary_advice: str
-    what_ai_cannot_verify: List[str] = Field(
+    field_checks: List[str] = Field(
         default_factory=lambda: [
             "Physical boundary encroachment: Whether neighbors have moved boundary stones (Survey Kallu).",
             "Actual ground topography: Waterlogging, flooding history, or overhead high-tension electric cables.",
@@ -62,10 +63,6 @@ class DeedSanityResult(BaseModel):
             "Physical access reality: Whether the road mentioned on paper is physically motorable on the ground.",
             "Digital resurvey discrepancy: Cross-check ULPIN (Bhu-Aadhaar) and Unique Thandaper on entebhoomi.kerala.gov.in.",
         ]
-    )
-    mandatory_next_step: str = (
-        "AI is an investigative triage tool, not a legal title insurer. "
-        "Take this flagged report to a licensed Kerala advocate for formal search and conduct on-site boundary verification."
     )
 
 
@@ -75,6 +72,7 @@ class SingleDeedScanner:
     EASEMENT_PATTERNS = [
         # Malayalam script patterns
         (r"(നടപ്പുവഴി|നടപുവഴി|വഴിയവകാശം|വഴി\s*അവകാശം|വണ്ടിവഴി|വണ്ടിപ്പാത|വണ്ടിയോടാനുള്ള\s*വഴി|സഞ്ചാര\s*സ്വാതന്ത്ര്യം|സഞ്ചാര\s*മാർഗ്ഗം|വഴിയായി\s*മാറ്റി|വഴിയായി\s*ഒഴിഞ്ഞു)", "Malayalam right of way / pathway", "വഴി അവകാശം / നടപ്പുവഴി"),
+        (r"(പോക്കുവരവി(?:നു|ന്)(?:ള്ള)?\s*(?:വഴി|അവകാശ)|പോക്കുവരവ്\s*(?:വഴി|അവകാശം))", "Malayalam passage (pokkuvaravu) right", "പോക്കുവരവിനുള്ള വഴി അവകാശം"),
         (r"(കിണർ\s*അവകാശം|കിണറ്റിൽ\s*നിന്നു[ംള]|വെള്ളമെടുക്കാനുള്ള\s*അവകാശം)", "Malayalam well / water servitude", "കിണർ അവകാശം"),
         (r"(\d+(?:\.\d+)?)\s*(മീറ്റർ|മീ|അടി)\s*(വീതിയിലുള്ള\s*)?(നടപ്പുവഴി|വഴി|പാത)", "Malayalam pathway dimension covenant", "പ്രത്യേക വീതിയുള്ള വഴി"),
         # KSEB electric line / transmission corridor servitude
@@ -107,19 +105,22 @@ class SingleDeedScanner:
         # Malayalam OCR noise / typos (e.g. നില without anusvara ം in context of land classification)
         (r"(നഞ്ച\s*നില|പുഞ്ച\s*നില|തരം\s*[:\s]*നില|വർഗ്ഗീകരണം\s*[:\s]*നില|ഭൂമി\s*[:\s]*നില)", "Noisy OCR Nilam classification", "നിലം (OCR പിശക്)"),
         # Transliterated / English patterns
-        (r"(?i)\b(nilam|nanja|punja|kandom|palliyal|thanneerthadam|neelam|nilan|kandam)\b", "Paddy land / Wetland category", "നിലം / തണ്ണീർത്തട വർഗ്ഗീകരണം"),
-        (r"(?i)\b(paddy\s*field|paddy\s*land|wetland|marshy\s*land|waterlogged\s*land)\b", "English wetland category", "നെൽവയൽ / തണ്ണീർത്തടം"),
+        (r"(?i)\b(nilam|nanja|punja|kandom|palliyal|thanneerthadam|nilan|kandam)\b", "Paddy land / Wetland category", "നിലം / തണ്ണീർത്തട വർഗ്ഗീകരണം"),
+        (r"(?i)\b(paddy\s*field|paddy\s*land|wet\s*land|marshy\s*land|waterlogged\s*land)\b", "English wetland category", "നെൽവയൽ / തണ്ണീർത്തടം"),
     ]
 
     MINOR_PATTERNS = [
         # Malayalam script patterns
         (r"(മൈനർക്ക്\s*വേണ്ടി|മൈനറുടെ\s*കാര്യത്തിന്|മൈനർ\s*മകൾ|മൈനർ\s*മകൻ|മൈനർ\s*അവകാശം|മൈനർ\s*സ്വത്ത്|അപ്രാപ്ത\s*വയസ്ക|പ്രായപൂർത്തിയാകാത്ത|മൈനർ)", "Malayalam minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
-        (r"(മാതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|പിതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|രക്ഷാകർത്താവായ|രക്ഷാകർത്താവ്)", "Malayalam guardian clause", "രക്ഷാകർത്താവ് മുഖേന"),
+        (r"(മാതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|പിതാവും\s*സ്വാഭാവിക\s*രക്ഷാകർത്താവും|രക്ഷാകർത്താവ)", "Malayalam guardian clause", "രക്ഷാകർത്താവ് മുഖേന"),
         # Transliterated / English patterns
-        (r"(?i)\b(minor-kku\s*vendi|minor\s*inu\s*vendi|rakshakarthavaya|rakshakartha|apraptavayasskan|balan)\b", "Malayalam transliterated minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
+        (r"(?i)\b(minor-kku\s*vendi|minor\s*inu\s*vendi|rakshakarthavaya|rakshakartha|apraptavayasskan)\b", "Malayalam transliterated minor representation", "മൈനർക്ക് വേണ്ടി രക്ഷിതാവ്"),
         (r"(?i)\b(guardian\s*on\s*behalf\s*of\s*minor|represented\s*by\s*(?:father|mother|guardian)\s*as\s*minor)\b", "English minor guardian representation", "മൈനറുടെ രക്ഷിതാവ്"),
         (r"(?i)\b(minor\s*(?:child|daughter|son|children|interest|share|property|owner)|on\s*behalf\s*of\s*(?:her|his)?\s*minor)\b", "Minor child mentioned as owner", "പ്രായപൂർത്തിയാകാത്ത ഉടമ"),
         (r"(?i)\b(?:mother|father|guardian)\s*selling\s*minor(?:'s|\s+daughter|\s+son)?\b", "Parent selling minor property", "മൈനറുടെ സ്വത്ത് വിൽക്കൽ"),
+        (r"(?<![\d.])(?:[1-9]|1[0-7])\s*വയസ്സ", "Malayalam party aged under 18", "പ്രായപൂർത്തിയാകാത്ത കക്ഷി"),
+        (r"(?i)\baged\s*(?:about\s*)?(?:[1-9]|1[0-7])\b(?!\s*(?:cents|ares|sq))", "Party aged under 18", "പ്രായപൂർത്തിയാകാത്ത കക്ഷി"),
+        (r"(?i)\b((?:mother|father)\s*and\s*(?:natural\s*)?guardian|natural\s*guardian)\b", "Natural guardian clause", "സ്വാഭാവിക രക്ഷാകർത്താവ്"),
         (r"(?i)\b(natural\s*guardian\s*on\s*behalf\s*of|acting\s*as\s*(?:mother|father|natural)\s*guardian)\b", "Natural guardian representation", "സ്വാഭാവിക രക്ഷാകർത്താവ്"),
     ]
 
@@ -130,13 +131,35 @@ class SingleDeedScanner:
         (r"(ആധാരം\s*റദ്ദാക്ക|റദ്ദാക്കാൻ\s*അധികാരം|റദ്ദ്\s*ചെയ്യ|തിരിച്ചുവാങ്ങൽ|വ്യവസ്ഥ\s*ലംഘിച്ചാൽ\s*റദ്ദ്|ദാനാധാരം\s*റദ്ദ്)", "Malayalam deed revocation / cancellation clause", "ആധാരം റദ്ദാക്കൽ വ്യവസ്ഥ"),
         # Transliterated / English patterns
         (r"(?i)\b(jeevithakalam\s*muzhuvan|jeevanamsam|samrakshikkuka|samrakshikuka|shushrooshikkuka)\b", "Malayalam transliterated maintenance condition", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
-        (r"(?i)\b(condition\s*to\s*maintain|condition\s*of\s*looking\s*after|look\s*after\s*(?:elderly\s*)?parents|maintain\s*(?:elderly\s*)?parents|elderly\s*parents)\b", "English maintenance condition", "മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥ"),
-        (r"(?i)\b(life\s*interest|subject\s*to\s*maintenance|during\s*(?:their\s*)?lifetime|lifelong\s*maintenance|care\s*and\s*maintenance)\b", "English lifetime maintenance clause", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(?i)\b(condition\s*to\s*maintain|condition\s*of\s*looking\s*after|look\s*after\s*(?:elderly\s*)?parents|look\s*after\s*the\s*(?:settlor|donor|executant|vendor)s?|maintain\s*(?:elderly\s*)?parents|elderly\s*parents)\b", "English maintenance condition", "മാതാപിതാക്കളുടെ സംരക്ഷണ വ്യവസ്ഥ"),
+        (r"(?i)\b(life\s*interest|subject\s*to\s*maintenance|during\s*(?:their|her|his|my)?\s*lifetime|lifelong\s*maintenance|care\s*and\s*maintenance)\b", "English lifetime maintenance clause", "ജീവിതകാല സംരക്ഷണ വ്യവസ്ഥ"),
         (r"(?i)\b(deed\s*cancellation|cancel\s*(?:the\s*)?deed|clause\s*allowing\s*(?:deed\s*)?cancellation|cancellation\s*clause|power\s*to\s*revoke|revocation\s*clause|revoking\s*the\s*gift)\b", "Deed cancellation / Revocation clause", "ആധാരം റദ്ദാക്കൽ വ്യവസ്ഥ"),
         (r"(?i)\b(thirichuvangal|reconveyance|conditional\s*sale|conditional\s*gift)\b", "Conditional sale / Right of re-purchase", "തിരിച്ചുവാങ്ങൽ വ്യവസ്ഥ"),
     ]
 
+    # Pre-2009 Malayalam encodes chillu as consonant + virama + ZWJ; OCR and
+    # older deeds still produce it. Map to atomic chillu so patterns match.
+    _CHILLU_MAP = {
+        "\u0d23\u0d4d\u200d": "\u0d7a",  # ണ് -> ൺ
+        "\u0d28\u0d4d\u200d": "\u0d7b",  # ന് -> ൻ
+        "\u0d30\u0d4d\u200d": "\u0d7c",  # ര് -> ർ
+        "\u0d32\u0d4d\u200d": "\u0d7d",  # ല് -> ൽ
+        "\u0d33\u0d4d\u200d": "\u0d7e",  # ള് -> ൾ
+        "\u0d15\u0d4d\u200d": "\u0d7f",  # ക് -> ൿ
+    }
+    _NEGATION_BEFORE = re.compile(
+        r"(?i)\b(?:no|not|nor|without|free\s+from|devoid\s+of)\s+(?:\w+\s+){0,3}$"
+    )
+
+    @classmethod
+    def normalize(cls, text: str) -> str:
+        text = unicodedata.normalize("NFC", text)
+        for old, new in cls._CHILLU_MAP.items():
+            text = text.replace(old, new)
+        return text.replace("\u200d", "").replace("\u200c", "")
+
     def scan(self, deed_text: str) -> DeedSanityResult:
+        deed_text = self.normalize(deed_text or "")
         if not deed_text or not deed_text.strip():
             return DeedSanityResult(
                 verdict=Verdict.DANGER,
@@ -425,20 +448,20 @@ class SingleDeedScanner:
         if has_critical or score < 60:
             verdict = Verdict.DANGER
             advice = (
-                "CRITICAL RED FLAGS DETECTED! This deed contains high-risk elements (such as wetland classification or unapproved minor sale) "
-                "that could lead to building permit refusal or void title. Halt advance payment immediately."
+                "High-risk clauses found (e.g. wetland classification or a minor's share sold without court sanction). "
+                "These can block a building permit or make the title voidable."
             )
         elif score < 85:
             verdict = Verdict.CAUTION
             advice = (
-                "The deed contains restrictive covenants (such as an easement or conditional clause). "
-                "Do NOT pay any advance until you inspect the physical site and clarify the highlighted questions with the seller."
+                "Restrictive covenants found (e.g. an easement or a conditional clause). "
+                "Clarify the highlighted points with the seller."
             )
         else:
             verdict = Verdict.ALL_CLEAR
             advice = (
-                "No fatal legal traps (easements, wetland status, minor rights, or maintenance covenants) were detected in this snippet. "
-                "Safe to proceed with customary Encumbrance Certificate (EC) verification and field survey inspection."
+                "No easement, wetland, minor-share, maintenance, CRZ or trust clauses found in this text. "
+                "Next: match it against the Encumbrance Certificate (EC) and the prior deeds."
             )
 
         return DeedSanityResult(
@@ -450,10 +473,26 @@ class SingleDeedScanner:
 
     def _find_first_pattern(self, text: str, patterns: list):
         for pattern, desc, mal_title in patterns:
-            match = re.search(pattern, text)
-            if match:
-                start = max(0, match.start() - 20)
-                end = min(len(text), match.end() + 30)
-                snippet = text[start:end].strip().replace("\n", " ")
-                return snippet, desc, mal_title
+            for match in re.finditer(pattern, text):
+                # "no right of way ...", "free from easements" -> not a trap
+                if self._NEGATION_BEFORE.search(text[max(0, match.start() - 40):match.start()]):
+                    continue
+                return self._clause_around(text, match.start(), match.end()), desc, mal_title
         return None
+
+    @staticmethod
+    def _clause_around(text: str, start: int, end: int, reach: int = 120) -> str:
+        """Widen a match to its clause (sentence or line), capped at `reach` chars each side."""
+        lo = max(0, start - reach)
+        cut = max(text.rfind(ch, lo, start) for ch in ".\n;")
+        if cut >= 0:
+            lo = cut + 1
+        elif lo > 0:
+            lo = text.find(" ", lo, start) + 1 or lo
+        hi = min(len(text), end + reach)
+        stops = [i for i in (text.find(ch, end, hi) for ch in ".\n;") if i >= 0]
+        if stops:
+            hi = min(stops) + 1
+        elif hi < len(text):
+            hi = text.rfind(" ", end, hi) if text.rfind(" ", end, hi) > end else hi
+        return " ".join(text[lo:hi].split())

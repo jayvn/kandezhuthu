@@ -480,27 +480,25 @@ async def whatsapp_webhook(req: Request):
         calc = ElevationFloodCalculator()
         elev = calc.calculate(latitude=float(lat), longitude=float(lng))
         reply_text = (
-            f"🌴 *Kandezhuthu AI - Location Diligence*\n\n"
-            f"📍 *Coordinates*: {lat}, {lng}\n"
-            f"⛰️ *Elevation*: {elev.elevation_meters}m MSL\n"
-            f"🌊 *Flood Risk*: {elev.flood_risk_level.value} (Score: {elev.flood_risk_score}/100)\n"
-            f"🏛️ *Basin*: {elev.river_basin or 'Kerala Coastal Plain'}\n"
-            f"⚠️ *KSDMA Advisory*: {elev.ksdma_hazard_advisory}\n\n"
-            f"📱 *Seller Inquiry*: {elev.whatsapp_inquiry_for_seller}"
+            f"*Kandezhuthu AI - Location Diligence*\n\n"
+            f"*Coordinates*: {lat}, {lng}\n"
+            f"*Elevation*: {elev.elevation_meters}m MSL\n"
+            f"*Flood Risk*: {elev.flood_risk_level.value} (Score: {elev.flood_risk_score}/100)\n"
+            f"*Basin*: {elev.river_basin or 'Kerala Coastal Plain'}\n"
+            f"*KSDMA Advisory*: {elev.ksdma_hazard_advisory}\n\n"
+            f"*Seller Inquiry*: {elev.whatsapp_inquiry_for_seller}"
         )
     elif media_url:
         reply_text = (
-            f"🌴 *Kandezhuthu AI - Document Received*\n\n"
+            f"*Kandezhuthu AI - Document Received*\n\n"
             f"We have received your deed/EC scan. Optical Character Recognition (OCR) is processing.\n"
             f"Please ensure page 1 (SRO & Document number) and the Schedule of Property (ചതുരതിരുകൾ) are clearly legible."
         )
     elif body:
         reply_text = (
-            f"🌴 *Kandezhuthu AI (കണ്ടെഴുത്ത്)*\n\n"
+            f"*Kandezhuthu AI (കണ്ടെഴുത്ത്)*\n\n"
             f"Thank you for contacting Kandezhuthu Property Diligence.\n"
             f"Query: \"{body[:80]}\"\n\n"
-            f"🛡️ *Mandatory Reminder*: AI deed analysis does not replace physical inspection of Survey Stones (സർവേ കല്ലുകൾ) "
-            f"or advocate vetting at the SRO.\n\n"
             f"Send a deed photo or location pin to start an automated title check!"
         )
     else:
@@ -991,7 +989,7 @@ async def get_timeline_demo(preset: str = "aluva_broken", lang: str = "en"):
         "clean_title": {
             "property_identifier": "Re-Sy 412/3, Aluva West Village, Ernakulam",
             "score": 100,
-            "risk_verdict": "ALL CLEAR",
+            "risk_verdict": "NO KNOWN RED FLAGS",
             "risk_color": "clear",
             "chain_intact": True,
             "summary": "Flawless 39-year title continuity: 100% unbroken chain from 1985 Pattayam to current owner, consistent 10.0 Cents extent, all heirs represented, and clean EC.",
@@ -1181,7 +1179,7 @@ async def chat(req: Request):
         prompt_message = (
             "[User Interface Preference: English. "
             "Please deliver your entire response in clear, polite English, including all explanations, statutory warnings, "
-            "checklists, and the '📱 WhatsApp Message for Seller / Broker' section (draft it completely in clear English). "
+            "checklists, and the 'WhatsApp Message for Seller / Broker' section (draft it completely in clear English). "
             "Do not output Malayalam text or Malayalam WhatsApp inquiry text when English is selected.]\n\n"
             + message
         )

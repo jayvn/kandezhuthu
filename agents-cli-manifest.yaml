@@ -11,4 +11,4 @@ create_params:
   cicd_runner: "skip"
   is_a2a: true
   agent_gateway: False
-  agent_guidance_filename: "GEMINI.md"
+  agent_guidance_filename: "AGENTS.md"

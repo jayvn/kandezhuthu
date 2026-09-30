@@ -31,9 +31,6 @@ from app.orchestrator import AppOrchestrator
 DEFAULT_PORT = int(os.environ.get("PORT", "8081"))
 OUTPUT_DIR = REPO_ROOT / "artifacts" / "demo_video"
 RAW_RECORDINGS_DIR = OUTPUT_DIR / "raw"
-CONVERSATION_ARTIFACTS_DIR = Path(
-    os.environ.get("CONVERSATION_ARTIFACT_DIR", "/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a")
-) / "demo_video"
 
 CHROMIUM_PATH = (
     "/ms-playwright/chromium-1234/chrome-linux64/chrome"
@@ -672,38 +669,6 @@ def transcode_video(
     return results
 
 
-def copy_to_conversation_artifacts(generated_files: dict[str, Path], screenshots_dir: Path) -> None:
-    """Copies generated demo media to Antigravity conversation artifact directories."""
-    sync_dirs = [
-        CONVERSATION_ARTIFACTS_DIR,
-        Path("/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a"),
-        Path("/config/.gemini/antigravity/brain/6bcbcfbf-2319-4e4a-94c9-2688b9d8579a/demo_video"),
-        Path("/config/.gemini/antigravity/brain/6da2d69c-eedf-49e0-a6a7-b5d64040c869"),
-        Path("/config/.gemini/antigravity/brain/6da2d69c-eedf-49e0-a6a7-b5d64040c869/demo_video"),
-    ]
-    seen_dirs = set()
-    for target_dir in sync_dirs:
-        try:
-            resolved = target_dir.resolve()
-            if resolved in seen_dirs:
-                continue
-            seen_dirs.add(resolved)
-            target_dir.mkdir(parents=True, exist_ok=True)
-            for key, path in generated_files.items():
-                if path and path.exists():
-                    dest = target_dir / path.name
-                    shutil.copy2(path, dest)
-
-            # Sync screenshots
-            dest_screenshots = target_dir / "screenshots"
-            dest_screenshots.mkdir(parents=True, exist_ok=True)
-            for img in screenshots_dir.glob("*.png"):
-                shutil.copy2(img, dest_screenshots / img.name)
-            print(f"  ✔ Synced demo media to: {target_dir}")
-        except Exception as e:
-            print(f"  [Notice] Could not copy to {target_dir}: {e}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Kandezhuthu AI Reusable Demo Video Generator")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="Port to run/connect to (default: 8081)")
@@ -741,10 +706,7 @@ def main():
         # Step 3: Transcode to MP4, WebM, and GIF
         generated = transcode_video(raw_video_path, out_dir, formats=args.format)
 
-        # Step 4: Sync to Conversation Artifacts
-        copy_to_conversation_artifacts(generated, recorder.screenshots_dir)
-
-        # Step 5: Summary Report
+        # Step 4: Summary Report
         print("\n" + "=" * 70)
         print("  🎉 DEMO VIDEO GENERATION COMPLETED SUCCESSFULLY")
         print("=" * 70)

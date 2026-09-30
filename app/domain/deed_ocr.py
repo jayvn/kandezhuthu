@@ -419,7 +419,7 @@ Extract all details faithfully without fabrication. If a field is not mentioned 
             paddy_conversion=paddy_calc,
             whatsapp_draft=whatsapp_draft,
             whatsapp_draft_en=whatsapp_draft_en,
-            field_verification_checklist=sanity_result.what_ai_cannot_verify,
+            field_verification_checklist=sanity_result.field_checks,
             ocr_engine_used=extracted_metadata.ocr_engine_used,
             document_type_detected=extracted_metadata.deed_type or "Title Deed (ആധാരം)",
         )

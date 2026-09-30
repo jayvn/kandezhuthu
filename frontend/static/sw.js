@@ -1,9 +1,14 @@
 // Kandezhuthu AI Offline Field Inspection Service Worker
-const CACHE_NAME = 'kandezhuthu-field-v1';
+const CACHE_NAME = 'kandezhuthu-field-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/static/ft_theme.css',
+  '/static/vendor/leaflet/leaflet.js',
+  '/static/vendor/leaflet/leaflet.css',
+  '/static/vendor/marked.min.js',
+  '/static/vendor/purify.min.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -40,7 +45,7 @@ self.addEventListener('fetch', (event) => {
         return new Response(
           JSON.stringify({
             offline: true,
-            message: "⚡ Offline Mode: Field inspection is active without 4G cellular data. Plot measurements, boundary waypoints (Survey Kallu), and checklist notes are cached locally."
+            message: "Offline Mode: Field inspection is active without 4G cellular data. Plot measurements, boundary waypoints (Survey Kallu), and checklist notes are cached locally."
           }),
           { headers: { 'Content-Type': 'application/json' } }
         );

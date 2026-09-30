@@ -9,7 +9,10 @@
    - Secondary / Accents: Oxford Navy #0f5499 & Slate #0d7680
    - Text: Dark Slate #262a33 & Muted #66605c
    - Hairline borders: #e9decf / #dcdcdc
-   - Typography: Editorial Serif ('Financier Display', Georgia, 'Times New Roman', serif)
+   - Typography: Financier Display when installed, else Newsreader (headlines);
+     Metric when installed, else Figtree (UI). Malayalam falls back to Noto Serif/Sans.
+   - Iconography: typographic glyphs, never emoji. ● clear  ▲ caution  ■ danger,
+     § / ¶ / ₹ for statute, document and money markers, → ↓ ↑ ↔ for actions.
    ========================================================================== */
 
 :root {
@@ -37,8 +40,8 @@
   --ft-muted-text: #66605c !important;
 
   /* Typography */
-  --ft-font-serif: 'Financier Display', Georgia, 'Times New Roman', Cambria, serif !important;
-  --ft-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  --ft-font-serif: 'Financier Display', 'Newsreader', Georgia, 'Noto Serif Malayalam', serif !important;
+  --ft-font-sans: 'Metric', 'Figtree', 'Noto Sans Malayalam', system-ui, sans-serif !important;
   --ft-font-ml: 'Noto Sans Malayalam', system-ui, sans-serif !important;
 }
 
@@ -143,7 +146,6 @@ h1, h2, h3, h4,
 .step-nav-title,
 .step-nav-label,
 .workflow-step,
-.legal-note,
 .layman-card-title,
 .hud-stat-label,
 #hud-locality-title,
@@ -511,7 +513,7 @@ button#send-btn:hover:not(:disabled) {
 
 .checklist-header,
 #chk-panel-title {
-  font-family: 'Financier Display', Georgia, 'Times New Roman', serif !important;
+  font-family: var(--ft-font-serif) !important;
   color: #990f3d !important;
   border-bottom: 1px solid #e9decf !important;
   font-weight: 700 !important;
@@ -615,13 +617,13 @@ button#send-btn:hover:not(:disabled) {
 .map-hud-header {
   color: #990f3d !important;
   border-bottom: 1px solid #e9decf !important;
-  font-family: 'Financier Display', Georgia, 'Times New Roman', serif !important;
+  font-family: var(--ft-font-serif) !important;
   font-weight: 700 !important;
 }
 
 #hud-locality-title {
   color: #990f3d !important;
-  font-family: 'Financier Display', Georgia, 'Times New Roman', serif !important;
+  font-family: var(--ft-font-serif) !important;
   font-weight: 700 !important;
 }
 
@@ -653,7 +655,7 @@ button#send-btn:hover:not(:disabled) {
 #hud-lbl-elevation,
 #hud-extent-lbl-title,
 #hud-elevation-lbl-title {
-  font-family: 'Financier Display', Georgia, serif !important;
+  font-family: var(--ft-font-serif) !important;
   font-size: 10px !important;
   font-weight: 700 !important;
   color: #66605c !important;
@@ -1226,3 +1228,127 @@ select.map-layer-select {
   border: 1px solid #f5c2cb !important;
 }
 
+/* ==========================================================================
+   Typographic Glyph Icons (replace emoji)
+   ========================================================================== */
+.drop-icon-animated,
+.dropzone-icon,
+.layman-card-icon,
+#guidance-icon,
+.lang-icon-badge,
+.workflow-arrow,
+.timeline-party-arrow {
+  font-family: var(--ft-font-serif) !important;
+  font-style: normal !important;
+  color: var(--ft-claret) !important;
+  line-height: 1 !important;
+}
+.drop-icon-animated {
+  font-size: 2.4rem !important;
+  animation: none !important;
+}
+.dropzone-icon,
+.layman-card-icon {
+  font-size: 1.35rem !important;
+  font-weight: 600 !important;
+}
+.lang-icon-badge {
+  font-family: var(--ft-font-ml) !important;
+  font-weight: 700 !important;
+}
+.workflow-arrow,
+.timeline-party-arrow {
+  color: var(--ft-border-strong) !important;
+}
+
+
+/* Map load failure */
+.map-unavailable {
+  display: flex; align-items: center; justify-content: center; height: 100%;
+  padding: 2rem; text-align: center; color: var(--ft-muted-text);
+  font-family: var(--ft-font-serif); background: var(--ft-paper-secondary);
+}
+
+/* Rendered agent markdown */
+.bubble h1, .bubble h2, .bubble h3, .bubble h4 {
+  font-family: var(--ft-font-serif) !important; color: var(--ft-dark-text) !important;
+  margin: 0.9rem 0 0.35rem !important; line-height: 1.25 !important;
+}
+.bubble h1 { font-size: 1.3rem !important; }
+.bubble h2 { font-size: 1.15rem !important; }
+.bubble h3, .bubble h4 { font-size: 1rem !important; }
+.bubble ul, .bubble ol { margin: 0.35rem 0 0.35rem 1.2rem; padding: 0; }
+.bubble li { margin: 0.15rem 0; }
+.bubble hr { border: 0; border-top: 1px solid var(--ft-border); margin: 0.8rem 0; }
+.bubble table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; }
+.bubble th, .bubble td { border-bottom: 1px solid var(--ft-border); padding: 4px 8px; text-align: left; }
+
+/* ==========================================================================
+   Streamlined chrome
+   ========================================================================== */
+.offline-badge {
+  font-size: 0.75rem; font-weight: 600; padding: 2px 8px;
+  border: 1px solid var(--ft-border-strong); color: var(--ft-muted-text);
+}
+.offline-badge[hidden] { display: none !important; }
+.workflow-bar .step-nav-controls { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+/* Map info panel: compact card, collapses to a one-line summary */
+.map-hud { max-width: 360px !important; }
+.map-hud-header { cursor: pointer; gap: 0.5rem; }
+.hud-summary { display: none; font-size: 0.8rem; color: var(--ft-dark-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-hud.minimized .hud-summary { display: inline; }
+.map-hud.minimized #hud-locality-title { display: none; }
+.map-hud.minimized { padding: 0.4rem 0.7rem !important; }
+
+/* ==========================================================================
+   Phone layout
+   ========================================================================== */
+#log, .bubble { min-width: 0; overflow-wrap: anywhere; }
+.bubble table { display: block; overflow-x: auto; max-width: 100%; }
+.leaflet-popup-content { min-width: 170px; }
+
+@media (max-width: 640px) {
+  header { flex-wrap: nowrap; gap: 0.5rem; }
+  .brand { min-width: 0; flex-shrink: 1; }
+  .brand-text { display: none; }
+  .header-actions { gap: 0.4rem; flex-wrap: nowrap; min-width: 0; }
+  .lang-icon-badge { display: none !important; }
+  .view-btn { padding: 0.3rem 0.5rem !important; }
+
+  .workflow-bar { flex-wrap: wrap; row-gap: 0.35rem; padding: 0.4rem 0.6rem !important; overflow: visible !important; }
+  .workflow-steps { gap: 0.25rem; }
+  .workflow-arrow { display: none !important; }
+  .workflow-step:not(.active) [id^="wf-text-"] { display: none; }
+  .workflow-step { padding: 0.25rem 0.45rem !important; }
+  .workflow-bar .step-nav-controls { margin-left: auto; }
+  .step-nav-btn.prev { display: none; }
+
+  .layman-quickstart-grid { grid-template-columns: 1fr !important; }
+  .layman-card-desc { display: none; }
+}
+
+/* ==========================================================================
+   FT shapes: square corners, hairlines, no soft shadows
+   ========================================================================== */
+.deed-dropzone, .layman-card, .bubble, .whatsapp-card, .whatsapp-text, .chip, .map-hud,
+.hud-stat-box, .map-tool-btn, .step-nav-btn, .workflow-step, .dropzone-btn, .copy-btn,
+.wa-direct-btn, .hud-btn, .buyer-verdict-box, .checklist-panel, .custom-modal-card,
+#input, #send-btn, .upload-trigger-btn, .map-search-input, .map-preset-select, .map-layer-select {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.deed-dropzone { border: 1px dashed var(--ft-border-strong) !important; background: var(--ft-card-bg) !important; }
+.layman-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; }
+.layman-card:hover { border-color: var(--ft-claret) !important; }
+.layman-card-badge { background: transparent !important; color: var(--ft-muted-text) !important; border: 1px solid var(--ft-border) !important; }
+.whatsapp-card { background: var(--ft-card-bg) !important; border: 1px solid var(--ft-border) !important; border-left: 3px solid var(--ft-slate) !important; }
+.whatsapp-title { color: var(--ft-dark-text) !important; font-family: var(--ft-font-serif) !important; }
+.whatsapp-text { background: var(--ft-paper) !important; border: 0 !important; color: var(--ft-dark-text) !important; }
+.wa-direct-btn { background: var(--ft-slate) !important; color: #fff !important; }
+.buyer-verdict-box { border: 0 !important; border-left: 3px solid currentColor !important; background: var(--ft-card-bg) !important; }
+.buyer-verdict-box.danger { color: var(--ft-claret) !important; }
+.buyer-verdict-box.caution { color: #a35c00 !important; }
+.buyer-verdict-box.clear { color: var(--ft-slate) !important; }
+.buyer-verdict-box .buyer-verdict-text { color: var(--ft-dark-text) !important; }
+.map-guidance-bar { background: var(--ft-paper-secondary) !important; border-bottom: 1px solid var(--ft-border) !important; }
