@@ -4125,7 +4125,7 @@ function renderDeedAuditCard(container, data, fileName) {
           <button class="deed-action-btn" onclick="locatePlotOnSatellite('${meta.village || ''}', '${meta.re_survey_no || meta.survey_no || ''}')" title="Locate this survey plot on the interactive satellite map">
             Locate Plot on Map
           </button>
-          <button class="deed-action-btn" onclick="openOwnershipTimeline('aluva_broken')" title="Trace 30-year chronological chain of prior deeds">
+          <button class="deed-action-btn" onclick="auditDeedChain('${meta.document_number || ''}', '${meta.re_survey_no || meta.survey_no || ''}')" title="Trace 30-year chronological chain of prior deeds">
             <span>§</span> Audit Munnadharam Chain
           </button>
           <button class="deed-action-btn" onclick="askAboutDeed('${meta.document_number || ''}', '${meta.survey_no || ''}')" title="Ask follow-up questions to Kandezhuthu legal assistant">
@@ -4174,9 +4174,14 @@ function locatePlotOnSatellite(village, survey) {
 }
 
 function askAboutDeed(docNo, surveyNo) {
-  const prompt = `Based on deed ${docNo ? 'Doc ' + docNo : ''} (Survey No ${surveyNo || '345/1'}), what are the critical legal risks, pathway easements, and physical checks needed before paying token advance?`;
+  const prompt = `Based on deed ${docNo ? 'Doc ' + docNo : ''}${surveyNo ? ' (Survey No ' + surveyNo + ')' : ''}, what are the critical legal risks, pathway easements, and physical checks needed before paying token advance?`;
   input.value = prompt;
   input.focus();
+}
+
+function auditDeedChain(docNo, surveyNo) {
+  const deed = [docNo ? `Doc ${docNo}` : '', surveyNo ? `Survey No ${surveyNo}` : ''].filter(Boolean).join(', ');
+  sendQuickPrompt(`Audit the 30-year prior deed (Munnadharam) chain for the deed I just scanned${deed ? ' (' + deed + ')' : ''}. List the prior deeds and EC entries you need from me to check continuity, extents and heirs.`);
 }
 
 /* Open Interactive 30-Year Ownership Timeline */
@@ -4965,83 +4970,6 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = input.value.trim();
   if (!text) return;
-
-  const lower = text.toLowerCase();
-  if (lower.includes("timeline") || (lower.includes("ownership") && lower.includes("history")) || lower.includes("munnadharam") || lower.includes("മുന്നാധാരം")) {
-    input.value = "";
-    input.style.height = "48px";
-    let preset = "aluva_broken";
-    if (lower.includes("kakkanad") || lower.includes("wetland") || lower.includes("minor")) {
-      preset = "kakkanad_wetland";
-    } else if (lower.includes("clean")) {
-      preset = "clean_title";
-    }
-    openOwnershipTimeline(preset);
-    return;
-  }
-
-  const isPricingQuery = lower.includes("price") || lower.includes("bought") || lower.includes("how much") || lower.includes("consideration") || lower.includes("public") || lower.includes("fair value") || lower.includes("ന്യായവില") || lower.includes("പ്രതിഫല");
-
-  if (isPricingQuery) {
-    appendMsg("user", text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    input.value = "";
-    input.style.height = "48px";
-    sendBtn.disabled = true;
-
-    let preset = "aluva_broken";
-    if (lower.includes("kakkanad") || lower.includes("wetland") || lower.includes("minor")) {
-      preset = "kakkanad_wetland";
-    } else if (lower.includes("clean")) {
-      preset = "clean_title";
-    }
-
-    const answerHtml = `
-      <div style="line-height:1.55; color:#262a33; font-size:0.88rem;">
-        <h4 style="color:#990f3d; margin-top:0; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
-          <span>§</span>
-          <span>Yes, Historical Purchase Price is a Statutory Public Record in Kerala!</span>
-        </h4>
-        <p style="margin-bottom:0.5rem;">
-          Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds${currentLanguage === 'ml' ? ' / <em>തീറാധാരം</em>' : ''}) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
-        </p>
-        <div style="background:#f6ede2; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size:0.83rem;">
-          <strong>Three Key Statutory Price & Valuation Realities in Kerala:</strong>
-          <ol style="margin:4px 0 0 18px; padding:0;">
-            <li style="margin-bottom:3px;"><strong>Registered Consideration${currentLanguage === 'ml' ? ' (പ്രതിഫല തുക)' : ''}:</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy${currentLanguage === 'ml' ? ' (<em>പകർപ്പ്</em>)' : ''} from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
-            <li style="margin-bottom:3px;"><strong>Kerala Govt Notified Fair Value${currentLanguage === 'ml' ? ' (ഭൂമിയുടെ ന്യായവില - Section 28A)' : ' (Fair Value - Section 28A Kerala Stamp Act)'}:</strong> The statutory minimum floor valuation per Are fixed by the Revenue Department for every Re-Survey number. 8% Stamp Duty + 2% Reg fee must be paid on whichever is higher (registered consideration vs fair value).</li>
-            <li style="margin-bottom:2px;"><strong>Undervaluation Penalties (Section 45A Kerala Stamp Act):</strong> If a deed is registered below market value to evade 8% stamp duty or capital gains tax, District Registrar audits assess deficit duty with 12% penal interest, which becomes a <strong>first statutory charge / revenue recovery lien directly on the land</strong>.</li>
-          </ol>
-        </div>
-        <p style="margin-bottom:0.4rem; font-size:0.83rem; color:#66605c;">
-          Below is the chronological 30-year ownership and consideration audit for this property, detailing exactly what previous owners paid per Cent, their registered bank liabilities, and fair value benchmarks:
-        </p>
-      </div>
-    `;
-
-    appendMsg("agent", answerHtml);
-    const timelineBubble = appendMsg("agent", `
-      <div class="typing-indicator">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <span style="font-size:0.85rem; color:#990f3d; margin-left:6px; font-weight:600;">
-          Loading statutory purchase price and valuation audit...
-        </span>
-      </div>
-    `);
-
-    fetch(`/api/timeline_demo?preset=${preset}&lang=${currentLanguage}`)
-      .then(res => res.json())
-      .then(data => {
-        renderOwnershipTimeline(timelineBubble, data, preset);
-        sendBtn.disabled = false;
-      })
-      .catch(err => {
-        timelineBubble.innerHTML = `<span style="color:red;">Error loading pricing timeline: ${err.message}</span>`;
-        sendBtn.disabled = false;
-      });
-    return;
-  }
 
   appendMsg("user", text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
   input.value = "";

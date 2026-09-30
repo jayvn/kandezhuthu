@@ -600,7 +600,6 @@ def seed_all():
         seed_administrative_divisions(conn)
         seed_fair_value_benchmarks(conn)
         seed_digital_resurvey_villages(conn)
-        seed_demo_audit(conn)
     print("✅ Successfully seeded all Kandezhuthu database tables!")
 
 
