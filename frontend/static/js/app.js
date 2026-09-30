@@ -21,7 +21,12 @@ function initPWA() {
   updateOnlineStatus();
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await loadTranslations();
+  } catch (e) {
+    console.warn("[Kandezhuthu UI] Could not load translations:", e);
+  }
   initMap();
   initHud();
   initPWA();

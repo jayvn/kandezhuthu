@@ -1264,10 +1264,11 @@ async def get_dev_version():
             static_mtime = max(static_mtime, os.path.getmtime(os.path.join(static_root, name)))
         except OSError:
             pass
-    js_dir = os.path.join(static_root, "js")
-    if os.path.isdir(js_dir):
-        for name in os.listdir(js_dir):
-            static_mtime = max(static_mtime, os.path.getmtime(os.path.join(js_dir, name)))
+    for sub in ("js", "i18n"):
+        sub_dir = os.path.join(static_root, sub)
+        if os.path.isdir(sub_dir):
+            for name in os.listdir(sub_dir):
+                static_mtime = max(static_mtime, os.path.getmtime(os.path.join(sub_dir, name)))
     return JSONResponse({
         "server_start": SERVER_START_TIME,
         "static_mtime": static_mtime,

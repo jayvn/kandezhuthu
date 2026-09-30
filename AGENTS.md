@@ -45,7 +45,10 @@ kandezhuthu/
 ├── frontend/
 │   ├── main.py                  # Full-stack FastAPI server with Web UI, OCR and upload endpoints
 │   └── static/
-│       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
+│       ├── index.html           # Dual-pane UI markup (chat + satellite map)
+│       ├── app.css, ft_theme.css # Base styles, then the FT theme layer
+│       ├── js/                  # i18n, chat, workflow, map, app (classic scripts, loaded in order)
+│       └── i18n/                # en.json, ml.json UI strings (same keys; checked by tests/unit/test_i18n_keys.py)
 ├── data/
 │   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
 │   ├── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)
