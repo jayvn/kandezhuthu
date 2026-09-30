@@ -5,10 +5,10 @@ metrics_to_run:
 
 custom_metrics:
   # Comprehensive local LLM-as-judge (see response_quality.py).
-  # Evaluates legal accuracy, statutory disclaimers, Malayalam terms, and clean title guardrails.
+  # Evaluates legal accuracy, directness, Malayalam terms, and the clean title guardrail.
   - name: custom_response_quality
     custom_function_file: response_quality.py
-  # Dedicated metric for statutory advocate disclaimers and 100% clean title guardrails
+  # Dedicated metric for the 100% clean title guardrail
   - name: legal_guardrails_score
     custom_function_file: guardrails_metric.py
   # Dedicated metric for authentic Malayalam property and revenue terminology

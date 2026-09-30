@@ -499,8 +499,6 @@ async def whatsapp_webhook(req: Request):
             f"*Kandezhuthu AI (കണ്ടെഴുത്ത്)*\n\n"
             f"Thank you for contacting Kandezhuthu Property Diligence.\n"
             f"Query: \"{body[:80]}\"\n\n"
-            f"*Mandatory Reminder*: AI deed analysis does not replace physical inspection of Survey Stones (സർവേ കല്ലുകൾ) "
-            f"or advocate vetting at the SRO.\n\n"
             f"Send a deed photo or location pin to start an automated title check!"
         )
     else:

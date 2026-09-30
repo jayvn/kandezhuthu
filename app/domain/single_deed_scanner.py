@@ -32,7 +32,7 @@ class TrapCategory(str, Enum):
 
 
 class Verdict(str, Enum):
-    ALL_CLEAR = "● NO KNOWN RED FLAGS - Lawyer Review Still Required"
+    ALL_CLEAR = "● NO RED FLAGS FOUND"
     CAUTION = "▲ CAUTION - Restrictive Covenants Detected"
     DANGER = "■ DANGER - Fatal Legal / Regulatory Trap Found"
 
@@ -55,7 +55,7 @@ class DeedSanityResult(BaseModel):
     sanity_score: int = Field(description="0 (Unsafe) to 100 (Clean)")
     findings: List[TrapFinding]
     summary_advice: str
-    what_ai_cannot_verify: List[str] = Field(
+    field_checks: List[str] = Field(
         default_factory=lambda: [
             "Physical boundary encroachment: Whether neighbors have moved boundary stones (Survey Kallu).",
             "Actual ground topography: Waterlogging, flooding history, or overhead high-tension electric cables.",
@@ -63,10 +63,6 @@ class DeedSanityResult(BaseModel):
             "Physical access reality: Whether the road mentioned on paper is physically motorable on the ground.",
             "Digital resurvey discrepancy: Cross-check ULPIN (Bhu-Aadhaar) and Unique Thandaper on entebhoomi.kerala.gov.in.",
         ]
-    )
-    mandatory_next_step: str = (
-        "AI is an investigative triage tool, not a legal title insurer. "
-        "Take this flagged report to a licensed Kerala advocate for formal search and conduct on-site boundary verification."
     )
 
 
@@ -452,21 +448,20 @@ class SingleDeedScanner:
         if has_critical or score < 60:
             verdict = Verdict.DANGER
             advice = (
-                "CRITICAL RED FLAGS DETECTED! This deed contains high-risk elements (such as wetland classification or unapproved minor sale) "
-                "that could lead to building permit refusal or void title. Halt advance payment immediately."
+                "High-risk clauses found (e.g. wetland classification or a minor's share sold without court sanction). "
+                "These can block a building permit or make the title voidable."
             )
         elif score < 85:
             verdict = Verdict.CAUTION
             advice = (
-                "The deed contains restrictive covenants (such as an easement or conditional clause). "
-                "Do NOT pay any advance until you inspect the physical site and clarify the highlighted questions with the seller."
+                "Restrictive covenants found (e.g. an easement or a conditional clause). "
+                "Clarify the highlighted points with the seller."
             )
         else:
             verdict = Verdict.ALL_CLEAR
             advice = (
-                "None of the known red-flag phrases (easements, wetland status, minor rights, maintenance covenants) were found in this text. "
-                "This is not a clean-title opinion: a pattern scan cannot see what the deed omits. Get the Encumbrance Certificate (EC), "
-                "inspect the site, and have an advocate review the title before paying any advance."
+                "No easement, wetland, minor-share, maintenance, CRZ or trust clauses found in this text. "
+                "Next: match it against the Encumbrance Certificate (EC) and the prior deeds."
             )
 
         return DeedSanityResult(

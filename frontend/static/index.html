@@ -1502,17 +1502,6 @@
     color: #66605c;
   }
 
-  /* Disclaimer footer */
-  .legal-note {
-    text-align: center;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    padding: 0.35rem 1rem 0.45rem;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    z-index: 1000;
-  }
-
   /* Responsive layout control */
   body.view-chat #map-pane { display: none !important; }
   body.view-chat #chat-pane { flex: 1 1 100% !important; border-right: none; }
@@ -2449,7 +2438,7 @@
               <span class="layman-card-badge" id="card-badge-ec">₹45L Bank Loan</span>
             </div>
             <div class="layman-card-title" id="card-title-ec">Test 30-Yr Bank EC</div>
-            <div class="layman-card-desc" id="card-desc-ec">See how we catch undisclosed bank mortgages and missing release deeds before your advance gets trapped.</div>
+            <div class="layman-card-desc" id="card-desc-ec">Finds undisclosed bank mortgages and missing release deeds.</div>
             <div class="layman-card-cta" id="card-cta-ec">▶ Test SRO EC PDF →</div>
           </div>
 
@@ -2484,8 +2473,7 @@
         <div class="msg-label">Kandezhuthu AI</div>
         <div class="bubble" id="welcome-bubble">
           <strong id="welcome-bubble-title">Welcome to Kandezhuthu AI - Kerala Property Legal Audit</strong>
-          <p id="welcome-bubble-p1">Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong></p>
-          <p id="welcome-bubble-p2" style="margin-top: 0.5rem;">Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:</p>
+          <p id="welcome-bubble-p1">Drop a deed or EC above, paste a clause below, or ask a question.</p>
           <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.6rem;">
             <button type="button" class="dropzone-btn secondary" id="quick-prompt-1" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('advance_docs')">
               What documents should I ask the seller for before paying token advance?
@@ -2793,9 +2781,6 @@
   </div>
 </div>
 
-<div class="legal-note" id="legal-disclaimer">
-  ▲ <strong>Statutory Disclaimer:</strong> Kandezhuthu AI is an investigatory triage tool, not a legal title insurer. Satellite measurements and deed scans are preliminary; always conduct on-ground survey with licensed surveyors and consult a Kerala High Court advocate before parting with earnest money.
-</div>
 
 <script src="/static/vendor/leaflet/leaflet.js"></script>
 <script src="/static/vendor/marked.min.js"></script>
@@ -2882,7 +2867,7 @@ const TRANSLATIONS = {
     cardDeedCta: "▶ Test Sale Deed PDF →",
     cardEcBadge: "₹45L Bank Loan",
     cardEcTitle: "Test 30-Yr Bank EC",
-    cardEcDesc: "See how we catch undisclosed bank mortgages and missing release deeds before your advance gets trapped.",
+    cardEcDesc: "Finds undisclosed bank mortgages and missing release deeds.",
     cardEcCta: "▶ Test SRO EC PDF →",
     cardUploadBadge: "PDF / Photo",
     cardUploadTitle: "Check My Own Deed / Photo",
@@ -2902,8 +2887,7 @@ const TRANSLATIONS = {
     btnBhunaksha: "BhuNaksha FMB",
     btnDatabank: "Data Bank",
     welcomeTitle: "Welcome to Kandezhuthu AI - Kerala Property Legal Audit",
-    welcomeP1: "Buying land or a house in Kerala? <strong>Never pay token advance money to a seller or broker without checking the documents first.</strong>",
-    welcomeP2: "Click one of the <strong>3 quick test cards above</strong> to test with real documents in 1-click, or ask any question below:",
+    welcomeP1: "Drop a deed or EC above, paste a clause below, or ask a question.",
     inputPlaceholder: "Paste deed excerpt, ask questions, or click + to upload a scanned deed...",
     sendBtn: "Send",
     mapHeaderTitle: "Satellite Inspector",
@@ -2951,7 +2935,6 @@ const TRANSLATIONS = {
     chkHt: "<strong>Overhead Lines:</strong> Verify no HT electricity lines cross over the plot.",
     chkFlood: "<strong>Flood Watermarks:</strong> Check compound walls & poles for 2018 monsoon waterlines.",
     chkHint: "Tick items as you verify them on-site with your surveyor.",
-    disclaimer: "▲ <strong>Statutory Disclaimer:</strong> Kandezhuthu AI is an investigatory triage tool, not a legal title insurer. Satellite measurements and deed scans are preliminary; always conduct on-ground survey with licensed surveyors and consult a Kerala High Court advocate before parting with earnest money.",
     typingAnalysis: "Analyzing property documents, prior title lineage, and Kerala statutes...",
     presets: {
       default: "Select Kerala Region...",
@@ -3065,8 +3048,7 @@ const TRANSLATIONS = {
     btnBhunaksha: "ഭൂരേഖ മാപ്പ്",
     btnDatabank: "ഡാറ്റാ ബാങ്ക്",
     welcomeTitle: "നമസ്കാരം! കണ്ടെഴുത്ത് AI ലേക്ക് സ്വാഗതം.",
-    welcomeP1: "കേരളത്തിൽ ഭൂമിയോ വീടോ വാങ്ങുകയാണോ? <strong>രേഖകൾ കൃത്യമായി പരിശോധിച്ച് ബോധ്യപ്പെടാതെ വിൽപ്പനക്കാരനോ ബ്രോക്കർക്കോ ടോക്കൺ അഡ്വാൻസ് നൽകരുത്.</strong>",
-    welcomeP2: "മുകളിൽ കാണുന്ന <strong>3 മാതൃകാ കാർഡുകളിൽ ഒന്നിൽ ക്ലിക്ക് ചെയ്ത്</strong> നിമിഷങ്ങൾക്കകം പരിശോധന നടത്താം, അല്ലെങ്കിൽ സംശയങ്ങൾ താഴെ ചോദിക്കാം:",
+    welcomeP1: "മുകളിൽ ആധാരമോ EC-യോ ഇടുക, താഴെ വിവരങ്ങൾ പേസ്റ്റ് ചെയ്യുക, അല്ലെങ്കിൽ ചോദ്യം ചോദിക്കുക.",
     inputPlaceholder: "ആധാരത്തിലെ വിവരങ്ങൾ നൽകുക, സംശയങ്ങൾ ചോദിക്കുക, അല്ലെങ്കിൽ ക്ലിക്ക് ചെയ്ത് ആധാരം അപ്‌ലോഡ് ചെയ്യുക...",
     sendBtn: "അയക്കുക",
     mapHeaderTitle: "ഉപഗ്രഹ നിരീക്ഷണം",
@@ -3114,7 +3096,6 @@ const TRANSLATIONS = {
     chkHt: "<strong>വൈദ്യുതി ലൈൻ:</strong> പ്ലോട്ടിന് മുകളിലൂടെ ഹൈ-ടെൻഷൻ ലൈൻ പോകുന്നില്ലെന്ന് ഉറപ്പാക്കുക.",
     chkFlood: "<strong>വെള്ളപ്പൊക്ക പാടുകൾ:</strong> മതിലുകളിലും തൂണുകളിലും 2018-ലെ വെള്ളപ്പൊക്ക ജലനിരപ്പ് പാടുകൾ പരിശോധിക്കുക.",
     chkHint: "സർവേയറുമൊത്ത് നേരിട്ട് പരിശോധിക്കുമ്പോൾ ഓരോന്നായി ടിക്ക് ചെയ്യുക.",
-    disclaimer: "▲ <strong>നിയമപരമായ മുന്നറിയിപ്പ്:</strong> കണ്ടെഴുത്ത് AI ഒരു പ്രാഥമിക പരിശോധനാ സഹായി മാത്രമാണ്, ടൈറ്റിൽ ഇൻഷുററോ അന്തിമ കോടതി വിധിയോ അല്ല. സാറ്റലൈറ്റ് അളവുകളും ഡോക്യുമെന്റ് പരിശോധനയും പ്രാഥമികമാണ്; പണം അഡ്വാൻസ് നൽകുന്നതിന് മുൻപ് ലൈസൻസുള്ള സർവേയറെ വെച്ച് അതിരുകൾ അളക്കുകയും കേരള ഹൈക്കോടതി അഭിഭാഷകന്റെ നിയമോപദേശം തേടുകയും ചെയ്യുക.",
     typingAnalysis: "ആധാര രേഖകൾ, മുന്നാധാര ചരിത്രം, കേരള ചട്ടങ്ങൾ എന്നിവ പരിശോധിക്കുന്നു...",
     presets: {
       default: "കേരളത്തിലെ പ്രദേശം തിരഞ്ഞെടുക്കുക...",
@@ -3414,8 +3395,6 @@ function setLanguage(lang) {
   const elChkHint = document.getElementById("chk-hint");
   if (elChkHint) elChkHint.textContent = t.chkHint;
 
-  const elDisclaimer = document.getElementById("legal-disclaimer");
-  if (elDisclaimer) elDisclaimer.innerHTML = t.disclaimer;
 
   // Refresh any currently rendered cards in DOM
   document.querySelectorAll(".whatsapp-card").forEach(card => {
@@ -4157,47 +4136,21 @@ function renderDeedAuditCard(container, data, fileName) {
     `;
   }
 
-  let buyerVerdictHtml = "";
-  if (score < 60) {
-    buyerVerdictHtml = `
-      <div class="buyer-verdict-box danger">
-        <div class="buyer-verdict-title">
-          <span>■ ${currentLanguage === 'ml' ? 'ടോക്കൺ അഡ്വാൻസ് നൽകരുത് (DO NOT PAY ADVANCE MONEY YET!)' : 'DO NOT PAY ADVANCE MONEY YET!'}</span>
-        </div>
-        <div class="buyer-verdict-text">
-          ${currentLanguage === 'ml'
-            ? '<strong>നിർണായക മുന്നറിയിപ്പ്:</strong> ഈ രേഖയിൽ ഗുരുതരമായ <strong>നിയമക്കുരുക്കുകൾ</strong> കണ്ടെത്തിയിട്ടുണ്ട്. സെല്ലർ താഴെ കാണുന്ന വാട്സാപ്പ് ചോദ്യങ്ങൾക്ക് ഒറിജിനൽ രേഖകൾ സഹിതം വ്യക്തത നൽകുന്നത് വരെ ടോക്കൺ അഡ്വാൻസോ എഗ്രിമെന്റ് തുകയോ കൈമാറരുത്.'
-            : '<strong>Critical Warning:</strong> Severe <strong>statutory title traps</strong> detected. Do not pay token advance or earnest money until the seller provides original documents clarifying the WhatsApp inquiry below.'}
-        </div>
+  const ml = currentLanguage === 'ml';
+  const verdictCopy = score < 60
+    ? ["danger", "■", ml ? "ഗുരുതരമായ പ്രശ്നങ്ങൾ കണ്ടെത്തി" : "High-risk clauses found",
+       ml ? "താഴെയുള്ള കാര്യങ്ങൾ വിൽപ്പനക്കാരനോട് ചോദിച്ച് വ്യക്തമാക്കുക. വാട്സാപ്പ് സന്ദേശം തയ്യാറാണ്." : "Resolve the points below with the seller. The WhatsApp draft covers them."]
+    : score < 85
+    ? ["caution", "▲", ml ? "വ്യക്തത വേണ്ട കാര്യങ്ങൾ" : "Points to clarify",
+       ml ? "30 വർഷത്തെ ബാധ്യതാ സർട്ടിഫിക്കറ്റുമായും (EC) മുന്നാധാരങ്ങളുമായും ഒത്തുനോക്കുക." : "Check these against the 30-year EC and the prior deeds."]
+    : ["clear", "●", ml ? "പ്രശ്നങ്ങൾ കണ്ടെത്തിയില്ല" : "No red flags found",
+       ml ? "അടുത്തത്: EC-യും മുന്നാധാരങ്ങളുമായി ഒത്തുനോക്കുക." : "Next: match it against the EC and the prior deeds."];
+  const buyerVerdictHtml = `
+      <div class="buyer-verdict-box ${verdictCopy[0]}">
+        <div class="buyer-verdict-title"><span aria-hidden="true">${verdictCopy[1]}</span> <span>${verdictCopy[2]}</span></div>
+        <div class="buyer-verdict-text">${verdictCopy[3]}</div>
       </div>
     `;
-  } else if (score < 85) {
-    buyerVerdictHtml = `
-      <div class="buyer-verdict-box caution">
-        <div class="buyer-verdict-title">
-          <span>▲ ${currentLanguage === 'ml' ? 'സംശയങ്ങൾ ചോദിച്ചു ഉറപ്പാക്കുക (CAUTION: VERIFY BEFORE ADVANCE)' : 'CAUTION: VERIFY BEFORE PAYING ADVANCE'}</span>
-        </div>
-        <div class="buyer-verdict-text">
-          ${currentLanguage === 'ml'
-            ? 'രേഖകളിൽ ചില പൊരുത്തക്കേടുകൾ ഉള്ളതിനാൽ ബാധ്യതാ സർട്ടിഫിക്കറ്റും (EC) മുന്നാധാരങ്ങളും പരിശോധിച്ച ശേഷം മാത്രം അഡ്വാൻസ് നൽകുക.'
-            : 'Discrepancies found in deed recitals or extent. Verify 30-year Encumbrance Certificate (EC) and prior title deeds before parting with funds.'}
-        </div>
-      </div>
-    `;
-  } else {
-    buyerVerdictHtml = `
-      <div class="buyer-verdict-box clear">
-        <div class="buyer-verdict-title">
-          <span>● ${currentLanguage === 'ml' ? 'പ്രാഥമിക പരിശോധനയിൽ രേഖകൾ സുരക്ഷിതം (DOCUMENTS APPEAR CLEAR)' : 'PRELIMINARY TITLE APPEARS CLEAR'}</span>
-        </div>
-        <div class="buyer-verdict-text">
-          ${currentLanguage === 'ml'
-            ? 'രേഖകളിൽ പ്രകടമായ കുരുക്കുകൾ ഇല്ല. എങ്കിലും സർവേ കല്ലുകൾ നേരിട്ട് അളന്നു ബോധ്യപ്പെടുകയും വക്കീൽ പരിശോധന പൂർത്തിയാക്കുകയും ചെയ്യുക.'
-            : 'No fatal traps detected in document recitals. Verify physical boundary stones on site and complete advocate scrutiny.'}
-        </div>
-      </div>
-    `;
-  }
 
   const cardHtml = `
     <div class="deed-audit-card">
@@ -4261,7 +4214,7 @@ function renderDeedAuditCard(container, data, fileName) {
         <div class="dossier-export-banner" style="margin-top:0.75rem; padding:0.65rem 0.85rem; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
           <div style="font-size:0.78rem; color:#166534; line-height:1.35;">
             <strong>Advocate Title Vetting Dossier:</strong><br/>
-            Export publication-grade PDF brief with boundary schedule, 5-point SRO checklist, and statutory disclaimers.
+            PDF brief with boundary schedule and SRO checklist.
           </div>
           <button class="dossier-download-btn" onclick="exportCurrentDeedDossier()" style="background:#990f3d; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:0 1px 3px rgba(0,0,0,0.12); white-space:nowrap;">
             <span>↓</span>
@@ -6337,15 +6290,14 @@ function sendPlotToAuditor() {
       `വഴിയുടെ വീതി: ${roadM} (${roadBadge}). ` +
       elevInfo +
       `ഇതിനെ കേരള പഞ്ചായത്ത് കെട്ടിട നിർമ്മാണ ചട്ടങ്ങൾ (KPBR 2019) പ്രകാരമുള്ള വഴി വീതി, സെറ്റ്ബാക്ക്, ` +
-      `പ്രളയസാധ്യത (KSDMA & 2018 വെള്ളപ്പൊക്ക മേഖല) എന്നിവയുമായി ഒത്തുനോക്കി അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപായി സർവേ കല്ല്, നിലം തരംമാറ്റൽ എന്നിവയിൽ എന്തൊക്കെ ശ്രദ്ധിക്കണമെന്ന് വിശദീകരിക്കുക.`;
+      `പ്രളയസാധ്യത (KSDMA & 2018 വെള്ളപ്പൊക്ക മേഖല) എന്നിവയുമായി ഒത്തുനോക്കി, ഈ സ്ഥലത്ത് നേരിട്ട് പരിശോധിക്കേണ്ട കാര്യങ്ങൾ (സർവേ കല്ല്, നിലം തരംമാറ്റൽ) പട്ടികപ്പെടുത്തുക.`;
   } else {
     promptText = `Auditing property in ${locality} (GPS Coordinates: ${coords}). ` +
       `Demarcated Extent from Satellite Map: ${cents}. ` +
       `Access Road Width: ${roadM} (${roadBadge}). ` +
       elevInfo +
       `Please cross-verify against Kerala Panchayat Building Rules (KPBR 2019) access road width and setback requirements, ` +
-      `flood exposure (KSDMA & 2018 flood zone), and explain what physical verifications (such as Survey Stones / FMB boundary verification and Paddy Land / Wetland status) ` +
-      `must be completed before handing over any advance money.`;
+      `flood exposure (KSDMA & 2018 flood zone), and list the on-site checks for this plot (survey stones / FMB boundaries, paddy land / wetland status).`;
   }
 
   if (currentViewMode === "map") {

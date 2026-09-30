@@ -94,11 +94,5 @@ Run Python commands with `uv run` from the repository root:
 - **Code preservation**: Only modify code directly targeted by the user's request. Preserve all surrounding code, config values (e.g., `model`), comments, and formatting.
 - **NEVER change the model**: Keep `MODEL = "gemini-3.8-flash"` in `app/agent.py` unless explicitly directed by the user.
 - **Bilingual Integrity**: Maintain accurate Malayalam legal terminology (e.g., ആധാരം, മുന്നാധാരം, തീറാധാരം, ഭാഗപത്രം, ഒഴിവുമുറി, നിലം, പുരയിടം, നടപ്പുവഴി, സർവേ കല്ല്) and ensure Malayalam WhatsApp inquiry messages remain culturally polite and natural.
-- **Non-Negotiable Ethical Guardrails**:
-  - Never state or guarantee that a title is "100% clear or clean".
-  - Always retain the explicit list of what AI cannot verify on paper:
-    - Physical boundary stones (*Survey Kallu*) and neighbor encroachment.
-    - Physical motorability of access roads on the ground.
-    - Oral family agreements (*Vaymozhi udanpadi*) and unfiled court caveats.
-    - Ground topography, waterlogging, flooding history, or high-tension power lines.
-  - Always advise the user to complete physical inspection and consult a licensed Kerala High Court or District advocate before parting with any advance money.
+- **No preaching**: The user knows this is an AI tool. The app and the agent do the job directly: no disclaimers, "consult an advocate" reminders or AI-limitation notices in the UI, agent replies, WhatsApp text or PDFs.
+- **Never claim a 100% clean title**: State what was checked and what was found.

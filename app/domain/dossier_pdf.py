@@ -100,10 +100,10 @@ class AdvocateDossierGenerator:
         story = []
 
         # Header Title
-        story.append(Paragraph("KANDEZUTHTHU AI · കണ്ടഴുത്ത് ആധാരംനോക്കി", title_style))
+        story.append(Paragraph("KANDEZHUTHU AI · കണ്ടെഴുത്ത്", title_style))
         story.append(
             Paragraph(
-                "PRE-TRANSACTION TITLE AUDIT & STATUTORY RED-FLAG DOSSIER | ADVOCATE VETTING BRIEF<br/>"
+                "PRE-TRANSACTION TITLE AUDIT DOSSIER<br/>"
                 f"Generated on {datetime.now().strftime('%d %B %Y at %I:%M %p')} · Jurisdiction: Kerala, India",
                 subtitle_style,
             )
@@ -361,27 +361,24 @@ class AdvocateDossierGenerator:
             story.append(wa_table)
             story.append(Spacer(1, 10))
 
-        # Ethical Non-AI Guardrails & Legal Disclaimer Box
+        # On-site checks that paper records cannot settle
         story.append(KeepTogether([
-            Paragraph("6. STATUTORY DISCLAIMERS & WHAT AI CANNOT VERIFY ON PAPER", h2_style),
+            Paragraph("6. ON-SITE CHECKS", h2_style),
             Table([
                 [
                     Paragraph(
-                        "<b>MANDATORY GROUND INSPECTION ITEMS (NON-VERIFIABLE BY AI OR PAPER AUDIT):</b><br/>"
-                        "1. <b>Physical Survey Kallu & Encroachment:</b> AI cannot detect whether physical boundary stones (സർവേ കല്ല്) have been moved or if adjacent neighbors have encroached on the property.<br/>"
-                        "2. <b>Road Motorability:</b> AI verifies deed recitals only; physical motorability, steep gradient, unpaved status, or cul-de-sac turning radius requires on-site inspection.<br/>"
-                        "3. <b>Oral Family Covenants:</b> Unregistered family understandings (വായ്മൊഴി ഉടമ്പടി) or unfiled court caveats cannot be ascertained from registered deeds alone.<br/>"
-                        "4. <b>Topography & Flooding:</b> Ground waterlogging, flood levels (e.g. 2018/2019 Kerala floods), high-tension power line clearance, and slope stability must be inspected in person.<br/><br/>"
-                        "<b>LEGAL COUNSEL ADVISORY:</b> This dossier is an algorithmic pre-audit tool designed to highlight red-flags before advance payment. "
-                        "It does NOT constitute a formal Title Certificate or 100% legal guarantee. A licensed Kerala High Court or District advocate must inspect original parent deeds at the SRO.",
+                        "1. <b>Survey stones & encroachment:</b> confirm boundary stones (സർവേ കല്ല്) are in place and neighbours have not encroached.<br/>"
+                        "2. <b>Road:</b> confirm the access road is motorable at the width stated in the deed.<br/>"
+                        "3. <b>Oral family arrangements:</b> ask about unregistered family understandings (വായ്മൊഴി ഉടമ്പടി) and pending caveats.<br/>"
+                        "4. <b>Topography:</b> check waterlogging, 2018/2019 flood levels, high-tension lines and slope.",
                         disclaimer_style,
                     )
                 ]
             ],
             colWidths=[522],
             style=[
-                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#fef2f2")),
-                ("BOX", (0, 0), (-1, -1), 1, colors.HexColor("#fca5a5")),
+                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#fff1e5")),
+                ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#d4c5b9")),
                 ("TOPPADDING", (0, 0), (-1, -1), 6),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
                 ("LEFTPADDING", (0, 0), (-1, -1), 8),
