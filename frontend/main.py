@@ -1257,12 +1257,17 @@ SERVER_START_TIME = time.time()
 @app.get("/api/dev/version")
 async def get_dev_version():
     """Live reload version tracker for localhost dev."""
-    static_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "index.html")
+    static_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
     static_mtime = 0
-    try:
-        static_mtime = os.path.getmtime(static_file)
-    except Exception:
-        pass
+    for name in ("index.html", "app.css", "ft_theme.css"):
+        try:
+            static_mtime = max(static_mtime, os.path.getmtime(os.path.join(static_root, name)))
+        except OSError:
+            pass
+    js_dir = os.path.join(static_root, "js")
+    if os.path.isdir(js_dir):
+        for name in os.listdir(js_dir):
+            static_mtime = max(static_mtime, os.path.getmtime(os.path.join(js_dir, name)))
     return JSONResponse({
         "server_start": SERVER_START_TIME,
         "static_mtime": static_mtime,

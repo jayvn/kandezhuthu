@@ -1,10 +1,16 @@
 // Kandezhuthu AI Offline Field Inspection Service Worker
-const CACHE_NAME = 'kandezhuthu-field-v2';
+const CACHE_NAME = 'kandezhuthu-field-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/static/app.css',
   '/static/ft_theme.css',
+  '/static/js/i18n.js',
+  '/static/js/chat.js',
+  '/static/js/workflow.js',
+  '/static/js/map.js',
+  '/static/js/app.js',
   '/static/vendor/leaflet/leaflet.js',
   '/static/vendor/leaflet/leaflet.css',
   '/static/vendor/marked.min.js',

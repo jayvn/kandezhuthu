@@ -52,7 +52,7 @@ The buyer's question is: *can I pay the advance, and what do I still need?* Ever
 
 ## Structure
 
-17. **`index.html` is about 6.5k lines** with inline `style=""` everywhere, and `ft_theme.css` overrides it with `!important`.
-    → Move the inline CSS into `ft_theme.css` as classes and drop the `!important`s. Then split the JS into `static/js/*.js` modules (i18n, map, chat, workflow). Doing this before the UX items makes them much easier.
+17. **Inline styles fight the theme.** CSS and JS now live in `static/app.css` and `static/js/*.js`, but `index.html` and the JS templates still carry ~200 inline `style=""` attributes, and `ft_theme.css` overrides them with `!important`.
+    → Move them into classes as each area is touched, then drop the `!important`s.
 18. **i18n strings live in one giant object inside the HTML.**
     → Move them to `static/i18n/en.json` and `ml.json`, and add a check that both files have the same keys.
