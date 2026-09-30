@@ -3850,6 +3850,14 @@ async function runSampleDeedOCR(docType = "deed") {
 
 /* Render Extracted Deed Card */
 function renderDeedAuditCard(container, data, fileName) {
+  // The server reports failures as HTTP 200 with an error text part. A failed
+  // scan must never fall through to the "no red flags" card.
+  const scanError = data && (data.error || (data.parts && data.parts[0] && data.parts[0].text));
+  if (!data || scanError || (!data.sanity_result && data.entries === undefined && data.is_nil_encumbrance === undefined)) {
+    container.innerHTML = `<span style="color:#990f3d;">▲ The document could not be read, so nothing was checked.</span>` +
+      (scanError ? `<div style="margin-top:6px; font-size:0.78rem; color:#66605c;">${escapeHtml(String(scanError))}</div>` : "");
+    return;
+  }
   window._lastUploadedDeedData = data;
   setWorkflowStep(2);
 
