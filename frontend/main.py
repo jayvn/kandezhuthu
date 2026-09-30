@@ -292,8 +292,8 @@ async def upload_ec(
 
 @app.get("/api/cadastral_sketch")
 async def get_cadastral_sketch(
-    survey_no: str = "345/1",
-    village: str = "Aluva West",
+    survey_no: str,
+    village: str,
     block_no: str = "12",
     cents: float = 10.0,
     lat: float | None = None,
@@ -445,8 +445,8 @@ async def detect_boundaries(
 
 @app.get("/api/databank_check")
 async def check_databank_status(
-    survey_no: str = "345/1",
-    village: str = "Aluva West",
+    survey_no: str,
+    village: str,
     cents: float = 10.0,
     fair_value: float = 240000.0,
     lang: str = "en",

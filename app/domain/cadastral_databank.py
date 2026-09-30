@@ -28,7 +28,7 @@ class BhuNakshaCadastralService:
     @staticmethod
     def get_cadastral_parcel(
         survey_no: str,
-        village: str = "Aluva West",
+        village: str,
         block_no: str | None = "12",
         extent_cents: float = 10.0,
         center_lat: float | None = None,
@@ -103,7 +103,7 @@ class KeralaDataBankService:
     @staticmethod
     def check_databank(
         survey_no: str,
-        village: str = "Aluva West",
+        village: str,
         extent_cents: float = 10.0,
         fair_value_per_are: float = 240000.0,
     ) -> DataBankCheckResult:

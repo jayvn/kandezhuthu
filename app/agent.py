@@ -394,7 +394,7 @@ def audit_encumbrance_certificate(
 
 def check_kerala_databank_and_cadastral(
     survey_no: str,
-    village: str = "Aluva West",
+    village: str,
     extent_cents: float = 10.0,
     fair_value_per_are: float = 240000.0,
 ) -> str:

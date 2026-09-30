@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
+from app import fixtures
 from app.db.database import get_db_connection, init_db
 from app.db.seed_data import seed_all
 
@@ -690,63 +691,8 @@ class DataAPI:
 
         # 3. Export GeoJSON for Cadastral Parcels & Map Boundaries
         geojson_file = geojson_dir / "cadastral_parcels.geojson"
-        geojson_data = {
-            "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "id": "aluva_345_1",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [76.3530, 10.1080],
-                                [76.3535, 10.1080],
-                                [76.3535, 10.1085],
-                                [76.3530, 10.1085],
-                                [76.3530, 10.1080],
-                            ]
-                        ],
-                    },
-                    "properties": {
-                        "survey_no": "345/1",
-                        "village": "Aluva West",
-                        "taluk": "Aluva",
-                        "district": "Ernakulam",
-                        "extent_cents": 12.5,
-                        "land_type": "Purayidam",
-                        "elevation_msl_m": 8.5,
-                        "flood_risk": "LOW",
-                    },
-                },
-                {
-                    "type": "Feature",
-                    "id": "kakkanad_182_4",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": [
-                            [
-                                [76.3410, 10.0150],
-                                [76.3418, 10.0150],
-                                [76.3418, 10.0158],
-                                [76.3410, 10.0158],
-                                [76.3410, 10.0150],
-                            ]
-                        ],
-                    },
-                    "properties": {
-                        "survey_no": "182/4",
-                        "village": "Kakkanad",
-                        "taluk": "Kanakayannur",
-                        "district": "Ernakulam",
-                        "extent_cents": 15.0,
-                        "land_type": "Nilam (Paddy Land)",
-                        "elevation_msl_m": 2.1,
-                        "flood_risk": "HIGH",
-                    },
-                },
-            ],
-        }
+        # Parcel geometry is demo data (tests/fixtures/cadastral_parcels.json); empty otherwise.
+        geojson_data = {"type": "FeatureCollection", "features": fixtures.load("cadastral_parcels", [])}
         geojson_file.write_text(json.dumps(geojson_data, indent=2, ensure_ascii=False), encoding="utf-8")
         scalable_files["geojson/cadastral_parcels"] = {
             "format": "geojson",
