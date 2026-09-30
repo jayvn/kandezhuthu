@@ -83,7 +83,7 @@ def main():
             print(f"Process PID:        {pid}")
 
     elif args.command == "record":
-        from scripts.record_demo import OUTPUT_DIR, DemoVideoRecorder, copy_to_conversation_artifacts, transcode_video
+        from scripts.record_demo import OUTPUT_DIR, DemoVideoRecorder, transcode_video
 
         out_dir = Path(args.output_dir) if args.output_dir else OUTPUT_DIR
         orch = AppOrchestrator(host=args.host, port=args.port, reuse_existing=True)
@@ -92,8 +92,7 @@ def main():
         try:
             recorder = DemoVideoRecorder(base_url=orch.base_url, output_dir=out_dir, pace=args.pace)
             raw_video = recorder.record_journey()
-            generated = transcode_video(raw_video, out_dir)
-            copy_to_conversation_artifacts(generated, recorder.screenshots_dir)
+            transcode_video(raw_video, out_dir)
             print("\n✔ Demo video successfully orchestrated and created!")
         finally:
             if not args.keep_server:
