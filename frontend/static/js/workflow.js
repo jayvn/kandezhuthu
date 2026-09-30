@@ -102,6 +102,11 @@ function collectSellerQuestions() {
     const e = (en && ec.whatsapp_inquiry_en) ? ec.whatsapp_inquiry_en : ec.whatsapp_inquiry;
     if (e) parts.push(e);
   }
+  const db = window._lastDatabankData;
+  if (db) {
+    const q = (en && db.whatsapp_inquiry_en) ? db.whatsapp_inquiry_en : db.whatsapp_inquiry;
+    if (q) parts.push(q);
+  }
   const elev = window.currentElevationData;
   if (elev && document.getElementById("map-hud")?.style.display !== "none") {
     const f = (en && elev.whatsapp_inquiry_for_seller_en) ? elev.whatsapp_inquiry_for_seller_en : elev.whatsapp_inquiry_for_seller;

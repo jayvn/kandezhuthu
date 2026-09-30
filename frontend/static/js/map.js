@@ -1235,6 +1235,7 @@ async function checkDataBankStatus() {
     if (!res.ok) throw new Error("Could not verify Data Bank status");
     const data = await res.json();
 
+    window._lastDatabankData = data;
     const isListed = data.is_listed_in_databank;
     const badgeColor = isListed === true ? "#990f3d" : (isListed === false ? "#0d7680" : "#a35c00");
     const badgeText = isListed === true ? "■ LISTED IN DATA BANK (Nilam)" : (isListed === false ? "● NOT IN DATA BANK" : "▲ NO RECORD ON FILE");
@@ -1250,7 +1251,6 @@ async function checkDataBankStatus() {
       `;
     }
 
-    const waText = (currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry;
     appendMsg("agent", `
       <div style="background:#ffffff; border:1px solid #e9decf; border-radius:10px; padding:12px; margin:6px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -1267,9 +1267,8 @@ async function checkDataBankStatus() {
           <strong>Building Permit Status:</strong> ${data.building_permit_eligibility}
         </div>
         ${isListed == null ? `<div style="margin-top:6px; font-size:0.8rem;">${data.risk_advisory}</div>` : ''}
-        <div style="margin-top:8px; font-size:0.8rem; background:#eef5f5; border:1px solid #a8cfd1; padding:8px; border-radius:6px;">
-          <div style="font-weight:700; color:#0d7680; margin-bottom:3px;">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം:' : 'WhatsApp Inquiry for Seller:'}</div>
-          <div style="color:#0a5c63;">"${waText}"</div>
+        <div class="deed-action-buttons">
+          <button class="deed-action-btn primary" onclick="onStepClick(4)">${currentLanguage === 'ml' ? "ഉടമയോട് ചോദിക്കുക" : "Ask seller"}</button>
         </div>
       </div>
     `);

@@ -451,14 +451,8 @@ function renderDeedAuditCard(container, data, fileName) {
         <div style="font-size:0.84rem; color:#4d4845; margin-top:8px;">${data.summary}</div>
         ${risksHtml}
         ${entriesHtml}
-        <div class="whatsapp-card" style="margin-top:12px;">
-          <div class="whatsapp-header">
-            <span class="whatsapp-title">${currentLanguage === 'ml' ? 'ബാങ്ക് NOC / ഒഴിവുമുറിക്കായുള്ള വാട്സാപ്പ് സന്ദേശം' : 'WhatsApp Inquiry for Bank NOC / Release Deed'}</span>
-            <div class="whatsapp-actions">
-              <button class="copy-btn" onclick="copyText(this)">Copy Draft</button>
-            </div>
-          </div>
-          <div class="whatsapp-text">${(currentLanguage === 'en' && data.whatsapp_inquiry_en) ? data.whatsapp_inquiry_en : data.whatsapp_inquiry}</div>
+        <div class="deed-action-buttons">
+          <button class="deed-action-btn primary" onclick="onStepClick(4)">${currentLanguage === 'ml' ? "ഉടമയോട് ചോദിക്കുക" : "Ask seller"}</button>
         </div>
       </div>
     `;
@@ -577,30 +571,10 @@ function renderDeedAuditCard(container, data, fileName) {
     `;
   }
 
-  // WhatsApp draft card
-  let waHtml = "";
-  const waDraft = (currentLanguage === 'en' && data.whatsapp_draft_en) ? data.whatsapp_draft_en : data.whatsapp_draft;
-  if (waDraft) {
-    const safeWa = waDraft.replace(/"/g, '&quot;');
-    const waEncoded = encodeURIComponent(waDraft);
-    waHtml = `
-      <div class="whatsapp-card">
-        <div class="whatsapp-header">
-          <div class="whatsapp-title">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യം (WhatsApp):' : 'WhatsApp Inquiry for Seller / Broker:'}</div>
-          <div class="whatsapp-actions">
-            <button class="copy-btn" onclick="copyWhatsApp(this)">Copy</button>
-            <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          </div>
-        </div>
-        <div class="whatsapp-text">${waDraft}</div>
-      </div>
-    `;
-  }
-
   const ml = currentLanguage === 'ml';
   const verdictCopy = score < 60
     ? ["danger", "■", ml ? "ഗുരുതരമായ പ്രശ്നങ്ങൾ കണ്ടെത്തി" : "High-risk clauses found",
-       ml ? "താഴെയുള്ള കാര്യങ്ങൾ വിൽപ്പനക്കാരനോട് ചോദിച്ച് വ്യക്തമാക്കുക. വാട്സാപ്പ് സന്ദേശം തയ്യാറാണ്." : "Resolve the points below with the seller. The WhatsApp draft covers them."]
+       ml ? "പണം നൽകുന്നതിന് മുമ്പ് താഴെയുള്ള കാര്യങ്ങൾ വിൽപ്പനക്കാരനോട് ചോദിച്ച് വ്യക്തമാക്കുക." : "Resolve the points below with the seller before paying anything."]
     : score < 85
     ? ["caution", "▲", ml ? "വ്യക്തത വേണ്ട കാര്യങ്ങൾ" : "Points to clarify",
        ml ? "30 വർഷത്തെ ബാധ്യതാ സർട്ടിഫിക്കറ്റുമായും (EC) മുന്നാധാരങ്ങളുമായും ഒത്തുനോക്കുക." : "Check these against the 30-year EC and the prior deeds."]
@@ -613,78 +587,58 @@ function renderDeedAuditCard(container, data, fileName) {
       </div>
     `;
 
+  const dash = v => (v === undefined || v === null || v === "" ? "—" : v);
+  const factsHtml = `
+        <div class="deed-grid">
+          <div class="deed-grid-item">
+            <div class="deed-grid-label">${ml ? "സർവേ നമ്പർ" : "Survey no"}</div>
+            <div class="deed-grid-val">${dash(meta.re_survey_no || meta.survey_no)}</div>
+          </div>
+          <div class="deed-grid-item">
+            <div class="deed-grid-label">${ml ? "വില്ലേജ്" : "Village"}</div>
+            <div class="deed-grid-val">${dash(meta.village)}${meta.taluk ? `, ${meta.taluk}` : ""}</div>
+          </div>
+          <div class="deed-grid-item">
+            <div class="deed-grid-label">${ml ? "വിസ്തീർണ്ണം" : "Extent"}</div>
+            <div class="deed-grid-val">${meta.extent_cents != null ? `${meta.extent_cents} ${ml ? "സെന്റ്" : "cents"}` : "—"}</div>
+          </div>
+          <div class="deed-grid-item">
+            <div class="deed-grid-label">${ml ? "ഭൂമിയുടെ തരം" : "Land type"}</div>
+            <div class="deed-grid-val${meta.is_paddy_wetland_risk ? " is-risk" : ""}">${dash(meta.revenue_classification)}${meta.is_paddy_wetland_risk ? " ▲" : ""}</div>
+          </div>
+        </div>`;
+  const detailsHtml = [
+    boundariesHtml && `<details class="deed-more"><summary>${ml ? "നാലതിരുകൾ" : "Boundaries"}</summary>${boundariesHtml}</details>`,
+    priorHtml && `<details class="deed-more"><summary>${ml ? "മുന്നാധാരങ്ങൾ" : "Prior deeds recited"} (${meta.prior_deeds.length})</summary>${priorHtml}</details>`,
+    (buildingHtml || paddyHtml) && `<details class="deed-more"><summary>${ml ? "കെട്ടിട ചട്ടങ്ങളും ഫീസും" : "Building rules and fees"}</summary>${buildingHtml}${paddyHtml}</details>`,
+  ].filter(Boolean).join("");
+
   const cardHtml = `
     <div class="deed-audit-card">
       <div class="deed-card-header">
         <div class="deed-title-group">
-          <span>¶</span>
-          <span class="deed-doc-tag">${meta.document_number ? `Doc ${meta.document_number}` : fileName}</span>
-          ${meta.year ? `<span style="font-size:0.8rem; color:#66605c;">(${meta.year})</span>` : ""}
-          <span class="deed-type-badge">${meta.deed_type || "Kerala Title Deed"}</span>
-          <span class="deed-engine-badge">${data.ocr_engine_used || meta.ocr_engine_used || 'Gemini 3.8 Flash Vision'}</span>
-          ${meta.sro_name ? `<span style="font-size:0.75rem; color:#66605c;">SRO ${meta.sro_name}</span>` : ""}
+          <span class="deed-doc-tag">${meta.document_number ? `Doc ${meta.document_number}` : escapeHtml(fileName || "")}</span>
+          ${meta.year ? `<span class="deed-meta">${meta.year}</span>` : ""}
+          ${meta.deed_type ? `<span class="deed-meta">· ${meta.deed_type}</span>` : ""}
+          ${meta.sro_name ? `<span class="deed-meta">· SRO ${meta.sro_name}</span>` : ""}
         </div>
         <div class="deed-score-badge ${scoreClass}">
-          <span>${scoreIcon}</span>
-          <span>Score: ${score}/100</span>
+          <span aria-hidden="true">${scoreIcon}</span>
+          <span>${score}/100</span>
         </div>
       </div>
 
       <div class="deed-card-body">
         ${buyerVerdictHtml}
-        <div class="deed-grid">
-          <div class="deed-grid-item">
-            <div class="deed-grid-label">Survey / Re-Sy No</div>
-            <div class="deed-grid-val">${meta.re_survey_no || meta.survey_no || "Unknown"}</div>
-          </div>
-          <div class="deed-grid-item">
-            <div class="deed-grid-label">Village & Taluk</div>
-            <div class="deed-grid-val">${meta.village || "Unknown"}${meta.taluk ? `, ${meta.taluk}` : ""}</div>
-          </div>
-          <div class="deed-grid-item">
-            <div class="deed-grid-label">Extent (Area)</div>
-            <div class="deed-grid-val" style="color:#990f3d;">${meta.extent_cents} Cents ${meta.extent_ares ? `(${meta.extent_ares} Ares)` : ""}</div>
-          </div>
-          <div class="deed-grid-item">
-            <div class="deed-grid-label">Land Classification</div>
-            <div class="deed-grid-val" style="${meta.is_paddy_wetland_risk ? 'color:#990f3d;' : 'color:#0d7680;'}">
-              ${meta.revenue_classification} ${meta.is_paddy_wetland_risk ? '▲' : '✓'}
-            </div>
-          </div>
-        </div>
-
-        ${boundariesHtml}
-        ${priorHtml}
         ${findingsHtml}
-        ${buildingHtml}
-        ${paddyHtml}
-        ${waHtml}
+        ${factsHtml}
+        ${detailsHtml}
 
         <div class="deed-action-buttons">
-          <button class="deed-action-btn" onclick="locatePlotOnSatellite('${meta.village || ''}', '${meta.re_survey_no || meta.survey_no || ''}')" title="Locate this survey plot on the interactive satellite map">
-            Locate Plot on Map
-          </button>
-          <button class="deed-action-btn" onclick="auditPriorDeedsOfScannedDeed()" title="Check the chain of prior deeds recited in this deed">
-            <span>§</span> Audit Munnadharam Chain
-          </button>
-          <button class="deed-action-btn" onclick="askAboutDeed('${meta.document_number || ''}', '${meta.survey_no || ''}')" title="Ask follow-up questions to Kandezhuthu legal assistant">
-            Ask Legal Assistant
-          </button>
-        </div>
-
-        <div class="dossier-export-banner" style="margin-top:0.75rem; padding:0.65rem 0.85rem; background:#eef5f5; border:1px solid #a8cfd1; border-radius:8px; display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
-          <div style="font-size:0.78rem; color:#0d7680; line-height:1.35;">
-            <strong>Advocate Title Vetting Dossier:</strong><br/>
-            PDF brief with boundary schedule and SRO checklist.
-          </div>
-          <button class="dossier-download-btn" onclick="exportCurrentDeedDossier()" style="background:#990f3d; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:0 1px 3px rgba(0,0,0,0.12); white-space:nowrap;">
-            <span>↓</span>
-            <span>Export Advocate Dossier (PDF)</span>
-          </button>
-        </div>
-
-        <div style="font-size:0.72rem; color:#66605c; margin-top:0.6rem; border-top:1px dashed #e9decf; padding-top:0.5rem;">
-          <em>Ask follow-up questions about this property below (e.g. "Can I construct a house on this plot?", "Is the pathway legally binding on future buyers?").</em>
+          <button class="deed-action-btn primary" onclick="onStepClick(4)">${ml ? "ഉടമയോട് ചോദിക്കുക" : "Ask seller"}</button>
+          <button class="deed-action-btn" onclick="auditPriorDeedsOfScannedDeed()">${ml ? "മുന്നാധാരം പരിശോധിക്കുക" : "Check prior deeds"}</button>
+          <button class="deed-action-btn" onclick="locatePlotOnSatellite('${escapeHtml(meta.village || '')}', '${escapeHtml(meta.re_survey_no || meta.survey_no || '')}')">${ml ? "മാപ്പിൽ കാണുക" : "Find on map"}</button>
+          <button class="deed-action-btn" onclick="exportCurrentDeedDossier()">↓ PDF</button>
         </div>
       </div>
     </div>

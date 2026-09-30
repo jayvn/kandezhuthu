@@ -9,10 +9,6 @@ Remaining work, ordered by impact within each section.
 
 The buyer's question is: *can I pay the advance, and what do I still need?* Every screen should answer that. Today the first screen shows about 30 controls (three rows of navigation, three ways to start, eight map tools, a five-box plot panel) before the user has done anything.
 
-5. **The deed result card is busy.** It has a score pill, a model badge ("Gemini 3.8 Flash Vision"), the document type, the verdict, a four-box grid, three action buttons, a PDF banner and a hint line.
-   → Order: verdict and findings first, then the facts (survey no, village, extent, classification), then one row of actions (Ask seller, Check prior deeds, PDF). Drop the model badge and the hint line.
-6. **The seller message is scattered.** Every card has its own WhatsApp draft.
-   → One "Ask the seller" message that collects the questions from every check so far, reachable from the progress line.
 7. **Mobile:** the map is a separate mode behind the Chat | Map switch.
    → On phones, stack the result first and the map below it as a collapsible section.
 8. **Mixed type roles.** HUD labels are serif caps and values sans, buttons mix weights, and there are about 9 font sizes.
