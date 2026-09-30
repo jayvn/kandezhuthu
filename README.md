@@ -109,14 +109,10 @@ agents-cli playground
 
 ---
 
-## ⚖️ Ethical Non-AI Guardrails
+## What the documents can't show
 
-Kandezhuthu strictly enforces boundaries on what artificial intelligence can verify:
-- **Title reports are advisory**: AI is an initial triage and red-flag scanner, NOT a guarantee of title or a substitute for a licensed Kerala High Court / District Court advocate's formal title report.
-- **Physical ground realities cannot be confirmed on paper**:
-  - Verification of physical boundary stones (*Survey Kallu*) and neighbor encroachment.
-  - Actual motorability of access roads on the ground.
-  - Oral family agreements (*Vaymozhi udanpadi*) or unfiled caveats.
-  - Soil stability, waterlogging, or seasonal monsoon flooding.
-
-Always inspect the property on-site and consult a licensed Kerala advocate before advancing money!
+Kandezhuthu reads documents. It reports what it checked and what it found, and never calls a title clean. These need a site visit and are on the field checklist:
+- Boundary stones (*Survey Kallu*) and encroachment by neighbours.
+- Whether the access road is actually motorable.
+- Oral family agreements (*Vaymozhi udanpadi*) and unfiled caveats.
+- Waterlogging and monsoon flooding on the ground.

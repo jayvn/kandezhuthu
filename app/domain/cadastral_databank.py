@@ -1,8 +1,9 @@
 """Kerala Cadastral Survey (BhuNaksha / ILIMS) & Agricultural Data Bank Service.
 
-There is no live BhuNaksha / ILIMS or Data Bank integration yet. Parcel sketches and
-Data Bank entries come only from demo fixtures (`KANDEZ_FIXTURES`); otherwise parcels are
-unavailable and Data Bank status is reported as unverified. Covers:
+There is no live BhuNaksha / ILIMS or Data Bank integration yet. Parcels are approximate
+squares of the extent at the user's pin; Data Bank entries and village coordinates come
+only from demo fixtures (`KANDEZ_FIXTURES`). Without a record, Data Bank status is
+reported as not on file. Covers:
 1. Digital Cadastral Parcel Geometry (FMB - Field Measurement Book polygon coordinates).
 2. Segment dimensions in meters (FMB side measurements).
 3. Statutory Agricultural Data Bank verification under the Kerala Conservation of Paddy Land & Wetland Act, 2008.
@@ -34,29 +35,34 @@ class BhuNakshaCadastralService:
         center_lat: float | None = None,
         center_lng: float | None = None,
     ) -> CadastralParcel | None:
-        """Returns a demo FMB-style sketch in demo mode; None otherwise (no BhuNaksha feed)."""
-        villages = fixtures.load("cadastral_villages", {})
-        if not villages:
-            return None
-        v_key = village.lower().strip()
-        baseline = villages.get(v_key, villages["aluva west"])
+        """Returns an approximate square outline of the extent, centred on the pin.
 
-        lat = center_lat if center_lat is not None else baseline["lat"]
-        lng = center_lng if center_lng is not None else baseline["lng"]
-        district = baseline["district"]
-        taluk = baseline["taluk"]
+        Without a pin, only demo mode can place it (village coordinates are fixtures);
+        otherwise returns None. It is never the FMB sketch.
+        """
+        villages = fixtures.load("cadastral_villages", {})
+        baseline = villages.get(village.lower().strip()) or villages.get("aluva west")
+        if center_lat is None or center_lng is None:
+            if baseline is None:
+                return None
+            center_lat, center_lng = baseline["lat"], baseline["lng"]
+
+        lat, lng = center_lat, center_lng
+        district = baseline["district"] if baseline else "Kerala"
+        taluk = baseline["taluk"] if baseline else ""
 
         # Approximate plot dimension in meters for given cents (1 cent = ~40.47 sq meters)
         area_sqm = extent_cents * 40.4686
         side_len_m = math.sqrt(area_sqm)
         delta_deg = (side_len_m / 111320.0) / 2.0
 
-        # Construct 4-sided cadastral polygon with slight organic skew mirroring FMB sketches
+        # Square of the given extent (longitude span corrected for latitude)
+        delta_lng = delta_deg / math.cos(math.radians(lat))
         poly = [
-            [round(lat - delta_deg * 0.95, 6), round(lng - delta_deg * 1.05, 6)],  # SW
-            [round(lat - delta_deg * 1.02, 6), round(lng + delta_deg * 0.98, 6)],  # SE
-            [round(lat + delta_deg * 0.98, 6), round(lng + delta_deg * 1.04, 6)],  # NE
-            [round(lat + delta_deg * 1.05, 6), round(lng - delta_deg * 0.96, 6)],  # NW
+            [round(lat - delta_deg, 6), round(lng - delta_lng, 6)],  # SW
+            [round(lat - delta_deg, 6), round(lng + delta_lng, 6)],  # SE
+            [round(lat + delta_deg, 6), round(lng + delta_lng, 6)],  # NE
+            [round(lat + delta_deg, 6), round(lng - delta_lng, 6)],  # NW
         ]
 
         def _dist(p1, p2):
@@ -65,13 +71,13 @@ class BhuNakshaCadastralService:
             return round(math.sqrt(dlat * dlat + dlng * dlng), 1)
 
         fmb_dimensions = [
-            {"edge": "South (തെക്ക്)", "length_m": _dist(poly[0], poly[1]), "type": "Compound Wall / Boundary"},
-            {"edge": "East (കിഴക്ക്)", "length_m": _dist(poly[1], poly[2]), "type": "Neighbor Plot"},
-            {"edge": "North (വടക്ക്)", "length_m": _dist(poly[2], poly[3]), "type": "Subdivision Boundary"},
-            {"edge": "West (പടിഞ്ഞാറ്)", "length_m": _dist(poly[3], poly[0]), "type": "3.5m Panchayat Road Access"},
+            {"edge": "South (തെക്ക്)", "length_m": _dist(poly[0], poly[1]), "type": "approximate"},
+            {"edge": "East (കിഴക്ക്)", "length_m": _dist(poly[1], poly[2]), "type": "approximate"},
+            {"edge": "North (വടക്ക്)", "length_m": _dist(poly[2], poly[3]), "type": "approximate"},
+            {"edge": "West (പടിഞ്ഞാറ്)", "length_m": _dist(poly[3], poly[0]), "type": "approximate"},
         ]
 
-        # Derive adjacent survey numbers
+        # Neighbouring survey numbers are invented; demo mode only.
         clean_sy = survey_no.strip()
         parts = clean_sy.split("/")
         if len(parts) == 2 and parts[1].isdigit():
@@ -91,9 +97,9 @@ class BhuNakshaCadastralService:
             extent_cents=extent_cents,
             polygon_coordinates=poly,
             fmb_dimensions_m=fmb_dimensions,
-            adjacent_survey_numbers=adjacent,
-            access_road_identified=True,
-            subdivision_sketch_available=True,
+            adjacent_survey_numbers=adjacent if fixtures.is_demo() else [],
+            access_road_identified=False,
+            subdivision_sketch_available=False,
         )
 
 
@@ -109,6 +115,9 @@ class KeralaDataBankService:
     ) -> DataBankCheckResult:
         clean_sy = survey_no.strip()
         reg_entry = fixtures.load("databank_registry", {}).get(clean_sy)
+        # Survey numbers repeat across villages; a record only applies to its own village.
+        if reg_entry and reg_entry["village"].lower() != village.lower().strip():
+            reg_entry = None
 
         knowledge_repo = KnowledgeRepository()
         fee_calc_dict = knowledge_repo.calculate_paddy_conversion_fee(
@@ -131,25 +140,34 @@ class KeralaDataBankService:
                 whatsapp_inquiry_en=reg_entry.get("whatsapp_en", ""),
             )
 
+        # No Data Bank record on file for this survey number: report that, don't guess.
+        is_listed = None
+        status = "Not on file here (ഇവിടെ രേഖയില്ല)"
+        form = "Unknown until the Data Bank extract and BTR are seen"
+        permit = "Unknown: depends on the Data Bank entry and the BTR classification."
+        advisory = (
+            f"No Data Bank record for Survey {clean_sy}, {village} is available to this tool. "
+            "Get the Data Bank extract from the Krishi Bhavan and the BTR extract from the Village Office."
+        )
+        wa = (
+            f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു കൃഷിഭവൻ ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ? "
+            "ഡാറ്റാ ബാങ്ക് പകർപ്പും വില്ലേജ് ഓഫീസിലെ BTR പകർപ്പും അയച്ചുതരാമോ?"
+        )
+        wa_en = (
+            f"Hello, is the property in {village} Village, Survey {clean_sy}, listed in the Krishi Bhavan Data Bank? "
+            "Could you share the Data Bank extract and the Village Office BTR extract?"
+        )
+
         return DataBankCheckResult(
             survey_no=clean_sy,
             village=village,
-            is_listed_in_databank=None,
-            entry_status="Not verified (ഡാറ്റാ ബാങ്ക് പരിശോധിച്ചിട്ടില്ല)",
+            is_listed_in_databank=is_listed,
+            entry_status=status,
             krishi_bhavan_name=f"{village} Krishi Bhavan",
-            recommended_statutory_form="Depends on the Data Bank entry and Village BTR classification",
+            recommended_statutory_form=form,
             fee_calculation=None,
-            building_permit_eligibility="Unknown until the Data Bank entry and BTR classification are confirmed.",
-            risk_advisory=(
-                f"Data Bank listing for Survey {clean_sy} in {village} was not checked. Look it up in the "
-                "Krishi Bhavan Data Bank register and get the Village Office BTR extract."
-            ),
-            whatsapp_inquiry=(
-                f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു കൃഷിഭവൻ ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ? "
-                "പുരയിടമാണെന്ന് കാണിക്കുന്ന ഏറ്റവും പുതിയ കരം രസീതും BTR പകർപ്പും ലഭ്യമാക്കാമോ?"
-            ),
-            whatsapp_inquiry_en=(
-                f"Hello, is the property in {village} Village, Survey {clean_sy}, listed in the Krishi Bhavan "
-                "Agricultural Data Bank? Could you share the latest land tax receipt and BTR extract showing its classification?"
-            ),
+            building_permit_eligibility=permit,
+            risk_advisory=advisory,
+            whatsapp_inquiry=wa,
+            whatsapp_inquiry_en=wa_en,
         )

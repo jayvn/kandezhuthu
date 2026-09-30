@@ -17,6 +17,13 @@
 
 ---
 
+## Core Principles
+
+1. **Think from the end user.** The user is a home buyer or NRI about to pay an advance, often on a phone, often in Malayalam. Before building or changing anything, ask: what does this person need to decide or do next, and does this screen help them do it? Cut anything that doesn't: extra buttons, badges, model names and jargon. Never show sample or estimated data as if it were theirs.
+2. **Work from `PLAN.md`.** Pick the next item from `PLAN.md`, work on it, and delete the item once it is done (history lives in git). Add newly found work there instead of doing it on the side. Keep items short: the problem, then `→` the fix.
+
+---
+
 ## Architecture & Codebase Map
 
 Kandezhuthu follows a **Neuro-Symbolic architecture**:
@@ -38,7 +45,10 @@ kandezhuthu/
 ├── frontend/
 │   ├── main.py                  # Full-stack FastAPI server with Web UI, OCR and upload endpoints
 │   └── static/
-│       └── index.html           # Dual-pane UI (Chat, Drag-and-drop OCR, Satellite Map)
+│       ├── index.html           # Dual-pane UI markup (chat + satellite map)
+│       ├── app.css, ft_theme.css # Base styles, then the FT theme layer
+│       ├── js/                  # i18n, chat, workflow, map, app (classic scripts, loaded in order)
+│       └── i18n/                # en.json, ml.json UI strings (same keys; checked by tests/unit/test_i18n_keys.py)
 ├── data/
 │   ├── kandezhuthu.db           # Embedded SQLite database (auto-seeded)
 │   └── knowledge/               # Statutory diligence guides (KPBR, court rulings, paddy land act)

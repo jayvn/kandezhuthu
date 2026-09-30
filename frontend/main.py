@@ -299,7 +299,7 @@ async def get_cadastral_sketch(
     lat: float | None = None,
     lng: float | None = None,
 ):
-    """Returns cadastral sub-division boundaries (FMB polygon geometry) and segment dimensions."""
+    """Returns an approximate square outline of the extent at the pin (not the FMB sketch)."""
     parcel = BhuNakshaCadastralService.get_cadastral_parcel(
         survey_no=survey_no,
         village=village,
@@ -310,7 +310,7 @@ async def get_cadastral_sketch(
     )
     if parcel is None:
         return JSONResponse(
-            {"error": "No cadastral sketch on record. Check BhuNaksha or the Taluk Survey Office FMB sketch."},
+            {"error": "Place a pin on the plot first. The real shape is in the FMB sketch on BhuNaksha."},
             status_code=404,
         )
     return JSONResponse(parcel.model_dump())
@@ -413,9 +413,9 @@ async def detect_boundaries(
     if osm_polygon:
         return JSONResponse(osm_polygon)
 
-    # Demo mode only: synthetic FMB-style parcel from fixtures
+    # Demo mode only: a square of the extent stands in for a detected boundary
     target_cents = cents if (cents is not None and cents > 0) else 10.0
-    parcel = BhuNakshaCadastralService.get_cadastral_parcel(
+    parcel = None if not fixtures.is_demo() else BhuNakshaCadastralService.get_cadastral_parcel(
         survey_no=survey_no or "Re-Sy Plot",
         village=village or "Kerala Village",
         block_no="1",
@@ -877,12 +877,18 @@ SERVER_START_TIME = time.time()
 @app.get("/api/dev/version")
 async def get_dev_version():
     """Live reload version tracker for localhost dev."""
-    static_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "index.html")
+    static_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
     static_mtime = 0
-    try:
-        static_mtime = os.path.getmtime(static_file)
-    except Exception:
-        pass
+    for name in ("index.html", "app.css", "ft_theme.css"):
+        try:
+            static_mtime = max(static_mtime, os.path.getmtime(os.path.join(static_root, name)))
+        except OSError:
+            pass
+    for sub in ("js", "i18n"):
+        sub_dir = os.path.join(static_root, sub)
+        if os.path.isdir(sub_dir):
+            for name in os.listdir(sub_dir):
+                static_mtime = max(static_mtime, os.path.getmtime(os.path.join(sub_dir, name)))
     return JSONResponse({
         "server_start": SERVER_START_TIME,
         "static_mtime": static_mtime,
