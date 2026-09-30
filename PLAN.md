@@ -5,22 +5,13 @@
 
 Remaining work, ordered by impact within each section.
 
-## UX
-
-The buyer's question is: *can I pay the advance, and what do I still need?* Every screen should answer that. Today the first screen shows about 30 controls (three rows of navigation, three ways to start, eight map tools, a five-box plot panel) before the user has done anything.
-
 ## Correctness
 
-10. **Wrong locality without a Maps key.** The elevation fallback names the nearest landmark it knows, so a Kaloor pin becomes "Kakkanad" in the flood WhatsApp text.
-    → Without geocoding, say "the plot at <lat, lng>" rather than naming a place.
 11. **EC parser merges entries.** Several entries can end up in one block, and a later "release" line then hides an earlier mortgage.
     → Split on entry and document-number boundaries, then match releases to the document they discharge.
-12. **`exportPlotDossier()` invents a score and verdict.** Nothing calls it.
-    → Delete it.
-
 ## Tests
 
-13. **UI tests reference removed elements.** `tests/ui/test_ui_playwright.py`, `test_contextual_chips_and_hud.py`, `test_cadastral_map_tools.py` and `test_bilingual_workflow_ui.py` look up IDs that no longer exist (`btn-undo`, `btn-hud-export`, `chip-sample-deed`, `legal-disclaimer`, `btn-pdf-export`, `step-nav-label`, `badge-kerala`).
+13. **UI tests reference removed elements.** `tests/ui/test_ui_playwright.py`, `test_contextual_chips_and_hud.py`, `test_cadastral_map_tools.py` and `test_bilingual_workflow_ui.py` look up IDs that no longer exist (`btn-undo`, `btn-hud-export`, `chip-sample-deed`, `legal-disclaimer`, `btn-pdf-export`, `step-nav-label`, `badge-kerala`, and since the UX pass `btn-next-step`, `chips-container`, `layman-card`, `tool-pin`, `btn-bhunaksha`, `exportPlotDossier`).
     → Update them to the new flow. Also replace the hardcoded `/ms-playwright/chromium-1234/...` browser path, and have the suite start the web UI itself instead of expecting one on :8081.
 14. **Eval dataset still rewards disclaimers.** About 10 `reference` answers in `tests/eval/datasets/basic-dataset.json` mention advocates or disclaimers, which the judge's keyword overlap scores.
     → Rewrite the references to state findings only.
