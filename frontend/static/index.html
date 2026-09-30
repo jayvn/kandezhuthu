@@ -2339,7 +2339,7 @@
         <div class="chip" data-cat="action" id="chip-wa-inquiry" style="display:none;" onclick="triggerWhatsAppInquiry()" title="Draft legal WhatsApp inquiry message for seller or broker">
           WhatsApp Inquiry for Seller
         </div>
-        <div class="chip" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportDossierPDF('aluva_broken')" title="Export comprehensive advocate legal diligence dossier as PDF">
+        <div class="chip" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportCurrentDeedDossier()" title="Export the scanned deed's findings as a PDF">
           Export Advocate Dossier (PDF)
         </div>
 
@@ -2438,8 +2438,8 @@
       </div>
 
       <select class="map-preset-select" id="preset-select" onchange="applyLocationPreset(this.value)">
-        <option value="" id="opt-preset-default">Select Kerala Region...</option>
-        <option value="aluva" selected>Aluva (Periyar River Basin - 2018 Flood Zone)</option>
+        <option value="" id="opt-preset-default" selected>Select Kerala Region...</option>
+        <option value="aluva">Aluva (Periyar River Basin - 2018 Flood Zone)</option>
         <option value="kakkanad">Kakkanad / Infopark (Elevated Midlands)</option>
         <option value="kuttanad">Kuttanad (Sub-Sea-Level Wetland Polders)</option>
         <option value="chengannur">Chengannur (Pamba River Flood Corridor)</option>
@@ -2459,10 +2459,10 @@
 
     <div class="map-toolbar">
       <button class="map-tool-btn active" id="tool-pin" onclick="setMapTool('pin')">Pin Location</button>
-      <button class="map-tool-btn highlight" id="tool-auto-demarcate" onclick="openAutoDemarcateModal()" title="Auto-Demarcate Boundaries for ANY plot (OSM Walls, Cents, or BhuNaksha FMB)">Auto-Demarcate</button>
+      <button class="map-tool-btn highlight" id="tool-auto-demarcate" onclick="openAutoDemarcateModal()" title="Outline the plot from OSM walls, the deed extent, or imported coordinates">Auto-Demarcate</button>
       <button class="map-tool-btn" id="tool-plot" onclick="setMapTool('plot')">Draw Plot (Cents)</button>
       <button class="map-tool-btn" id="tool-road" onclick="setMapTool('road')">Measure Road Width</button>
-      <button class="map-tool-btn" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Overlay official BhuNaksha / ILIMS Cadastral Survey Boundaries">BhuNaksha FMB</button>
+      <button class="map-tool-btn" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Draw an approximate square of the deed extent at the pin. The official FMB sketch is on BhuNaksha.">Outline from extent</button>
       <button class="map-tool-btn" id="btn-databank" onclick="checkDataBankStatus()" title="Check Kerala 2008 Agricultural Data Bank & Sec 27A Status">Data Bank</button>
       <button class="map-tool-btn" id="btn-clear" onclick="clearMapDrawings()" title="Clear all drawings">Clear</button>
       <button class="map-tool-btn" id="btn-checklist-toggle" onclick="toggleChecklist()"><span id="btn-chk-text">Checklist</span> <span id="chk-badge" style="background:#990f3d; color:#fff; padding:1px 5px; border-radius:10px; font-size:0.68rem;">0/5</span></button>
@@ -2504,7 +2504,7 @@
         <div class="modal-tabs">
           <button class="modal-tab-btn active" id="tab-btn-detect" onclick="switchDemarcateTab('detect')">Auto-Detect (OSM/Walls)</button>
           <button class="modal-tab-btn" id="tab-btn-extent" onclick="switchDemarcateTab('extent')">Deed Extent (Cents)</button>
-          <button class="modal-tab-btn" id="tab-btn-cadastral" onclick="switchDemarcateTab('cadastral')">BhuNaksha FMB</button>
+          <button class="modal-tab-btn" id="tab-btn-cadastral" onclick="switchDemarcateTab('cadastral')">Survey No. & Extent</button>
           <button class="modal-tab-btn" id="tab-btn-import" onclick="switchDemarcateTab('import')">Import Coords/KML</button>
         </div>
 
@@ -2572,16 +2572,16 @@
         <!-- Tab 3: BhuNaksha FMB Lookup -->
         <div class="modal-tab-pane" id="pane-cadastral" style="display:none;">
           <p style="font-size:0.83rem; color:#66605c; margin:0.3rem 0 0.75rem 0;">
-            Demarcates the official digital cadastral sub-division parcel with FMB ladder dimensions and adjacent survey numbers under Kerala Land Records.
+            Draws a square of the deed extent at the pin. The official FMB sketch is on <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
           </p>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.75rem;">
             <div>
               <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Re-Survey No:</label>
-              <input type="text" id="cadastral-survey-input" value="345/1" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+              <input type="text" id="cadastral-survey-input" value="" placeholder="e.g. 182/4, 345/1" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
             </div>
             <div>
               <label style="font-size:0.78rem; font-weight:600; color:#4d4845; display:block; margin-bottom:0.25rem;">Village:</label>
-              <input type="text" id="cadastral-village-input" value="Aluva West" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
+              <input type="text" id="cadastral-village-input" value="" placeholder="e.g. Aluva West, Kakkanad" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
             </div>
           </div>
           <div style="margin-bottom:1rem;">
@@ -2589,7 +2589,7 @@
             <input type="number" id="cadastral-cents-input" value="10.0" step="0.5" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #e9decf; font-size:0.8rem;">
           </div>
           <button class="primary-action-btn" onclick="executeFetchCadastralParcel()" style="width:100%;">
-            <span>Fetch BhuNaksha Cadastral Parcel</span>
+            <span>Draw outline</span>
           </button>
         </div>
 
@@ -2614,9 +2614,9 @@
     </div>
 
     <!-- Floating HUD -->
-    <div class="map-hud" id="map-hud">
+    <div class="map-hud" id="map-hud" style="display:none;">
       <div class="map-hud-header" onclick="if (event.target.id !== 'hud-toggle-btn') toggleHUD()">
-        <span id="hud-locality-title">Aluva, Ernakulam District</span>
+        <span id="hud-locality-title"></span>
         <span id="hud-summary" class="hud-summary"></span>
         <div style="display: flex; align-items: center; gap: 0.4rem;">
           <button class="hud-toggle-btn" id="hud-toggle-btn" onclick="toggleHUD()" title="Collapse">▾</button>
@@ -2626,24 +2626,24 @@
       <div class="hud-stats-grid">
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-coords">Coordinates</div>
-          <div class="hud-stat-val" id="hud-coords" style="font-size: 0.78rem;">10.1076, 76.3516</div>
+          <div class="hud-stat-val" id="hud-coords" style="font-size: 0.78rem;">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-extent">
             <span id="hud-extent-lbl-title">Plot Extent</span>
             <span id="hud-extent-lbl-sub" style="font-size:0.65rem; color:#990f3d;" title="1 Cent = 40.47 m² = 435.6 sq.ft">Kerala Cents</span>
           </div>
-          <div class="hud-stat-val cents" id="hud-cents">10.00 Cents</div>
+          <div class="hud-stat-val cents" id="hud-cents">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-area">Area (Revenue Ares & Sq.M)</div>
-          <div class="hud-stat-val" id="hud-sqm" style="font-size: 0.76rem;">4.05 Ares (404.7 m²)</div>
+          <div class="hud-stat-val" id="hud-sqm" style="font-size: 0.76rem;">—</div>
         </div>
         <div class="hud-stat-box">
           <div class="hud-stat-label" id="hud-lbl-road">Road Width (KPBR 2019)</div>
           <div class="hud-stat-val" id="hud-road">
-            <span id="hud-road-text" style="font-size: 0.78rem;">3.2 meters</span>
-            <span class="badge-road pass" id="hud-road-badge">✓ KPBR Pass (≥3m)</span>
+            <span id="hud-road-text" style="font-size: 0.78rem;">Not Measured</span>
+            <span class="badge-road warn" id="hud-road-badge">No Road Measured</span>
           </div>
         </div>
         <div class="hud-stat-box full-width" id="hud-elevation-box">
@@ -2652,10 +2652,10 @@
             <span id="hud-elevation-lbl-sub" style="font-size:0.65rem; color:#990f3d;" title="Above Mean Sea Level (MSL) & KSDMA flood hazard rating">MSL</span>
           </div>
           <div class="hud-stat-val" id="hud-elevation" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
-            <span id="hud-elevation-text" style="font-size: 0.85rem; font-weight: 700;">6.5m MSL</span>
-            <span class="badge-road warn" id="hud-flood-badge">▲ Moderate Flood Risk</span>
+            <span id="hud-elevation-text" style="font-size: 0.85rem; font-weight: 700;">—</span>
+            <span class="badge-road warn" id="hud-flood-badge"></span>
           </div>
-          <div id="hud-basin-text" style="font-size: 0.7rem; color: #66605c; margin-top: 3px;">Periyar River Basin • Plinth: ≥0.75m</div>
+          <div id="hud-basin-text" style="font-size: 0.7rem; color: #66605c; margin-top: 3px;"></div>
         </div>
       </div>
 
@@ -2663,7 +2663,7 @@
         <button class="hud-btn hud-btn-primary" id="btn-hud-auditor" onclick="sendPlotToAuditor()">
           To Auditor
         </button>
-        <a id="btn-hud-maps" class="hud-btn hud-btn-secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=10.1076,76.3516">
+        <a id="btn-hud-maps" class="hud-btn hud-btn-secondary" target="_blank" href="https://www.google.com/maps">
           Google Maps
         </a>
       </div>
@@ -2805,7 +2805,7 @@ const TRANSLATIONS = {
     quickPrompt2: "How do I know if the road is wide enough to get a building permit (KPBR)?",
     quickPrompt3: "How to check if land is listed as Nilam in the 2008 Paddy Land Data Bank?",
     btnAutoDemarcate: "Auto-Demarcate",
-    btnBhunaksha: "BhuNaksha FMB",
+    btnBhunaksha: "Outline from extent",
     btnDatabank: "Data Bank",
     welcomeTitle: "Kandezhuthu AI",
     welcomeP1: "Drop a deed or EC above, paste a clause below, or ask a question.",
@@ -2966,7 +2966,7 @@ const TRANSLATIONS = {
     quickPrompt2: "വീടുപണിക്ക് അനുമതി ലഭിക്കാൻ വഴിക്ക് എത്ര വീതി വേണം (KPBR ചട്ടങ്ങൾ)?",
     quickPrompt3: "2008-ലെ നെൽവയൽ ഡാറ്റാ ബാങ്കിൽ ഭൂമി 'നിലം' ആണോ എന്ന് എങ്ങനെ പരിശോധിക്കാം?",
     btnAutoDemarcate: "അതിരുകൾ കണ്ടെത്തുക",
-    btnBhunaksha: "ഭൂരേഖ മാപ്പ്",
+    btnBhunaksha: "ഏകദേശ അതിർത്തി",
     btnDatabank: "ഡാറ്റാ ബാങ്ക്",
     welcomeTitle: "കണ്ടെഴുത്ത് AI",
     welcomeP1: "മുകളിൽ ആധാരമോ EC-യോ ഇടുക, താഴെ വിവരങ്ങൾ പേസ്റ്റ് ചെയ്യുക, അല്ലെങ്കിൽ ചോദ്യം ചോദിക്കുക.",
@@ -3422,7 +3422,9 @@ function refreshHUDLanguage() {
   if (elevTextEl && elevTextEl.textContent) {
     const eMatch = elevTextEl.textContent.match(/[\d.]+/);
     if (eMatch) {
-      elevTextEl.textContent = `${eMatch[0]} ${t.hudMslUnit}`;
+      const isEstimate = elevTextEl.textContent.startsWith("≈");
+      const isMl = currentLanguage === "ml";
+      elevTextEl.textContent = `${isEstimate ? "≈" : ""}${eMatch[0]} ${t.hudMslUnit}${isEstimate ? (isMl ? " (ഏകദേശം)" : " (rough estimate)") : ""}`;
     }
   }
   const floodBadgeEl = document.getElementById("hud-flood-badge");
@@ -3859,6 +3861,8 @@ function renderDeedAuditCard(container, data, fileName) {
     return;
   }
   window._lastUploadedDeedData = data;
+  if (data.sanity_result) window._lastDeedData = data; else window._lastEcData = data;
+  markStepDone(data.sanity_result ? 1 : 2);
   setWorkflowStep(2);
 
   if (data.is_nil_encumbrance !== undefined || data.entries !== undefined) {
@@ -4133,7 +4137,7 @@ function renderDeedAuditCard(container, data, fileName) {
           <button class="deed-action-btn" onclick="locatePlotOnSatellite('${meta.village || ''}', '${meta.re_survey_no || meta.survey_no || ''}')" title="Locate this survey plot on the interactive satellite map">
             Locate Plot on Map
           </button>
-          <button class="deed-action-btn" onclick="openOwnershipTimeline('aluva_broken')" title="Trace 30-year chronological chain of prior deeds">
+          <button class="deed-action-btn" onclick="auditPriorDeedsOfScannedDeed()" title="Check the chain of prior deeds recited in this deed">
             <span>§</span> Audit Munnadharam Chain
           </button>
           <button class="deed-action-btn" onclick="askAboutDeed('${meta.document_number || ''}', '${meta.survey_no || ''}')" title="Ask follow-up questions to Kandezhuthu legal assistant">
@@ -4167,22 +4171,33 @@ function renderDeedAuditCard(container, data, fileName) {
 
 function locatePlotOnSatellite(village, survey) {
   setViewMode('split');
-  const v = (village || 'Aluva').toLowerCase();
-  if (v.includes('aluva')) {
-    applyLocationPreset('aluva');
-  } else if (v.includes('kakkanad')) {
-    applyLocationPreset('kakkanad');
-  } else {
-    const searchInput = document.getElementById('map-search');
-    if (searchInput) {
-      searchInput.value = `${village || 'Kerala'}, Kerala`;
-      searchLocation();
-    }
+  if (!village) return;
+  // Goes to the village; the user moves the pin onto the actual plot.
+  const searchInput = document.getElementById('map-search');
+  if (searchInput) {
+    searchInput.value = `${village}, Kerala`;
+    searchLocation();
   }
 }
 
+// Sends the prior deeds recited in the scanned deed to the agent's chain audit.
+function auditPriorDeedsOfScannedDeed() {
+  const meta = (window._lastDeedData && window._lastDeedData.metadata) || {};
+  const priors = meta.prior_deeds || [];
+  const isMl = currentLanguage === 'ml';
+  if (!priors.length) {
+    appendMsg("agent", isMl
+      ? "ഈ ആധാരത്തിൽ മുന്നാധാരങ്ങളുടെ വിവരം കണ്ടില്ല. മുന്നാധാരങ്ങൾ അപ്‌ലോഡ് ചെയ്യുക, അല്ലെങ്കിൽ അവയുടെ നമ്പർ, വർഷം, SRO, കക്ഷികൾ, വിസ്തീർണ്ണം എന്നിവ ചാറ്റിൽ എഴുതുക."
+      : "This deed doesn't recite any prior deeds. Upload the prior deeds, or type each one's number, year, SRO, parties and extent in the chat.");
+    return;
+  }
+  const lines = priors.map(p => `- Doc ${p.doc_number || "?"}${p.year ? ` (${p.year})` : ""}${p.deed_type ? `, ${p.deed_type}` : ""}${p.sro_name ? `, SRO ${p.sro_name}` : ""}`).join("\n");
+  const current = `Doc ${meta.document_number || "?"}${meta.year ? ` (${meta.year})` : ""}, Survey ${meta.re_survey_no || meta.survey_no || "?"}, ${meta.village || ""}, ${meta.extent_cents ?? "?"} cents, sellers: ${(meta.grantors || []).join(", ") || "?"}, buyers: ${(meta.grantees || []).join(", ") || "?"}`;
+  sendPrompt(`Audit the title chain for this property.\nCurrent deed: ${current}\nPrior deeds recited in it:\n${lines}\nFlag gaps, extent changes and missing heirs, and list which prior deeds I still need to get.`);
+}
+
 function askAboutDeed(docNo, surveyNo) {
-  const prompt = `Based on deed ${docNo ? 'Doc ' + docNo : ''} (Survey No ${surveyNo || '345/1'}), what are the critical legal risks, pathway easements, and physical checks needed before paying token advance?`;
+  const prompt = `Based on deed ${docNo ? 'Doc ' + docNo : ''}${surveyNo ? ` (Survey No ${surveyNo})` : ''}, what are the critical legal risks, pathway easements, and physical checks needed before paying token advance?`;
   input.value = prompt;
   input.focus();
 }
@@ -4451,6 +4466,42 @@ function switchActionCategory(cat) {
 }
 
 let currentWorkflowStep = 1;
+const completedWorkflowSteps = new Set();
+
+function markStepDone(stepNum) {
+  completedWorkflowSteps.add(stepNum);
+  renderStepTicks();
+}
+
+function renderStepTicks() {
+  document.querySelectorAll(".workflow-step").forEach((el, idx) => {
+    const num = idx + 1;
+    const isActive = (num === currentWorkflowStep);
+    const isCompleted = completedWorkflowSteps.has(num) && !isActive;
+
+    el.classList.toggle("active", isActive);
+    el.classList.toggle("completed", isCompleted);
+
+    const numEl = el.querySelector(".workflow-step-num");
+    const badgeEl = el.querySelector(".workflow-step-badge");
+
+    if (numEl) {
+      if (isCompleted) {
+        numEl.textContent = "✓";
+        numEl.setAttribute("aria-label", `Step ${num} completed`);
+      } else {
+        numEl.textContent = String(num);
+        numEl.removeAttribute("aria-label");
+      }
+    }
+
+    if (badgeEl) {
+      badgeEl.style.display = isCompleted ? "inline-flex" : "none";
+      badgeEl.textContent = "✓";
+      badgeEl.setAttribute("title", `Step ${num} Completed`);
+    }
+  });
+}
 
 function updateStepNavBar() {
   const stepNum = currentWorkflowStep;
@@ -4560,44 +4611,65 @@ function initTouchDragScroll(containerId) {
   });
 }
 
+// Seller questions come only from checks that actually ran on this property.
+function collectSellerQuestions() {
+  const en = currentLanguage === 'en';
+  const parts = [];
+  const deed = window._lastDeedData;
+  if (deed) {
+    const d = (en && deed.whatsapp_draft_en) ? deed.whatsapp_draft_en : deed.whatsapp_draft;
+    if (d) parts.push(d);
+  }
+  const ec = window._lastEcData;
+  if (ec) {
+    const e = (en && ec.whatsapp_inquiry_en) ? ec.whatsapp_inquiry_en : ec.whatsapp_inquiry;
+    if (e) parts.push(e);
+  }
+  const elev = window.currentElevationData;
+  if (elev && document.getElementById("map-hud")?.style.display !== "none") {
+    const f = (en && elev.whatsapp_inquiry_for_seller_en) ? elev.whatsapp_inquiry_for_seller_en : elev.whatsapp_inquiry_for_seller;
+    if (f) parts.push(f);
+  }
+  return parts;
+}
+
 function ensureStep4ActionCard() {
-  const existingCard = document.querySelector(".whatsapp-card");
-  if (!existingCard) {
-    const locality = document.getElementById("hud-locality-title")?.textContent || "Aluva, Kerala";
-    const roadMText = document.getElementById("hud-road-text")?.textContent || "3.2 meters";
-    const centsText = document.getElementById("hud-cents")?.textContent || "10.00 Cents";
+  const existingCard = document.querySelector(".step4-action-banner");
+  if (existingCard) existingCard.closest(".msg")?.remove();
 
-    const waText = currentLanguage === 'ml'
-      ? `നമസ്കാരം, ഞാൻ ${locality} ഉള്ള ഈ വസ്തുവിനെക്കുറിച്ച് (~${centsText}, വഴി വീതി: ${roadMText}) അന്വേഷിക്കുകയാണ്. വഴി പഞ്ചായത്ത് രേഖകളിലുള്ള പൊതുവഴിയാണോ? മുന്നാധാരവും ബാങ്ക് ബാധ്യതയില്ല എന്ന രേഖയും (NOC) ലഭ്യമാണോ?`
-      : `Hello, based on satellite analysis of the plot in ${locality} (~${centsText}, ~${roadMText} road width), could you please clarify whether the access road is a dedicated public Panchayat/Municipal road or a private easement pathway? Also please share 30-year prior title deed copies and Bank Nil-EC.`;
-
-    const waEncoded = encodeURIComponent(waText);
-
+  const isMl = currentLanguage === 'ml';
+  const parts = collectSellerQuestions();
+  if (!parts.length) {
     appendMsg("agent", `
-      <div class="step4-action-banner" style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin-bottom:12px;">
-        <div style="font-weight:700; color:#0d7680; font-size:0.92rem; margin-bottom:4px;">
-          Step 4 Due Diligence: Seller Inquiry & Advocate Legal Dossier
-        </div>
-        <p style="font-size:0.8rem; color:#0a5c63; margin-bottom:10px;">
-          Complete on-site verification using the checklist drawer, share this formal inquiry with the seller, and export the comprehensive title audit dossier for your High Court advocate.
-        </p>
-        <div class="whatsapp-card" style="margin-top:8px;">
-          <div class="whatsapp-header">
-            <span class="whatsapp-title">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട ചോദ്യം (WhatsApp):' : 'WhatsApp Inquiry for Seller / Broker:'}</span>
-            <div class="whatsapp-actions">
-              <button class="copy-btn" onclick="copyWhatsApp(this)">Copy Draft</button>
-              <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            </div>
-          </div>
-          <div class="whatsapp-text">${waText}</div>
-        </div>
-        <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
-          <button class="export-report-btn" onclick="toggleChecklist(true)" style="background:#990f3d;">Open Field Checklist</button>
-          <button class="export-report-btn" onclick="exportDossierPDF('aluva_broken')" style="background:#262a33;">Export Legal Dossier (PDF)</button>
-        </div>
+      <div class="step4-action-banner" style="font-size:0.85rem;">
+        ${isMl
+          ? 'ചോദിക്കാൻ ഇനിയും ഒന്നുമില്ല. ആധാരമോ EC-യോ സ്കാൻ ചെയ്യുക, അല്ലെങ്കിൽ മാപ്പിൽ പ്ലോട്ട് അടയാളപ്പെടുത്തുക; ആ പരിശോധനകളിൽ കണ്ടതിൽ നിന്നാണ് സന്ദേശം തയ്യാറാക്കുന്നത്.'
+          : 'Nothing to ask yet. Scan the deed or EC, or pin the plot on the map. The message is built from what those checks find.'}
       </div>
     `);
+    return;
   }
+
+  const waText = parts.join("\n\n");
+  const waEncoded = encodeURIComponent(waText);
+  appendMsg("agent", `
+    <div class="step4-action-banner" style="background:#eef5f5; border:1px solid #a8cfd1; border-radius:10px; padding:12px; margin-bottom:12px;">
+      <div class="whatsapp-card">
+        <div class="whatsapp-header">
+          <span class="whatsapp-title">${isMl ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ടത് (WhatsApp):' : 'WhatsApp message for the seller / broker:'}</span>
+          <div class="whatsapp-actions">
+            <button class="copy-btn" onclick="copyWhatsApp(this); markStepDone(4);">Copy Draft</button>
+            <a class="wa-direct-btn" href="https://api.whatsapp.com/send?text=${waEncoded}" target="_blank" rel="noopener noreferrer" onclick="markStepDone(4)">WhatsApp</a>
+          </div>
+        </div>
+        <div class="whatsapp-text" style="white-space:pre-line;">${escapeHtml(waText)}</div>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+        <button class="export-report-btn" onclick="toggleChecklist(true)" style="background:#990f3d;">Open Field Checklist</button>
+        ${window._lastDeedData ? `<button class="export-report-btn" onclick="exportCurrentDeedDossier(); markStepDone(4);" style="background:#262a33;">Export Deed Dossier (PDF)</button>` : ''}
+      </div>
+    </div>
+  `);
 }
 
 function onDemarcatePlotChip() {
@@ -4643,34 +4715,8 @@ function setWorkflowStep(stepNum) {
   if (stepNum < 1 || stepNum > 4) return;
   currentWorkflowStep = stepNum;
 
-  // 1. Toggle .active and .completed classes on workflow step indicators with checkmark badges
-  document.querySelectorAll(".workflow-step").forEach((el, idx) => {
-    const num = idx + 1;
-    const isActive = (num === stepNum);
-    const isCompleted = (num < stepNum);
-
-    el.classList.toggle("active", isActive);
-    el.classList.toggle("completed", isCompleted);
-
-    const numEl = el.querySelector(".workflow-step-num");
-    const badgeEl = el.querySelector(".workflow-step-badge");
-
-    if (numEl) {
-      if (isCompleted) {
-        numEl.textContent = "✓";
-        numEl.setAttribute("aria-label", `Step ${num} completed`);
-      } else {
-        numEl.textContent = String(num);
-        numEl.removeAttribute("aria-label");
-      }
-    }
-
-    if (badgeEl) {
-      badgeEl.style.display = isCompleted ? "inline-flex" : "none";
-      badgeEl.textContent = "✓";
-      badgeEl.setAttribute("title", `Step ${num} Completed`);
-    }
-  });
+  // 1. Active step and ticks for finished work
+  renderStepTicks();
 
   // 2. Update step navigation bar controls
   updateStepNavBar();
@@ -4860,22 +4906,22 @@ async function exportDossierPDF(preset = 'aluva_broken') {
 }
 
 async function exportCurrentDeedDossier() {
-  if (!window._lastUploadedDeedData) {
-    alert("No uploaded deed data available. Please upload or scan a deed first.");
+  if (!window._lastDeedData) {
+    alert(currentLanguage === "ml" ? "ആദ്യം ഒരു ആധാരം സ്കാൻ ചെയ്യുക." : "Scan a deed first.");
     return;
   }
   try {
     const pdfRes = await fetch('/api/export_dossier', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(window._lastUploadedDeedData)
+      body: JSON.stringify(window._lastDeedData)
     });
     if (!pdfRes.ok) throw new Error("Failed to generate PDF dossier");
     const blob = await pdfRes.blob();
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const docNo = (window._lastUploadedDeedData.metadata?.document_number || "deed").replace(/[\/\s]/g, "_");
+    const docNo = (window._lastDeedData.metadata?.document_number || "deed").replace(/[\/\s]/g, "_");
     a.download = `kandezhuthu_deed_dossier_${docNo}.pdf`;
     document.body.appendChild(a);
     a.click();
@@ -5153,14 +5199,11 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors'
   });
 
-  const defaultCenter = [10.1076, 76.3516];
   map = L.map('map-view', {
-    center: defaultCenter,
-    zoom: 17,
+    center: [10.3, 76.4],
+    zoom: 8,
     layers: [googleHybridLayer]
   });
-
-  createSamplePlot(defaultCenter[0], defaultCenter[1]);
 
   map.on('click', handleMapClick);
 
@@ -5599,7 +5642,7 @@ function applyPlotPolygon(coords, meta = {}) {
     }).addTo(map);
   }
 
-  updateHUDLocation(centerLat, centerLng, `${village} (${title})`, actualCents, meta.roadWidth || 3.0);
+  updateHUDLocation(centerLat, centerLng, `${village} (${title})`, actualCents, meta.roadWidth);
 
   if (currentPolygon) {
     map.fitBounds(currentPolygon.getBounds().pad(0.3));
@@ -5611,32 +5654,11 @@ function applyPlotPolygon(coords, meta = {}) {
     : `Demarcated ${actualCents} Cents (${title}). Drag green corner stones to adjust boundary.`;
 }
 
-function createSamplePlot(lat, lng) {
-  const isMl = currentLanguage === "ml";
-  const coords = generateCalibratedFootprint(lat, lng, 10.0, "1:1");
-  applyPlotPolygon(coords, {
-    title: isMl ? "റീ-സർവേ 345/1 മാതൃകാ പ്ലോട്ട്" : "Re-Sy 345/1 Sample Plot",
-    extentCents: 10.0,
-    surveyNo: "345/1",
-    village: isMl ? "ആലുവ വെസ്റ്റ്" : "Aluva West",
-    roadWidth: 3.2,
-    source: isMl ? "കൃത്യതയുള്ള 10-സെന്റ് അതിർത്തി" : "Calibrated 10-Cent Footprint"
-  });
-}
-
 function applyLocationPreset(presetKey) {
   if (!presetKey || !KERALA_PRESETS[presetKey]) return;
   const p = KERALA_PRESETS[presetKey];
   map.setView([p.lat, p.lng], p.zoom);
-  const coords = generateCalibratedFootprint(p.lat, p.lng, p.cents, "1:1");
-  applyPlotPolygon(coords, {
-    title: p.name,
-    extentCents: p.cents,
-    surveyNo: p.surveyNo,
-    village: p.village,
-    roadWidth: p.roadWidth,
-    source: `Regional Cadastre (${p.village})`
-  });
+  setPin(p.lat, p.lng);
 }
 
 /* Auto-Demarcate Modal Controls */
@@ -5726,7 +5748,7 @@ async function executeAutoDetectBoundaries() {
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: data.source === 'osm_boundary' ? 'Physical Wall / Fence Boundary' : 'BhuNaksha Cadastral Parcel'
+        source: data.source === 'osm_boundary' ? 'Physical Wall / Fence Boundary' : 'Square outline from the extent'
       });
       closeAutoDemarcateModal();
 
@@ -5807,8 +5829,13 @@ function executeGenerateExtentPlot() {
 
 /* Tab 3 Action: BhuNaksha FMB Lookup */
 async function executeFetchCadastralParcel() {
-  const surveyNo = document.getElementById("cadastral-survey-input")?.value.trim() || "345/1";
-  const village = document.getElementById("cadastral-village-input")?.value.trim() || "Aluva West";
+  const meta = (window._lastDeedData && window._lastDeedData.metadata) || {};
+  const surveyNo = document.getElementById("cadastral-survey-input")?.value.trim() || meta.re_survey_no || meta.survey_no;
+  const village = document.getElementById("cadastral-village-input")?.value.trim() || meta.village;
+  if (!surveyNo || !village) {
+    alert(currentLanguage === "ml" ? "സർവേ നമ്പറും വില്ലേജും നൽകുക." : "Enter the survey number and village.");
+    return;
+  }
   const cents = parseFloat(document.getElementById("cadastral-cents-input")?.value || "10.0");
 
   let lat = 10.1076, lng = 76.3516;
@@ -5829,11 +5856,11 @@ async function executeFetchCadastralParcel() {
 
     if (data.polygon_coordinates) {
       applyPlotPolygon(data.polygon_coordinates, {
-        title: `Re-Sy ${data.survey_no} Cadastral Parcel`,
+        title: `Re-Sy ${data.survey_no} (approximate outline)`,
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: "BhuNaksha Cadastral Parcel"
+        source: "Square outline from the extent"
       });
       closeAutoDemarcateModal();
 
@@ -5845,13 +5872,13 @@ async function executeFetchCadastralParcel() {
       appendMsg("agent", `
         <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
           <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
-            <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
+            <span>§</span> <span>Approximate outline: Survey ${data.survey_no}, ${data.village}</span>
           </div>
           <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
-            Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
+            A square of <strong>${data.extent_cents} cents</strong> at the pin. The real shape is in the FMB sketch from the Village Office or <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
           </div>
           <div style="font-size:0.82rem; margin-top:8px;">
-            <strong>Field Measurement Book (FMB) Side Measurements:</strong>
+            <strong>Sides of the square (meters):</strong>
             <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
           </div>
         </div>
@@ -5972,7 +5999,6 @@ function searchLocation() {
   for (const [key, p] of Object.entries(KERALA_PRESETS)) {
     if (key.toLowerCase().includes(qLower) || p.name.toLowerCase().includes(qLower) || (p.village && p.village.toLowerCase().includes(qLower))) {
       applyLocationPreset(key);
-      updateHUDLocation(p.lat, p.lng, p.name);
       return;
     }
   }
@@ -6030,7 +6056,8 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
     window.currentElevationData = data;
 
     if (elevValEl) {
-      elevValEl.textContent = `${data.elevation_meters} ${t.hudMslUnit}`;
+      const isEstimate = data.resolution_meters == null;
+      elevValEl.textContent = `${isEstimate ? "≈" : ""}${data.elevation_meters} ${t.hudMslUnit}${isEstimate ? (isMl ? " (ഏകദേശം)" : " (rough estimate)") : ""}`;
     }
     if (basinEl) {
       const basinName = getLocalizedBasinName(data.river_basin, isMl);
@@ -6063,6 +6090,8 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
 }
 
 function updateHUDLocation(lat, lng, localityName, centsVal, roadVal) {
+  document.getElementById("map-hud").style.display = "";
+  markStepDone(3);
   document.getElementById("hud-coords").textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   
   const isMl = currentLanguage === "ml";
@@ -6227,26 +6256,28 @@ function sendPlotToAuditor() {
   sendPrompt(promptText);
 }
 
+// Survey no, village and extent of the user's plot: from the scanned deed, else asked.
+function askPlotIdentity() {
+  const meta = (window._lastDeedData && window._lastDeedData.metadata) || {};
+  const isMl = currentLanguage === 'ml';
+  const surveyNo = meta.re_survey_no || meta.survey_no || prompt(isMl ? "സർവേ / റീ-സർവേ നമ്പർ (ഉദാ. 182/4):" : "Survey / re-survey number (e.g. 182/4):");
+  if (!surveyNo) return null;
+  const village = meta.village || prompt(isMl ? "വില്ലേജ്:" : "Village:");
+  if (!village) return null;
+  const cents = parseFloat(meta.extent_cents) || parseFloat(prompt(isMl ? "വിസ്തീർണ്ണം (സെന്റ്):" : "Extent (cents):") || "");
+  if (!cents) return null;
+  return { surveyNo: String(surveyNo).trim(), village: String(village).trim(), cents };
+}
+
 /* BhuNaksha Cadastral Survey Overlay */
 let _cadastralLayer = null;
 
 async function fetchCadastralOverlay() {
   const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
   
-  let closestPreset = KERALA_PRESETS.aluva;
-  let minDist = 99999999;
-  for (let key in KERALA_PRESETS) {
-    const p = KERALA_PRESETS[key];
-    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
-    if (dist < minDist) {
-      minDist = dist;
-      closestPreset = p;
-    }
-  }
-
-  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
-  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
-  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
+  const plot = askPlotIdentity();
+  if (!plot) return;
+  const { surveyNo, village, cents } = plot;
 
   try {
     const res = await fetch(`/api/cadastral_sketch?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&lat=${center.lat}&lng=${center.lng}`);
@@ -6266,9 +6297,9 @@ async function fetchCadastralOverlay() {
         fillOpacity: 0.35
       }).addTo(map);
 
-      let tooltipContent = `<b>BhuNaksha Cadastral Parcel</b><br>Survey No: <b>${data.survey_no}</b> (${data.village})<br>Extent: <b>${data.extent_cents} Cents</b><br><hr style="margin:4px 0;">`;
+      let tooltipContent = `<b>Approximate outline (not the FMB)</b><br>Survey No: <b>${data.survey_no}</b> (${data.village})<br>Extent: <b>${data.extent_cents} Cents</b><br><hr style="margin:4px 0;">`;
       if (data.fmb_dimensions_m && data.fmb_dimensions_m.length) {
-        tooltipContent += `<b>FMB Boundaries (Meters):</b><br>`;
+        tooltipContent += `<b>Sides (meters, approximate):</b><br>`;
         data.fmb_dimensions_m.forEach(f => {
           tooltipContent += `• ${f.edge}: ${f.length_m}m (${f.type})<br>`;
         });
@@ -6278,11 +6309,11 @@ async function fetchCadastralOverlay() {
 
       // Demarcate as active plot polygon with corner stones
       applyPlotPolygon(data.polygon_coordinates, {
-        title: `Re-Sy ${data.survey_no} Cadastral Parcel`,
+        title: `Re-Sy ${data.survey_no} (approximate outline)`,
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: "BhuNaksha Cadastral Parcel"
+        source: "Square outline from the extent"
       });
     }
 
@@ -6294,13 +6325,13 @@ async function fetchCadastralOverlay() {
     appendMsg("agent", `
       <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
         <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
-          <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
+          <span>§</span> <span>Approximate outline: Survey ${data.survey_no}, ${data.village}</span>
         </div>
         <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
-          Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent Plots: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
+          A square of <strong>${data.extent_cents} cents</strong> at the pin. The real shape is in the FMB sketch from the Village Office or <a href="https://bhunaksha.kerala.gov.in" target="_blank" rel="noopener noreferrer">BhuNaksha</a>.
         </div>
         <div style="font-size:0.82rem; margin-top:8px;">
-          <strong>Field Measurement Book (FMB) Side Measurements:</strong>
+          <strong>Sides of the square (meters):</strong>
           <ul style="margin-left:18px; margin-top:4px;">${fmbListHtml}</ul>
         </div>
         <div style="margin-top:8px; font-size:0.78rem; color:#6b3d00; background:#fbf0e0; padding:6px 10px; border-radius:6px;">
@@ -6318,20 +6349,9 @@ async function fetchCadastralOverlay() {
 async function checkDataBankStatus() {
   const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
   
-  let closestPreset = KERALA_PRESETS.aluva;
-  let minDist = 99999999;
-  for (let key in KERALA_PRESETS) {
-    const p = KERALA_PRESETS[key];
-    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
-    if (dist < minDist) {
-      minDist = dist;
-      closestPreset = p;
-    }
-  }
-
-  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
-  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
-  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
+  const plot = askPlotIdentity();
+  if (!plot) return;
+  const { surveyNo, village, cents } = plot;
 
   try {
     const res = await fetch(`/api/databank_check?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&fair_value=240000&lang=${currentLanguage}`);
@@ -6339,8 +6359,8 @@ async function checkDataBankStatus() {
     const data = await res.json();
 
     const isListed = data.is_listed_in_databank;
-    const badgeColor = isListed ? "#990f3d" : "#0d7680";
-    const badgeText = isListed ? "■ LISTED IN DATA BANK (Nilam)" : "● NOT IN DATA BANK (Purayidam / Unnotified)";
+    const badgeColor = isListed === true ? "#990f3d" : (isListed === false ? "#0d7680" : "#a35c00");
+    const badgeText = isListed === true ? "■ LISTED IN DATA BANK (Nilam)" : (isListed === false ? "● NOT IN DATA BANK" : "▲ NO RECORD ON FILE");
 
     let feeHtml = "";
     if (data.fee_calculation) {
@@ -6369,6 +6389,7 @@ async function checkDataBankStatus() {
         <div style="margin-top:8px; font-size:0.8rem; color:#a35c00; background:#fbf0e0; padding:6px 8px; border-radius:6px;">
           <strong>Building Permit Status:</strong> ${data.building_permit_eligibility}
         </div>
+        ${isListed == null ? `<div style="margin-top:6px; font-size:0.8rem;">${data.risk_advisory}</div>` : ''}
         <div style="margin-top:8px; font-size:0.8rem; background:#eef5f5; border:1px solid #a8cfd1; padding:8px; border-radius:6px;">
           <div style="font-weight:700; color:#0d7680; margin-bottom:3px;">${currentLanguage === 'ml' ? 'വിൽപ്പനക്കാരനോട് ചോദിക്കേണ്ട വാട്സാപ്പ് ചോദ്യം:' : 'WhatsApp Inquiry for Seller:'}</div>
           <div style="color:#0a5c63;">"${waText}"</div>
