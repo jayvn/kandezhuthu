@@ -1253,9 +1253,6 @@
     background: #990f3d;
     color: #fff;
   }
-  .workflow-step.completed .workflow-step-num {
-    display: none;
-  }
   .export-report-btn {
     background: #990f3d;
     color: #ffffff;

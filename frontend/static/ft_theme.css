@@ -1313,3 +1313,42 @@ select.map-layer-select {
 @media (min-width: 768px) {
   .view-switch { display: none !important; }
 }
+
+/* ==========================================================================
+   Map: search first, extra options behind ⋯, tools only after a pin
+   ========================================================================== */
+.map-toolbar.needs-pin { display: none !important; }
+.map-search-input { font-size: 14px !important; padding: 0.45rem 0.65rem !important; }
+.map-more { position: relative; }
+.map-header-bar { position: relative; z-index: 1100 !important; }
+.map-more > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #e9decf;
+  color: #66605c;
+  font-size: 16px;
+  line-height: 1;
+}
+.map-more > summary::-webkit-details-marker { display: none; }
+.map-more[open] > summary { color: #990f3d; border-color: #990f3d; }
+.map-more-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  background: #fffdf9;
+  border: 1px solid #d4c5b9;
+  min-width: 240px;
+}
+.map-more-menu select { max-width: none !important; width: 100%; margin: 0 !important; }
+.chk-badge {
+  background: #990f3d;
+  color: #fff;
+  padding: 1px 5px;
+  font-size: 0.68rem;
+}

@@ -24,7 +24,7 @@ function updateGuidanceBarText() {
 
   if (typeof activeTool === "undefined" || activeTool === "pin") {
     if (guidanceIcon) guidanceIcon.textContent = "●";
-    if (guidanceText) guidanceText.textContent = t.guidanceDefault;
+    if (guidanceText) guidanceText.textContent = (typeof currentMarker !== "undefined" && currentMarker) ? t.guidancePinned : t.guidanceDefault;
     if (guidanceActions) guidanceActions.style.display = "none";
     if (guidancePinActions) guidancePinActions.style.display = "flex";
   } else if (activeTool === "plot") {

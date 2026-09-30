@@ -136,7 +136,7 @@ function setPin(lat, lng) {
     riseOnHover: true
   }).addTo(map);
 
-  currentMarker.bindPopup(`<b>Inspection Pin</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br><button onclick="openAutoDemarcateModal()" style="margin-top:6px; font-size:0.75rem; padding:4px 10px; background:#990f3d; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">Auto-Demarcate Here</button>`).openPopup();
+  currentMarker.bindPopup(`<b>${currentLanguage === "ml" ? "നിങ്ങളുടെ പ്ലോട്ട്" : "Your plot"}</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}<br><button onclick="openAutoDemarcateModal()" style="margin-top:6px; font-size:0.75rem; padding:4px 10px; background:#990f3d; color:#fff; border:none; border-radius:4px; cursor:pointer; font-weight:600;">${currentLanguage === "ml" ? "അതിർത്തി കണ്ടെത്തുക" : "Auto-outline here"}</button>`).openPopup();
   updateHUDLocation(lat, lng);
 
   const coordsEl = document.getElementById("detect-modal-coords");
@@ -952,6 +952,8 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
 
 function updateHUDLocation(lat, lng, localityName, centsVal, roadVal) {
   document.getElementById("map-hud").style.display = "";
+  document.getElementById("map-toolbar")?.classList.remove("needs-pin");
+  updateGuidanceBarText();
   markStepDone(3);
   document.getElementById("hud-coords").textContent = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
   
@@ -1005,18 +1007,32 @@ function toggleHUD() {
 }
 
 // One-line summary shown while the HUD is collapsed: extent · road · elevation.
+// Boxes without a measured or fetched value stay hidden.
 function updateHudSummary() {
   const el = document.getElementById("hud-summary");
   if (!el) return;
   const txt = id => (document.getElementById(id)?.textContent || "").trim();
-  el.textContent = [txt("hud-cents"), txt("hud-road-text"), txt("hud-elevation-text")].filter(Boolean).join(" · ");
+  const has = id => {
+    const v = txt(id);
+    return !!v && v !== "—" && !/not measured|^0\.00/i.test(v);
+  };
+  const showBox = (id, show) => {
+    const box = document.getElementById(id)?.closest(".hud-stat-box");
+    if (box) box.style.display = show ? "" : "none";
+  };
+  showBox("hud-coords", false);
+  showBox("hud-cents", has("hud-cents"));
+  showBox("hud-sqm", has("hud-cents"));
+  showBox("hud-road-text", has("hud-road-text"));
+  showBox("hud-elevation-text", has("hud-elevation-text"));
+  el.textContent = ["hud-cents", "hud-road-text", "hud-elevation-text"].filter(has).map(txt).join(" · ");
 }
 
 function initHud() {
   const grid = document.querySelector("#map-hud .hud-stats-grid");
   if (grid) new MutationObserver(updateHudSummary).observe(grid, { subtree: true, childList: true, characterData: true });
   updateHudSummary();
-  if (window.innerWidth < 768) toggleHUD();
+  toggleHUD();
 }
 
 function toggleChecklist(forceState) {

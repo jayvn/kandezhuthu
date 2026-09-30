@@ -109,12 +109,15 @@
   <!-- Right / Map Pane -->
   <div id="map-pane">
     <div class="map-header-bar">
-      <div class="map-title-tag">
-        <span id="map-header-title">Satellite Inspector</span>
+      <div class="map-search-group">
+        <input type="text" id="map-search" class="map-search-input" placeholder="Search your village, or paste lat,lng" onkeydown="if(event.key==='Enter') searchLocation()">
+        <button class="map-search-btn" onclick="searchLocation()" aria-label="Search">→</button>
       </div>
-
-      <select class="map-preset-select" id="preset-select" onchange="applyLocationPreset(this.value)">
-        <option value="" id="opt-preset-default" selected>Select Kerala Region...</option>
+      <details class="map-more">
+        <summary aria-label="More map options">⋯</summary>
+        <div class="map-more-menu">
+          <select class="map-preset-select" id="preset-select" onchange="applyLocationPreset(this.value)">
+            <option value="" id="opt-preset-default" selected>Select Kerala Region...</option>
         <option value="aluva">Aluva (Periyar River Basin - 2018 Flood Zone)</option>
         <option value="kakkanad">Kakkanad / Infopark (Elevated Midlands)</option>
         <option value="kuttanad">Kuttanad (Sub-Sea-Level Wetland Polders)</option>
@@ -125,38 +128,33 @@
         <option value="kottayam">Kottayam (Meenachil Wetland Valley)</option>
         <option value="kozhikode">Kozhikode (Coastal City)</option>
         <option value="trivandrum">Thiruvananthapuram (Kazhakkoottam)</option>
-      </select>
-
-      <div class="map-search-group">
-        <input type="text" id="map-search" class="map-search-input" placeholder="Search village, town, or lat,lng..." onkeydown="if(event.key==='Enter') searchLocation()">
-        <button class="map-search-btn" onclick="searchLocation()">→</button>
-      </div>
+          </select>
+          <select class="map-layer-select" id="layer-select" onchange="switchMapLayer(this.value)">
+            <option value="google-hybrid" selected>Google Satellite Hybrid</option>
+            <option value="google-satellite">Google Satellite Only</option>
+            <option value="google-roads">Google Roadmap</option>
+            <option value="google-terrain">Google Terrain</option>
+            <option value="osm">OpenStreetMap</option>
+          </select>
+        </div>
+      </details>
     </div>
 
-    <div class="map-toolbar">
-      <button class="map-tool-btn active" id="tool-pin" onclick="setMapTool('pin')">Pin Location</button>
-      <button class="map-tool-btn highlight" id="tool-auto-demarcate" onclick="openAutoDemarcateModal()" title="Outline the plot from OSM walls, the deed extent, or imported coordinates">Auto-Demarcate</button>
-      <button class="map-tool-btn" id="tool-plot" onclick="setMapTool('plot')">Draw Plot (Cents)</button>
-      <button class="map-tool-btn" id="tool-road" onclick="setMapTool('road')">Measure Road Width</button>
-      <button class="map-tool-btn" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Draw an approximate square of the deed extent at the pin. The official FMB sketch is on BhuNaksha.">Outline from extent</button>
-      <button class="map-tool-btn" id="btn-databank" onclick="checkDataBankStatus()" title="Check Kerala 2008 Agricultural Data Bank & Sec 27A Status">Data Bank</button>
+    <!-- Plot tools appear once the plot is pinned -->
+    <div class="map-toolbar needs-pin" id="map-toolbar">
+      <button class="map-tool-btn" id="tool-road" onclick="setMapTool(activeTool === 'road' ? 'pin' : 'road')">Measure road</button>
+      <button class="map-tool-btn" id="tool-plot" onclick="setMapTool(activeTool === 'plot' ? 'pin' : 'plot')">Draw plot</button>
+      <button class="map-tool-btn" id="tool-auto-demarcate" onclick="openAutoDemarcateModal()" title="Outline the plot from OSM walls, the deed extent, or imported coordinates">Auto-outline</button>
+      <button class="map-tool-btn" id="btn-databank" onclick="checkDataBankStatus()" title="Check the 2008 Paddy Land Data Bank for this survey number">Data Bank</button>
+      <button class="map-tool-btn" id="btn-checklist-toggle" onclick="toggleChecklist()"><span id="btn-chk-text">Checklist</span> <span id="chk-badge" class="chk-badge">0/5</span></button>
       <button class="map-tool-btn" id="btn-clear" onclick="clearMapDrawings()" title="Clear all drawings">Clear</button>
-      <button class="map-tool-btn" id="btn-checklist-toggle" onclick="toggleChecklist()"><span id="btn-chk-text">Checklist</span> <span id="chk-badge" style="background:#990f3d; color:#fff; padding:1px 5px; border-radius:10px; font-size:0.68rem;">0/5</span></button>
-
-      <select class="map-layer-select" id="layer-select" onchange="switchMapLayer(this.value)">
-        <option value="google-hybrid" selected>Google Satellite Hybrid</option>
-        <option value="google-satellite">Google Satellite Only</option>
-        <option value="google-roads">Google Roadmap</option>
-        <option value="google-terrain">Google Terrain</option>
-        <option value="osm">OpenStreetMap</option>
-      </select>
     </div>
 
     <!-- Active Tool Interactive Guidance Bar -->
     <div class="map-guidance-bar" id="map-guidance-bar">
       <div class="guidance-content">
         <span id="guidance-icon">●</span>
-        <span id="guidance-text">Click anywhere on the satellite view to drop an inspection pin and view GPS coordinates.</span>
+        <span id="guidance-text">Search above or tap the map to pin your plot.</span>
       </div>
       <div class="guidance-actions" id="guidance-actions" style="display: none;">
         <button class="guidance-btn secondary" id="guidance-undo-btn" onclick="undoLastPoint()">↩️ Undo</button>
@@ -337,7 +335,7 @@
 
       <div class="hud-actions">
         <button class="hud-btn hud-btn-primary" id="btn-hud-auditor" onclick="sendPlotToAuditor()">
-          To Auditor
+          Ask about this plot
         </button>
         <a id="btn-hud-maps" class="hud-btn hud-btn-secondary" target="_blank" href="https://www.google.com/maps">
           Google Maps

@@ -9,10 +9,6 @@ Remaining work, ordered by impact within each section.
 
 The buyer's question is: *can I pay the advance, and what do I still need?* Every screen should answer that. Today the first screen shows about 30 controls (three rows of navigation, three ways to start, eight map tools, a five-box plot panel) before the user has done anything.
 
-3. **The map toolbar overflows** (eight buttons, the last cut off) and asks the user to pick tools before they have a plot.
-   → The map starts with one thing: search or tap to pin your plot. Show the other tools only after a pin: Measure road, Draw plot, Data Bank. Move Outline from extent into Draw plot, and the layer picker and region presets into a small ⋯ menu.
-4. **The plot panel covers the map** and shows empty boxes before there is a plot.
-   → Show one line (extent · road · elevation), which expands on tap. Keep only the values that were actually measured or fetched.
 5. **The deed result card is busy.** It has a score pill, a model badge ("Gemini 3.8 Flash Vision"), the document type, the verdict, a four-box grid, three action buttons, a PDF banner and a hint line.
    → Order: verdict and findings first, then the facts (survey no, village, extent, classification), then one row of actions (Ask seller, Check prior deeds, PDF). Drop the model badge and the hint line.
 6. **The seller message is scattered.** Every card has its own WhatsApp draft.
