@@ -48,7 +48,7 @@ kandezhuthu/
 │   ├── integration/             # Live agent & FastAPI e2e tests
 │   ├── ui/                      # Playwright UI & browser workflow tests
 │   └── eval/                    # Response quality & eval datasets
-├── GEMINI.md                    # Project-specific AI assistant guidance (this file)
+├── AGENTS.md                    # AI assistant guidance (this file; CLAUDE.md imports it)
 └── pyproject.toml               # Project dependencies and configurations managed via uv
 ```
 

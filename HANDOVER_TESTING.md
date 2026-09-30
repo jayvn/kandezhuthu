@@ -19,7 +19,7 @@
 
 ## 2. Parallel Worktree Isolation Rules
 
-Per project rules in `GEMINI.md`, each agent **MUST** work in its own isolated worktree under `.worktrees/`:
+Per project rules in `AGENTS.md`, each agent **MUST** work in its own isolated worktree under `.worktrees/`:
 ```bash
 # Example setup for each agent from repository root:
 git worktree add -b feat/<agent-task-name> .worktrees/<agent-task-name> HEAD
