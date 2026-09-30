@@ -143,10 +143,10 @@ class BhuNakshaCadastralService:
             return round(math.sqrt(dlat * dlat + dlng * dlng), 1)
 
         fmb_dimensions = [
-            {"edge": "South (തെക്ക്)", "length_m": _dist(poly[0], poly[1]), "type": "Compound Wall / Boundary"},
-            {"edge": "East (കിഴക്ക്)", "length_m": _dist(poly[1], poly[2]), "type": "Neighbor Plot"},
-            {"edge": "North (വടക്ക്)", "length_m": _dist(poly[2], poly[3]), "type": "Subdivision Boundary"},
-            {"edge": "West (പടിഞ്ഞാറ്)", "length_m": _dist(poly[3], poly[0]), "type": "3.5m Panchayat Road Access"},
+            {"edge": "South (തെക്ക്)", "length_m": _dist(poly[0], poly[1]), "type": "approximate"},
+            {"edge": "East (കിഴക്ക്)", "length_m": _dist(poly[1], poly[2]), "type": "approximate"},
+            {"edge": "North (വടക്ക്)", "length_m": _dist(poly[2], poly[3]), "type": "approximate"},
+            {"edge": "West (പടിഞ്ഞാറ്)", "length_m": _dist(poly[3], poly[0]), "type": "approximate"},
         ]
 
         # Derive adjacent survey numbers
@@ -170,8 +170,8 @@ class BhuNakshaCadastralService:
             polygon_coordinates=poly,
             fmb_dimensions_m=fmb_dimensions,
             adjacent_survey_numbers=adjacent,
-            access_road_identified=True,
-            subdivision_sketch_available=True,
+            access_road_identified=False,
+            subdivision_sketch_available=False,
         )
 
 
@@ -187,6 +187,9 @@ class KeralaDataBankService:
     ) -> DataBankCheckResult:
         clean_sy = survey_no.strip()
         reg_entry = KNOWN_DATABANK_REGISTRY.get(clean_sy)
+        # Survey numbers repeat across villages; a record only applies to its own village.
+        if reg_entry and reg_entry["village"].lower() != village.lower().strip():
+            reg_entry = None
 
         knowledge_repo = KnowledgeRepository()
         fee_calc_dict = knowledge_repo.calculate_paddy_conversion_fee(
@@ -209,24 +212,23 @@ class KeralaDataBankService:
                 whatsapp_inquiry_en=reg_entry.get("whatsapp_en", ""),
             )
 
-        # Fallback heuristic for arbitrary survey numbers
-        is_paddy_prone = any(term in village.lower() for term in ["kuttanad", "chittoor", "kole", "wetland"])
-        if is_paddy_prone:
-            status = "Paddy Wetland (ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെടാൻ സാധ്യത)"
-            is_listed = True
-            form = "Form 5 (Exclusion) & Form 6 (Conversion)"
-            permit = "RESTRICTED: High likelihood of Agricultural Data Bank listing in this wetland village."
-            advisory = "Caution: This survey falls in an intensive wetland agrarian zone. Verify Krishi Bhavan Data Bank register physically."
-            wa = f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു കൃഷിഭവൻ ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ എന്ന് വ്യക്തമാക്കാമോ?"
-            wa_en = f"Hello, could you please clarify whether the property in {village} Village, Survey {clean_sy}, is listed in the Krishi Bhavan Agricultural Data Bank?"
-        else:
-            status = "Purayidam / Dry Land (റവന്യൂ പുരയിടം)"
-            is_listed = False
-            form = "None (Standard Purayidam)" if extent_cents <= 25 else "Form 6 (if BTR shows Nilam)"
-            permit = "PERMITTED subject to standard KPBR setback and road width rules."
-            advisory = "Normal midland/highland classification. Confirm with Village Office BTR extract."
-            wa = f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു റവന്യൂ രേഖകളിൽ പുരയിടമാണെന്ന് ഉറപ്പുനൽകുന്ന കരം രസീത് ലഭ്യമാക്കാമോ?"
-            wa_en = f"Hello, regarding the plot in {village} Village, Survey {clean_sy}, could you kindly share the latest Village Land Tax receipt confirming its classification as Purayidam?"
+        # No Data Bank record on file for this survey number: report that, don't guess.
+        is_listed = None
+        status = "Not on file here (ഇവിടെ രേഖയില്ല)"
+        form = "Unknown until the Data Bank extract and BTR are seen"
+        permit = "Unknown: depends on the Data Bank entry and the BTR classification."
+        advisory = (
+            f"No Data Bank record for Survey {clean_sy}, {village} is available to this tool. "
+            "Get the Data Bank extract from the Krishi Bhavan and the BTR extract from the Village Office."
+        )
+        wa = (
+            f"നമസ്കാരം, {village} വില്ലേജിലെ സർവേ {clean_sy} വസ്തു കൃഷിഭവൻ ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ? "
+            "ഡാറ്റാ ബാങ്ക് പകർപ്പും വില്ലേജ് ഓഫീസിലെ BTR പകർപ്പും അയച്ചുതരാമോ?"
+        )
+        wa_en = (
+            f"Hello, is the property in {village} Village, Survey {clean_sy}, listed in the Krishi Bhavan Data Bank? "
+            "Could you share the Data Bank extract and the Village Office BTR extract?"
+        )
 
         return DataBankCheckResult(
             survey_no=clean_sy,

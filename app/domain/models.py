@@ -181,7 +181,7 @@ class DataBankCheckResult(BaseModel):
     """Statutory check under Kerala Conservation of Paddy Land & Wetland Act, 2008."""
     survey_no: str
     village: str
-    is_listed_in_databank: bool
+    is_listed_in_databank: bool | None = Field(description="None when no Data Bank record is available")
     entry_status: str
     krishi_bhavan_name: str
     recommended_statutory_form: str

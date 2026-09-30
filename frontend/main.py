@@ -992,7 +992,7 @@ async def get_timeline_demo(preset: str = "aluva_broken", lang: str = "en"):
             "risk_verdict": "NO KNOWN RED FLAGS",
             "risk_color": "clear",
             "chain_intact": True,
-            "summary": "Flawless 39-year title continuity: 100% unbroken chain from 1985 Pattayam to current owner, consistent 10.0 Cents extent, all heirs represented, and clean EC.",
+            "summary": "No gaps found in 39 years: continuous chain from the 1985 Pattayam to the current owner, 10.0 cents throughout, all heirs represented, and no charges on the EC.",
             "financial_transparency": {
                 "is_public_record": True,
                 "legal_basis": "Registration Act, 1908 (Sections 51 & 57) - SRO Book 1 Public Record",
@@ -1257,12 +1257,18 @@ SERVER_START_TIME = time.time()
 @app.get("/api/dev/version")
 async def get_dev_version():
     """Live reload version tracker for localhost dev."""
-    static_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "index.html")
+    static_root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
     static_mtime = 0
-    try:
-        static_mtime = os.path.getmtime(static_file)
-    except Exception:
-        pass
+    for name in ("index.html", "app.css", "ft_theme.css"):
+        try:
+            static_mtime = max(static_mtime, os.path.getmtime(os.path.join(static_root, name)))
+        except OSError:
+            pass
+    for sub in ("js", "i18n"):
+        sub_dir = os.path.join(static_root, sub)
+        if os.path.isdir(sub_dir):
+            for name in os.listdir(sub_dir):
+                static_mtime = max(static_mtime, os.path.getmtime(os.path.join(sub_dir, name)))
     return JSONResponse({
         "server_start": SERVER_START_TIME,
         "static_mtime": static_mtime,

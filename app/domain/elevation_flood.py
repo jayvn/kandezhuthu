@@ -173,8 +173,10 @@ class ElevationFloodCalculator:
         wetland_risk = self._evaluate_wetland_topography(elevation_m, risk_level)
         plinth_m = self._calculate_recommended_plinth(elevation_m, risk_level)
         checklist = self._build_physical_checklist(elevation_m, risk_level, matched_zone)
-        whatsapp_msg = self._draft_malayalam_inquiry(locality_name, elevation_m, risk_level, river_basin)
-        whatsapp_msg_en = self._draft_english_inquiry(locality_name, elevation_m, risk_level, river_basin)
+        # The fallback model is a rough estimate; the message must not state it as measured.
+        elevation_label = f"{elevation_m}" if resolution_m is not None else f"≈{elevation_m}"
+        whatsapp_msg = self._draft_malayalam_inquiry(locality_name, elevation_label, risk_level, river_basin)
+        whatsapp_msg_en = self._draft_english_inquiry(locality_name, elevation_label, risk_level, river_basin)
 
         return ElevationFloodResult(
             latitude=round(latitude, 5),
@@ -263,11 +265,13 @@ class ElevationFloodCalculator:
             dist = parts[1] if len(parts) > 1 else "Ernakulam"
             return loc, dist, None
 
+        # Without geocoding we don't know the village; name the spot by its
+        # coordinates rather than the nearest landmark we happen to know.
         nearest = self._find_nearest_hydrological_zone(lat, lng)
-        if nearest:
-            return nearest["name"].split(" - ")[0], nearest["district"], nearest["name"]
-
-        return f"Plot ({lat:.4f}, {lng:.4f})", "Kerala", None
+        district = "Kerala"
+        if nearest and self._haversine_distance(lat, lng, nearest["lat"], nearest["lng"]) <= nearest["radius_km"]:
+            district = nearest["district"]
+        return f"{lat:.4f}, {lng:.4f}", district, None
 
     def _find_nearest_hydrological_zone(self, lat: float, lng: float) -> dict[str, Any] | None:
         closest_zone = None
@@ -374,7 +378,7 @@ class ElevationFloodCalculator:
         return items
 
     def _draft_malayalam_inquiry(
-        self, locality: str, elevation_m: float, risk: FloodRiskLevel, basin: str
+        self, locality: str, elevation_m: str, risk: FloodRiskLevel, basin: str
     ) -> str:
         return (
             f"നമസ്കാരം, {locality} പ്രദേശത്തെ പ്രോപ്പർട്ടിയുടെ ലൊക്കേഷനും ഉയരവും ({elevation_m}m MSL - {basin}) "
@@ -386,10 +390,10 @@ class ElevationFloodCalculator:
         )
 
     def _draft_english_inquiry(
-        self, locality: str, elevation_m: float, risk: FloodRiskLevel, basin: str
+        self, locality: str, elevation_m: str, risk: FloodRiskLevel, basin: str
     ) -> str:
         return (
-            f"Hello, upon checking the location and elevation of the property in {locality} ({elevation_m}m MSL - {basin}), "
+            f"Hello, upon checking the location and elevation of the property at {locality} ({elevation_m}m MSL - {basin}), "
             "we would appreciate clarification on the monsoon flood history and drainage conditions:\n"
             "1. Did flood waters enter this plot or the access road during the 2018 or 2019 Kerala floods? If so, what was the approximate water level?\n"
             "2. Does the plot or surrounding area experience waterlogging or stagnation during heavy monsoon rains? Are municipal/panchayat stormwater drains functional?\n"
