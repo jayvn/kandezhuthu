@@ -407,7 +407,7 @@ function renderDeedAuditCard(container, data, fileName) {
             ${data.entries.map(e => `
               <div style="background:#f6ede2; border:1px solid #e9decf; border-radius:6px; padding:6px 10px;">
                 <div style="display:flex; justify-content:space-between; font-weight:700;">
-                  <span>Doc #${e.doc_number} (${e.year}) - SRO ${e.sro_name}</span>
+                  <span>Doc #${e.doc_number} (${e.year})${e.sro_name ? ` - SRO ${e.sro_name}` : ""}</span>
                   <span style="color:${e.is_undischarged_liability || e.is_court_attachment ? '#990f3d' : '#0d7680'};">${e.nature_of_act}</span>
                 </div>
                 <div style="color:#66605c; font-size: var(--fs-12); margin-top:2px;">

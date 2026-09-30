@@ -114,7 +114,7 @@ class AdvocateDossierGenerator:
         meta = audit_data.get("metadata", {})
         prop_id = audit_data.get("property_identifier") or f"Sy {meta.get('survey_no', 'N/A')}, {meta.get('village', 'Kerala')}"
         doc_no = meta.get("document_number") or audit_data.get("document_number", "Unregistered / Under Audit")
-        sro = meta.get("sro_name") or audit_data.get("sro", "Kerala SRO")
+        sro = meta.get("sro_name") or audit_data.get("sro", "Not read")
         extent_cents = meta.get("extent_cents", audit_data.get("extent_cents", 0.0))
         extent_ares = meta.get("extent_ares", round(extent_cents * 0.404686, 2) if extent_cents else 0.0)
         classification = meta.get("revenue_classification", audit_data.get("classification", "Purayidam"))

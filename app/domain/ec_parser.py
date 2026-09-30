@@ -22,6 +22,10 @@ from app.domain.models import (
 )
 
 
+def _sro_label(sro_name: str) -> str:
+    return f"SRO {sro_name}" if sro_name else "SRO not read"
+
+
 class EncumbranceCertificateAuditor:
     """Forensic auditor for Kerala SRO Encumbrance Certificates."""
 
@@ -97,7 +101,7 @@ class EncumbranceCertificateAuditor:
         year = int(doc_match.group(2))
 
         # SRO detection
-        sro = "Kerala SRO"
+        sro = ""
         sro_m = re.search(r"(?:SRO|Sub-Registrar(?: Office)?|സബ്\s*രജിസ്ട്രാർ)[:\s]+([^\n,\.]+)", block_text, re.I)
         if sro_m:
             sro = sro_m.group(1).strip()
@@ -195,7 +199,7 @@ class EncumbranceCertificateAuditor:
                 liability_str = f"₹{entry.liability_amount_inr:,.0f}" if entry.liability_amount_inr else "Undisclosed Amount"
                 party_str = f" in favor of {', '.join(entry.claimants)}" if entry.claimants else ""
                 desc = (
-                    f"Doc #{entry.doc_number} ({entry.year}, SRO {entry.sro_name}) records an active bank mortgage / Gehan {liability_str}{party_str}. "
+                    f"Doc #{entry.doc_number} ({entry.year}, {_sro_label(entry.sro_name)}) records an active bank mortgage / Gehan {liability_str}{party_str}. "
                     f"No registered release deed or discharge naming this document (ഭാരരഹിത സർട്ടിഫിക്കറ്റ്) is on the EC. "
                     f"Property is subject to statutory attachment under SARFAESI Act, 2002."
                 )
@@ -223,7 +227,7 @@ class EncumbranceCertificateAuditor:
                         severity=RiskSeverity.CRITICAL,
                         title=f"Civil Court / Revenue Recovery Attachment (Doc #{entry.doc_number})",
                         description=(
-                            f"An order of attachment is registered under Doc #{entry.doc_number} at SRO {entry.sro_name}. "
+                            f"An order of attachment is registered under Doc #{entry.doc_number} ({_sro_label(entry.sro_name)}). "
                             f"Alienation of property under attachment is void under Section 64 of the Civil Procedure Code."
                         ),
                         legal_citation="Section 64 Code of Civil Procedure (CPC) / Section 52 Transfer of Property Act (Lis Pendens)",
@@ -237,15 +241,19 @@ class EncumbranceCertificateAuditor:
                     conflicting_alienations.append(f"Doc #{entry.doc_number} ({entry.year})")
                     risk_flags.append(
                         RiskFlag(
-                            category="Title Continuity Break",
+                            category="Missing Prior Deed",
                             severity=RiskSeverity.HIGH,
-                            title=f"Unexplained Registered Sale Deed in EC (Doc #{entry.doc_number})",
+                            title=f"EC Document Not Among Uploaded Deeds (Doc #{entry.doc_number})",
                             description=(
-                                f"Doc #{entry.doc_number} registered in {entry.year} at SRO {entry.sro_name} is listed in the official EC "
-                                f"but missing from the seller's title lineage. This indicates an undisclosed partial sale or competing title."
+                                f"Doc #{entry.doc_number} ({entry.year}, {_sro_label(entry.sro_name)}) is on the EC "
+                                f"but not among the deeds uploaded. Until it is read, it may be a sale of part of this property."
                             ),
-                            legal_citation="Section 48 Indian Registration Act (Priority of registered documents)",
-                            remedial_action="Obtain certified copy of Doc #{entry.doc_number} from SRO pearl portal to verify exact property boundaries and parties.",
+                            legal_citation="Section 57 Indian Registration Act, 1908 (any person may get a copy of a Book 1 document)",
+                            remedial_action=(
+                                f"Get Doc #{entry.doc_number} through PEARL View Document "
+                                f"(keralaregistration.gov.in/pearlpublic → Queries → View → Document) and upload it. "
+                                f"A certified copy is issued at the SRO."
+                            ),
                         )
                     )
 
