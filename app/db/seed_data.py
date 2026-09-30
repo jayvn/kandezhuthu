@@ -6,12 +6,12 @@ Ingests:
 3. Landmark Kerala Judicial Precedents (into legal_precedents & legal_precedents_fts).
 4. Full text knowledge articles (into knowledge_corpus_fts).
 5. Kerala Administrative master records (Districts, Taluks, SROs).
-6. Demo title chain records (Aluva Re-Sy 345/1).
+6. Demo mode only: fair values, resurvey villages and a demo title audit from `tests/fixtures/`.
 """
 
-import json
 from pathlib import Path
 
+from app import fixtures
 from app.db.database import get_db_connection, init_db
 
 KNOWLEDGE_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "knowledge"
@@ -415,116 +415,43 @@ def seed_administrative_divisions(conn):
     )
 
 
-def seed_demo_audit(conn):
-    """Seeds the realistic Aluva Re-Sy 345/1 demo audit into the database."""
-    cursor = conn.cursor()
-    cursor.execute("SELECT id FROM properties WHERE property_identifier = 'Re-Sy 345/1, Aluva West Village, Ernakulam'")
-    if cursor.fetchone():
+def seed_demo_audit():
+    """Seeds the demo title audit from fixtures (demo mode only)."""
+    demo = fixtures.load("demo_audit")
+    if not demo:
         return
 
-    cursor.execute(
-        """
-        INSERT INTO properties (property_identifier, survey_no, resurvey_no, village, taluk, district, sro_name, extent_cents)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        ("Re-Sy 345/1, Aluva West Village, Ernakulam", "345/1", "345/1", "Aluva West", "Aluva", "Ernakulam", "Aluva", 10.0),
+    from app.db.repository import AuditRepository
+    from app.domain.auditor import MunnadharamAuditor
+    from app.domain.models import DeedNode, ECRecord
+
+    repo = AuditRepository()
+    if repo.get_property_audit_history(survey_no=demo["survey_no"], village=demo["village"]):
+        return
+
+    deeds = [DeedNode(**d) for d in demo["deeds"]]
+    ec_records = [ECRecord(**e) for e in demo["ec_records"]]
+    scorecard = MunnadharamAuditor(property_identifier=demo["property_identifier"]).audit(
+        deeds=deeds, ec_records=ec_records
     )
-    property_id = cursor.lastrowid
-
-    deeds = [
-        (
-            property_id, "214/1982", 1982, "Aluva", "Pattayam (Govt Land Assignment)",
-            json.dumps(["Special Tahsildar (Land Assignment)"]), json.dumps(["Chacko Varghese"]),
-            10.0, "345/1", "345/1", 0.0, None, 0, 0, json.dumps([]), json.dumps([]), "christian",
-        ),
-        (
-            property_id, "890/1996", 1996, "Aluva", "Bhagapathram (Partition Deed)",
-            json.dumps(["Chacko Varghese (Deceased Estate)"]), json.dumps(["George Chacko", "Thomas Chacko"]),
-            10.0, "345/1", "345/1", 0.0, "214/1982", 0, 0, json.dumps(["Mary Chacko (Sister / Daughter)"]), json.dumps([]), "christian",
-        ),
-        (
-            property_id, "1420/2014", 2014, "Aluva", "Theeradharam (Sale Deed)",
-            json.dumps(["George Chacko"]), json.dumps(["Current Seller: Suresh Nair"]),
-            11.0, "345/1", "345/1", 4500000.0, "890/1996", 0, 0, json.dumps([]),
-            json.dumps(["3-meter motorable pathway along southern boundary reserved for Thomas Chacko"]), "hindu",
-        ),
-    ]
-
-    cursor.executemany(
-        """
-        INSERT INTO deed_records (
-            property_id, doc_number, year, sro_name, deed_type,
-            grantors_json, grantees_json, extent_cents, survey_no, resurvey_no,
-            consideration_inr, prior_doc_referenced, is_minor_involved,
-            minor_court_sanction_present, unrepresented_heirs_json,
-            easements_reserved_json, family_religion
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        deeds,
-    )
-
-    ecs = [
-        (property_id, "214/1982", 1982, "Aluva", "Pattayam", json.dumps(["Chacko Varghese"])),
-        (property_id, "890/1996", 1996, "Aluva", "Partition", json.dumps(["George Chacko", "Thomas Chacko"])),
-        (property_id, "1420/2014", 2014, "Aluva", "Sale", json.dumps(["George Chacko", "Suresh Nair"])),
-        (property_id, "3012/2022", 2022, "Aluva", "Equitable Mortgage - Federal Bank", json.dumps(["Suresh Nair", "Federal Bank"])),
-    ]
-
-    cursor.executemany(
-        """
-        INSERT INTO encumbrance_records (
-            property_id, doc_number, year, sro_name, nature, parties_json
-        ) VALUES (?, ?, ?, ?, ?, ?)
-        """,
-        ecs,
-    )
-
-    # Insert demo audit report
-    cursor.execute(
-        """
-        INSERT INTO audit_reports (
-            property_id, session_id, overall_score, risk_level, chain_of_custody_intact,
-            lineage_path_json, advocate_recommendations_json, whatsapp_malayalam_draft
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            property_id,
-            "demo_session",
-            30,
-            "DANGER",
-            1,
-            json.dumps(["214/1982", "890/1996", "1420/2014"]),
-            json.dumps([
-                "Obtain registered Ozhivumuri from Mary Chacko or legal heirs under Mary Roy precedent.",
-                "Demand original Title Deeds & Form 16 / MODT cancellation deed from Federal Bank before advancing funds.",
-                "Verify Taluk survey demarcations regarding 1.0 cent extent inflation (11 cents sold vs 10 cents held).",
-            ]),
-            "നമസ്കാരം, ആലുവ സബ് രജിസ്ട്രാർ ഓഫീസിലെ 1420/2014 ആധാരപ്രകാരമുള്ള വസ്തുവിൻ്റെ ബാങ്ക് ബാധ്യത (ഫെഡറൽ ബാങ്ക്) ഒഴിവാക്കിയ സർട്ടിഫിക്കറ്റും മുൻ ഉടമസ്ഥരുടെ അവകാശരേഖകളും പരിശോധിക്കാൻ ലഭ്യമാക്കുമോ?",
-        ),
-    )
-    report_id = cursor.lastrowid
-
-    risk_flags = [
-        (report_id, "SUCCESSION", "CRITICAL", "Mary Roy Precedent: Christian Daughter Omitted", "Daughter Mary Chacko excluded from 1996 partition deed", "Mary Roy v. State of Kerala (1986 AIR 1011)", "Obtain registered release deed from Mary Chacko"),
-        (report_id, "ENCUMBRANCE", "CRITICAL", "Ghost Mortgage Detected in EC", "Doc 3012/2022 shows active mortgage with Federal Bank", "Transfer of Property Act Sec 58 / Sec 17 Registration Act", "Demand Bank Loan Clearance & Original Title Deeds"),
-        (report_id, "EXTENT", "HIGH", "Extent Inflation: Nemo Dat Quod Non Habet", "Seller conveyed 11.0 cents but parent deed 890/1996 only granted 10.0 cents", "Transfer of Property Act Sec 7 & 8", "Verify actual surveyed boundary extent"),
-    ]
-
-    cursor.executemany(
-        """
-        INSERT INTO risk_flags (
-            audit_report_id, category, severity, title, description, legal_citation, remedial_action
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        risk_flags,
+    repo.save_audit(
+        property_identifier=demo["property_identifier"],
+        survey_no=demo["survey_no"],
+        deeds=[d.model_dump(mode="json") for d in deeds],
+        ec_records=[e.model_dump(mode="json") for e in ec_records],
+        scorecard=scorecard.model_dump(mode="json"),
+        session_id="demo_session",
+        village=demo["village"],
+        taluk=demo["taluk"],
+        district=demo["district"],
+        sro_name=demo["sro_name"],
     )
 
 
 def seed_fair_value_benchmarks(conn):
     """Seeds Kerala notified benchmark Fair Values per Are under Section 28A."""
-    try:
-        from scrapers.scrape_fair_value import KeralaFairValueScraper
-    except ImportError:
+    benchmarks = fixtures.load("fair_value_benchmarks", [])
+    if not benchmarks:
         return
 
     cursor = conn.cursor()
@@ -532,7 +459,6 @@ def seed_fair_value_benchmarks(conn):
     if cursor.fetchone()[0] > 0:
         return
 
-    benchmarks = KeralaFairValueScraper.get_benchmarks()
     rows = [
         (
             b["district"],
@@ -559,14 +485,15 @@ def seed_fair_value_benchmarks(conn):
 
 def seed_digital_resurvey_villages(conn):
     """Seeds Kerala Digital Resurvey (Ente Bhoomi) village rollout statuses."""
-    from scrapers.scrape_digital_resurvey import DigitalResurveyTracker
+    records = fixtures.load("digital_resurvey_villages", [])
+    if not records:
+        return
 
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM digital_resurvey_villages")
     if cursor.fetchone()[0] > 0:
         return
 
-    records = DigitalResurveyTracker.get_resurvey_data()
     rows = [
         (
             r["district"],
@@ -600,6 +527,7 @@ def seed_all():
         seed_administrative_divisions(conn)
         seed_fair_value_benchmarks(conn)
         seed_digital_resurvey_villages(conn)
+    seed_demo_audit()
     print("✅ Successfully seeded all Kandezhuthu database tables!")
 
 

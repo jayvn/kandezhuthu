@@ -83,7 +83,7 @@ def main():
             print(f"Process PID:        {pid}")
 
     elif args.command == "record":
-        from scripts.record_demo import OUTPUT_DIR, DemoVideoRecorder, transcode_video
+        from tests.fixtures.tools.record_demo import OUTPUT_DIR, DemoVideoRecorder, transcode_video
 
         out_dir = Path(args.output_dir) if args.output_dir else OUTPUT_DIR
         orch = AppOrchestrator(host=args.host, port=args.port, reuse_existing=True)

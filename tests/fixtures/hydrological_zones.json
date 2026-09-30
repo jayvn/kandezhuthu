@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Aluva - Periyar River Plain",
+    "lat": 10.1076,
+    "lng": 76.3516,
+    "radius_km": 7.0,
+    "basin": "Periyar River Basin",
+    "typical_msl": 6.5,
+    "inundation_2018": true,
+    "district": "Ernakulam",
+    "advisory": "Located in the lower Periyar River flood basin. Plots below 8m MSL were inundated during the 2018 Great Kerala Floods following Idamalayar and Idukki dam releases. Plinth must be raised at least 0.9m to 1.2m above road level."
+  },
+  {
+    "name": "Kakkanad / Thrikkakara Midlands",
+    "lat": 10.0159,
+    "lng": 76.3419,
+    "radius_km": 6.0,
+    "basin": "Chitrapuzha / Kadambrayar Basin (Elevated Midlands)",
+    "typical_msl": 26.0,
+    "inundation_2018": false,
+    "district": "Ernakulam",
+    "advisory": "Elevated midland terrain (+20m to +35m MSL) with natural gravity slope drainage. Negligible risk of river overflow. Standard KPBR plinth height (0.45m - 0.60m) is sufficient."
+  },
+  {
+    "name": "Kuttanad & Lower Vembanad Polders",
+    "lat": 9.4981,
+    "lng": 76.4312,
+    "radius_km": 15.0,
+    "basin": "Vembanad Wetland / Pamba-Meenachil Estuary",
+    "typical_msl": 0.8,
+    "inundation_2018": true,
+    "district": "Alappuzha",
+    "advisory": "CRITICAL: Sub-sea-level / delta polder terrain (-0.5m to +2.0m MSL). Extremely high water table and annual monsoonal submergence risk. Mandatory pile foundation, elevated stilts, or 1.5m plinth."
+  },
+  {
+    "name": "Chengannur / Aranmula Pamba Flood Basin",
+    "lat": 9.3175,
+    "lng": 76.6173,
+    "radius_km": 8.0,
+    "basin": "Pamba River Basin",
+    "typical_msl": 7.2,
+    "inundation_2018": true,
+    "district": "Alappuzha / Pathanamthitta",
+    "advisory": "Severe flood plain of the Pamba River. Suffered 6-12 ft inundation in 2018. Examine physical high-water marks on adjacent walls. Minimum 1.2m plinth recommended."
+  },
+  {
+    "name": "Chalakudy River Floodplain",
+    "lat": 10.307,
+    "lng": 76.333,
+    "radius_km": 8.0,
+    "basin": "Chalakudy River Basin",
+    "typical_msl": 8.0,
+    "inundation_2018": true,
+    "district": "Thrissur",
+    "advisory": "Direct Chalakudy river discharge corridor. Severe flash inundation hazard during high Sholayar / Poringalkuthu dam outflows. Verify historical water levels before purchase."
+  },
+  {
+    "name": "Kochi Coastal & Backwater Zone",
+    "lat": 9.9312,
+    "lng": 76.2673,
+    "radius_km": 10.0,
+    "basin": "Cochin Estuary & Coastal Arabian Sea",
+    "typical_msl": 1.8,
+    "inundation_2018": true,
+    "district": "Ernakulam",
+    "advisory": "Low-lying coastal wetland and backwater belt (+1.0m to +2.5m MSL). High vulnerability to monsoon storm surges, spring high tides (Vellappokkam), and tidal backwater ingress. Check CRZ (Coastal Regulation Zone) clearance if within 100m of backwaters."
+  },
+  {
+    "name": "Thrissur Kole Wetland Basin",
+    "lat": 10.5276,
+    "lng": 76.16,
+    "radius_km": 9.0,
+    "basin": "Kole Wetlands (Ramsar Site)",
+    "typical_msl": 1.5,
+    "inundation_2018": true,
+    "district": "Thrissur",
+    "advisory": "Low-lying Kole paddy wetland basin (0.5m to 2.5m MSL). Strict statutory building prohibitions under Kerala Conservation of Paddy Land & Wetland Act, 2008. Subject to seasonal water logging."
+  },
+  {
+    "name": "Pattambi / Shoranur - Bharathapuzha Basin",
+    "lat": 10.8062,
+    "lng": 76.1963,
+    "radius_km": 8.0,
+    "basin": "Bharathapuzha (Nila) River Basin",
+    "typical_msl": 18.5,
+    "inundation_2018": false,
+    "district": "Palakkad",
+    "advisory": "Riparian banks of Bharathapuzha. Low to moderate risk. Flooding restricted to immediate river banks (<50m). Standard setback and 0.6m plinth height recommended."
+  }
+]

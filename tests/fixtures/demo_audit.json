@@ -1,0 +1,86 @@
+{
+  "property_identifier": "Re-Sy 345/1, Aluva West Village, Ernakulam",
+  "survey_no": "345/1",
+  "village": "Aluva West",
+  "taluk": "Aluva",
+  "district": "Ernakulam",
+  "sro_name": "Aluva",
+  "deeds": [
+    {
+      "doc_number": "214/1982",
+      "year": 1982,
+      "sro_name": "Aluva",
+      "deed_type": "Pattayam (Govt Land Assignment)",
+      "grantors": [
+        "Special Tahsildar (Land Assignment)"
+      ],
+      "grantees": [
+        "Chacko Varghese"
+      ],
+      "extent_cents": 10.0,
+      "survey_no": "345/1"
+    },
+    {
+      "doc_number": "890/1996",
+      "year": 1996,
+      "sro_name": "Aluva",
+      "deed_type": "Bhagapathram (Partition Deed)",
+      "grantors": [
+        "Chacko Varghese (Deceased Estate)"
+      ],
+      "grantees": [
+        "George Chacko",
+        "Thomas Chacko"
+      ],
+      "extent_cents": 10.0,
+      "survey_no": "345/1",
+      "unrepresented_heirs": [
+        "Mary Chacko (Sister / Daughter)"
+      ],
+      "family_religion": "christian"
+    },
+    {
+      "doc_number": "1420/2014",
+      "year": 2014,
+      "sro_name": "Aluva",
+      "deed_type": "Theeradharam (Sale Deed)",
+      "grantors": [
+        "George Chacko"
+      ],
+      "grantees": [
+        "Current Seller: Suresh Nair"
+      ],
+      "extent_cents": 11.0,
+      "survey_no": "345/1",
+      "easements_reserved": [
+        "3-meter motorable pathway along southern boundary reserved for Thomas Chacko"
+      ]
+    }
+  ],
+  "ec_records": [
+    {
+      "doc_number": "214/1982",
+      "year": 1982,
+      "sro_name": "Aluva",
+      "nature": "Pattayam"
+    },
+    {
+      "doc_number": "890/1996",
+      "year": 1996,
+      "sro_name": "Aluva",
+      "nature": "Partition"
+    },
+    {
+      "doc_number": "1420/2014",
+      "year": 2014,
+      "sro_name": "Aluva",
+      "nature": "Sale"
+    },
+    {
+      "doc_number": "3012/2022",
+      "year": 2022,
+      "sro_name": "Aluva",
+      "nature": "Equitable Mortgage - Federal Bank"
+    }
+  ]
+}

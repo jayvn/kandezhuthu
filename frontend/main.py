@@ -25,9 +25,10 @@ from fastapi.staticfiles import StaticFiles
 
 load_dotenv()
 
+from app import fixtures  # noqa: E402
 from app.db.seed_data import seed_all  # noqa: E402
 from app.domain.deed_ocr import DeedOCREngine  # noqa: E402
-from app.domain.elevation_flood import ElevationFloodCalculator  # noqa: E402
+from app.domain.elevation_flood import ElevationFloodCalculator, ElevationUnavailableError  # noqa: E402
 from app.domain.ec_parser import EncumbranceCertificateAuditor  # noqa: E402
 from app.domain.cadastral_databank import BhuNakshaCadastralService, KeralaDataBankService  # noqa: E402
 from app.domain.data_api import DataAPI  # noqa: E402
@@ -130,7 +131,8 @@ async def health_check():
 @app.get("/api/config")
 async def get_config():
     return {
-        "google_maps_api_key": os.environ.get("GOOGLE_MAPS_API_KEY", "") or os.environ.get("VITE_GOOGLE_MAPS_API_KEY", "")
+        "google_maps_api_key": os.environ.get("GOOGLE_MAPS_API_KEY", "") or os.environ.get("VITE_GOOGLE_MAPS_API_KEY", ""),
+        "demo": fixtures.is_demo(),
     }
 
 
@@ -179,7 +181,10 @@ async def get_plot_elevation(req: Request):
         return JSONResponse({"error": "Missing valid lat and lng coordinates."}, status_code=400)
 
     calculator = ElevationFloodCalculator()
-    res = calculator.calculate(latitude=lat, longitude=lng, locality_hint=locality, plot_extent_cents=cents)
+    try:
+        res = calculator.calculate(latitude=lat, longitude=lng, locality_hint=locality, plot_extent_cents=cents)
+    except ElevationUnavailableError as e:
+        return JSONResponse({"error": str(e)}, status_code=503)
     out_dict = res.model_dump()
     if lang == "en" and out_dict.get("whatsapp_inquiry_for_seller_en"):
         out_dict["whatsapp_inquiry_for_seller"] = out_dict["whatsapp_inquiry_for_seller_en"]
@@ -294,7 +299,7 @@ async def get_cadastral_sketch(
     lat: float | None = None,
     lng: float | None = None,
 ):
-    """Returns digital cadastral sub-division boundaries (FMB polygon geometry) and segment dimensions."""
+    """Returns cadastral sub-division boundaries (FMB polygon geometry) and segment dimensions."""
     parcel = BhuNakshaCadastralService.get_cadastral_parcel(
         survey_no=survey_no,
         village=village,
@@ -303,6 +308,11 @@ async def get_cadastral_sketch(
         center_lat=lat,
         center_lng=lng,
     )
+    if parcel is None:
+        return JSONResponse(
+            {"error": "No cadastral sketch on record. Check BhuNaksha or the Taluk Survey Office FMB sketch."},
+            status_code=404,
+        )
     return JSONResponse(parcel.model_dump())
 
 
@@ -403,7 +413,7 @@ async def detect_boundaries(
     if osm_polygon:
         return JSONResponse(osm_polygon)
 
-    # Fallback to BhuNaksha Cadastral Parcel Synthesizer
+    # Demo mode only: synthetic FMB-style parcel from fixtures
     target_cents = cents if (cents is not None and cents > 0) else 10.0
     parcel = BhuNakshaCadastralService.get_cadastral_parcel(
         survey_no=survey_no or "Re-Sy Plot",
@@ -413,27 +423,23 @@ async def detect_boundaries(
         center_lat=lat,
         center_lng=lng,
     )
-    
-    dims_data = []
-    for d in parcel.fmb_dimensions_m:
-        if hasattr(d, "model_dump"):
-            dims_data.append(d.model_dump())
-        elif isinstance(d, dict):
-            dims_data.append(d)
-        else:
-            dims_data.append({"edge": str(getattr(d, "edge", "")), "length_m": float(getattr(d, "length_m", 0.0)), "type": str(getattr(d, "type", ""))})
+    if parcel is None:
+        return JSONResponse(
+            {"status": "not_found", "message": "No boundary found in OpenStreetMap for this location."},
+            status_code=404,
+        )
 
     return JSONResponse({
         "status": "success",
         "source": "cadastral_fmb",
-        "source_title": "BhuNaksha Cadastral FMB Sub-division",
+        "source_title": "Demo FMB Sub-division",
         "polygon_coordinates": parcel.polygon_coordinates,
         "extent_cents": parcel.extent_cents,
         "area_sqm": round(parcel.extent_cents * 40.4686, 1),
-        "fmb_dimensions_m": dims_data,
+        "fmb_dimensions_m": parcel.fmb_dimensions_m,
         "survey_no": parcel.survey_no,
         "village": parcel.village,
-        "message": f"Demarcated cadastral sub-division parcel ({parcel.extent_cents} Cents) aligned to Kerala village layout."
+        "message": f"Demo cadastral parcel ({parcel.extent_cents} Cents).",
     })
 
 
@@ -478,8 +484,11 @@ async def whatsapp_webhook(req: Request):
 
     if lat and lng:
         calc = ElevationFloodCalculator()
-        elev = calc.calculate(latitude=float(lat), longitude=float(lng))
-        reply_text = (
+        try:
+            elev = calc.calculate(latitude=float(lat), longitude=float(lng))
+        except ElevationUnavailableError:
+            elev = None
+        reply_text = "*Kandezhuthu AI*\n\nElevation data is not available for this location right now." if elev is None else (
             f"*Kandezhuthu AI - Location Diligence*\n\n"
             f"*Coordinates*: {lat}, {lng}\n"
             f"*Elevation*: {elev.elevation_meters}m MSL\n"
@@ -645,8 +654,10 @@ async def get_sample_deed(
     user_id: str = "kandezhuthu-user",
     lang: str = "en",
 ):
-    """Returns realistic Kerala deed or EC sample PDF or executes instant multimodal demonstration OCR."""
-    base_dir = Path(__file__).resolve().parent.parent / "data" / "sample_deeds"
+    """Demo mode only: returns a sample deed or EC PDF, or runs OCR / EC audit on it."""
+    base_dir = fixtures.path("sample_deeds")
+    if base_dir is None:
+        return JSONResponse({"error": "Sample documents are only available in demo mode."}, status_code=404)
     if doc_type == "ec":
         target_path = base_dir / "kerala_sro_ec_aluva_30_year_search.pdf"
         target_filename = "kerala_sro_ec_aluva_30_year_search.pdf"
@@ -664,11 +675,7 @@ async def get_sample_deed(
     if process:
         if doc_type == "ec":
             auditor = EncumbranceCertificateAuditor(property_identifier=target_filename)
-            raw_text = (
-                "SRO Encumbrance Certificate - Aluva 30 Year Search\n"
-                "Re-Sy 345/1 Block 12 Aluva West Village\n"
-                "Entry 1: Doc 3012/2022 - Gehan / Equitable Mortgage with Federal Bank Aluva Branch - Suresh Nair - Rs 45,00,000 - Undischarged Liability"
-            )
+            raw_text = (base_dir / "sample_ec.txt").read_text(encoding="utf-8")
             result = auditor.audit_ec(raw_ec_text=raw_text)
             out_dict = result.model_dump()
             out_dict["file_name"] = target_filename
@@ -710,397 +717,10 @@ async def get_sample_deed(
 
 @app.get("/api/timeline_demo")
 async def get_timeline_demo(preset: str = "aluva_broken", lang: str = "en"):
-    """Returns structured 30-year chronological ownership lineage chain for interactive timeline rendering."""
-    presets = {
-        "aluva_broken": {
-            "property_identifier": "Re-Sy 345/1, Block 12, Aluva West Village, Ernakulam",
-            "score": 0,
-            "risk_verdict": "DANGER",
-            "risk_color": "danger",
-            "chain_intact": False,
-            "summary": "Critical lineage breaks: Excluded female heir under Mary Roy precedent, undischarged Federal Bank mortgage in EC, and 1.0 Cent extent inflation.",
-            "financial_transparency": {
-                "is_public_record": True,
-                "legal_basis": "Registration Act, 1908 (Sections 51 & 57) - SRO Book 1 Public Record",
-                "kerala_stamp_act_rule": "Kerala Stamp Act, 1959 (Section 28A Fair Value & Section 45A Undervaluation Audit)",
-                "last_purchase_price": "₹16,50,000",
-                "last_purchase_year": 2014,
-                "last_buyer": "Suresh Nair (Current Seller)",
-                "historical_rate_per_cent": "₹1,50,000 / Cent (2014)",
-                "current_govt_fair_value": "₹2,40,000 / Are (~₹97,125 / Cent)",
-                "active_bank_lien_inr": "₹45,00,000 (Federal Bank - Undischarged SARFAESI Charge)",
-                "market_price_context": "Suresh Nair acquired this plot in 2014 for ₹16.50 Lakhs (Doc #1420/2014). If seller is asking ₹65 Lakhs today (+294% markup), prospective buyer must demand written bank closure letter before paying any advance.",
-                "undervaluation_warning": "Registering below Fair Value or actual transaction consideration to evade 8% Stamp Duty is penalized under Sec 45A of Kerala Stamp Act with property revenue attachment."
-            },
-            "nodes": [
-                {
-                    "year": 1982,
-                    "doc_number": "214/1982",
-                    "deed_type": "Pattayam (Land Assignment)",
-                    "deed_malayalam": "പട്ടയം",
-                    "sro": "Aluva",
-                    "from_parties": ["Special Tahsildar (Land Assignment)"],
-                    "to_parties": ["Chacko Varghese"],
-                    "extent_cents": 10.0,
-                    "status": "valid",
-                    "status_label": "Valid Initial Grant",
-                    "badge_color": "success",
-                    "consideration_display": "₹150 (Govt Revenue Fee)",
-                    "financial_type": "Official Govt Assignment Fee",
-                    "govt_fair_value": "N/A (Pre-Fair Value Regime)",
-                    "stamp_duty_paid": "Exempt / Revenue Stamp ₹5",
-                    "financial_note": "Initial government land assignment to original occupant Chacko Varghese for nominal revenue fee.",
-                    "flags": [],
-                    "notes": "Official government land assignment to original holder Chacko Varghese."
-                },
-                {
-                    "year": 1996,
-                    "doc_number": "890/1996",
-                    "deed_type": "Bhagapathram (Partition Deed)",
-                    "deed_malayalam": "ഭാഗപത്രം",
-                    "sro": "Aluva",
-                    "from_parties": ["Estate of Late Chacko Varghese"],
-                    "to_parties": ["George Chacko (Son)", "Thomas Chacko (Son)"],
-                    "extent_cents": 10.0,
-                    "status": "broken",
-                    "status_label": "Critical Succession Defect",
-                    "badge_color": "danger",
-                    "consideration_display": "₹75,000 (Family Partition Declared Value)",
-                    "financial_type": "Family Partition Share Valuation",
-                    "govt_fair_value": "₹35,000 / Cent (Declared Base)",
-                    "stamp_duty_paid": "₹1,500 (Kerala Stamp Act Schedule Art 42)",
-                    "financial_note": "Internal family partition valuation for stamp duty assessment. No money changed hands between brothers.",
-                    "flags": [
-                        {
-                            "title": "Mary Roy Precedent: Excluded Female Heir",
-                            "statute": "Indian Succession Act, 1925 / Mary Roy v. State of Kerala (1986)",
-                            "desc": "Sister Mary Chacko was completely excluded without a registered Release Deed (ഒഴിവുമുറി). Her heirs can file a partition suit at any time."
-                        },
-                        {
-                            "title": "Missing Legal Heirship & Death Certificates",
-                            "statute": "Kerala Revenue & Registration Rules",
-                            "desc": "No Tahsildar-issued legal heirship certificate on record to prove surviving legal heirs."
-                        }
-                    ],
-                    "notes": "Divided only between two sons. Excluded daughter Mary Chacko clouds marketable title."
-                },
-                {
-                    "year": 2014,
-                    "doc_number": "1420/2014",
-                    "deed_type": "Theeradharam (Sale Deed)",
-                    "deed_malayalam": "തീറാധാരം",
-                    "sro": "Aluva",
-                    "from_parties": ["George Chacko"],
-                    "to_parties": ["Suresh Nair (Current Seller)"],
-                    "extent_cents": 11.0,
-                    "status": "warning",
-                    "status_label": "Extent Inflation & Easement",
-                    "badge_color": "danger",
-                    "consideration_display": "₹16,50,000 (Registered Consideration)",
-                    "price_per_cent": "₹1,50,000 / Cent",
-                    "financial_type": "Registered Sale Consideration (Public SRO Book 1 Record)",
-                    "govt_fair_value": "₹1,20,000 / Are (~₹48,560 / Cent)",
-                    "stamp_duty_paid": "₹1,32,000 (8% Stamp Duty)",
-                    "registration_fee_paid": "₹33,000 (2% SRO Registration Fee)",
-                    "financial_note": "Suresh Nair purchased this property from George Chacko for a public registered consideration of ₹16,50,000 (₹1.50 Lakhs/Cent).",
-                    "flags": [
-                        {
-                            "title": "Extent Inflation (+1.00 Cent Phantom Land)",
-                            "statute": "Transfer of Property Act, 1882 (Nemo dat quod non habet)",
-                            "desc": "Prior deeds cover exactly 10.00 Cents. Deed suddenly purports to transfer 11.00 Cents without land acquisition or resurvey order."
-                        },
-                        {
-                            "title": "Buried Pathway Easement (Nadappu Vazhi)",
-                            "statute": "Indian Easements Act, 1882 (Sec 13 & 15)",
-                            "desc": "Reserves a 3-meter wide pathway along southern boundary for neighbor Thomas Chacko. Cannot be fenced or built upon."
-                        }
-                    ],
-                    "notes": "Area expanded to 11 Cents unlawfully. 3-meter southern strip reserved as pathway."
-                },
-                {
-                    "year": 2022,
-                    "doc_number": "3012/2022",
-                    "deed_type": "Bank Mortgage in EC (Gehan)",
-                    "deed_malayalam": "ബാങ്ക് ബാധ്യത (EC)",
-                    "sro": "Aluva",
-                    "from_parties": ["Suresh Nair"],
-                    "to_parties": ["Federal Bank (Aluva Branch)"],
-                    "extent_cents": 11.0,
-                    "status": "broken",
-                    "status_label": "Ghost Undischarged Mortgage",
-                    "badge_color": "danger",
-                    "consideration_display": "₹45,00,000 (Mortgage Loan Liability)",
-                    "financial_type": "Registered Bank Loan Lien (SRO EC Book 1)",
-                    "govt_fair_value": "₹2,10,000 / Are (~₹85,000 / Cent)",
-                    "stamp_duty_paid": "₹22,500 (Kerala Stamp Act Art 36 - Mortgage with Title Deposit)",
-                    "financial_note": "Federal Bank holds original title deeds against an outstanding registered liability of ₹45,00,000. Property is liable to SARFAESI seizure.",
-                    "flags": [
-                        {
-                            "title": "Undischarged SARFAESI Mortgage in SRO EC",
-                            "statute": "SARFAESI Act, 2002 / Registration Act Sec 17 & 51",
-                            "desc": "Outstanding equitable mortgage with Federal Bank. No discharge receipt or registered Gehan release (ഒഴിവുമുറി) exists."
-                        }
-                    ],
-                    "notes": "Federal Bank holds original title deeds. Property liable to SARFAESI attachment."
-                }
-            ],
-            "whatsapp_inquiry": "നമസ്കാരം, ആലുവ വെസ്റ്റ് വില്ലേജിലെ Re-Sy 345/1 പ്രോപ്പർട്ടിയുടെ മുന്നാധാരങ്ങൾ പരിശോധിച്ചപ്പോൾ താഴെ പറയുന്ന പ്രധാന കാര്യങ്ങളിൽ വ്യക്തത ആവശ്യമുണ്ട്:\n1. 2022-ൽ ഫെഡറൽ ബാങ്കിൽ രജിസ്റ്റർ ചെയ്ത ബാധ്യത (Doc #3012/2022) തീർത്ത ബാങ്ക് NOC-യും ഒറിജിനൽ ആധാരവും ലഭ്യമാണോ?\n2. 1996-ലെ ഭാഗപത്രത്തിൽ ഒഴിവാക്കപ്പെട്ട സഹോദരി മേരി ചാക്കോയുടെയോ അവകാശികളുടെയോ രജിസ്റ്റർ ചെയ്ത ഒഴിവുമുറി (Release Deed) ലഭ്യമാണോ?\n3. 10 സെന്റ് ഉണ്ടായിരുന്ന ഭൂമി 2014-ൽ 11 സെന്റായി മാറിയത് എങ്ങനെയാണ്? ഫീൽഡ് മെഷർമെന്റ് ബുക്ക് (FMB) സ്കെച്ച് ഉണ്ടോ?\n4. തെക്കേ അതിരിലൂടെയുള്ള 3 മീറ്റർ വഴി അവകാശം നിലവിലുണ്ടോ?",
-            "whatsapp_inquiry_en": "Hello, upon reviewing the prior title documents for the property in Re-Sy 345/1, Aluva West Village, we require clarification on the following key points before proceeding with any advance:\n1. Is a bank NOC and original title deed available clearing the mortgage registered with Federal Bank in 2022 (Doc #3012/2022)?\n2. Is a registered Release Deed available from sister Mary Chacko or her legal heirs who were excluded from the 1996 partition deed?\n3. How did the property extent increase from 10 Cents to 11 Cents in 2014? Is an official FMB (Field Measurement Book) sketch available?\n4. Is the 3-meter pathway easement along the southern boundary still active and reserved for neighbors?",
-            "checklist": [
-                {"item": "Locate 3-meter Southern Pathway on site", "done": False},
-                {"item": "Verify 4 Survey Stones (സർവേ കല്ലുകൾ) with FMB Sketch", "done": False},
-                {"item": "Inspect Bank SARFAESI Attachment Notices on gates/walls", "done": False},
-                {"item": "Check Village Office Resurvey records for 1-Cent excess", "done": False}
-            ]
-        },
-        "kakkanad_wetland": {
-            "property_identifier": "Sy 182/4, Kakkanad Village, Kanayannur Taluk, Ernakulam",
-            "score": 28,
-            "risk_verdict": "DANGER",
-            "risk_color": "danger",
-            "chain_intact": False,
-            "summary": "Critical Paddy Land / Wetland trap (Data Bank listed) and unauthorized sale of minor child's share without District Court sanction order.",
-            "financial_transparency": {
-                "is_public_record": True,
-                "legal_basis": "Registration Act, 1908 (Sections 51 & 57) - SRO Book 1 Public Record",
-                "kerala_stamp_act_rule": "Kerala Stamp Act, 1959 (Section 28A Fair Value & Section 45A Undervaluation Audit)",
-                "last_purchase_price": "₹36,00,000",
-                "last_purchase_year": 2015,
-                "last_buyer": "Unnikrishnan (Current Seller)",
-                "historical_rate_per_cent": "₹2,40,000 / Cent (2015)",
-                "current_govt_fair_value": "₹3,10,000 / Are (~₹1,25,450 / Cent)",
-                "active_bank_lien_inr": "Nil (No bank mortgage in EC)",
-                "statutory_fee_liability": "Pending Kerala Paddy Land Act Sec 27A conversion fee (~10% of Fair Value = ₹4,65,000)",
-                "market_price_context": "Seller acquired 15 Cents in 2015 for ₹36 Lakhs. However, ₹12 Lakhs was minor Kevin's share pocketed without court sanction. In addition, converting this wetland will cost ₹4.65+ Lakhs in govt revenue fees.",
-                "undervaluation_warning": "Minor's 1/3 share (₹12 Lakhs) was alienated without depositing in District Court minor fixed deposit account."
-            },
-            "nodes": [
-                {
-                    "year": 1991,
-                    "doc_number": "512/1991",
-                    "deed_type": "Theeradharam (Sale Deed)",
-                    "deed_malayalam": "തീറാധാരം",
-                    "sro": "Edappally",
-                    "from_parties": ["Raman Menon"],
-                    "to_parties": ["Devassia Joseph"],
-                    "extent_cents": 15.0,
-                    "status": "valid",
-                    "status_label": "Valid Acquisition (Nilam)",
-                    "badge_color": "success",
-                    "consideration_display": "₹1,20,000 (പ്രതിഫല തുക)",
-                    "price_per_cent": "₹8,000 / Cent",
-                    "financial_type": "Registered Sale Consideration",
-                    "govt_fair_value": "₹6,000 / Cent (Declared Base)",
-                    "stamp_duty_paid": "₹10,800 (Kerala Stamp Duty 9%)",
-                    "financial_note": "Acquisition of 15 Cents agricultural paddy land for public consideration of ₹1.20 Lakhs.",
-                    "flags": [],
-                    "notes": "Acquisition of 15 Cents classified in revenue records as Nilam (നിലം / Nanja)."
-                },
-                {
-                    "year": 2006,
-                    "doc_number": "780/2006",
-                    "deed_type": "Bhagapathram (Partition Deed)",
-                    "deed_malayalam": "ഭാഗപത്രം",
-                    "sro": "Thrikkakara",
-                    "from_parties": ["Estate of Devassia Joseph"],
-                    "to_parties": ["Jacob Devassia (Father)", "Kevin Jacob (Minor Son, Age 9)"],
-                    "extent_cents": 15.0,
-                    "status": "valid",
-                    "status_label": "Partition with Minor Share",
-                    "badge_color": "warning",
-                    "consideration_display": "₹4,50,000 (Family Partition Declared Value)",
-                    "financial_type": "Family Partition Share Valuation",
-                    "govt_fair_value": "₹30,000 / Cent",
-                    "stamp_duty_paid": "₹4,500 (Kerala Stamp Act Art 42)",
-                    "financial_note": "Internal family partition allotting 50% undivided co-ownership share (₹2.25 Lakhs value) to minor Kevin.",
-                    "flags": [
-                        {
-                            "title": "Minor's Undivided Share Created",
-                            "statute": "Hindu Minority & Guardianship Act / Guardians & Wards Act, 1890",
-                            "desc": "Minor Kevin allotted 50% undivided share (7.5 Cents) represented by natural guardian father."
-                        }
-                    ],
-                    "notes": "Partition creates undivided co-ownership for 9-year-old minor Kevin."
-                },
-                {
-                    "year": 2015,
-                    "doc_number": "1204/2015",
-                    "deed_type": "Theeradharam (Sale Deed)",
-                    "deed_malayalam": "തീറാധാരം",
-                    "sro": "Thrikkakara",
-                    "from_parties": ["Jacob Devassia (Self & as Guardian for Minor Kevin)"],
-                    "to_parties": ["Unnikrishnan (Seller)"],
-                    "extent_cents": 15.0,
-                    "status": "broken",
-                    "status_label": "Voidable Minor Alienation",
-                    "badge_color": "danger",
-                    "consideration_display": "₹36,00,000 (Registered Consideration)",
-                    "price_per_cent": "₹2,40,000 / Cent",
-                    "financial_type": "Registered Sale Consideration (Public SRO Book 1)",
-                    "govt_fair_value": "₹1,80,000 / Are (~₹72,840 / Cent)",
-                    "stamp_duty_paid": "₹2,88,000 (8% Stamp Duty)",
-                    "registration_fee_paid": "₹72,000 (2% Reg Fee)",
-                    "financial_note": "Father sold entire 15 Cents including minor Kevin's share (₹18.0 Lakhs consideration) without District Court sanction order.",
-                    "flags": [
-                        {
-                            "title": "Minor Share Sold Without District Court Order",
-                            "statute": "Sec 8(2) HMGA 1956 / Guardians & Wards Act Sec 29",
-                            "desc": "Father alienated minor Kevin's share without prior sanction from District Court. Sale is legally voidable by the minor upon attaining majority."
-                        }
-                    ],
-                    "notes": "Father sold minor's immovable property without mandatory District Court sanction."
-                },
-                {
-                    "year": 2024,
-                    "doc_number": "Data Bank 2008 Entry",
-                    "deed_type": "Agricultural Data Bank Listing",
-                    "deed_malayalam": "ഡാറ്റാ ബാങ്ക് എൻട്രി",
-                    "sro": "Kakkanad Krishi Bhavan",
-                    "from_parties": ["Local Level Monitoring Committee (LLMC)"],
-                    "to_parties": ["Public Revenue Register"],
-                    "extent_cents": 15.0,
-                    "status": "broken",
-                    "status_label": "Wetland 2008 Fatal Trap",
-                    "badge_color": "danger",
-                    "consideration_display": "₹4,65,000 (Govt Conversion Fee Liability)",
-                    "financial_type": "Statutory Revenue Liability (Sec 27A / Form 6)",
-                    "govt_fair_value": "₹3,10,000 / Are (~₹1,25,450 / Cent)",
-                    "stamp_duty_paid": "Pending Revenue Fee Payment",
-                    "financial_note": "Property is in Data Bank. Statutory penalty and conversion fee liability of ~₹4.65 Lakhs (10% of Fair Value under Section 27A) is unpaid.",
-                    "flags": [
-                        {
-                            "title": "Property in Wetland Data Bank (No Building Permit)",
-                            "statute": "Kerala Conservation of Paddy Land & Wetland Act, 2008",
-                            "desc": "Listed as Paddy/Wetland. Cannot get Panchayath/Municipality building permit without Form 5 exclusion and Form 6 Sec 27A revenue conversion fee."
-                        }
-                    ],
-                    "notes": "Unregularized wetland status. Building permit impossible without Form 5 and Form 6 approval."
-                }
-            ],
-            "whatsapp_inquiry": "നമസ്കാരം, കാക്കനാട് വില്ലേജിലെ 15 സെന്റ് സ്ഥലത്തിന്റെ പ്രമാണങ്ങൾ പരിശോധിച്ചപ്പോൾ പ്രധാനപ്പെട്ട രണ്ട് കാര്യങ്ങളിൽ വ്യക്തത ആവശ്യമുണ്ട്:\n1. 2015-ൽ മൈനറായിരുന്ന കെവിന്റെ അവകാശം വിൽക്കുവാൻ ജില്ലാ കോടതിയുടെ മുൻകൂർ അനുമതി ഉത്തരവ് (District Court Sanction Order) ഉണ്ടോ?\n2. ഈ സ്ഥലം 2008-ലെ നെൽവയൽ-തണ്ണീർത്തട ഡാറ്റാ ബാങ്കിൽ ഉൾപ്പെട്ടിട്ടുണ്ടോ? ഫോം 5 ഉത്തരവും സെക്ഷൻ 27A (ഫോം 6) പ്രകാരമുള്ള പുരയിടമാക്കൽ ഉത്തരവും ഉണ്ടോ?",
-            "whatsapp_inquiry_en": "Hello, upon reviewing the title documents for the 15-cent plot in Kakkanad Village, we require clarification on two critical points before advancing funds:\n1. Is there a prior District Court Sanction Order for the 2015 sale of Kevin's minor share (HMGA Section 8)?\n2. Is this land listed as Nilam in the 2008 Paddy Land Data Bank? Are Form 5 exclusion and Section 27A (Form 6) revenue conversion orders obtained?",
-            "checklist": [
-                {"item": "Check Krishi Bhavan Data Bank register for Sy 182/4", "done": False},
-                {"item": "Verify Kevin's age and ratification release deed", "done": False},
-                {"item": "Inspect waterlogging and adjacent paddy fields during monsoon", "done": False},
-                {"item": "Check Municipality road widening proposal", "done": False}
-            ]
-        },
-        "clean_title": {
-            "property_identifier": "Re-Sy 412/3, Aluva West Village, Ernakulam",
-            "score": 100,
-            "risk_verdict": "NO KNOWN RED FLAGS",
-            "risk_color": "clear",
-            "chain_intact": True,
-            "summary": "Flawless 39-year title continuity: 100% unbroken chain from 1985 Pattayam to current owner, consistent 10.0 Cents extent, all heirs represented, and clean EC.",
-            "financial_transparency": {
-                "is_public_record": True,
-                "legal_basis": "Registration Act, 1908 (Sections 51 & 57) - SRO Book 1 Public Record",
-                "kerala_stamp_act_rule": "Kerala Stamp Act, 1959 (Section 28A Fair Value & Section 45A Undervaluation Audit)",
-                "last_purchase_price": "₹38,00,000",
-                "last_purchase_year": 2018,
-                "last_buyer": "Rajesh Kumar (Current Seller)",
-                "historical_rate_per_cent": "₹3,80,000 / Cent (2018)",
-                "current_govt_fair_value": "₹3,20,000 / Are (~₹1,29,500 / Cent)",
-                "active_bank_lien_inr": "Nil (Zero Mortgage - 39-Year Nil EC)",
-                "market_price_context": "Rajesh Kumar acquired this property in 2018 for registered consideration of ₹38 Lakhs. Stamp Duty (₹3.04L) and Reg fee (₹76K) were fully paid at fair market value.",
-                "undervaluation_warning": "None. Declared consideration accurately exceeded notified Fair Value with zero tax irregularity."
-            },
-            "nodes": [
-                {
-                    "year": 1985,
-                    "doc_number": "412/1985",
-                    "deed_type": "Pattayam (Land Assignment)",
-                    "deed_malayalam": "പട്ടയം",
-                    "sro": "Aluva",
-                    "from_parties": ["Special Tahsildar (Land Assignment)"],
-                    "to_parties": ["Kunjuraman Nair"],
-                    "extent_cents": 10.0,
-                    "status": "valid",
-                    "status_label": "Valid Govt Assignment",
-                    "badge_color": "success",
-                    "consideration_display": "₹200 (Govt Revenue Fee)",
-                    "financial_type": "Official Govt Assignment Fee",
-                    "govt_fair_value": "N/A",
-                    "stamp_duty_paid": "Exempt Revenue Grant",
-                    "financial_note": "Original land grant under Kerala Land Assignment Rules for nominal fee of ₹200.",
-                    "flags": [],
-                    "notes": "Original Pattayam issued with registered survey bounds."
-                },
-                {
-                    "year": 2004,
-                    "doc_number": "1890/2004",
-                    "deed_type": "Theeradharam (Sale Deed)",
-                    "deed_malayalam": "തീറാധാരം",
-                    "sro": "Aluva",
-                    "from_parties": ["Kunjuraman Nair"],
-                    "to_parties": ["Thomas Varghese"],
-                    "extent_cents": 10.0,
-                    "status": "valid",
-                    "status_label": "Clean Registered Sale",
-                    "badge_color": "success",
-                    "consideration_display": "₹4,50,000 (Registered Consideration)",
-                    "price_per_cent": "₹45,000 / Cent",
-                    "financial_type": "Registered Sale Consideration",
-                    "govt_fair_value": "₹35,000 / Cent",
-                    "stamp_duty_paid": "₹45,000 (Kerala Stamp Act 10%)",
-                    "financial_note": "Absolute sale of 10 Cents for registered consideration of ₹4.50 Lakhs.",
-                    "flags": [],
-                    "notes": "Absolute transfer with original title delivered and prior tax receipts cleared."
-                },
-                {
-                    "year": 2018,
-                    "doc_number": "945/2018",
-                    "deed_type": "Theeradharam (Sale Deed)",
-                    "deed_malayalam": "തീറാധാരം",
-                    "sro": "Aluva",
-                    "from_parties": ["Thomas Varghese"],
-                    "to_parties": ["Rajesh Kumar (Current Seller)"],
-                    "extent_cents": 10.0,
-                    "status": "valid",
-                    "status_label": "Clean Registered Sale",
-                    "badge_color": "success",
-                    "consideration_display": "₹38,00,000 (Registered Consideration)",
-                    "price_per_cent": "₹3,80,000 / Cent",
-                    "financial_type": "Registered Sale Consideration (Public SRO Book 1)",
-                    "govt_fair_value": "₹3,20,000 / Are (~₹1,29,500 / Cent)",
-                    "stamp_duty_paid": "₹3,04,000 (8% Stamp Duty)",
-                    "registration_fee_paid": "₹76,000 (2% Reg Fee)",
-                    "financial_note": "Seller Rajesh Kumar purchased this plot in 2018 for ₹38,00,000 (₹3.80 Lakhs/Cent), paying full statutory stamp duty and registration fees.",
-                    "flags": [],
-                    "notes": "Validly conveyed. Land tax paid up to current financial year under Thandaper No. 4120."
-                },
-                {
-                    "year": 2024,
-                    "doc_number": "SRO EC #4510/2024",
-                    "deed_type": "Nil Encumbrance Certificate (30 Years)",
-                    "deed_malayalam": "ബാധ്യതാ സർട്ടിഫിക്കറ്റ് (EC)",
-                    "sro": "Aluva",
-                    "from_parties": ["Sub-Registrar Office Aluva"],
-                    "to_parties": ["Rajesh Kumar"],
-                    "extent_cents": 10.0,
-                    "status": "valid",
-                    "status_label": "Nil Encumbrance Verified",
-                    "badge_color": "success",
-                    "consideration_display": "₹0 Liability (Nil EC)",
-                    "financial_type": "Certified Zero Mortgage Liability",
-                    "govt_fair_value": "₹3,20,000 / Are",
-                    "stamp_duty_paid": "EC Search Fee ₹150",
-                    "financial_note": "Official SRO verification confirms zero mortgage, zero court attachment, and zero bank lien.",
-                    "flags": [],
-                    "notes": "Clean 39-year Encumbrance Certificate with zero attachments, mortgages, or lis pendens."
-                }
-            ],
-            "whatsapp_inquiry": "നമസ്കാരം രാജേഷ് സാർ,\n\nആലുവ റീ-സർവേ 412/3-ൽ ഉൾപ്പെട്ട 10 സെന്റ് സ്ഥലത്തിന്റെ പ്രമാണങ്ങൾ വളരെ കൃത്യവും സംതൃപ്തികരവുമാണ്. രജിസ്ട്രേഷന് മുൻപായി ഒറിജിനൽ പട്ടയവും, ഏറ്റവും പുതിയ വില്ലേജ് കരമടച്ച രസീതും (Land Tax Receipt), സബ് രജിസ്ട്രാർ ഓഫീസിലെ ഒറിജിനൽ ബാധ്യതാ സർട്ടിഫിക്കറ്റും (EC 1985-2024) നേരിട്ട് പരിശോധിക്കാൻ ലഭ്യമാക്കുമല്ലോ. നന്ദി.",
-            "whatsapp_inquiry_en": "Hello Mr. Rajesh,\n\nThe title documents for the 10-cent plot in Aluva Re-Survey 412/3 appear continuous and well-documented. Prior to registration and token advance, kindly make available the original 1985 Pattayam, the latest Village Land Tax Receipt, and the original Encumbrance Certificate (EC 1985-2024) for direct advocate verification. Thank you.",
-            "checklist": [
-                {"item": "Cross-verify original Pattayam (1985) parchment", "done": False},
-                {"item": "Check all 4 boundary stones with Village Resurvey Sketch", "done": False},
-                {"item": "Obtain current Thandaper extract from Village Office", "done": False},
-                {"item": "Confirm 3-meter road access width for KPBR building permit", "done": False}
-            ]
-        }
-    }
+    """Demo mode only: returns a fixture 30-year ownership timeline for the timeline view."""
+    presets = fixtures.load("timeline_presets")
+    if not presets:
+        return JSONResponse({"error": "Timeline presets are only available in demo mode."}, status_code=404)
 
     preset_data = copy.deepcopy(presets.get(preset) or presets["aluva_broken"])
     if lang == "en":

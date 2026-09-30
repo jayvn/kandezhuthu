@@ -1,7 +1,8 @@
 """Elevation and flood exposure calculation engine for Kerala property plots.
 
-Uses Google Elevation API and Geocoding API with a deterministic
-Kerala river basin & SRTM topographic fallback model.
+Uses the Google Elevation and Geocoding APIs (needs GOOGLE_MAPS_API_KEY). The river
+basin zones and the longitude-based elevation estimate are demo data, loaded only
+from `tests/fixtures/` in demo mode (`KANDEZ_FIXTURES`).
 """
 
 from __future__ import annotations
@@ -13,126 +14,16 @@ import urllib.parse
 import urllib.request
 from typing import Any
 
+from app import fixtures
 from app.domain.models import ElevationFloodResult, FloodRiskLevel
 
 
-# Key Kerala river floodplains and low-lying wetland zones
-KERALA_HYDROLOGICAL_ZONES = [
-    {
-        "name": "Aluva - Periyar River Plain",
-        "lat": 10.1076,
-        "lng": 76.3516,
-        "radius_km": 7.0,
-        "basin": "Periyar River Basin",
-        "typical_msl": 6.5,
-        "inundation_2018": True,
-        "district": "Ernakulam",
-        "advisory": (
-            "Located in the lower Periyar River flood basin. Plots below 8m MSL were inundated during the "
-            "2018 Great Kerala Floods following Idamalayar and Idukki dam releases. Plinth must be raised "
-            "at least 0.9m to 1.2m above road level."
-        ),
-    },
-    {
-        "name": "Kakkanad / Thrikkakara Midlands",
-        "lat": 10.0159,
-        "lng": 76.3419,
-        "radius_km": 6.0,
-        "basin": "Chitrapuzha / Kadambrayar Basin (Elevated Midlands)",
-        "typical_msl": 26.0,
-        "inundation_2018": False,
-        "district": "Ernakulam",
-        "advisory": (
-            "Elevated midland terrain (+20m to +35m MSL) with natural gravity slope drainage. "
-            "Negligible risk of river overflow. Standard KPBR plinth height (0.45m - 0.60m) is sufficient."
-        ),
-    },
-    {
-        "name": "Kuttanad & Lower Vembanad Polders",
-        "lat": 9.4981,
-        "lng": 76.4312,
-        "radius_km": 15.0,
-        "basin": "Vembanad Wetland / Pamba-Meenachil Estuary",
-        "typical_msl": 0.8,
-        "inundation_2018": True,
-        "district": "Alappuzha",
-        "advisory": (
-            "CRITICAL: Sub-sea-level / delta polder terrain (-0.5m to +2.0m MSL). Extremely high water table "
-            "and annual monsoonal submergence risk. Mandatory pile foundation, elevated stilts, or 1.5m plinth."
-        ),
-    },
-    {
-        "name": "Chengannur / Aranmula Pamba Flood Basin",
-        "lat": 9.3175,
-        "lng": 76.6173,
-        "radius_km": 8.0,
-        "basin": "Pamba River Basin",
-        "typical_msl": 7.2,
-        "inundation_2018": True,
-        "district": "Alappuzha / Pathanamthitta",
-        "advisory": (
-            "Severe flood plain of the Pamba River. Suffered 6-12 ft inundation in 2018. "
-            "Examine physical high-water marks on adjacent walls. Minimum 1.2m plinth recommended."
-        ),
-    },
-    {
-        "name": "Chalakudy River Floodplain",
-        "lat": 10.3070,
-        "lng": 76.3330,
-        "radius_km": 8.0,
-        "basin": "Chalakudy River Basin",
-        "typical_msl": 8.0,
-        "inundation_2018": True,
-        "district": "Thrissur",
-        "advisory": (
-            "Direct Chalakudy river discharge corridor. Severe flash inundation hazard during high Sholayar / "
-            "Poringalkuthu dam outflows. Verify historical water levels before purchase."
-        ),
-    },
-    {
-        "name": "Kochi Coastal & Backwater Zone",
-        "lat": 9.9312,
-        "lng": 76.2673,
-        "radius_km": 10.0,
-        "basin": "Cochin Estuary & Coastal Arabian Sea",
-        "typical_msl": 1.8,
-        "inundation_2018": True,
-        "district": "Ernakulam",
-        "advisory": (
-            "Low-lying coastal wetland and backwater belt (+1.0m to +2.5m MSL). High vulnerability to "
-            "monsoon storm surges, spring high tides (Vellappokkam), and tidal backwater ingress. "
-            "Check CRZ (Coastal Regulation Zone) clearance if within 100m of backwaters."
-        ),
-    },
-    {
-        "name": "Thrissur Kole Wetland Basin",
-        "lat": 10.5276,
-        "lng": 76.1600,
-        "radius_km": 9.0,
-        "basin": "Kole Wetlands (Ramsar Site)",
-        "typical_msl": 1.5,
-        "inundation_2018": True,
-        "district": "Thrissur",
-        "advisory": (
-            "Low-lying Kole paddy wetland basin (0.5m to 2.5m MSL). Strict statutory building prohibitions "
-            "under Kerala Conservation of Paddy Land & Wetland Act, 2008. Subject to seasonal water logging."
-        ),
-    },
-    {
-        "name": "Pattambi / Shoranur - Bharathapuzha Basin",
-        "lat": 10.8062,
-        "lng": 76.1963,
-        "radius_km": 8.0,
-        "basin": "Bharathapuzha (Nila) River Basin",
-        "typical_msl": 18.5,
-        "inundation_2018": False,
-        "district": "Palakkad",
-        "advisory": (
-            "Riparian banks of Bharathapuzha. Low to moderate risk. Flooding restricted to immediate river banks (<50m). "
-            "Standard setback and 0.6m plinth height recommended."
-        ),
-    },
-]
+class ElevationUnavailableError(RuntimeError):
+    """Raised when no elevation source is available (no API key, not in demo mode)."""
+
+
+def _hydrological_zones() -> list[dict[str, Any]]:
+    return fixtures.load("hydrological_zones", [])
 
 
 class ElevationFloodCalculator:
@@ -197,7 +88,7 @@ class ElevationFloodCalculator:
         )
 
     def _fetch_elevation(self, lat: float, lng: float) -> tuple[float, float | None]:
-        """Queries Google Elevation API if key exists; falls back to Kerala topographic model."""
+        """Queries Google Elevation API; the topographic estimate is used only in demo mode."""
         if self.api_key:
             try:
                 url = f"https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={self.api_key}"
@@ -210,7 +101,11 @@ class ElevationFloodCalculator:
             except Exception:
                 pass
 
-        return self._estimate_kerala_elevation(lat, lng), None
+        if fixtures.is_demo():
+            return self._estimate_kerala_elevation(lat, lng), None
+        raise ElevationUnavailableError(
+            "Elevation needs GOOGLE_MAPS_API_KEY (Google Elevation API) or a successful API response."
+        )
 
     def _estimate_kerala_elevation(self, lat: float, lng: float) -> float:
         """Topographic calculation of Kerala elevation based on longitude gradient and river basins."""
@@ -260,7 +155,7 @@ class ElevationFloodCalculator:
         if hint:
             parts = [p.strip() for p in hint.split(",")]
             loc = parts[0]
-            dist = parts[1] if len(parts) > 1 else "Ernakulam"
+            dist = parts[1] if len(parts) > 1 else "Kerala"
             return loc, dist, None
 
         nearest = self._find_nearest_hydrological_zone(lat, lng)
@@ -273,7 +168,7 @@ class ElevationFloodCalculator:
         closest_zone = None
         min_dist = float("inf")
 
-        for zone in KERALA_HYDROLOGICAL_ZONES:
+        for zone in _hydrological_zones():
             d = self._haversine_distance(lat, lng, zone["lat"], zone["lng"])
             if d <= zone["radius_km"] and d < min_dist:
                 min_dist = d

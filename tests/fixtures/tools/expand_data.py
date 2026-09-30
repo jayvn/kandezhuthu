@@ -14,9 +14,9 @@ Expands and enriches Kandezhuthu AI's property title catalog by:
    GeoJSON, and synchronizing to Google Cloud Storage & Cloud Firestore via DataAPI.
 
 Usage:
-    uv run python scripts/expand_data.py --count 20 --sync-cloud
-    uv run python scripts/expand_data.py --scrape-precedents
-    uv run python scripts/expand_data.py --all
+    uv run python tests/fixtures/tools/expand_data.py --count 20 --sync-cloud
+    uv run python tests/fixtures/tools/expand_data.py --scrape-precedents
+    uv run python tests/fixtures/tools/expand_data.py --all
 """
 
 import argparse
@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 
 # Ensure project root is in sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 

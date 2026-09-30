@@ -8,9 +8,9 @@ walkthrough across 10 key statutory & GIS audit capabilities, and automatic
 transcoding to MP4, WebM, and animated GIF formats.
 
 Usage:
-    uv run python scripts/record_demo.py
-    uv run python scripts/record_demo.py --port 8081 --format all --pace cinematic
-    uv run python scripts/record_demo.py --keep-server
+    uv run python tests/fixtures/tools/record_demo.py
+    uv run python tests/fixtures/tools/record_demo.py --port 8081 --format all --pace cinematic
+    uv run python tests/fixtures/tools/record_demo.py --keep-server
 """
 
 import argparse
@@ -23,10 +23,14 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT))
 
+from app.fixtures import DEMO_ENV
 from app.orchestrator import AppOrchestrator
+
+# The recorded journey uses sample deeds and presets, so the server runs in demo mode.
+os.environ.update(DEMO_ENV)
 
 DEFAULT_PORT = int(os.environ.get("PORT", "8081"))
 OUTPUT_DIR = REPO_ROOT / "artifacts" / "demo_video"
