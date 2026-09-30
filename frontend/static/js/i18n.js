@@ -5,6 +5,8 @@ const sendBtn = document.getElementById("send-btn");
 
 let currentViewMode = "split";
 let currentLanguage = localStorage.getItem("kandezhuthu_lang") || "en";
+// Demo mode (server started with KANDEZ_FIXTURES): sample deeds, presets and timelines.
+let DEMO_MODE = false;
 
 // Strings live in static/i18n/<lang>.json; loadTranslations() fills this before the UI starts.
 const TRANSLATIONS = { en: {}, ml: {} };
@@ -132,6 +134,8 @@ function setLanguage(lang) {
   }
   const elDzTitle = document.getElementById("dropzone-title");
   if (elDzTitle) elDzTitle.textContent = t.dropzoneTitle;
+  const elDemoTag = document.getElementById("demo-tag");
+  if (elDemoTag) elDemoTag.textContent = t.demoTag;
   const elSamplesLabel = document.getElementById("start-samples-label");
   if (elSamplesLabel) elSamplesLabel.textContent = t.samplesLabel;
   const elDzDesc = document.getElementById("dropzone-desc");

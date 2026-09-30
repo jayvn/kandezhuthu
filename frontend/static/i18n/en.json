@@ -159,5 +159,6 @@
     "google-roads": "Google Roadmap",
     "google-terrain": "Google Terrain",
     "osm": "OpenStreetMap"
-  }
+  },
+  "demoTag": "Demo data"
 }

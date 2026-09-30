@@ -338,9 +338,9 @@ async function handleDeedUpload(file) {
 async function runSampleDeedOCR(docType = "deed") {
   setWorkflowStep(2);
   const isEc = docType === "ec";
-  const docTitle = isEc ? "Official Kerala SRO Encumbrance Certificate (EC Form 15, 30-Year Search)" : "Sample Kerala Title Deed (Aluva SRO Doc 1420/2014, Re-Sy 345/1)";
+  const docTitle = isEc ? "Sample Kerala SRO Encumbrance Certificate (EC Form 15, 30-Year Search)" : "Sample Kerala Title Deed (Aluva SRO Doc 1420/2014, Re-Sy 345/1)";
   const fileName = isEc ? "kerala_sro_ec_aluva_30_year_search.pdf" : "kerala_sale_deed_aluva_re_sy_345_1.pdf";
-  const step1Desc = isEc ? "Official SRO Form 15 EC (1994-2024 Search Period)" : "Sample PDF loaded (11 Cents, Aluva West Village)";
+  const step1Desc = isEc ? "Sample SRO Form 15 EC (1994-2024 Search Period)" : "Sample PDF loaded (11 Cents, Aluva West Village)";
   const step3Desc = isEc ? "Auditing registered mortgages, liens & SARFAESI charges..." : "Evaluating pathway easement, minor shares & wetland status...";
 
   appendMsg("user", `<strong>Demonstration Request:</strong> Scan ${docTitle}`);

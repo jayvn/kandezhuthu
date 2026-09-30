@@ -1,0 +1,172 @@
+[
+  {
+    "district": "Ernakulam",
+    "taluk": "Kanayannur",
+    "village": "Kakkanad",
+    "local_body_type": "Municipality (Thrikkakara)",
+    "land_type": "Residential with PWD / Motorable Road",
+    "fair_value_per_are_inr": 480000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Ernakulam",
+    "taluk": "Kanayannur",
+    "village": "Kakkanad",
+    "local_body_type": "Municipality (Thrikkakara)",
+    "land_type": "Residential Interior / Pathway Access",
+    "fair_value_per_are_inr": 280000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Ernakulam",
+    "taluk": "Aluva",
+    "village": "Aluva West",
+    "local_body_type": "Municipality (Aluva)",
+    "land_type": "Residential with Motorable Road",
+    "fair_value_per_are_inr": 360000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Ernakulam",
+    "taluk": "Aluva",
+    "village": "Aluva East",
+    "local_body_type": "Municipality (Aluva)",
+    "land_type": "Commercial / Main Road Frontage",
+    "fair_value_per_are_inr": 600000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Ernakulam",
+    "taluk": "Kanayannur",
+    "village": "Ernakulam",
+    "local_body_type": "Corporation (Kochi)",
+    "land_type": "Commercial / Prime City",
+    "fair_value_per_are_inr": 1200000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Ernakulam",
+    "taluk": "Kanayannur",
+    "village": "Edappally South",
+    "local_body_type": "Corporation (Kochi)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 550000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Thiruvananthapuram",
+    "taluk": "Thiruvananthapuram",
+    "village": "Pattom",
+    "local_body_type": "Corporation (Trivandrum)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 650000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Thiruvananthapuram",
+    "taluk": "Thiruvananthapuram",
+    "village": "Sasthamangalam",
+    "local_body_type": "Corporation (Trivandrum)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 700000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Thiruvananthapuram",
+    "taluk": "Thiruvananthapuram",
+    "village": "Kazhakkoottam",
+    "local_body_type": "Corporation (Trivandrum / Technopark)",
+    "land_type": "Residential / IT Corridor",
+    "fair_value_per_are_inr": 520000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Thrissur",
+    "taluk": "Thrissur",
+    "village": "Thrissur",
+    "local_body_type": "Corporation (Thrissur)",
+    "land_type": "Commercial / Swaraj Round Vicinity",
+    "fair_value_per_are_inr": 850000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Thrissur",
+    "taluk": "Thrissur",
+    "village": "Ollur",
+    "local_body_type": "Corporation (Thrissur)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 320000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Kozhikode",
+    "taluk": "Kozhikode",
+    "village": "Kozhikode City",
+    "local_body_type": "Corporation (Kozhikode)",
+    "land_type": "Commercial / Mavoor Road",
+    "fair_value_per_are_inr": 900000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Kozhikode",
+    "taluk": "Kozhikode",
+    "village": "Chevayur",
+    "local_body_type": "Corporation (Kozhikode)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 380000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Kottayam",
+    "taluk": "Kottayam",
+    "village": "Kottayam",
+    "local_body_type": "Municipality (Kottayam)",
+    "land_type": "Residential with Motorable Road",
+    "fair_value_per_are_inr": 340000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Palakkad",
+    "taluk": "Palakkad",
+    "village": "Palakkad-I",
+    "local_body_type": "Municipality (Palakkad)",
+    "land_type": "Residential with Road",
+    "fair_value_per_are_inr": 290000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Alappuzha",
+    "taluk": "Kuttanad",
+    "village": "Nedumudi",
+    "local_body_type": "Grama Panchayat",
+    "land_type": "Wetland / Waterway Access",
+    "fair_value_per_are_inr": 120000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  },
+  {
+    "district": "Alappuzha",
+    "taluk": "Ambalappuzha",
+    "village": "Alappuzha",
+    "local_body_type": "Municipality (Alappuzha)",
+    "land_type": "Residential with Motorable Road",
+    "fair_value_per_are_inr": 310000.0,
+    "effective_year": 2023,
+    "gazette_notification": "S.R.O. No. 420/2023 (Finance Dept, 20% Hike)"
+  }
+]

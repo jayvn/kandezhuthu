@@ -210,8 +210,8 @@ function onStepClick(stepNum) {
       auditPriorDeedsOfScannedDeed();
     } else {
       appendMsg("agent", isMl
-        ? `മുന്നാധാരങ്ങളും 30 വർഷത്തെ EC-യും അപ്‌ലോഡ് ചെയ്യുക, അല്ലെങ്കിൽ ആദ്യം ഇപ്പോഴത്തെ ആധാരം സ്കാൻ ചെയ്യുക.<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">മാതൃക: 3 പിഴവുകളുള്ള ശൃംഖല</button>`
-        : `Upload the prior deeds and the 30-year EC, or scan the current deed first.<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">See a sample chain with 3 defects</button>`);
+        ? `മുന്നാധാരങ്ങളും 30 വർഷത്തെ EC-യും അപ്‌ലോഡ് ചെയ്യുക, അല്ലെങ്കിൽ ആദ്യം ഇപ്പോഴത്തെ ആധാരം സ്കാൻ ചെയ്യുക.${DEMO_MODE ? `<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">മാതൃക: 3 പിഴവുകളുള്ള ശൃംഖല</button>` : ""}`
+        : `Upload the prior deeds and the 30-year EC, or scan the current deed first.${DEMO_MODE ? `<br><button type="button" class="link-btn" onclick="openOwnershipTimeline('aluva_broken')">See a sample chain with 3 defects</button>` : ""}`);
     }
   } else if (stepNum === 3) {
     if (window.innerWidth < 768) setViewMode("map");
@@ -297,83 +297,6 @@ form.addEventListener("submit", async (e) => {
   const text = input.value.trim();
   if (!text) return;
   collapseStartCard();
-
-  const lower = text.toLowerCase();
-  if (lower.includes("timeline") || (lower.includes("ownership") && lower.includes("history")) || lower.includes("munnadharam") || lower.includes("മുന്നാധാരം")) {
-    input.value = "";
-    input.style.height = "48px";
-    let preset = "aluva_broken";
-    if (lower.includes("kakkanad") || lower.includes("wetland") || lower.includes("minor")) {
-      preset = "kakkanad_wetland";
-    } else if (lower.includes("clean")) {
-      preset = "clean_title";
-    }
-    openOwnershipTimeline(preset);
-    return;
-  }
-
-  const isPricingQuery = lower.includes("price") || lower.includes("bought") || lower.includes("how much") || lower.includes("consideration") || lower.includes("public") || lower.includes("fair value") || lower.includes("ന്യായവില") || lower.includes("പ്രതിഫല");
-
-  if (isPricingQuery) {
-    appendMsg("user", text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
-    input.value = "";
-    input.style.height = "48px";
-    sendBtn.disabled = true;
-
-    let preset = "aluva_broken";
-    if (lower.includes("kakkanad") || lower.includes("wetland") || lower.includes("minor")) {
-      preset = "kakkanad_wetland";
-    } else if (lower.includes("clean")) {
-      preset = "clean_title";
-    }
-
-    const answerHtml = `
-      <div style="line-height:1.55; color:#262a33; font-size: var(--fs-14);">
-        <h4 style="color:#990f3d; margin-top:0; margin-bottom:0.4rem; display:flex; align-items:center; gap:6px;">
-          <span>§</span>
-          <span>Yes, Historical Purchase Price is a Statutory Public Record in Kerala!</span>
-        </h4>
-        <p style="margin-bottom:0.5rem;">
-          Under <strong>Sections 51 & 57 of the Indian Registration Act, 1908</strong>, all registered title deeds (such as Sale Deeds${currentLanguage === 'ml' ? ' / <em>തീറാധാരം</em>' : ''}) are recorded in <strong>Book 1 ("Register of non-testamentary documents relating to immovable property")</strong>, which is <strong>open to public inspection</strong> by any citizen upon payment of the statutory search fee.
-        </p>
-        <div style="background:#f6ede2; border-left:3px solid #990f3d; padding:0.55rem 0.8rem; border-radius:0 6px 6px 0; margin-bottom:0.65rem; font-size: var(--fs-14);">
-          <strong>Three Key Statutory Price & Valuation Realities in Kerala:</strong>
-          <ol style="margin:4px 0 0 18px; padding:0;">
-            <li style="margin-bottom:3px;"><strong>Registered Consideration${currentLanguage === 'ml' ? ' (പ്രതിഫല തുക)' : ''}:</strong> The exact purchase price stated on the face of the document. Any citizen can apply for an Encumbrance Certificate (EC) or certified copy${currentLanguage === 'ml' ? ' (<em>പകർപ്പ്</em>)' : ''} from the Sub-Registrar Office (SRO) or the online PEARL portal (<code>keralaregistration.gov.in</code>).</li>
-            <li style="margin-bottom:3px;"><strong>Kerala Govt Notified Fair Value${currentLanguage === 'ml' ? ' (ഭൂമിയുടെ ന്യായവില - Section 28A)' : ' (Fair Value - Section 28A Kerala Stamp Act)'}:</strong> The statutory minimum floor valuation per Are fixed by the Revenue Department for every Re-Survey number. 8% Stamp Duty + 2% Reg fee must be paid on whichever is higher (registered consideration vs fair value).</li>
-            <li style="margin-bottom:2px;"><strong>Undervaluation Penalties (Section 45A Kerala Stamp Act):</strong> If a deed is registered below market value to evade 8% stamp duty or capital gains tax, District Registrar audits assess deficit duty with 12% penal interest, which becomes a <strong>first statutory charge / revenue recovery lien directly on the land</strong>.</li>
-          </ol>
-        </div>
-        <p style="margin-bottom:0.4rem; font-size: var(--fs-14); color:#66605c;">
-          Below is the chronological 30-year ownership and consideration audit for this property, detailing exactly what previous owners paid per Cent, their registered bank liabilities, and fair value benchmarks:
-        </p>
-      </div>
-    `;
-
-    appendMsg("agent", answerHtml);
-    const timelineBubble = appendMsg("agent", `
-      <div class="typing-indicator">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <span style="font-size: var(--fs-14); color:#990f3d; margin-left:6px; font-weight:600;">
-          Loading statutory purchase price and valuation audit...
-        </span>
-      </div>
-    `);
-
-    fetch(`/api/timeline_demo?preset=${preset}&lang=${currentLanguage}`)
-      .then(res => res.json())
-      .then(data => {
-        renderOwnershipTimeline(timelineBubble, data, preset);
-        sendBtn.disabled = false;
-      })
-      .catch(err => {
-        timelineBubble.innerHTML = `<span style="color:red;">Error loading pricing timeline: ${err.message}</span>`;
-        sendBtn.disabled = false;
-      });
-    return;
-  }
 
   appendMsg("user", text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
   input.value = "";

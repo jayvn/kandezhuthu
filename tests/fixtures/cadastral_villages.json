@@ -1,0 +1,56 @@
+{
+  "aluva west": {
+    "lat": 10.1076,
+    "lng": 76.3516,
+    "district": "Ernakulam",
+    "taluk": "Aluva"
+  },
+  "aluva": {
+    "lat": 10.1076,
+    "lng": 76.3516,
+    "district": "Ernakulam",
+    "taluk": "Aluva"
+  },
+  "kakkanad": {
+    "lat": 10.0159,
+    "lng": 76.3419,
+    "district": "Ernakulam",
+    "taluk": "Kanayannur"
+  },
+  "thrikkakara": {
+    "lat": 10.032,
+    "lng": 76.328,
+    "district": "Ernakulam",
+    "taluk": "Kanayannur"
+  },
+  "kuttanad": {
+    "lat": 9.4981,
+    "lng": 76.4312,
+    "district": "Alappuzha",
+    "taluk": "Kuttanad"
+  },
+  "edappally": {
+    "lat": 10.0261,
+    "lng": 76.3125,
+    "district": "Ernakulam",
+    "taluk": "Kanayannur"
+  },
+  "kaloor": {
+    "lat": 9.998,
+    "lng": 76.299,
+    "district": "Ernakulam",
+    "taluk": "Kanayannur"
+  },
+  "chalakudy": {
+    "lat": 10.307,
+    "lng": 76.333,
+    "district": "Thrissur",
+    "taluk": "Chalakudy"
+  },
+  "aranmula": {
+    "lat": 9.3175,
+    "lng": 76.6173,
+    "district": "Pathanamthitta",
+    "taluk": "Kozhencherry"
+  }
+}

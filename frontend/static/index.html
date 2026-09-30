@@ -37,6 +37,7 @@
       <button class="view-btn active" data-mode="chat" id="view-btn-chat" onclick="setViewMode('chat')">Chat</button>
       <button class="view-btn" data-mode="map" id="view-btn-map" onclick="setViewMode('map')">Map</button>
     </div>
+    <span id="demo-tag" class="offline-badge" hidden>Demo data</span>
     <span id="pwa-status-badge" class="offline-badge" hidden><span id="pwa-status-text">Offline</span></span>
   </div>
 </header>
@@ -76,7 +77,7 @@
         <h2 class="start-card-title" id="dropzone-title">Drop your deed or EC here</h2>
         <p class="start-card-desc" id="dropzone-desc">PDF or photo, English or Malayalam.</p>
         <button type="button" class="start-card-upload" onclick="document.getElementById('deed-file-input').click()"><span id="btn-browse-text">Upload</span></button>
-        <p class="start-card-samples">
+        <p class="start-card-samples demo-only">
           <span id="start-samples-label">Try a sample:</span>
           <button type="button" class="link-btn" onclick="runSampleDeedOCR('deed')"><span id="card-title-deed">Sale deed</span></button>
           <span aria-hidden="true">·</span>
@@ -116,7 +117,7 @@
       <details class="map-more">
         <summary aria-label="More map options">⋯</summary>
         <div class="map-more-menu">
-          <select class="map-preset-select" id="preset-select" onchange="applyLocationPreset(this.value)">
+          <select class="map-preset-select demo-only" id="preset-select" onchange="applyLocationPreset(this.value)">
             <option value="" id="opt-preset-default" selected>Select Kerala Region...</option>
         <option value="aluva">Aluva (Periyar River Basin - 2018 Flood Zone)</option>
         <option value="kakkanad">Kakkanad / Infopark (Elevated Midlands)</option>

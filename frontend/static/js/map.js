@@ -78,7 +78,19 @@ async function fetchConfig() {
     if (data.google_maps_api_key) {
       console.log("[Kandezhuthu UI] Google Maps API key available");
     }
+    DEMO_MODE = !!data.demo;
   } catch (e) {}
+  applyDemoMode();
+}
+
+// Outside demo mode, sample documents and location presets are removed from the page.
+function applyDemoMode() {
+  if (!DEMO_MODE) {
+    document.querySelectorAll(".demo-only").forEach(el => el.remove());
+    return;
+  }
+  const tag = document.getElementById("demo-tag");
+  if (tag) tag.hidden = false;
 }
 
 function switchMapLayer(layerKey) {
@@ -857,7 +869,7 @@ function searchLocation() {
   }
 
   const qLower = query.toLowerCase();
-  for (const [key, p] of Object.entries(KERALA_PRESETS)) {
+  for (const [key, p] of Object.entries(DEMO_MODE ? KERALA_PRESETS : {})) {
     if (key.toLowerCase().includes(qLower) || p.name.toLowerCase().includes(qLower) || (p.village && p.village.toLowerCase().includes(qLower))) {
       applyLocationPreset(key);
       return;
@@ -942,6 +954,8 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
     }
   } catch (err) {
     console.warn("Failed to fetch plot elevation:", err);
+    currentElevationData = null;
+    window.currentElevationData = null;
     if (elevValEl) elevValEl.textContent = isMl ? "ലഭ്യമല്ല" : "Elevation N/A";
     if (badgeEl) {
       badgeEl.className = "badge-road warn";

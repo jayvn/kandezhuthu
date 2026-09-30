@@ -2,9 +2,9 @@
 """Generate realistic, authentic Kerala Title Deed and SRO Encumbrance Certificate PDFs.
 
 Generates:
-1. data/sample_deeds/kerala_sale_deed_aluva_re_sy_345_1.pdf (Sale Deed / തീറാധാരം)
-2. data/sample_deeds/kerala_sro_ec_aluva_30_year_search.pdf (Encumbrance Certificate / കുടിക്കടം - Form 15)
-3. Updates data/sample_deeds/sample_aluva_deed.pdf with the full authentic version.
+1. tests/fixtures/sample_deeds/kerala_sale_deed_aluva_re_sy_345_1.pdf (Sale Deed / തീറാധാരം)
+2. tests/fixtures/sample_deeds/kerala_sro_ec_aluva_30_year_search.pdf (Encumbrance Certificate / കുടിക്കടം - Form 15)
+3. Updates tests/fixtures/sample_deeds/sample_aluva_deed.pdf with the full authentic version.
 """
 
 from pathlib import Path
@@ -414,7 +414,7 @@ def create_kerala_sro_ec_pdf(output_path: Path):
 
 
 def main():
-    base_dir = Path(__file__).resolve().parent.parent / "data" / "sample_deeds"
+    base_dir = Path(__file__).resolve().parent.parent / "sample_deeds"
     base_dir.mkdir(parents=True, exist_ok=True)
 
     deed_pdf = base_dir / "kerala_sale_deed_aluva_re_sy_345_1.pdf"

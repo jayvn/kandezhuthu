@@ -20,7 +20,7 @@ from google.adk.apps import App
 from google.adk.models import Gemini
 from google.genai import types
 
-from app.domain.models import DeedNode, DeedType, ECRecord, ElevationFloodResult
+from app.domain.models import DeedNode, ECRecord, ElevationFloodResult
 from app.domain.auditor import MunnadharamAuditor
 from app.domain.single_deed_scanner import SingleDeedScanner
 from app.db.repository import KnowledgeRepository, AuditRepository
@@ -85,7 +85,7 @@ def calculate_plot_elevation_and_flood_exposure(
 ) -> str:
     """Calculates plot elevation above Mean Sea Level (MSL) and evaluates flood exposure risk.
 
-    Uses Google Elevation API & Geocoding API (with Kerala hydrological basin & SRTM models) to assess:
+    Uses Google Elevation API & Geocoding API to assess:
     1. Plot elevation above Mean Sea Level (MSL) in meters.
     2. Proximity to major Kerala river flood basins (Periyar, Pamba, Chalakudy, Vembanad, Kole wetlands, etc.).
     3. Inundation vulnerability during the 2018/2019 Great Kerala Floods.
@@ -103,15 +103,18 @@ def calculate_plot_elevation_and_flood_exposure(
         JSON string containing ElevationFloodResult with elevation, flood risk level, safety score, river basin,
         KSDMA advisory, recommended plinth height, physical inspection checklist, and Malayalam WhatsApp inquiry.
     """
-    from app.domain.elevation_flood import ElevationFloodCalculator
+    from app.domain.elevation_flood import ElevationFloodCalculator, ElevationUnavailableError
 
     calculator = ElevationFloodCalculator()
-    result = calculator.calculate(
-        latitude=latitude,
-        longitude=longitude,
-        locality_hint=place_name,
-        plot_extent_cents=plot_extent_cents,
-    )
+    try:
+        result = calculator.calculate(
+            latitude=latitude,
+            longitude=longitude,
+            locality_hint=place_name,
+            plot_extent_cents=plot_extent_cents,
+        )
+    except ElevationUnavailableError as e:
+        return json.dumps({"error": str(e), "elevation_available": False}, indent=2)
     return result.model_dump_json(indent=2)
 
 
@@ -150,56 +153,6 @@ def audit_prior_deeds_title(
         return scorecard.model_dump_json(indent=2)
     except Exception as e:
         return json.dumps({"error": f"Failed to audit prior deeds: {str(e)}"}, indent=2)
-
-
-def get_demo_kerala_title_audit() -> str:
-    """Runs a demonstration 30-year title audit on a realistic Kerala property."""
-    deeds = [
-        DeedNode(
-            doc_number="214/1982",
-            year=1982,
-            sro_name="Aluva",
-            deed_type=DeedType.PATTAYAM,
-            grantors=["Special Tahsildar (Land Assignment)"],
-            grantees=["Chacko Varghese"],
-            extent_cents=10.0,
-            survey_no="345/1",
-        ),
-        DeedNode(
-            doc_number="890/1996",
-            year=1996,
-            sro_name="Aluva",
-            deed_type=DeedType.BHAGAPATHRAM,
-            grantors=["Chacko Varghese (Deceased Estate)"],
-            grantees=["George Chacko", "Thomas Chacko"],
-            extent_cents=10.0,
-            survey_no="345/1",
-            family_religion="christian",
-            unrepresented_heirs=["Mary Chacko (Sister / Daughter)"],
-        ),
-        DeedNode(
-            doc_number="1420/2014",
-            year=2014,
-            sro_name="Aluva",
-            deed_type=DeedType.THEERADHARAM,
-            grantors=["George Chacko"],
-            grantees=["Current Seller: Suresh Nair"],
-            extent_cents=11.0,
-            survey_no="345/1",
-            easements_reserved=["3-meter motorable pathway along southern boundary reserved for Thomas Chacko"],
-        ),
-    ]
-
-    ec_records = [
-        ECRecord(doc_number="214/1982", year=1982, sro_name="Aluva", nature="Pattayam"),
-        ECRecord(doc_number="890/1996", year=1996, sro_name="Aluva", nature="Partition"),
-        ECRecord(doc_number="1420/2014", year=2014, sro_name="Aluva", nature="Sale"),
-        ECRecord(doc_number="3012/2022", year=2022, sro_name="Aluva", nature="Equitable Mortgage - Federal Bank"),
-    ]
-
-    auditor = MunnadharamAuditor(property_identifier="Re-Sy 345/1, Aluva West Village, Ernakulam")
-    scorecard = auditor.audit(deeds=deeds, ec_records=ec_records)
-    return scorecard.model_dump_json(indent=2)
 
 
 def lookup_building_road_and_setbacks(plot_cents: float, building_type: str = "residential") -> str:
@@ -254,7 +207,7 @@ def calculate_paddy_conversion_cost(
 
 
 def lookup_fair_value_of_land(village: str, district: Optional[str] = None) -> str:
-    """Queries official notified Fair Value of land per Are under Section 28A of Kerala Stamp Act (SRO No. 420/2023).
+    """Looks up stored notified Fair Value of land per Are under Section 28A of the Kerala Stamp Act.
 
     Args:
         village: Revenue village name in Kerala (e.g. 'Kakkanad', 'Aluva West', 'Pattom', 'Edappally South', 'Thrissur').
@@ -267,11 +220,11 @@ def lookup_fair_value_of_land(village: str, district: Optional[str] = None) -> s
     results = repo.get_fair_value_benchmark(village=village, district=district)
     if not results:
         return json.dumps({
-            "message": f"No specific benchmark found for village '{village}'. Using Kerala municipal average (₹3,50,000/Are).",
+            "message": f"No Fair Value data stored for village '{village}'.",
             "village": village,
             "district": district,
-            "average_fair_value_per_are_inr": 350000.0,
-            "sro_hike": "Rates revised by 20% under S.R.O. No. 420/2023 effective April 2023."
+            "fair_value_available": False,
+            "where_to_check": "Fair Value search on the Kerala Registration portal (keralaregistration.gov.in) by village and survey number.",
         }, indent=2)
     return json.dumps({
         "village": village,
@@ -300,10 +253,10 @@ def check_digital_survey_status(village: str, district: Optional[str] = None) ->
     if not record:
         return json.dumps({
             "village": village,
-            "digital_resurvey_status": "Standard Pre-Digital Survey (Manual FMB & Village BTR)",
+            "digital_resurvey_status": "Unknown (no resurvey data stored for this village)",
             "advisory": (
-                "This village is currently under traditional revenue records. "
-                "Verify manual Field Measurement Book (FMB) sketch and Village Office Basic Tax Register (BTR) extract."
+                "Check the village on the Ente Bhoomi portal. If it is not yet resurveyed, use the "
+                "Field Measurement Book (FMB) sketch and Village Office Basic Tax Register (BTR) extract."
             ),
             "portal": "https://entebhoomi.kerala.gov.in"
         }, indent=2)
@@ -441,7 +394,7 @@ def audit_encumbrance_certificate(
 
 def check_kerala_databank_and_cadastral(
     survey_no: str,
-    village: str = "Aluva West",
+    village: str,
     extent_cents: float = 10.0,
     fair_value_per_are: float = 240000.0,
 ) -> str:
@@ -453,7 +406,7 @@ def check_kerala_databank_and_cadastral(
     2. Applicable statutory conversion procedures (Form 5 exclusion vs Form 6 Section 27A fee).
     3. Calculated Section 27A fee (free under 25 cents; 10% for 25-50 cents).
     4. Building permit issuance eligibility under KPBR 2019.
-    5. An approximate square outline sized from the extent. It is not the FMB sketch; do not present it as one.
+    5. In demo mode only, an approximate square outline sized from the extent. It is not the FMB sketch; do not present it as one.
 
     Args:
         survey_no: Survey or Re-Survey number (e.g. '182/4', '345/1', '412/3').
@@ -462,7 +415,8 @@ def check_kerala_databank_and_cadastral(
         fair_value_per_are: Government notified Fair Value in INR per are.
 
     Returns:
-        JSON string with DataBankCheckResult and an approximate CadastralParcel outline.
+        JSON string with DataBankCheckResult and, in demo mode, an approximate CadastralParcel outline
+        (`available: false` otherwise).
     """
     from app.domain.cadastral_databank import BhuNakshaCadastralService, KeralaDataBankService
 
@@ -479,7 +433,10 @@ def check_kerala_databank_and_cadastral(
     )
     return json.dumps({
         "data_bank_status": db_res.model_dump(),
-        "cadastral_parcel": cadastral.model_dump(),
+        "cadastral_parcel": cadastral.model_dump() if cadastral else {
+            "available": False,
+            "where_to_check": "BhuNaksha (bhunaksha.kerala.gov.in) or the FMB sketch from the Taluk Survey Office.",
+        },
     }, indent=2)
 
 
@@ -521,17 +478,17 @@ root_agent = Agent(
         "CORE STRENGTHS & TOOL USAGE:\n"
         "1. Single-Deed / Schedule Scan: Use `scan_single_deed` whenever the user pastes deed clauses, property schedules, or contract snippets in English or Malayalam.\n"
         "2. 30-Year Prior Title Lineage Audit: When users describe a chain of prior deeds (Munnadharam) or ownership history in natural language, automatically parse their narrative into DeedNode JSON records and invoke `audit_prior_deeds_title`.\n"
-        "3. Demo Audit: Use `get_demo_kerala_title_audit` if the user wants to see how a realistic 30-year Kerala title audit works.\n"
-        "4. Exact Building Rules (KPBR/KMBR 2019): Use `lookup_building_road_and_setbacks` when users ask about road width or setback requirements for their specific plot extent.\n"
-        "5. Paddy Land Conversion Calculator: Use `calculate_paddy_conversion_cost` when users ask about government fee for converting Nilam / paddy land to Purayidam.\n"
-        "6. Historical Property Audit Search: Use `get_historical_audits_for_property` when checking a specific survey number for previous red flags or duplicate sales.\n"
-        "7. Kerala Land Rules & Precedents Retrieval: Use `query_kerala_land_rules` to consult official Kerala building rules, 2008 Paddy Land Act, and High Court / Supreme Court precedents.\n"
-        "8. Plot Elevation & Flood Exposure Calculator: Use `calculate_plot_elevation_and_flood_exposure` when users ask about flood risk, plot elevation, Mean Sea Level (MSL), monsoonal inundation, 2018 flood zones, or mark/specify plot coordinates.\n"
-        "9. SRO Encumbrance Certificate (EC) Audit: Use `audit_encumbrance_certificate` when users provide EC records, Nil-EC text, bank loan entries, or court attachment records to cross-reference with title deeds.\n"
-        "10. BhuNaksha & Data Bank Verification: Use `check_kerala_databank_and_cadastral` when users provide a survey number and village to check Agricultural Data Bank status (Form 5/6) and retrieve FMB cadastral parcel geometry.\n"
-        "11. Fair Value of Land (Section 28A): Use `lookup_fair_value_of_land` to find official notified Fair Value rates per Are for any Kerala village, municipal, or corporation area (including the 20% revision under SRO 420/2023).\n"
-        "12. Digital Resurvey ('Ente Bhoomi') Verification: Use `check_digital_survey_status` to verify whether a village is actively under drone survey, has published d-BTR records, or assigns 14-digit ULPINs (Bhu-Aadhaar).\n"
-        "13. Data Organization & Cloud Sync: Use `organize_and_sync_property_data` when users inquire about data status, local catalog copies, or syncing title datasets to Google Cloud Storage & Firestore.\n\n"
+        "3. Exact Building Rules (KPBR/KMBR 2019): Use `lookup_building_road_and_setbacks` when users ask about road width or setback requirements for their specific plot extent.\n"
+        "4. Paddy Land Conversion Calculator: Use `calculate_paddy_conversion_cost` when users ask about government fee for converting Nilam / paddy land to Purayidam.\n"
+        "5. Historical Property Audit Search: Use `get_historical_audits_for_property` when checking a specific survey number for previous red flags or duplicate sales.\n"
+        "6. Kerala Land Rules & Precedents Retrieval: Use `query_kerala_land_rules` to consult official Kerala building rules, 2008 Paddy Land Act, and High Court / Supreme Court precedents.\n"
+        "7. Plot Elevation & Flood Exposure Calculator: Use `calculate_plot_elevation_and_flood_exposure` when users ask about flood risk, plot elevation, Mean Sea Level (MSL), monsoonal inundation, 2018 flood zones, or mark/specify plot coordinates.\n"
+        "8. SRO Encumbrance Certificate (EC) Audit: Use `audit_encumbrance_certificate` when users provide EC records, Nil-EC text, bank loan entries, or court attachment records to cross-reference with title deeds.\n"
+        "9. BhuNaksha & Data Bank Verification: Use `check_kerala_databank_and_cadastral` when users provide a survey number and village to check Agricultural Data Bank status (Form 5/6) and retrieve FMB cadastral parcel geometry when available.\n"
+        "10. Fair Value of Land (Section 28A): Use `lookup_fair_value_of_land` to look up stored notified Fair Value rates per Are for a Kerala village.\n"
+        "11. Digital Resurvey ('Ente Bhoomi') Verification: Use `check_digital_survey_status` to verify whether a village is actively under drone survey, has published d-BTR records, or assigns 14-digit ULPINs (Bhu-Aadhaar).\n"
+        "12. Data Organization & Cloud Sync: Use `organize_and_sync_property_data` when users inquire about data status, local catalog copies, or syncing title datasets to Google Cloud Storage & Firestore.\n"
+        "When a tool reports data as unavailable or not verified, say so and name where the user can check it. Never fill in missing values.\n\n"
         "PRESENTATION GUIDELINES FOR NON-TECHNICAL USERS:\n"
         "- Never dump raw JSON to the user. Always interpret tool outputs into clean, elegant Markdown.\n"
         "- Prominently feature the Title Sanity Score (e.g., 'Title Sanity Score: 85/100') and the verdict badge:\n"
@@ -549,7 +506,6 @@ root_agent = Agent(
         scan_single_deed,
         scan_deed_document_file,
         audit_prior_deeds_title,
-        get_demo_kerala_title_audit,
         lookup_building_road_and_setbacks,
         calculate_paddy_conversion_cost,
         lookup_fair_value_of_land,
