@@ -2250,6 +2250,7 @@
       <button class="view-btn active" data-mode="split" id="view-btn-split" onclick="setViewMode('split')">Split View</button>
       <button class="view-btn" data-mode="map" id="view-btn-map" onclick="setViewMode('map')">Map & Satellite</button>
     </div>
+    <span id="demo-tag" class="offline-badge" hidden>Demo data</span>
     <span id="pwa-status-badge" class="offline-badge" hidden><span id="pwa-status-text">Offline</span></span>
   </div>
 </header>
@@ -2308,13 +2309,13 @@
         <!-- Step 1 (Ingest Document) Chips -->
 
         <!-- Step 2 (Prior Title & Encumbrance) Chips -->
-        <div class="chip featured" data-cat="lineage" id="chip-timeline-aluva" style="display:none;" onclick="openOwnershipTimeline('aluva_broken')" title="Open Interactive 30-Year Ownership Timeline with 3 Critical Defects">
+        <div class="chip featured demo-only" data-cat="lineage" id="chip-timeline-aluva" style="display:none;" onclick="openOwnershipTimeline('aluva_broken')" title="Open Interactive 30-Year Ownership Timeline with 3 Critical Defects">
           Aluva 30-Yr Lineage (3 Traps)
         </div>
         <div class="chip" data-cat="statutory" id="chip-mary-roy" style="display:none;" onclick="onChipClick('mary_roy')" title="Audit Christian Coparcenary and Mary Roy excluded daughters defect">
           Mary Roy Coparcenary Defect
         </div>
-        <div class="chip" data-cat="lineage" id="chip-timeline-clean" style="display:none;" onclick="openOwnershipTimeline('clean_title')" title="Open 100% Clean 39-Year Prior Deeds Timeline">
+        <div class="chip demo-only" data-cat="lineage" id="chip-timeline-clean" style="display:none;" onclick="openOwnershipTimeline('clean_title')" title="Open 100% Clean 39-Year Prior Deeds Timeline">
           Clean 39-Yr Title Audit
         </div>
         <div class="chip" data-cat="lineage" id="chip-fair-value" style="display:none;" onclick="onChipClick('fair_value')" title="Audit public purchase prices, fair value, and consideration history">
@@ -2339,7 +2340,7 @@
         <div class="chip" data-cat="action" id="chip-wa-inquiry" style="display:none;" onclick="triggerWhatsAppInquiry()" title="Draft legal WhatsApp inquiry message for seller or broker">
           WhatsApp Inquiry for Seller
         </div>
-        <div class="chip" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportDossierPDF('aluva_broken')" title="Export comprehensive advocate legal diligence dossier as PDF">
+        <div class="chip demo-only" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportDossierPDF('aluva_broken')" title="Export comprehensive advocate legal diligence dossier as PDF">
           Export Advocate Dossier (PDF)
         </div>
 
@@ -2356,14 +2357,14 @@
               <strong id="dropzone-title">Drop a deed or EC here</strong>
             </div>
             <div class="dropzone-desc" id="dropzone-desc">
-              PDF or photo, English or Malayalam. Or try a sample:
+              PDF or photo, English or Malayalam.
             </div>
           </div>
         </div>
 
         <!-- 3 Layman 1-Click Action Cards -->
         <div class="layman-quickstart-grid" onclick="event.stopPropagation()">
-          <div class="layman-card card-deed" onclick="runSampleDeedOCR('deed')" title="Click to test with real Kerala Sale Deed PDF">
+          <div class="layman-card card-deed demo-only" onclick="runSampleDeedOCR('deed')" title="Try a sample Kerala sale deed PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">¶</span>
               <span class="layman-card-badge" id="card-badge-deed">Sample</span>
@@ -2373,7 +2374,7 @@
             <div class="layman-card-cta" id="card-cta-deed">Scan →</div>
           </div>
 
-          <div class="layman-card card-ec" onclick="runSampleDeedOCR('ec')" title="Click to test with official Kerala SRO Encumbrance Certificate PDF">
+          <div class="layman-card card-ec demo-only" onclick="runSampleDeedOCR('ec')" title="Try a sample Kerala SRO Encumbrance Certificate PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">₹</span>
               <span class="layman-card-badge" id="card-badge-ec">Sample</span>
@@ -2437,7 +2438,7 @@
         <span id="map-header-title">Satellite Inspector</span>
       </div>
 
-      <select class="map-preset-select" id="preset-select" onchange="applyLocationPreset(this.value)">
+      <select class="map-preset-select demo-only" id="preset-select" onchange="applyLocationPreset(this.value)">
         <option value="" id="opt-preset-default">Select Kerala Region...</option>
         <option value="aluva" selected>Aluva (Periyar River Basin - 2018 Flood Zone)</option>
         <option value="kakkanad">Kakkanad / Infopark (Elevated Midlands)</option>
@@ -2462,7 +2463,7 @@
       <button class="map-tool-btn highlight" id="tool-auto-demarcate" onclick="openAutoDemarcateModal()" title="Auto-Demarcate Boundaries for ANY plot (OSM Walls, Cents, or BhuNaksha FMB)">Auto-Demarcate</button>
       <button class="map-tool-btn" id="tool-plot" onclick="setMapTool('plot')">Draw Plot (Cents)</button>
       <button class="map-tool-btn" id="tool-road" onclick="setMapTool('road')">Measure Road Width</button>
-      <button class="map-tool-btn" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Overlay official BhuNaksha / ILIMS Cadastral Survey Boundaries">BhuNaksha FMB</button>
+      <button class="map-tool-btn demo-only" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Overlay official BhuNaksha / ILIMS Cadastral Survey Boundaries">BhuNaksha FMB</button>
       <button class="map-tool-btn" id="btn-databank" onclick="checkDataBankStatus()" title="Check Kerala 2008 Agricultural Data Bank & Sec 27A Status">Data Bank</button>
       <button class="map-tool-btn" id="btn-clear" onclick="clearMapDrawings()" title="Clear all drawings">Clear</button>
       <button class="map-tool-btn" id="btn-checklist-toggle" onclick="toggleChecklist()"><span id="btn-chk-text">Checklist</span> <span id="chk-badge" style="background:#990f3d; color:#fff; padding:1px 5px; border-radius:10px; font-size:0.68rem;">0/5</span></button>
@@ -2504,7 +2505,7 @@
         <div class="modal-tabs">
           <button class="modal-tab-btn active" id="tab-btn-detect" onclick="switchDemarcateTab('detect')">Auto-Detect (OSM/Walls)</button>
           <button class="modal-tab-btn" id="tab-btn-extent" onclick="switchDemarcateTab('extent')">Deed Extent (Cents)</button>
-          <button class="modal-tab-btn" id="tab-btn-cadastral" onclick="switchDemarcateTab('cadastral')">BhuNaksha FMB</button>
+          <button class="modal-tab-btn demo-only" id="tab-btn-cadastral" onclick="switchDemarcateTab('cadastral')">BhuNaksha FMB</button>
           <button class="modal-tab-btn" id="tab-btn-import" onclick="switchDemarcateTab('import')">Import Coords/KML</button>
         </div>
 
@@ -2715,6 +2716,10 @@ const sendBtn = document.getElementById("send-btn");
 
 let currentViewMode = "split";
 let currentLanguage = localStorage.getItem("kandezhuthu_lang") || "en";
+// Demo mode (server started with KANDEZ_FIXTURES): sample deeds, presets and timelines.
+let DEMO_MODE = false;
+// Survey number / village of the plot being checked, from a scanned deed or a demo preset.
+let currentPlotSurvey = null;
 
 const TRANSLATIONS = {
   en: {
@@ -2776,7 +2781,9 @@ const TRANSLATIONS = {
     },
     dropzoneTag: "Cloud Document AI & Multimodal Vision",
     dropzoneTitle: "Drop a deed or EC here",
-    dropzoneDesc: "PDF or photo, English or Malayalam. Or try a sample:",
+    dropzoneDesc: "PDF or photo, English or Malayalam.",
+    dropzoneSampleSuffix: " Or try a sample:",
+    demoTag: "Demo data",
     dropzoneModelTag: "Instant 1-Click Verification",
     dropzonePillLang: "English & Malayalam OCR",
     dropzonePillPhotos: "Camera Photos (JPG/PNG)",
@@ -2937,7 +2944,9 @@ const TRANSLATIONS = {
     },
     dropzoneTag: "ക്ലൗഡ് ഡോക്യുമെന്റ് AI & മൾട്ടിമോഡൽ വിഷൻ",
     dropzoneTitle: "ആധാരമോ EC-യോ ഇവിടെ ഇടുക",
-    dropzoneDesc: "PDF അല്ലെങ്കിൽ ഫോട്ടോ, മലയാളം അല്ലെങ്കിൽ ഇംഗ്ലീഷ്. അല്ലെങ്കിൽ ഒരു മാതൃക നോക്കുക:",
+    dropzoneDesc: "PDF അല്ലെങ്കിൽ ഫോട്ടോ, മലയാളം അല്ലെങ്കിൽ ഇംഗ്ലീഷ്.",
+    dropzoneSampleSuffix: " അല്ലെങ്കിൽ ഒരു മാതൃക നോക്കുക:",
+    demoTag: "ഡെമോ ഡാറ്റ",
     dropzoneModelTag: "തൽക്ഷണ പരിശോധന",
     dropzonePillLang: "മലയാളം & ഇംഗ്ലീഷ്",
     dropzonePillPhotos: "ക്യാമറ ഫോട്ടോകൾ",
@@ -3158,7 +3167,9 @@ function setLanguage(lang) {
   const elDzTitle = document.getElementById("dropzone-title");
   if (elDzTitle) elDzTitle.textContent = t.dropzoneTitle;
   const elDzDesc = document.getElementById("dropzone-desc");
-  if (elDzDesc) elDzDesc.textContent = t.dropzoneDesc;
+  if (elDzDesc) elDzDesc.textContent = t.dropzoneDesc + (DEMO_MODE ? t.dropzoneSampleSuffix : "");
+  const elDemoTag = document.getElementById("demo-tag");
+  if (elDemoTag) elDemoTag.textContent = t.demoTag;
   const elDzLang = document.getElementById("dropzone-pill-lang");
   if (elDzLang) elDzLang.textContent = t.dropzonePillLang;
   const dropzonePillPhotos = document.getElementById("dropzone-pill-photos");
@@ -3809,9 +3820,9 @@ async function handleDeedUpload(file) {
 async function runSampleDeedOCR(docType = "deed") {
   setWorkflowStep(2);
   const isEc = docType === "ec";
-  const docTitle = isEc ? "Official Kerala SRO Encumbrance Certificate (EC Form 15, 30-Year Search)" : "Sample Kerala Title Deed (Aluva SRO Doc 1420/2014, Re-Sy 345/1)";
+  const docTitle = isEc ? "Sample Kerala SRO Encumbrance Certificate (EC Form 15, 30-Year Search)" : "Sample Kerala Title Deed (Aluva SRO Doc 1420/2014, Re-Sy 345/1)";
   const fileName = isEc ? "kerala_sro_ec_aluva_30_year_search.pdf" : "kerala_sale_deed_aluva_re_sy_345_1.pdf";
-  const step1Desc = isEc ? "Official SRO Form 15 EC (1994-2024 Search Period)" : "Sample PDF loaded (11 Cents, Aluva West Village)";
+  const step1Desc = isEc ? "Sample SRO Form 15 EC (1994-2024 Search Period)" : "Sample PDF loaded (11 Cents, Aluva West Village)";
   const step3Desc = isEc ? "Auditing registered mortgages, liens & SARFAESI charges..." : "Evaluating pathway easement, minor shares & wetland status...";
 
   appendMsg("user", `<strong>Demonstration Request:</strong> Scan ${docTitle}`);
@@ -3930,6 +3941,10 @@ function renderDeedAuditCard(container, data, fileName) {
   }
 
   const meta = data.metadata || {};
+  const scannedSurvey = meta.re_survey_no || meta.survey_no;
+  if (scannedSurvey && scannedSurvey !== "Unknown") {
+    currentPlotSurvey = { surveyNo: scannedSurvey, village: meta.village || "", cents: meta.extent_cents || null };
+  }
   const sanity = data.sanity_result || {};
   const score = sanity.sanity_score ?? 100;
 
@@ -4159,10 +4174,11 @@ function renderDeedAuditCard(container, data, fileName) {
 
 function locatePlotOnSatellite(village, survey) {
   setViewMode('split');
-  const v = (village || 'Aluva').toLowerCase();
-  if (v.includes('aluva')) {
+  if (survey) currentPlotSurvey = { surveyNo: survey, village: village || "", cents: null };
+  const v = (village || '').toLowerCase();
+  if (DEMO_MODE && v.includes('aluva')) {
     applyLocationPreset('aluva');
-  } else if (v.includes('kakkanad')) {
+  } else if (DEMO_MODE && v.includes('kakkanad')) {
     applyLocationPreset('kakkanad');
   } else {
     const searchInput = document.getElementById('map-search');
@@ -5080,8 +5096,6 @@ function initMap() {
     layers: [googleHybridLayer]
   });
 
-  createSamplePlot(defaultCenter[0], defaultCenter[1]);
-
   map.on('click', handleMapClick);
 
   fetchConfig();
@@ -5094,7 +5108,25 @@ async function fetchConfig() {
     if (data.google_maps_api_key) {
       console.log("[Kandezhuthu UI] Google Maps API key available");
     }
+    DEMO_MODE = !!data.demo;
   } catch (e) {}
+  applyDemoMode();
+}
+
+function applyDemoMode() {
+  if (!DEMO_MODE) {
+    document.querySelectorAll(".demo-only").forEach(el => el.remove());
+    return;
+  }
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+  const tag = document.getElementById("demo-tag");
+  if (tag) tag.hidden = false;
+  const dzDesc = document.getElementById("dropzone-desc");
+  if (dzDesc) dzDesc.textContent = t.dropzoneDesc + t.dropzoneSampleSuffix;
+  if (map) {
+    const c = map.getCenter();
+    createSamplePlot(c.lat, c.lng);
+  }
 }
 
 function switchMapLayer(layerKey) {
@@ -5547,6 +5579,7 @@ function createSamplePlot(lat, lng) {
 function applyLocationPreset(presetKey) {
   if (!presetKey || !KERALA_PRESETS[presetKey]) return;
   const p = KERALA_PRESETS[presetKey];
+  currentPlotSurvey = { surveyNo: p.surveyNo, village: p.village, cents: p.cents };
   map.setView([p.lat, p.lng], p.zoom);
   const coords = generateCalibratedFootprint(p.lat, p.lng, p.cents, "1:1");
   applyPlotPolygon(coords, {
@@ -5646,7 +5679,7 @@ async function executeAutoDetectBoundaries() {
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: data.source === 'osm_boundary' ? 'Physical Wall / Fence Boundary' : 'BhuNaksha Cadastral Parcel'
+        source: data.source === 'osm_boundary' ? 'Physical Wall / Fence Boundary' : 'Demo Cadastral Parcel'
       });
       closeAutoDemarcateModal();
 
@@ -5753,7 +5786,7 @@ async function executeFetchCadastralParcel() {
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: "BhuNaksha Cadastral Parcel"
+        source: "Demo Cadastral Parcel"
       });
       closeAutoDemarcateModal();
 
@@ -5765,7 +5798,7 @@ async function executeFetchCadastralParcel() {
       appendMsg("agent", `
         <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
           <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
-            <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
+            <span>§</span> <span>Demo Cadastral Parcel (${data.village})</span>
           </div>
           <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
             Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
@@ -5889,7 +5922,7 @@ function searchLocation() {
   }
 
   const qLower = query.toLowerCase();
-  for (const [key, p] of Object.entries(KERALA_PRESETS)) {
+  for (const [key, p] of Object.entries(DEMO_MODE ? KERALA_PRESETS : {})) {
     if (key.toLowerCase().includes(qLower) || p.name.toLowerCase().includes(qLower) || (p.village && p.village.toLowerCase().includes(qLower))) {
       applyLocationPreset(key);
       updateHUDLocation(p.lat, p.lng, p.name);
@@ -5974,6 +6007,8 @@ async function fetchElevationAndFlood(lat, lng, localityName, centsVal) {
     }
   } catch (err) {
     console.warn("Failed to fetch plot elevation:", err);
+    currentElevationData = null;
+    window.currentElevationData = null;
     if (elevValEl) elevValEl.textContent = isMl ? "ലഭ്യമല്ല" : "Elevation N/A";
     if (badgeEl) {
       badgeEl.className = "badge-road warn";
@@ -6147,26 +6182,33 @@ function sendPlotToAuditor() {
   sendPrompt(promptText);
 }
 
+/* Survey number for map checks: the scanned deed, else (demo mode) the nearest preset */
+function plotSurveyForChecks(center) {
+  if (currentPlotSurvey && currentPlotSurvey.surveyNo) return currentPlotSurvey;
+  if (!DEMO_MODE) return null;
+  let closest = null;
+  let minDist = Infinity;
+  for (const key in KERALA_PRESETS) {
+    const p = KERALA_PRESETS[key];
+    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
+    if (dist < minDist) {
+      minDist = dist;
+      closest = p;
+    }
+  }
+  return closest ? { surveyNo: closest.surveyNo, village: closest.village, cents: closest.cents } : null;
+}
+
 /* BhuNaksha Cadastral Survey Overlay */
 let _cadastralLayer = null;
 
 async function fetchCadastralOverlay() {
   const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
   
-  let closestPreset = KERALA_PRESETS.aluva;
-  let minDist = 99999999;
-  for (let key in KERALA_PRESETS) {
-    const p = KERALA_PRESETS[key];
-    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
-    if (dist < minDist) {
-      minDist = dist;
-      closestPreset = p;
-    }
-  }
-
-  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
-  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
-  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
+  const plot = plotSurveyForChecks(center);
+  if (!plot) return;
+  const { surveyNo, village } = plot;
+  const cents = plot.cents || 10.0;
 
   try {
     const res = await fetch(`/api/cadastral_sketch?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&lat=${center.lat}&lng=${center.lng}`);
@@ -6186,7 +6228,7 @@ async function fetchCadastralOverlay() {
         fillOpacity: 0.35
       }).addTo(map);
 
-      let tooltipContent = `<b>BhuNaksha Cadastral Parcel</b><br>Survey No: <b>${data.survey_no}</b> (${data.village})<br>Extent: <b>${data.extent_cents} Cents</b><br><hr style="margin:4px 0;">`;
+      let tooltipContent = `<b>Demo Cadastral Parcel</b><br>Survey No: <b>${data.survey_no}</b> (${data.village})<br>Extent: <b>${data.extent_cents} Cents</b><br><hr style="margin:4px 0;">`;
       if (data.fmb_dimensions_m && data.fmb_dimensions_m.length) {
         tooltipContent += `<b>FMB Boundaries (Meters):</b><br>`;
         data.fmb_dimensions_m.forEach(f => {
@@ -6202,7 +6244,7 @@ async function fetchCadastralOverlay() {
         extentCents: data.extent_cents,
         surveyNo: data.survey_no,
         village: data.village,
-        source: "BhuNaksha Cadastral Parcel"
+        source: "Demo Cadastral Parcel"
       });
     }
 
@@ -6214,7 +6256,7 @@ async function fetchCadastralOverlay() {
     appendMsg("agent", `
       <div style="background:#fbf0e0; border:1px solid #ecd2a8; border-radius:10px; padding:12px; margin:6px 0;">
         <div style="display:flex; align-items:center; gap:8px; font-weight:700; color:#8a4d00; font-size:0.95rem;">
-          <span>§</span> <span>Official BhuNaksha Cadastral Parcel (${data.village})</span>
+          <span>§</span> <span>Demo Cadastral Parcel (${data.village})</span>
         </div>
         <div style="font-size:0.84rem; color:#4a2a00; margin-top:6px;">
           Survey Number: <strong>${data.survey_no}</strong> | Extent: <strong>${data.extent_cents} Cents</strong> | Adjacent Plots: <strong>${(data.adjacent_survey_numbers || []).join(", ")}</strong>
@@ -6238,20 +6280,18 @@ async function fetchCadastralOverlay() {
 async function checkDataBankStatus() {
   const center = currentMarker ? currentMarker.getLatLng() : (map ? map.getCenter() : { lat: 10.1076, lng: 76.3516 });
   
-  let closestPreset = KERALA_PRESETS.aluva;
-  let minDist = 99999999;
-  for (let key in KERALA_PRESETS) {
-    const p = KERALA_PRESETS[key];
-    const dist = calculateDistance(center, { lat: p.lat, lng: p.lng });
-    if (dist < minDist) {
-      minDist = dist;
-      closestPreset = p;
-    }
+  const plot = plotSurveyForChecks(center);
+  if (!plot) {
+    const isMl = currentLanguage === "ml";
+    appendMsg("agent", isMl
+      ? "ഡാറ്റാ ബാങ്ക് നില പരിശോധിക്കാൻ ആദ്യം ആധാരം സ്കാൻ ചെയ്യുക, അല്ലെങ്കിൽ സർവേ നമ്പറും വില്ലേജും താഴെ എഴുതുക."
+      : "To check Data Bank status, scan the deed first, or type the survey number and village below.");
+    input.value = isMl ? "സർവേ നമ്പർ  , വില്ലേജ്  : ഡാറ്റാ ബാങ്ക് നില പരിശോധിക്കുക" : "Check Data Bank status for Survey No  in  village";
+    input.focus();
+    return;
   }
-
-  const surveyNo = (minDist < 5000 && closestPreset.surveyNo) ? closestPreset.surveyNo : "345/1";
-  const village = (minDist < 5000 && closestPreset.village) ? closestPreset.village : "Aluva West";
-  const cents = (minDist < 5000 && closestPreset.cents) ? closestPreset.cents : 10.0;
+  const { surveyNo, village } = plot;
+  const cents = plot.cents || 10.0;
 
   try {
     const res = await fetch(`/api/databank_check?survey_no=${encodeURIComponent(surveyNo)}&village=${encodeURIComponent(village)}&cents=${cents}&fair_value=240000&lang=${currentLanguage}`);
@@ -6259,8 +6299,10 @@ async function checkDataBankStatus() {
     const data = await res.json();
 
     const isListed = data.is_listed_in_databank;
-    const badgeColor = isListed ? "#990f3d" : "#0d7680";
-    const badgeText = isListed ? "■ LISTED IN DATA BANK (Nilam)" : "● NOT IN DATA BANK (Purayidam / Unnotified)";
+    const badgeColor = isListed === null ? "#a35c00" : (isListed ? "#990f3d" : "#0d7680");
+    const badgeText = isListed === null
+      ? "▲ NOT VERIFIED (Check the Krishi Bhavan Data Bank)"
+      : (isListed ? "■ LISTED IN DATA BANK (Nilam)" : "● NOT IN DATA BANK (Purayidam / Unnotified)");
 
     let feeHtml = "";
     if (data.fee_calculation) {
