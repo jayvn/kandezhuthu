@@ -2235,7 +2235,7 @@
     <div class="brand-icon">ക</div>
     <div class="brand-text">
       <div class="brand-title" id="brand-title">Kandezhuthu AI</div>
-      <div class="brand-subtitle" id="brand-subtitle">Kerala Property Legal Title & Satellite Diligence</div>
+      <div class="brand-subtitle" id="brand-subtitle">Kerala property title checks</div>
     </div>
   </div>
 
@@ -2250,8 +2250,7 @@
       <button class="view-btn active" data-mode="split" id="view-btn-split" onclick="setViewMode('split')">Split View</button>
       <button class="view-btn" data-mode="map" id="view-btn-map" onclick="setViewMode('map')">Map & Satellite</button>
     </div>
-    <span id="pwa-status-badge" style="font-size:0.75rem; background:#dcfce7; color:#166534; padding:3px 8px; border-radius:12px; font-weight:600; display:flex; align-items:center; gap:4px;"><span id="pwa-dot" style="width:7px; height:7px; border-radius:50%; background:#16a34a; display:inline-block;"></span> <span id="pwa-status-text">Online Mode</span></span>
-    <div class="badge-kerala" id="badge-kerala">Kerala Real Estate Guardrail</div>
+    <span id="pwa-status-badge" class="offline-badge" hidden><span id="pwa-status-text">Offline</span></span>
   </div>
 </header>
 
@@ -2260,49 +2259,30 @@
     <div class="workflow-step active" id="wf-step-1" onclick="setWorkflowStep(1)" title="Step 1: Ingest Kerala Sale Deed or Encumbrance Certificate (EC)">
       <span class="workflow-step-num" id="wf-num-1">1</span>
       <span class="workflow-step-badge" id="wf-badge-1" style="display:none;" title="Step 1 Completed">✓</span>
-      <span id="wf-text-1">Ingest Document</span>
+      <span id="wf-text-1">Document</span>
     </div>
     <span class="workflow-arrow">→</span>
     <div class="workflow-step" id="wf-step-2" onclick="setWorkflowStep(2)" title="Step 2: 30-Year Prior Title Lineage & Encumbrance cross-validation">
       <span class="workflow-step-num" id="wf-num-2">2</span>
       <span class="workflow-step-badge" id="wf-badge-2" style="display:none;" title="Step 2 Completed">✓</span>
-      <span id="wf-text-2">Prior Lineage</span>
+      <span id="wf-text-2">Prior deeds</span>
     </div>
     <span class="workflow-arrow">→</span>
     <div class="workflow-step" id="wf-step-3" onclick="setWorkflowStep(3)" title="Step 3: Satellite GIS, KPBR Road Access Width, Cadastral Plot Boundary, Flood Risk">
       <span class="workflow-step-num" id="wf-num-3">3</span>
       <span class="workflow-step-badge" id="wf-badge-3" style="display:none;" title="Step 3 Completed">✓</span>
-      <span id="wf-text-3">Satellite & KPBR</span>
+      <span id="wf-text-3">Site</span>
     </div>
     <span class="workflow-arrow">→</span>
     <div class="workflow-step" id="wf-step-4" onclick="setWorkflowStep(4)" title="Step 4: Field Checklist, WhatsApp Seller Inquiry, Advocate PDF Dossier">
       <span class="workflow-step-num" id="wf-num-4">4</span>
       <span class="workflow-step-badge" id="wf-badge-4" style="display:none;" title="Step 4 Completed">✓</span>
-      <span id="wf-text-4">Due Diligence & Action</span>
+      <span id="wf-text-4">Follow-up</span>
     </div>
   </div>
-  <div style="display:flex; align-items:center; gap:0.45rem;">
-    <button class="export-report-btn" id="btn-timeline-export" onclick="openOwnershipTimeline('aluva_broken')" title="Open 30-Year Ownership Timeline Visualizer">
-      <span id="btn-timeline-text">Ownership Timeline</span>
-    </button>
-    <button class="export-report-btn" id="btn-pdf-export" style="background:#1e293b;" onclick="window.print()" title="Print or Save PDF of Audit Report">
-      <span id="btn-pdf-text">Export PDF</span>
-    </button>
-  </div>
-</div>
-
-<div class="step-nav-bar" id="step-nav-bar">
-  <div class="step-nav-left">
-    <span class="step-nav-label" id="step-nav-label">Step 1 of 4: Ingest Document</span>
-    <span class="step-nav-badges" id="step-nav-badges"></span>
-  </div>
   <div class="step-nav-controls">
-    <button type="button" class="step-nav-btn prev" id="btn-prev-step" onclick="prevWorkflowStep()" disabled>
-      ← Previous Step
-    </button>
-    <button type="button" class="step-nav-btn next" id="btn-next-step" onclick="nextWorkflowStep()">
-      Next: Prior Lineage →
-    </button>
+    <button type="button" class="step-nav-btn prev" id="btn-prev-step" onclick="prevWorkflowStep()" disabled>← Back</button>
+    <button type="button" class="step-nav-btn next" id="btn-next-step" onclick="nextWorkflowStep()">Next: Prior deeds →</button>
   </div>
 </div>
 
@@ -2323,27 +2303,9 @@
       </div>
     </div>
 
-    <!-- Categorized Action Tabs (Hidden: 4-step workflow encapsulates these phases cleanly) -->
-    <div class="category-tabs" style="display: none !important;">
-      <div class="category-tab active" data-cat="lineage" id="cat-tab-lineage" onclick="switchActionCategory('lineage')">Ownership & Lineage</div>
-      <div class="category-tab" data-cat="statutory" id="cat-tab-statutory" onclick="switchActionCategory('statutory')">Statutory Traps</div>
-      <div class="category-tab" data-cat="kpbr" id="cat-tab-kpbr" onclick="switchActionCategory('kpbr')">KPBR Building Rules</div>
-      <div class="category-tab" data-cat="field" id="cat-tab-field" onclick="switchActionCategory('field')">Field Inspection</div>
-      <div class="category-tab" data-cat="all" id="cat-tab-all" onclick="switchActionCategory('all')">Show All</div>
-    </div>
-
     <div class="chips-container" id="chips-container">
       <div class="chips-bar">
         <!-- Step 1 (Ingest Document) Chips -->
-        <div class="chip" data-cat="ingest" id="chip-sample-deed" onclick="runSampleDeedOCR('deed')" title="Run instant Gemini Vision OCR on realistic Aluva Title Deed">
-          Test Kerala Sale Deed (1420/2014)
-        </div>
-        <div class="chip" data-cat="ingest" id="chip-sample-ec" onclick="runSampleDeedOCR('ec')" title="Test 30-Year Encumbrance Certificate with undisclosed bank mortgage">
-          Test 30-Yr Bank EC (Undisclosed Mortgage)
-        </div>
-        <div class="chip" data-cat="ingest" id="chip-upload-deed" onclick="document.getElementById('deed-file-input').click()" title="Upload scanned Kerala deed PDF or snap camera photo">
-          Browse / Snap Deed Photo
-        </div>
 
         <!-- Step 2 (Prior Title & Encumbrance) Chips -->
         <div class="chip featured" data-cat="lineage" id="chip-timeline-aluva" style="display:none;" onclick="openOwnershipTimeline('aluva_broken')" title="Open Interactive 30-Year Ownership Timeline with 3 Critical Defects">
@@ -2369,9 +2331,6 @@
         <div class="chip" data-cat="satellite" id="chip-check-elevation" style="display:none;" onclick="onCheckElevationChip()" title="Inspect elevation MSL and Periyar flood basin risk">
           Check Elevation & Flood Exposure
         </div>
-        <div class="chip" data-cat="satellite" id="chip-switch-map-view" style="display:none;" onclick="toggleSatelliteHybridView()" title="Toggle satellite map between Google Satellite and Hybrid layer">
-          Switch Map View (Hybrid / Satellite)
-        </div>
 
         <!-- Step 4 (Due Diligence & Action) Chips -->
         <div class="chip" data-cat="action" id="chip-open-checklist" style="display:none;" onclick="toggleChecklist(true)" title="Open on-site field verification checklist drawer">
@@ -2383,39 +2342,21 @@
         <div class="chip" data-cat="action" id="chip-export-dossier" style="display:none;" onclick="exportDossierPDF('aluva_broken')" title="Export comprehensive advocate legal diligence dossier as PDF">
           Export Advocate Dossier (PDF)
         </div>
-        <div class="chip" data-cat="action" id="chip-restart-diligence" style="display:none;" onclick="setWorkflowStep(1)" title="Restart full 4-step progressive due diligence workflow">
-          ↺ Restart Full Diligence
-        </div>
 
-        <!-- Preserved statutory & lineage chips for full backward-compatibility -->
-        <div class="chip" data-cat="lineage" id="chip-timeline-kakkanad" style="display:none;" onclick="openOwnershipTimeline('kakkanad_wetland')">Timeline: Kakkanad Wetland & Minor</div>
-        <div class="chip" data-cat="statutory" id="chip-sec45a" style="display:none;" onclick="onChipClick('sec45a')">Sec 45A Undervaluation & Deficit Stamp</div>
-        <div class="chip" data-cat="statutory" id="chip-ec-mortgage" style="display:none;" onclick="onChipClick('ec_mortgage')">Undischarged Bank Mortgage (EC)</div>
-        <div class="chip" data-cat="statutory" id="chip-pathway" style="display:none;" onclick="onChipClick('pathway')">Pathway / Vazhi Avakasham</div>
-        <div class="chip" data-cat="statutory" id="chip-wetland" style="display:none;" onclick="onChipClick('wetland')">Nilam / Wetland 2008 Risk</div>
-        <div class="chip" data-cat="kpbr" id="chip-kpbr" style="display:none;" onclick="onChipClick('kpbr')">Residential Road Width (3m vs 5m)</div>
-        <div class="chip" data-cat="kpbr" id="chip-form6" style="display:none;" onclick="onChipClick('form6')">Form 6 / 27A Fee Slabs</div>
-        <div class="chip" data-cat="field" id="chip-survey-kallu" style="display:none;" onclick="onChipClick('survey_kallu')">Survey Kallu (Boundary Stones)</div>
       </div>
     </div>
 
     <!-- Dedicated Deed Drag & Drop Zone for Laymen -->
     <div class="deed-dropzone-container" id="deed-dropzone-container">
       <div class="deed-dropzone" id="deed-dropzone" onclick="document.getElementById('deed-file-input').click()" title="Click to browse or drop any deed file">
-        <div class="dropzone-badge-row">
-          <span class="dropzone-live-pulse"></span>
-          <span class="dropzone-tag" id="dropzone-tag">Kerala Land Title Legal Audit Assistant</span>
-          <span class="dropzone-model" id="dropzone-model-tag">Instant 1-Click Verification</span>
-          <button type="button" class="dropzone-toggle-btn" id="dropzone-toggle-btn" onclick="event.stopPropagation(); toggleDropzone();" title="Collapse / Expand Ingest Box">− Minimize</button>
-        </div>
         <div class="dropzone-content">
           <div class="dropzone-icon">§</div>
           <div class="dropzone-text">
             <div class="dropzone-title">
-              <strong id="dropzone-title">Drag & Drop Kerala Title Deed or Encumbrance Certificate (EC)</strong>
+              <strong id="dropzone-title">Drop a deed or EC here</strong>
             </div>
             <div class="dropzone-desc" id="dropzone-desc">
-              Directly extracts 4 boundaries, survey numbers, prior deeds & audits 4 fatal statutory traps
+              PDF or photo, English or Malayalam. Or try a sample:
             </div>
           </div>
         </div>
@@ -2425,21 +2366,21 @@
           <div class="layman-card card-deed" onclick="runSampleDeedOCR('deed')" title="Click to test with real Kerala Sale Deed PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">¶</span>
-              <span class="layman-card-badge" id="card-badge-deed">3 Traps Hidden</span>
+              <span class="layman-card-badge" id="card-badge-deed">Sample</span>
             </div>
-            <div class="layman-card-title" id="card-title-deed">Test Real Sale Deed</div>
-            <div class="layman-card-desc" id="card-desc-deed">See how AI detects hidden pathway easements, Paddy Land (Wetland), and senior citizen maintenance conditions.</div>
-            <div class="layman-card-cta" id="card-cta-deed">▶ Test Sale Deed PDF →</div>
+            <div class="layman-card-title" id="card-title-deed">Sale deed</div>
+            <div class="layman-card-desc" id="card-desc-deed">Pathway easement, paddy land and a maintenance clause.</div>
+            <div class="layman-card-cta" id="card-cta-deed">Scan →</div>
           </div>
 
           <div class="layman-card card-ec" onclick="runSampleDeedOCR('ec')" title="Click to test with official Kerala SRO Encumbrance Certificate PDF">
             <div class="layman-card-top">
               <span class="layman-card-icon">₹</span>
-              <span class="layman-card-badge" id="card-badge-ec">₹45L Bank Loan</span>
+              <span class="layman-card-badge" id="card-badge-ec">Sample</span>
             </div>
-            <div class="layman-card-title" id="card-title-ec">Test 30-Yr Bank EC</div>
+            <div class="layman-card-title" id="card-title-ec">30-year EC</div>
             <div class="layman-card-desc" id="card-desc-ec">Finds undisclosed bank mortgages and missing release deeds.</div>
-            <div class="layman-card-cta" id="card-cta-ec">▶ Test SRO EC PDF →</div>
+            <div class="layman-card-cta" id="card-cta-ec">Scan →</div>
           </div>
 
           <div class="layman-card card-upload" onclick="document.getElementById('deed-file-input').click()" title="Click to upload your own Kerala deed PDF or image">
@@ -2447,22 +2388,9 @@
               <span class="layman-card-icon">↑</span>
               <span class="layman-card-badge" id="card-badge-upload">PDF / Photo</span>
             </div>
-            <div class="layman-card-title" id="card-title-upload">Check My Own Deed / Photo</div>
-            <div class="layman-card-desc" id="card-desc-upload">Upload a PDF or snap a photo of any Kerala sale deed, partition paper, or agreement.</div>
-            <div class="layman-card-cta" id="card-cta-upload">Browse or Drop File →</div>
-          </div>
-        </div>
-
-        <div class="dropzone-footer" style="margin-top:0.65rem;">
-          <div class="dropzone-formats">
-            <span class="format-pill">PDF</span>
-            <span class="format-pill" id="dropzone-pill-photos">Camera Photos (JPG/PNG)</span>
-            <span class="format-pill lang" id="dropzone-pill-lang">English & Malayalam OCR</span>
-          </div>
-          <div class="dropzone-btns" onclick="event.stopPropagation()">
-            <a href="/api/sample_deed?doc_type=deed" download="kerala_sale_deed_aluva_re_sy_345_1.pdf" class="dropzone-btn secondary" style="text-decoration:none;" id="btn-download-deed" title="Download real test Kerala deed PDF to your computer to test drag-and-drop">
-              <span id="btn-download-deed-text">↓ Download Test Deed PDF</span>
-            </a>
+            <div class="layman-card-title" id="card-title-upload">Your document</div>
+            <div class="layman-card-desc" id="card-desc-upload">Sale deed, partition deed, agreement or EC.</div>
+            <div class="layman-card-cta" id="card-cta-upload">Upload →</div>
           </div>
         </div>
       </div>
@@ -2472,11 +2400,11 @@
       <div class="msg agent">
         <div class="msg-label">Kandezhuthu AI</div>
         <div class="bubble" id="welcome-bubble">
-          <strong id="welcome-bubble-title">Welcome to Kandezhuthu AI - Kerala Property Legal Audit</strong>
+          <strong id="welcome-bubble-title">Kandezhuthu AI</strong>
           <p id="welcome-bubble-p1">Drop a deed or EC above, paste a clause below, or ask a question.</p>
           <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.6rem;">
             <button type="button" class="dropzone-btn secondary" id="quick-prompt-1" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('advance_docs')">
-              What documents should I ask the seller for before paying token advance?
+              What documents should I get from the seller?
             </button>
             <button type="button" class="dropzone-btn secondary" id="quick-prompt-2" style="justify-content:flex-start; text-align:left;" onclick="onChipClick('kpbr')">
               How do I know if the road is wide enough to get a building permit (KPBR)?
@@ -2494,7 +2422,7 @@
       <button type="button" class="upload-trigger-btn" onclick="document.getElementById('deed-file-input').click()" title="Upload Scanned Deed or EC (PDF/Image)">
         <span>+</span>
       </button>
-      <textarea id="input" placeholder="Paste deed excerpt, ask questions, or click + to upload a scanned deed..." rows="1"></textarea>
+      <textarea id="input" placeholder="Paste a deed clause or ask a question" rows="1"></textarea>
       <button type="submit" id="send-btn">
         <span id="send-btn-text">Send</span>
         <span>→</span>
@@ -2536,7 +2464,6 @@
       <button class="map-tool-btn" id="tool-road" onclick="setMapTool('road')">Measure Road Width</button>
       <button class="map-tool-btn" id="btn-bhunaksha" onclick="fetchCadastralOverlay()" title="Overlay official BhuNaksha / ILIMS Cadastral Survey Boundaries">BhuNaksha FMB</button>
       <button class="map-tool-btn" id="btn-databank" onclick="checkDataBankStatus()" title="Check Kerala 2008 Agricultural Data Bank & Sec 27A Status">Data Bank</button>
-      <button class="map-tool-btn" id="btn-undo" onclick="undoLastPoint()" disabled title="Undo last placed point">↩️ Undo</button>
       <button class="map-tool-btn" id="btn-clear" onclick="clearMapDrawings()" title="Clear all drawings">Clear</button>
       <button class="map-tool-btn" id="btn-checklist-toggle" onclick="toggleChecklist()"><span id="btn-chk-text">Checklist</span> <span id="chk-badge" style="background:#990f3d; color:#fff; padding:1px 5px; border-radius:10px; font-size:0.68rem;">0/5</span></button>
 
@@ -2554,9 +2481,6 @@
       <div class="guidance-content">
         <span id="guidance-icon">●</span>
         <span id="guidance-text">Click anywhere on the satellite view to drop an inspection pin and view GPS coordinates.</span>
-      </div>
-      <div class="guidance-actions" id="guidance-pin-actions" style="display: flex;">
-        <button class="guidance-btn primary" id="btn-guidance-auto-demarcate" onclick="openAutoDemarcateModal()">Auto-Demarcate at Pin</button>
       </div>
       <div class="guidance-actions" id="guidance-actions" style="display: none;">
         <button class="guidance-btn secondary" id="guidance-undo-btn" onclick="undoLastPoint()">↩️ Undo</button>
@@ -2691,11 +2615,11 @@
 
     <!-- Floating HUD -->
     <div class="map-hud" id="map-hud">
-      <div class="map-hud-header">
+      <div class="map-hud-header" onclick="if (event.target.id !== 'hud-toggle-btn') toggleHUD()">
         <span id="hud-locality-title">Aluva, Ernakulam District</span>
+        <span id="hud-summary" class="hud-summary"></span>
         <div style="display: flex; align-items: center; gap: 0.4rem;">
-          <span id="hud-live-tag" style="font-size: 0.72rem; color: #166534; background: #dcfce7; padding: 2px 6px; border-radius: 4px;">Live Plot HUD</span>
-          <button class="hud-toggle-btn" id="hud-toggle-btn" onclick="toggleHUD()" title="Minimize or Expand HUD">_</button>
+          <button class="hud-toggle-btn" id="hud-toggle-btn" onclick="toggleHUD()" title="Collapse">▾</button>
         </div>
       </div>
 
@@ -2738,9 +2662,6 @@
       <div class="hud-actions">
         <button class="hud-btn hud-btn-primary" id="btn-hud-auditor" onclick="sendPlotToAuditor()">
           To Auditor
-        </button>
-        <button class="hud-btn hud-btn-secondary" id="btn-hud-export" onclick="exportPlotDossier()" title="Export Advocate Legal Dossier PDF with satellite plot geometry and KPBR compliance">
-          Export PDF
         </button>
         <a id="btn-hud-maps" class="hud-btn hud-btn-secondary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=10.1076,76.3516">
           Google Maps
@@ -2798,15 +2719,15 @@ let currentLanguage = localStorage.getItem("kandezhuthu_lang") || "en";
 const TRANSLATIONS = {
   en: {
     brandTitle: "Kandezhuthu AI",
-    brandSubtitle: "Kerala Property Legal Title & Satellite Diligence",
+    brandSubtitle: "Kerala property title checks",
     badgeKerala: "Kerala Real Estate Guardrail",
     viewChat: "Chat",
     viewSplit: "Split View",
     viewMap: "Map & Satellite",
-    wf1: "Ingest Document",
-    wf2: "Prior Lineage",
-    wf3: "Satellite & KPBR",
-    wf4: "Due Diligence & Action",
+    wf1: "Document",
+    wf2: "Prior deeds",
+    wf3: "Site",
+    wf4: "Follow-up",
     btnTimeline: "Ownership Timeline",
     btnPdf: "Export PDF",
     dropOverlayTitle: "Drop Scanned Kerala Deed or EC Here",
@@ -2854,25 +2775,25 @@ const TRANSLATIONS = {
       advance_docs: "What documents should I ask the seller for before paying token advance for land in Kerala?",
     },
     dropzoneTag: "Cloud Document AI & Multimodal Vision",
-    dropzoneTitle: "Drag & Drop Kerala Title Deed or Encumbrance Certificate (EC)",
-    dropzoneDesc: "Directly extracts 4 boundaries, survey numbers, prior deeds & audits 4 fatal statutory traps",
+    dropzoneTitle: "Drop a deed or EC here",
+    dropzoneDesc: "PDF or photo, English or Malayalam. Or try a sample:",
     dropzoneModelTag: "Instant 1-Click Verification",
     dropzonePillLang: "English & Malayalam OCR",
     dropzonePillPhotos: "Camera Photos (JPG/PNG)",
     dropzoneMinimize: "− Minimize",
-    dropzoneExpand: "+ Ingest Document",
-    cardDeedBadge: "3 Traps Hidden",
-    cardDeedTitle: "Test Real Sale Deed",
-    cardDeedDesc: "See how AI detects hidden pathway easements, Paddy Land (Wetland), and senior citizen maintenance conditions.",
-    cardDeedCta: "▶ Test Sale Deed PDF →",
-    cardEcBadge: "₹45L Bank Loan",
-    cardEcTitle: "Test 30-Yr Bank EC",
+    dropzoneExpand: "+ Add document",
+    cardDeedBadge: "Sample",
+    cardDeedTitle: "Sale deed",
+    cardDeedDesc: "Pathway easement, paddy land and a maintenance clause.",
+    cardDeedCta: "Scan →",
+    cardEcBadge: "Sample",
+    cardEcTitle: "30-year EC",
     cardEcDesc: "Finds undisclosed bank mortgages and missing release deeds.",
-    cardEcCta: "▶ Test SRO EC PDF →",
+    cardEcCta: "Scan →",
     cardUploadBadge: "PDF / Photo",
-    cardUploadTitle: "Check My Own Deed / Photo",
-    cardUploadDesc: "Upload a PDF or snap a photo of any Kerala sale deed, partition paper, or agreement.",
-    cardUploadCta: "Browse or Drop File →",
+    cardUploadTitle: "Your document",
+    cardUploadDesc: "Sale deed, partition deed, agreement or EC.",
+    cardUploadCta: "Upload →",
     btnBrowse: "Browse Files",
     btnSampleDeed: "Ingest Sale Deed (PDF)",
     btnSampleEc: "Ingest SRO EC (PDF)",
@@ -2880,15 +2801,15 @@ const TRANSLATIONS = {
     btnDownloadDeedText: "↓ Download Test Deed PDF",
     pwaOnline: "Online Mode",
     pwaOffline: "Offline Field Mode",
-    quickPrompt1: "What documents should I ask the seller for before paying token advance?",
+    quickPrompt1: "What documents should I get from the seller?",
     quickPrompt2: "How do I know if the road is wide enough to get a building permit (KPBR)?",
     quickPrompt3: "How to check if land is listed as Nilam in the 2008 Paddy Land Data Bank?",
     btnAutoDemarcate: "Auto-Demarcate",
     btnBhunaksha: "BhuNaksha FMB",
     btnDatabank: "Data Bank",
-    welcomeTitle: "Welcome to Kandezhuthu AI - Kerala Property Legal Audit",
+    welcomeTitle: "Kandezhuthu AI",
     welcomeP1: "Drop a deed or EC above, paste a clause below, or ask a question.",
-    inputPlaceholder: "Paste deed excerpt, ask questions, or click + to upload a scanned deed...",
+    inputPlaceholder: "Paste a deed clause or ask a question",
     sendBtn: "Send",
     mapHeaderTitle: "Satellite Inspector",
     presetDefault: "Select Kerala Region...",
@@ -2959,15 +2880,15 @@ const TRANSLATIONS = {
   },
   ml: {
     brandTitle: "കണ്ടെഴുത്ത് AI",
-    brandSubtitle: "കേരള ഭൂമി ആധാര പരിശോധനയും ഉപഗ്രഹ നിരീക്ഷണവും",
+    brandSubtitle: "കേരള ഭൂമി ആധാര പരിശോധന",
     badgeKerala: "കേരള ഭൂമി നിയമ സുരക്ഷ",
     viewChat: "ചാറ്റ്",
     viewSplit: "സ്പ്ലിറ്റ് വ്യൂ",
     viewMap: "മാപ്പ് & സാറ്റലൈറ്റ്",
-    wf1: "രേഖ സമർപ്പിക്കുക (Ingest Document)",
-    wf2: "മുന്നാധാരം (Prior Lineage)",
-    wf3: "ഉപഗ്രഹ സർവേ (Satellite & KPBR)",
-    wf4: "നടപടി ക്രമങ്ങൾ (Due Diligence & Action)",
+    wf1: "രേഖ",
+    wf2: "മുന്നാധാരം",
+    wf3: "സ്ഥലം",
+    wf4: "തുടർനടപടി",
     btnTimeline: "മുന്നാധാര ടൈംലൈൻ",
     btnPdf: "PDF എക്സ്പോർട്ട്",
     dropOverlayTitle: "ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ ഇവിടെ നൽകുക",
@@ -3015,25 +2936,25 @@ const TRANSLATIONS = {
       advance_docs: "കേരളത്തിൽ സ്ഥലം വാങ്ങുമ്പോൾ ടോക്കൺ അഡ്വാൻസ് നൽകുന്നതിന് മുൻപ് വിൽപ്പനക്കാരനിൽ നിന്ന് എന്തൊക്കെ രേഖകളാണ് (ആധാരം, മുന്നാധാരം, കുടിക്കടം, ലൊക്കേഷൻ സ്കെച്ച്, നികുതി രസീത്) നിർബന്ധമായും വാങ്ങി പരിശോധിക്കേണ്ടത്?",
     },
     dropzoneTag: "ക്ലൗഡ് ഡോക്യുമെന്റ് AI & മൾട്ടിമോഡൽ വിഷൻ",
-    dropzoneTitle: "കേരള ആധാരമോ കുടിക്കട സർട്ടിഫിക്കറ്റോ ഇവിടെ നൽകുക",
-    dropzoneDesc: "നാലതിരുകൾ, സർവേ നമ്പറുകൾ, മുന്നാധാര വിവരങ്ങൾ എന്നിവ നേരിട്ട് വേർതിരിച്ചെടുത്ത് 4 പ്രധാന നിയമപ്രശ്നങ്ങൾ കണ്ടെത്തുന്നു",
+    dropzoneTitle: "ആധാരമോ EC-യോ ഇവിടെ ഇടുക",
+    dropzoneDesc: "PDF അല്ലെങ്കിൽ ഫോട്ടോ, മലയാളം അല്ലെങ്കിൽ ഇംഗ്ലീഷ്. അല്ലെങ്കിൽ ഒരു മാതൃക നോക്കുക:",
     dropzoneModelTag: "തൽക്ഷണ പരിശോധന",
     dropzonePillLang: "മലയാളം & ഇംഗ്ലീഷ്",
     dropzonePillPhotos: "ക്യാമറ ഫോട്ടോകൾ",
     dropzoneMinimize: "− ചുരുക്കുക",
-    dropzoneExpand: "+ രേഖ നൽകുക",
-    cardDeedBadge: "3 കുരുക്കുകൾ അടങ്ങിയത്",
-    cardDeedTitle: "മാതൃകാ തീറാധാരം പരിശോധിക്കുക",
-    cardDeedDesc: "നടപ്പുവഴി അവകാശം, നിലം/തണ്ണീർത്തട പ്രശ്നങ്ങൾ, മുതിർന്ന പൗര സംരക്ഷണ നിബന്ധനകൾ എന്നിവ കണ്ടെത്തുന്നത് കാണുക.",
-    cardDeedCta: "▶ മാതൃകാ ആധാരം പരിശോധിക്കുക →",
-    cardEcBadge: "₹45 ലക്ഷം ബാങ്ക് വായ്പ",
-    cardEcTitle: "30 വർഷത്തെ ബാങ്ക് കുടിക്കടം",
+    dropzoneExpand: "+ രേഖ ചേർക്കുക",
+    cardDeedBadge: "മാതൃക",
+    cardDeedTitle: "തീറാധാരം",
+    cardDeedDesc: "നടപ്പുവഴി, നിലം, സംരക്ഷണ വ്യവസ്ഥ.",
+    cardDeedCta: "പരിശോധിക്കുക →",
+    cardEcBadge: "മാതൃക",
+    cardEcTitle: "30 വർഷത്തെ EC",
     cardEcDesc: "രഹസ്യമായി പണയം വെച്ച ബാങ്ക് ബാധ്യതകളും റിലീസ് ആധാരങ്ങളുടെ കുറവും കണ്ടെത്തുന്നത് കാണുക.",
-    cardCtaEc: "▶ കുടിക്കട സർട്ടിഫിക്കറ്റ് കാണുക →",
+    cardEcCta: "പരിശോധിക്കുക →",
     cardUploadBadge: "ഫയൽ / ഫോട്ടോ",
-    cardUploadTitle: "സ്വന്തം ആധാരം / ഫോട്ടോ പരിശോധിക്കുക",
-    cardUploadDesc: "മലയാളത്തിലോ ഇംഗ്ലീഷിലോ ഉള്ള തീറാധാരം, ഭാഗപത്രം, കുടിക്കടം എന്നിവയുടെ ഫോട്ടോയോ രേഖയോ അപ്‌ലോഡ് ചെയ്യുക.",
-    cardCtaUpload: "ഫയൽ തിരഞ്ഞെടുക്കുക / ഡ്രോപ്പ് ചെയ്യുക →",
+    cardUploadTitle: "നിങ്ങളുടെ രേഖ",
+    cardUploadDesc: "തീറാധാരം, ഭാഗപത്രം, കരാർ അല്ലെങ്കിൽ EC.",
+    cardUploadCta: "അപ്‌ലോഡ് →",
     btnBrowse: "ഫയലുകൾ തിരഞ്ഞെടുക്കുക",
     btnSampleDeed: "മാതൃകാ തീറാധാരം",
     btnSampleEc: "മാതൃകാ കുടിക്കടം",
@@ -3041,15 +2962,15 @@ const TRANSLATIONS = {
     btnDownloadDeedText: "↓ ടെസ്റ്റ് ആധാരം ഡൗൺലോഡ് ചെയ്യുക",
     pwaOnline: "ഓൺലൈൻ മോഡ്",
     pwaOffline: "ഓഫ്‌ലൈൻ പരിശോധനാ മോഡ്",
-    quickPrompt1: "അഡ്വാൻസ് തുക നൽകുന്നതിന് മുൻപ് വിൽപ്പനക്കാരനിൽ നിന്ന് എന്തൊക്കെ രേഖകൾ വാങ്ങണം?",
+    quickPrompt1: "വിൽപ്പനക്കാരനിൽ നിന്ന് ഏതൊക്കെ രേഖകൾ വാങ്ങണം?",
     quickPrompt2: "വീടുപണിക്ക് അനുമതി ലഭിക്കാൻ വഴിക്ക് എത്ര വീതി വേണം (KPBR ചട്ടങ്ങൾ)?",
     quickPrompt3: "2008-ലെ നെൽവയൽ ഡാറ്റാ ബാങ്കിൽ ഭൂമി 'നിലം' ആണോ എന്ന് എങ്ങനെ പരിശോധിക്കാം?",
     btnAutoDemarcate: "അതിരുകൾ കണ്ടെത്തുക",
     btnBhunaksha: "ഭൂരേഖ മാപ്പ്",
     btnDatabank: "ഡാറ്റാ ബാങ്ക്",
-    welcomeTitle: "നമസ്കാരം! കണ്ടെഴുത്ത് AI ലേക്ക് സ്വാഗതം.",
+    welcomeTitle: "കണ്ടെഴുത്ത് AI",
     welcomeP1: "മുകളിൽ ആധാരമോ EC-യോ ഇടുക, താഴെ വിവരങ്ങൾ പേസ്റ്റ് ചെയ്യുക, അല്ലെങ്കിൽ ചോദ്യം ചോദിക്കുക.",
-    inputPlaceholder: "ആധാരത്തിലെ വിവരങ്ങൾ നൽകുക, സംശയങ്ങൾ ചോദിക്കുക, അല്ലെങ്കിൽ ക്ലിക്ക് ചെയ്ത് ആധാരം അപ്‌ലോഡ് ചെയ്യുക...",
+    inputPlaceholder: "ആധാരത്തിലെ ഭാഗം പേസ്റ്റ് ചെയ്യുക അല്ലെങ്കിൽ ചോദ്യം ചോദിക്കുക",
     sendBtn: "അയക്കുക",
     mapHeaderTitle: "ഉപഗ്രഹ നിരീക്ഷണം",
     presetDefault: "കേരളത്തിലെ പ്രദേശം തിരഞ്ഞെടുക്കുക...",
@@ -3283,8 +3204,6 @@ function setLanguage(lang) {
   if (elWelcomeTitle) elWelcomeTitle.textContent = t.welcomeTitle;
   const elWelcomeP1 = document.getElementById("welcome-bubble-p1");
   if (elWelcomeP1) elWelcomeP1.innerHTML = t.welcomeP1;
-  const elWelcomeP2 = document.getElementById("welcome-bubble-p2");
-  if (elWelcomeP2) elWelcomeP2.innerHTML = t.welcomeP2;
 
   const qp1 = document.getElementById("quick-prompt-1");
   if (qp1) qp1.innerHTML = `${t.quickPrompt1}`;
@@ -3567,7 +3486,10 @@ function updateGuidanceBarText() {
   const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
 
   if (guidanceUndoBtn) guidanceUndoBtn.textContent = t.btnUndo;
-  if (guidanceFinishBtn) guidanceFinishBtn.textContent = t.guidanceSeal;
+  if (guidanceFinishBtn) {
+    guidanceFinishBtn.textContent = t.guidanceSeal;
+    guidanceFinishBtn.style.display = activeTool === "road" ? "none" : "";
+  }
 
   const guidancePinActions = document.getElementById("guidance-pin-actions");
 
@@ -3584,7 +3506,7 @@ function updateGuidanceBarText() {
   } else if (activeTool === "road") {
     if (guidanceIcon) guidanceIcon.textContent = "↔";
     if (guidanceText) guidanceText.textContent = t.guidanceRoad;
-    if (guidanceActions) guidanceActions.style.display = "none";
+    if (guidanceActions) guidanceActions.style.display = "flex";
     if (guidancePinActions) guidancePinActions.style.display = "none";
   }
 }
@@ -3607,7 +3529,7 @@ function toggleDropzone(force) {
   const shouldMinimize = typeof force === "boolean" ? force : !container.classList.contains("minimized");
   if (shouldMinimize) {
     container.classList.add("minimized");
-    if (btn) btn.textContent = "+ Ingest Document";
+    if (btn) btn.textContent = "+ Add document";
   } else {
     container.classList.remove("minimized");
     if (btn) btn.textContent = "− Minimize";
@@ -3652,8 +3574,8 @@ function escapeHtml(str) {
 function renderMarkdownBlock(text) {
   // Models sometimes emit LaTeX arrows; show them as plain glyphs.
   text = text
-    .replace(/\$\\(?:leftarrow|gets|longleftarrow)\$/g, "←")
-    .replace(/\$\\(?:rightarrow|to|longrightarrow)\$/g, "→");
+    .replace(/\$\\+(?:leftarrow|gets|longleftarrow)\$/g, "←")
+    .replace(/\$\\+(?:rightarrow|to|longrightarrow)\$/g, "→");
   if (window.marked && window.DOMPurify) {
     return DOMPurify.sanitize(marked.parse(text, { gfm: true, breaks: true }));
   }
@@ -4526,60 +4448,38 @@ function updateStepNavBar() {
   const stepNum = currentWorkflowStep;
   const prevBtn = document.getElementById("btn-prev-step");
   const nextBtn = document.getElementById("btn-next-step");
-  const stepLabel = document.getElementById("step-nav-label");
-
-  const stepTitles = {
-    en: [
-      "Ingest Document",
-      "Prior Title & Encumbrance",
-      "Ground & Satellite Verification",
-      "Due Diligence & Action"
-    ],
-    ml: [
-      "രേഖ സമർപ്പിക്കുക (Ingest Document)",
-      "മുന്നാധാര പരിശോധന (Prior Lineage)",
-      "ഉപഗ്രഹ സർവേ (Satellite Verification)",
-      "നടപടി ക്രമങ്ങൾ (Due Diligence & Action)"
-    ]
-  };
-
   const navText = {
     en: {
       prev: [
-        "← Previous Step",
-        "← Previous: Ingest Document",
-        "← Previous: Prior Lineage",
-        "← Previous: Satellite & KPBR"
+        "← Back",
+        "← Back",
+        "← Back",
+        "← Back"
       ],
       next: [
-        "Next: Prior Lineage →",
-        "Next: Satellite & KPBR →",
-        "Next: Due Diligence →",
-        "Restart Audit ↺"
+        "Next: Prior deeds →",
+        "Next: Site →",
+        "Next: Follow-up →",
+        "Start over ↺"
       ]
     },
     ml: {
       prev: [
-        "← മുൻപത്തെ പടി",
-        "← മുൻപത്തെ: രേഖ സമർപ്പിക്കൽ",
-        "← മുൻപത്തെ: മുന്നാധാരം",
-        "← മുൻപത്തെ: ഉപഗ്രഹം & KPBR"
+        "← തിരികെ",
+        "← തിരികെ",
+        "← തിരികെ",
+        "← തിരികെ"
       ],
       next: [
-        "അടുത്തത്: മുന്നാധാര പരിശോധന →",
-        "അടുത്തത്: ഉപഗ്രഹ സർവേ & KPBR →",
-        "അടുത്തത്: നേരിട്ടുള്ള പരിശോധന →",
-        "വീണ്ടും പരിശോധിക്കുക ↺"
+        "അടുത്തത്: മുന്നാധാരം →",
+        "അടുത്തത്: സ്ഥലം →",
+        "അടുത്തത്: തുടർനടപടി →",
+        "വീണ്ടും തുടങ്ങുക ↺"
       ]
     }
   };
 
   const lang = currentLanguage || "en";
-  const title = (stepTitles[lang] || stepTitles.en)[stepNum - 1] || stepTitles.en[0];
-
-  if (stepLabel) {
-    stepLabel.textContent = `Step ${stepNum} of 4: ${title}`;
-  }
 
   if (prevBtn) {
     prevBtn.disabled = (stepNum === 1);
@@ -4591,20 +4491,13 @@ function updateStepNavBar() {
     nextBtn.classList.toggle("restart", stepNum === 4);
   }
 
-  // Dynamic visual checkmark badges in step-nav-bar
-  const badgesContainer = document.getElementById("step-nav-badges");
-  if (badgesContainer) {
-    const stepShortNames = {
-      en: ["Document Ingest", "Prior Lineage", "Satellite & KPBR", "Due Diligence"],
-      ml: ["രേഖ", "മുന്നാധാരം", "ഉപഗ്രഹം", "നടപടി"]
-    };
-    const names = stepShortNames[lang] || stepShortNames.en;
-    let badgeHtml = "";
-    for (let i = 1; i < stepNum; i++) {
-      badgeHtml += `<span class="step-check-badge" id="step-nav-badge-${i}" title="Step ${i}: ${names[i-1]} completed"><span class="check-icon">✓</span> ${names[i-1]}</span>`;
-    }
-    badgesContainer.innerHTML = badgeHtml;
-  }
+}
+
+function syncChipsBar() {
+  const bar = document.getElementById("chips-container");
+  if (!bar) return;
+  const anyVisible = [...bar.querySelectorAll(".chip")].some(c => c.style.display !== "none");
+  bar.style.display = anyVisible ? "" : "none";
 }
 
 function initTouchDragScroll(containerId) {
@@ -4809,6 +4702,7 @@ function setWorkflowStep(stepNum) {
     document.querySelectorAll(".chips-bar .chip").forEach(chip => {
       chip.style.setProperty("display", step1AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
     });
+    syncChipsBar();
 
     if (currentViewMode === "map") {
       setViewMode("split");
@@ -4831,6 +4725,7 @@ function setWorkflowStep(stepNum) {
     document.querySelectorAll(".chips-bar .chip").forEach(chip => {
       chip.style.setProperty("display", step2AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
     });
+    syncChipsBar();
 
     if (currentViewMode === "map") {
       setViewMode("split");
@@ -4865,12 +4760,12 @@ function setWorkflowStep(stepNum) {
     const step3AllowedChips = [
       "chip-measure-road",
       "chip-demarcate-plot",
-      "chip-check-elevation",
-      "chip-switch-map-view"
+      "chip-check-elevation"
     ];
     document.querySelectorAll(".chips-bar .chip").forEach(chip => {
       chip.style.setProperty("display", step3AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
     });
+    syncChipsBar();
 
     // Ensure HUD is open/visible
     const hud = document.getElementById("map-hud");
@@ -4896,12 +4791,12 @@ function setWorkflowStep(stepNum) {
     const step4AllowedChips = [
       "chip-open-checklist",
       "chip-wa-inquiry",
-      "chip-export-dossier",
-      "chip-restart-diligence"
+      "chip-export-dossier"
     ];
     document.querySelectorAll(".chips-bar .chip").forEach(chip => {
       chip.style.setProperty("display", step4AllowedChips.includes(chip.id) ? "inline-flex" : "none", "important");
     });
+    syncChipsBar();
 
     // Automatically open or highlight field checklist and ensure WhatsApp inquiry card
     toggleChecklist(true);
@@ -5556,7 +5451,8 @@ function undoLastPoint() {
 }
 
 function updateUndoState() {
-  const btn = document.getElementById("btn-undo");
+  const btn = document.getElementById("guidance-undo-btn");
+  if (!btn) return;
   if (activeTool === "plot") {
     btn.disabled = polygonPoints.length === 0;
   } else if (activeTool === "road") {
@@ -6205,8 +6101,24 @@ function toggleHUD() {
   const hud = document.getElementById("map-hud");
   const btn = document.getElementById("hud-toggle-btn");
   const isMin = hud.classList.toggle("minimized");
-  btn.textContent = isMin ? "↗" : "_";
-  btn.title = isMin ? "Expand HUD" : "Minimize HUD";
+  btn.textContent = isMin ? "▴" : "▾";
+  btn.title = isMin ? "Expand" : "Collapse";
+  updateHudSummary();
+}
+
+// One-line summary shown while the HUD is collapsed: extent · road · elevation.
+function updateHudSummary() {
+  const el = document.getElementById("hud-summary");
+  if (!el) return;
+  const txt = id => (document.getElementById(id)?.textContent || "").trim();
+  el.textContent = [txt("hud-cents"), txt("hud-road-text"), txt("hud-elevation-text")].filter(Boolean).join(" · ");
+}
+
+function initHud() {
+  const grid = document.querySelector("#map-hud .hud-stats-grid");
+  if (grid) new MutationObserver(updateHudSummary).observe(grid, { subtree: true, childList: true, characterData: true });
+  updateHudSummary();
+  if (window.innerWidth < 768) toggleHUD();
 }
 
 function toggleChecklist(forceState) {
@@ -6475,16 +6387,8 @@ function initPWA() {
     const badge = document.getElementById("pwa-status-badge");
     const dot = document.getElementById("pwa-dot");
     const text = document.getElementById("pwa-status-text");
-    if (navigator.onLine) {
-      if (badge) badge.style.background = "#dcfce7";
-      if (dot) dot.style.background = "#16a34a";
-      if (text) text.textContent = "Online Mode";
-    } else {
-      if (badge) badge.style.background = "#fef3c7";
-      if (dot) dot.style.background = "#d97706";
-      if (text) text.textContent = "Offline Field Mode";
-      appendMsg("agent", `<div style="background:#fffbeb; border:1px solid #fde68a; padding:8px 12px; border-radius:8px; font-size:0.8rem; color:#92400e;"><strong>Offline Field Inspection Active:</strong> Local caching enabled. GPS plot waypoints, Survey Kallu checks, and inspection notes are safely recorded offline.</div>`);
-    }
+    if (badge) badge.hidden = navigator.onLine;
+    if (text) text.textContent = currentLanguage === "ml" ? "ഓഫ്‌ലൈൻ" : "Offline";
   }
 
   window.addEventListener('online', updateOnlineStatus);
@@ -6494,6 +6398,7 @@ function initPWA() {
 
 window.addEventListener("DOMContentLoaded", () => {
   initMap();
+  initHud();
   initPWA();
   setLanguage(currentLanguage);
   setWorkflowStep(1);

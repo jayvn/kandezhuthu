@@ -1282,3 +1282,48 @@ select.map-layer-select {
 .bubble hr { border: 0; border-top: 1px solid var(--ft-border); margin: 0.8rem 0; }
 .bubble table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; }
 .bubble th, .bubble td { border-bottom: 1px solid var(--ft-border); padding: 4px 8px; text-align: left; }
+
+/* ==========================================================================
+   Streamlined chrome
+   ========================================================================== */
+.offline-badge {
+  font-size: 0.75rem; font-weight: 600; padding: 2px 8px;
+  border: 1px solid var(--ft-border-strong); color: var(--ft-muted-text);
+}
+.offline-badge[hidden] { display: none !important; }
+.workflow-bar .step-nav-controls { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+/* Map info panel: compact card, collapses to a one-line summary */
+.map-hud { max-width: 360px !important; }
+.map-hud-header { cursor: pointer; gap: 0.5rem; }
+.hud-summary { display: none; font-size: 0.8rem; color: var(--ft-dark-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-hud.minimized .hud-summary { display: inline; }
+.map-hud.minimized #hud-locality-title { display: none; }
+.map-hud.minimized { padding: 0.4rem 0.7rem !important; }
+
+/* ==========================================================================
+   Phone layout
+   ========================================================================== */
+#log, .bubble { min-width: 0; overflow-wrap: anywhere; }
+.bubble table { display: block; overflow-x: auto; max-width: 100%; }
+.leaflet-popup-content { min-width: 170px; }
+
+@media (max-width: 640px) {
+  header { flex-wrap: nowrap; gap: 0.5rem; }
+  .brand { min-width: 0; flex-shrink: 1; }
+  .brand-text { display: none; }
+  .header-actions { gap: 0.4rem; flex-wrap: nowrap; min-width: 0; }
+  .lang-icon-badge { display: none !important; }
+  .view-btn { padding: 0.3rem 0.5rem !important; }
+
+  .workflow-bar { flex-wrap: wrap; row-gap: 0.35rem; padding: 0.4rem 0.6rem !important; overflow: visible !important; }
+  .workflow-steps { gap: 0.25rem; }
+  .workflow-arrow { display: none !important; }
+  .workflow-step:not(.active) [id^="wf-text-"] { display: none; }
+  .workflow-step { padding: 0.25rem 0.45rem !important; }
+  .workflow-bar .step-nav-controls { margin-left: auto; }
+  .step-nav-btn.prev { display: none; }
+
+  .layman-quickstart-grid { grid-template-columns: 1fr !important; }
+  .layman-card-desc { display: none; }
+}
